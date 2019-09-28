@@ -7,32 +7,32 @@ import {SharedModule} from './shared/shared.module';
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {UserModule} from './user/user.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HomeComponent } from './home/home.component';
 import {JwtInterceptor} from './helper/jwt.interceptor';
 import {ErrorInterceptor} from './helper/error.interceptor';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ReactiveFormsModule} from '@angular/forms';
 
 // @ts-ignore
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedModule,
     HttpClientModule,
-    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
+    // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     NgbModule,
     UserModule,
     NgxAudioPlayerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

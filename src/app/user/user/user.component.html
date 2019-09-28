@@ -1,0 +1,19 @@
+<div>
+  <app-header></app-header>
+  <app-navbar (logoutAction)="logout()"></app-navbar>
+</div>
+<div class="container-fluid" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-3">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="col-sm-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<mat-advanced-audio-player [playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle"
+                           [displayPlaylist]="msaapDisplayPlayList" [pageSizeOptions]="msaapPageSizeOptions"
+                           [displayVolumeControls]="msaapDisplayVolumeControls" [expanded]="true"></mat-advanced-audio-player>
+<!--<mat-basic-audio-player [audioUrl]="msbapAudioUrl" [title]="msbapTitle"-->
+<!--                        [displayTitle]="msbapDisplayTitle" [displayVolumeControls]="msaapDisplayVolumeControls" ></mat-basic-audio-player>-->
