@@ -39,20 +39,19 @@ export class UploadSongComponent implements OnInit {
   upload() {
     this.audioUploadService.createSong(this.songUploadForm.value).subscribe(
       result => {
-        console.log(result);
+        this.message = 'Song created successfully!';
         this.formData.append('songId', String(result));
         this.formData.append('audio', this.file);
         this.audioUploadService.uploadSong(this.formData).subscribe(
           result1 => {
-            console.log(result1);
+            this.message = 'Song uploaded successfully!';
           },
           error1 => {
-            this.message = error1.message;
-            console.log(error1); }
+            this.message = 'Failed to upload song. Cause: ' + error1.message;
+            }
         );
       }, error => {
-        this.message = error.message;
-        console.log(error);
+        this.message = 'Failed to create song. Cause: ' + error.message;
       }
     );
   }
