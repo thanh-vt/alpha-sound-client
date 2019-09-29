@@ -9,6 +9,10 @@ import {environment} from '../../environments/environment';
 export class AudioUploadService {
   constructor(private http: HttpClient) { }
 
+  createSong(formGroup): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/song/create`, formGroup);
+  }
+
   uploadSong(formData): Observable<HttpEvent<any>> {
     return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData);
   }

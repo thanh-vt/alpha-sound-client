@@ -36,6 +36,7 @@
     <input type="file" class="form-control-file" id="audio" (change)="selectFile($event)">
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
+  <span *ngIf="message">{{ message }}</span>
 </form>
 <!--<ngb-pagination>-->
 <!--  <ng-template ngbPaginationFirst>First</ng-template>-->
