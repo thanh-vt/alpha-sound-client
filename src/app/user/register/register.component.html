@@ -13,8 +13,20 @@
         </div>
 
         <div class="form-group">
-          <label for="gender"> <i class="fas fa-genderless"></i>Gender</label>
-          <input id="gender" type="text" formControlName="username" class="form-control" />
+          <label for="firstName"><i class="fas fa-user-tie"></i>First Name</label>
+          <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName"><i class="fas fa-user-tie"></i>Last Name</label>
+          <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+        </div>
+
+        <div class=" form-group custom-control custom-radio custom-control-inline">
+          <label class="custom-control-label" for="customRadio"></label><i class="fas fa-genderless">
+          <label class="custom-control-label" for="customRadio2"></label>
+          <input type="radio" class="custom-control-input" id="customRadio" formControlName="gender">
+          <input type="radio" class="custom-control-input" id="customRadio2" formControlName="gender">
         </div>
 
         <div class="form-group">
@@ -30,11 +42,6 @@
         <div class="form-group">
           <label for="email"><i class="fas fa-envelope-square">Email</i></label>
           <input id="email" type="text" formControlName="username" class="form-control" />
-        </div>
-
-        <div class="form-group">
-          <label for="avatarUrl"><i class="fas fa-user-tie"></i>AvatarUrl</label>
-          <input id="avatarUrl" type="file" formControlName="username" class="form-control" />
         </div>
 
         <button [disabled]="loading" class="btn btn-primary">

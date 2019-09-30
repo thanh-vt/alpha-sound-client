@@ -9,20 +9,28 @@ import {AuthService} from '../../service/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup;
+  registerForm = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    phoneNumber: ['', Validators.required],
+    gender: ['', Validators.required],
+    birthDate: ['', Validators.required],
+    email: ['', Validators.required]
+  });
   loading = false;
   submitted = false;
   returnUrl: string;
   error = '';
 
-  constructor(private formBuilder: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
-              private authService: AuthService) {
-
-  }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
+  }
+
+  onSubmit() {
+
   }
 
 }
