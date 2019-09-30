@@ -5,6 +5,7 @@ import {PlaylistListComponent} from './playlist-list/playlist-list.component';
 import {CreatePlaylistComponent} from './create-playlist/create-playlist.component';
 import {EditPlaylistComponent} from './edit-playlist/edit-playlist.component';
 import {DeletePlaylistComponent} from './delete-playlist/delete-playlist.component';
+import {PlaylistDetailComponent} from './playlist-detail/playlist-detail.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path:  'list',
         component:  PlaylistListComponent
+      },
+      {
+        path:  'detail',
+        component:  PlaylistDetailComponent
       },
       {
         path:  'create',

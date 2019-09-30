@@ -12,7 +12,18 @@
     <th scope="row">{{ i + 1 }}</th>
     <td>{{ song.name }}</td>
     <td>{{ song.releaseDate | date }}</td>
-    <td><button (click)="addToPlaylist(song)" [disabled]="song.isDisabled">Play</button></td>
+    <td>
+      <button class="btn btn-primary" (click)="addToPlaylist(song)" [disabled]="song.isDisabled"><i class="fas fa-play-circle"></i></button>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i class="fas fa-ellipsis-h fa-1x"></i></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>Action - 1</button>
+          <button ngbDropdownItem>Another Action</button>
+          <button ngbDropdownItem>Something else is here</button>
+        </div>
+      </div>
+    </td>
+
   </tr>
   </tbody>
 </table>
