@@ -6,28 +6,32 @@
 
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" [routerLink]="['/home']">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" [routerLink]="['/song']">Song</a>
       </li>
-      <li ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" [routerLink]="['/album']">Album</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" [routerLink]="['/playlist']">Playlist</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngIf="!isLoggedIn">
+        <a [routerLink]="['/login']" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Login</a>
+      </li>
+      <li ngbDropdown class="nav-item dropdown" *ngIf="isLoggedIn">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ username }}
         </a>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a ngbDropdownItem class="dropdown-item" href="#">Action</a>
           <a ngbDropdownItem class="dropdown-item" href="#">Another action</a>
           <div class="dropdown-divider"></div>
           <a ngbDropdownItem class="dropdown-item" href="#">Something else here</a>
+          <a ngbDropdownItem (click)="logoutClick()" class="dropdown-item" tabindex="-1" aria-disabled="true">Logout</a>
         </div>
-      </li>
-      <li class="nav-item">
-        <a [routerLink]="['/','user','login']" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Login</a>
-      </li>
-      <li class="nav-item">
-        <a (click)="logoutClick()" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Logout</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">

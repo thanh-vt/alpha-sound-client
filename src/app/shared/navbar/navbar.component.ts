@@ -1,5 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AuthService} from '../../service/auth.service';
+import {UserService} from '../../service/user.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -9,11 +11,19 @@ import {AuthService} from '../../service/auth.service';
 export class NavbarComponent implements OnInit {
   @Output() logoutAction = new EventEmitter();
   isCollapsed: boolean;
-  constructor(private authenticationService: AuthService) { }
+  @Input() isLoggedIn: boolean;
+  @Input() username: string;
+  constructor(private authService: AuthService, private userservice: UserService) { }
 
   ngOnInit() {
     this.isCollapsed = true;
+    this.isLoggedIn = (this.authService.currentUserValue != null);
+    this.userservice.getProfile().subscribe(user => {
+        this.username = user.username;
+      }
+    );
   }
+
   logoutClick() {
     this.logoutAction.emit();
   }
