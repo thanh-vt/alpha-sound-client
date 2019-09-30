@@ -13,6 +13,8 @@
     <td>{{ song.name }}</td>
     <td>{{ song.releaseDate | date }}</td>
     <td><button (click)="addToPlaylist(song)" [disabled]="song.isDisabled">Play</button></td>
+    <td><a [routerLink]="['/song','edit', song.id]">Edit</a></td>
+
   </tr>
   </tbody>
 </table>
