@@ -1,1 +1,50 @@
-<p>upload-album works!</p>
+
+<button (click)="addForm()">Add song</button>
+<div *ngFor="let form of formArray">
+  <form [formGroup]="form" class="form-inline">
+    <div class="form-group">
+      <label for="songName">Song Name</label>
+      <input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="artistName">Artist Name</label>
+      <input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists">
+    </div>
+    <div class="form-group">
+      <label for="releaseDate">Release Date</label>
+      <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+    </div>
+    <div class="form-group">
+      <input type="hidden" formControlName="album">
+    </div>
+    <div class="form-group">
+      <label for="genres">Genres</label>
+      <input type="text" class="form-control" id="genres" placeholder="Multiple genres separated by commas" formControlName="genres">
+    </div>
+    <div class="form-group">
+      <label for="tags">Tags</label>
+      <input type="text" class="form-control" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags">
+    </div>
+    <div class="form-group">
+      <label for="mood">Mood</label>
+      <input type="text" class="form-control" id="mood" placeholder="Specify a mood" formControlName="mood">
+    </div>
+    <div class="form-group">
+      <label for="activity">Activity</label>
+      <input type="text" class="form-control" id="activity" placeholder="Specify an activity" formControlName="activity">
+    </div>
+
+    <div class="form-group">
+      <label for="audio">Audio File</label>
+      <input type="file" class="form-control-file" id="audio" (change)="selectFile($event)">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <span *ngIf="message">{{ message }}</span>
+    <!-- Progress Bar -->
+    <div class="progress form-group" *ngIf="progress > 0">
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+      </div>
+    </div>
+  </form>
+
+</div>

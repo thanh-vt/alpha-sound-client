@@ -8,13 +8,15 @@ import { AlbumDetailComponent } from './album-detail/album-detail.component';
 import { UploadAlbumComponent } from './upload-album/upload-album.component';
 import { EditAlbumComponent } from './edit-album/edit-album.component';
 import { DeleteAlbumComponent } from './delete-album/delete-album.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [AlbumComponent, AlbumListComponent, AlbumDetailComponent, UploadAlbumComponent, EditAlbumComponent, DeleteAlbumComponent],
   imports: [
     CommonModule,
-    AlbumRoutingModule
+    AlbumRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class AlbumModule { }
