@@ -37,6 +37,11 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
   <span *ngIf="message">{{ message }}</span>
+  <!-- Progress Bar -->
+  <div class="progress form-group" *ngIf="progress > 0">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+    </div>
+  </div>
 </form>
 <!--<ngb-pagination>-->
 <!--  <ng-template ngbPaginationFirst>First</ng-template>-->

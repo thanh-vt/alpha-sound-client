@@ -5,6 +5,7 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {UserComponent} from './user/user.component';
 import {AuthGuard} from '../guard/auth.guard';
+import {EditComponent} from './edit/edit.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
       { path: 'login', component: LoginComponent},
       { path: 'register', component: RegisterComponent},
+      {path: 'user/edit/:id', component: EditComponent},
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},
       { path: 'playlist', loadChildren: () => import('../playlist/playlist.module').then(mod => mod.PlaylistModule)}

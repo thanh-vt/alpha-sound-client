@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Token} from '../../model/token';
+import {UserToken} from '../../model/userToken';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
@@ -12,9 +12,10 @@ import {AddSongToPlaylistService} from '../../service/add-song-to-playlist.servi
 })
 export class UserComponent implements OnInit {
   username: string;
-  currentUser: Token;
+  currentUser: UserToken;
   isLoggedIn: boolean;
   numberOfTracks = 1;
+  userId: number;
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
   @Input() msaapPageSizeOptions = [6];

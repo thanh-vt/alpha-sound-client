@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   isCollapsed: boolean;
   @Input() isLoggedIn: boolean;
   @Input() username: string;
+  id: number;
   constructor(private authService: AuthService, private userservice: UserService) { }
 
   ngOnInit() {
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
     this.isLoggedIn = (this.authService.currentUserValue != null);
     this.userservice.getProfile().subscribe(user => {
         this.username = user.username;
+        this.id = user.id;
       }
     );
   }
