@@ -22,6 +22,18 @@ export class AudioUploadService {
     );
   }
 
+  createAlbum(formGroup): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/album/create`, formGroup);
+  }
+
+  uploadAlbum(formData): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/album/upload`, formData, {reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

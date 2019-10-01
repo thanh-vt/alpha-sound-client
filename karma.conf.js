@@ -1,4 +1,4 @@
-// Karma configuration file, see link for more information
+// Karma configuration audioFiles, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 module.exports = function (config) {
@@ -20,7 +20,7 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['songsProgress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

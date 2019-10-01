@@ -23,7 +23,7 @@ export class SongListComponent implements OnInit {
           });
         }
       }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.message;
+        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
       }
     );
   }

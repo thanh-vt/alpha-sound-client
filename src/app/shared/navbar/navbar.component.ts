@@ -18,10 +18,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.isCollapsed = true;
     this.isLoggedIn = (this.authService.currentUserValue != null);
-    this.userservice.getProfile().subscribe(user => {
-        this.username = user.username;
-      }
-    );
+    if (this.isLoggedIn) {
+      this.userservice.getProfile().subscribe(user => {
+          this.username = user.username;
+        }
+      );
+    }
   }
 
   logoutClick() {

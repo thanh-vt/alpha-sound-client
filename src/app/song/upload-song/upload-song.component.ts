@@ -38,6 +38,26 @@ export class UploadSongComponent implements OnInit {
     }
   }
 
+  displayProgress(event, progress) {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        console.log('Request has been made!');
+        break;
+      case HttpEventType.ResponseHeader:
+        console.log('Response header has been received!');
+        break;
+      case HttpEventType.UploadProgress:
+        progress = Math.round(event.loaded / event.total * 100);
+        console.log(`Uploaded! ${progress}%`);
+        break;
+      case HttpEventType.Response:
+        console.log('User successfully created!', event.body);
+        setTimeout(() => {
+          progress = 0;
+        }, 1500);
+    }
+  }
+
   upload() {
     this.audioUploadService.createSong(this.songUploadForm.value).subscribe(
       result => {
@@ -46,31 +66,32 @@ export class UploadSongComponent implements OnInit {
         this.formData.append('audio', this.file);
         this.audioUploadService.uploadSong(this.formData).subscribe(
           (event: HttpEvent<any>)  => {
-            switch (event.type) {
-              case HttpEventType.Sent:
-                console.log('Request has been made!');
-                break;
-              case HttpEventType.ResponseHeader:
-                console.log('Response header has been received!');
-                break;
-              case HttpEventType.UploadProgress:
-                this.progress = Math.round(event.loaded / event.total * 100);
-                console.log(`Uploaded! ${this.progress}%`);
-                break;
-              case HttpEventType.Response:
-                console.log('User successfully created!', event.body);
-                setTimeout(() => {
-                  this.progress = 0;
-                }, 1500);
-            }
+            this.displayProgress(event, this.progress);
+            // switch (event.type) {
+            //   case HttpEventType.Sent:
+            //     console.log('Request has been made!');
+            //     break;
+            //   case HttpEventType.ResponseHeader:
+            //     console.log('Response header has been received!');
+            //     break;
+            //   case HttpEventType.UploadProgress:
+            //     this.progress = Math.round(event.loaded / event.total * 100);
+            //     console.log(`Uploaded! ${this.progress}%`);
+            //     break;
+            //   case HttpEventType.Response:
+            //     console.log('User successfully created!', event.body);
+            //     setTimeout(() => {
+            //       this.progress = 0;
+            //     }, 1500);
+            // }
             this.message = 'Song uploaded successfully!';
           },
           error1 => {
-            this.message = 'Failed to upload song. Cause: ' + error1.message;
+            this.message = 'Failed to upload song. Cause: ' + error1.songsMessage;
           }
         );
       }, error => {
-        this.message = 'Failed to create song. Cause: ' + error.message;
+        this.message = 'Failed to create song. Cause: ' + error.songsMessage;
       }
     );
   }

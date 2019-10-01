@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
   @Input() msaapDisplayPlayList = true;
   @Input() msaapPageSizeOptions = [6];
   @Input() msaapDisplayVolumeControls = true;
-  @Input() expanded = false;
+  @Input() expanded = true;
 
 // Material Style Advance Audio Player Playlist
   msaapPlaylist: Track[] = [
@@ -32,6 +32,7 @@ export class UserComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private addSongToPlaylistService: AddSongToPlaylistService) {
     this.authService.currentUser.subscribe(x => this.currentUser = x);
     this.addSongToPlaylistService.changeEmitter$.subscribe(data => {
+      this.msaapDisplayVolumeControls = !this.msaapDisplayVolumeControls;
       if (this.numberOfTracks === 1) {
         this.msaapPlaylist[0] = {
           title: data.name,
