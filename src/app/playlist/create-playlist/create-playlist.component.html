@@ -1,1 +1,29 @@
-<p>create-playlist works!</p>
+<ng-template #content let-modal>
+  <form [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="playlist">Tên play list</label>
+        <div class="input-group">
+          <input id="playlist" class="form-control" formControlName="name">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Save
+      </button>
+      <div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{message}}</div>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </form>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Tạo PlayList Mới</button>
+
+<hr>
+
+<pre>{{closeResult}}</pre>

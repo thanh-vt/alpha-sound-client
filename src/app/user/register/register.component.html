@@ -12,30 +12,26 @@
           <input id="password" type="password" formControlName="password" class="form-control" />
         </div>
 
-        <div class="form-group">
-          <label for="gender"> <i class="fas fa-genderless"></i>Gender</label>
-          <input id="gender" type="text" formControlName="username" class="form-control" />
-        </div>
+<!--        <div class="form-group">-->
+<!--          <label for="gender"> <i class="fas fa-genderless"></i>Gender</label>-->
+<!--          <input id="gender" type="text" formControlName="gendre" class="form-control" />-->
+<!--        </div>-->
 
         <div class="form-group">
           <label for="birthDate"><i class="fas fa-table"></i>BirthDate</label>
-          <input id="birthDate" type="date" formControlName="username" class="form-control"/>
+          <input id="birthDate" type="date" formControlName="birthdate" class="form-control"/>
         </div>
 
         <div class="form-group">
           <label for="phoneNumber"><i class="fas fa-phone"></i>PhoneNumber</label>
-          <input id="phoneNumber" type="text" formControlName="username" class="form-control"  />
+          <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control"  />
         </div>
 
         <div class="form-group">
           <label for="email"><i class="fas fa-envelope-square">Email</i></label>
-          <input id="email" type="text" formControlName="username" class="form-control" />
+          <input id="email" type="text" formControlName="email" class="form-control" />
         </div>
 
-        <div class="form-group">
-          <label for="avatarUrl"><i class="fas fa-user-tie"></i>AvatarUrl</label>
-          <input id="avatarUrl" type="file" formControlName="username" class="form-control" />
-        </div>
 
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
