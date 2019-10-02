@@ -24,7 +24,7 @@ export class AddToPlaylistComponent implements OnInit {
 
   ngOnInit() {
     const songId = this.route.snapshot.paramMap.get('songId');
-    this.songId = Number.parseInt(songId);
+    this.songId = Number.parseInt(songId, 10);
     this.subscription = this.playlistService.getPlaylist().subscribe(
       result => {
         if (result != null) {
