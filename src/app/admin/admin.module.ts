@@ -15,6 +15,6 @@ import {UserModule} from '../user/user.module';
     AdminRoutingModule,
     UserModule
   ],
-  exports: [AdminComponent, DashboardComponent]
+  exports: [AdminComponent, DashboardComponent, LoginComponent]
 })
 export class AdminModule { }

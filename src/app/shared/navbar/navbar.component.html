@@ -1,5 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <a class="navbar-brand" href="#">Navbar</a>
+<nav class="navbar navbar-expand-lg" style="background-color: #fcfcfc!important;">
   <button (click)="isCollapsed=!isCollapsed" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -7,23 +6,23 @@
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link" [routerLink]="['/home']">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['/home']"><span>HOME</span></a>
       </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link" [routerLink]="['/song']">Song</a>
+        <a class="nav-link" [routerLink]="['/song']"><span>TOP 100</span></a>
       </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link" [routerLink]="['/album']">Album</a>
+        <a class="nav-link" [routerLink]="['/album']"><span>ALBUM</span></a>
       </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link" [routerLink]="['/playlist']">Playlist</a>
+        <a class="nav-link" [routerLink]="['/playlist']"><span>PLAYLIST</span></a>
       </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngIf="!isLoggedIn">
         <a [routerLink]="['/login']" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Login</a>
       </li>
       <li ngbDropdown class="nav-item dropdown" *ngIf="isLoggedIn">
         <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ username }}
+          <span>ARTISTS</span>
         </a>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a ngbDropdownItem class="dropdown-item" href="#">Action</a>
@@ -34,9 +33,11 @@
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
   </div>
+
+ <div style="margin-right: 400px">
+   <form class="form-inline">
+     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+   </form>
+ </div>
 </nav>
