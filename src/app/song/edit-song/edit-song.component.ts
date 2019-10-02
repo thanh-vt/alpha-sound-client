@@ -12,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 export class EditSongComponent implements OnInit {
   song: Song;
   songUpdateForm: FormGroup;
+  private message: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,8 +29,8 @@ export class EditSongComponent implements OnInit {
       album: [null],
       genres: [''],
       tags: [''],
-      mood: [''],
-      activity: ['']
+      country: [''],
+      theme: ['']
     });
 
   }
@@ -44,8 +45,10 @@ export class EditSongComponent implements OnInit {
       };
       this.songService.updateSong(data, id).subscribe(
         next => {
-          console.log('song updated successfully');
-        }, error => console.log(error)
+          this.message = 'song updated successfully';
+        }, error => {
+          this.message = 'Failed to update song! Cause: ' + error.message;
+        }
       );
     }
   }

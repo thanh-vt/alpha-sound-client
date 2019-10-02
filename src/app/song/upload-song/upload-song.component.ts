@@ -27,8 +27,8 @@ export class UploadSongComponent implements OnInit {
       album: [null],
       genres: [''],
       tags: [''],
-      mood: [''],
-      activity: ['']
+      country: [''],
+      theme: ['']
     });
   }
 

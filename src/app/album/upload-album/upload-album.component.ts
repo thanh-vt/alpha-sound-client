@@ -46,8 +46,8 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
       releaseDate: [''],
       genres: [''],
       tags: [''],
-      mood: [''],
-      activity: ['']
+      country: [''],
+      theme: ['']
     });
     this.songsForm[0] = this.formBuilder.group({
       name: [''],
@@ -56,8 +56,8 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
       album: [null],
       genres: [''],
       tags: [''],
-      mood: [''],
-      activity: ['']
+      country: [''],
+      theme: ['']
     });
 
     this.isImageFileChosen = false;
@@ -87,8 +87,8 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
         album: new FormControl(''),
         genres: new FormControl(''),
         tags: new FormControl(''),
-        mood: new FormControl(''),
-        activity: new FormControl('')
+        country: new FormControl(''),
+        theme: new FormControl('')
       }));
       this.songsFormData.splice(this.numbersOfSongForms, 1, new FormData());
       this.audioFiles.splice(this.numbersOfSongForms, 1, null);
@@ -115,7 +115,7 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
   }
 
   removeForm(i) {
-    if (this.numbersOfSongForms > 0) {
+    if (this.numbersOfSongForms > 1) {
       this.songsForm.splice(i, 1);
       this.songsFormData.splice(i, 1);
       this.audioFiles.splice(i, 1);

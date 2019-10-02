@@ -17,7 +17,6 @@ export class DeletePlaylistComponent implements OnInit {
   loading = false;
   error = '';
   message: string;
-  closeResult: string;
   @Output() deletePlaylist = new EventEmitter();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
@@ -31,9 +30,8 @@ export class DeletePlaylistComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.deletePlaylist.emit();
       this.message = '';
-      this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log(this.getDismissReason(reason));
     });
   }
 
@@ -51,6 +49,7 @@ export class DeletePlaylistComponent implements OnInit {
     this.playlistService.deletePlaylist(this.id).subscribe(
       result => {
         this.deleted = true;
+        console.log(this.deleted);
         this.message = 'Playlist deleted successfully!';
       },
       error => {

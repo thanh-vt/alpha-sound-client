@@ -47,7 +47,6 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   deletePlaylist() {
     this.subscription = this.playlistService.getPlaylist().subscribe(
       result => {
-        console.log(result);
         if (result != null) {
           this.playlistList = result.content;
           this.playlistList.forEach((value, index) => {

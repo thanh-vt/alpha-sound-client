@@ -15,7 +15,6 @@ export class CreatePlaylistComponent implements OnInit {
   loading = false;
   error = '';
   message: string;
-  closeResult: string;
   @Output() addPlaylist = new EventEmitter();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
@@ -32,9 +31,8 @@ export class CreatePlaylistComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.addPlaylist.emit();
       this.message = '';
-      this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log(this.getDismissReason(reason));
     });
   }
 
@@ -49,8 +47,10 @@ export class CreatePlaylistComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.createPlaylistForm.value);
     this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
       result => {
+
         this.message = 'Playlist created successfully!';
         this.createPlaylistForm.reset({name});
       },

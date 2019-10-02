@@ -4,13 +4,11 @@
     <div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{message}}</div>
   </div>
   <div class="modal-footer">
-    <button (click)=onSubmit() [disabled]="loading" class="btn btn-primary">
+    <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary">
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
       Delete
     </button>
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
   </div>
 </ng-template>
-
-<button type="button" class="btn btn-danger" (click)="open(content)">Danger</button>
-<pre>{{closeResult}}</pre>
+<button type="button" class="btn btn-danger" (click)="open(content)"><i class="fas fa-trash-alt"></i></button>
