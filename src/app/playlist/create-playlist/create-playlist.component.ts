@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -13,13 +13,10 @@ import {PlaylistService} from '../../service/playlist.service';
 export class CreatePlaylistComponent implements OnInit {
   createPlaylistForm: FormGroup;
   loading = false;
-  submitted = false;
-  returnUrl: string;
   error = '';
-  file: File;
-  formData = new FormData();
   message: string;
   closeResult: string;
+  @Output() addPlaylist = new EventEmitter();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private playlistService: PlaylistService) {}
@@ -33,6 +30,8 @@ export class CreatePlaylistComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.addPlaylist.emit();
+      this.message = '';
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -48,16 +47,12 @@ export class CreatePlaylistComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
-  selectFile(event) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
-    }
-  }
+
   onSubmit() {
     this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
       result => {
         this.message = 'Playlist created successfully!';
-        console.log(result);
+        this.createPlaylistForm.reset({name});
       },
       error => {
         this.message = 'Failed to create playlist. Cause: ' + error.message;

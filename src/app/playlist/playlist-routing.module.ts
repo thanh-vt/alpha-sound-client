@@ -23,10 +23,6 @@ const routes: Routes = [
       {
         path:  'detail',
         component:  PlaylistDetailComponent
-      },
-      {
-        path:  'delete',
-        component:  DeletePlaylistComponent
       }
     ]
   }

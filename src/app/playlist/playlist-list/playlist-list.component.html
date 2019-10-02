@@ -1,15 +1,26 @@
-<app-create-playlist></app-create-playlist>
+<app-create-playlist (addPlaylist)="addPlaylist()"></app-create-playlist>
 
 
 
-<!--<div class="list-group">-->
-<!--  <a href="#" class="list-group-item list-group-item-action">Action item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-success">Success item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Secondary item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-info">Info item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-warning">Warning item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Danger item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-primary">Primary item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Dark item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action list-group-item-light">Light item</a>-->
-<!--</div>-->
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" id="name">Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let playlist of playlistList; index as i">
+    <th scope="row">{{ i + 1 }}</th>
+    <th><div class="list-group">
+      <a href="#" class="list-group-item list-group-item-action">{{ playlist.name }}</a>
+    </div>
+    </th>
+    <th>
+      <app-delete-playlist [id]="playlist.id" [playlistName]="playlist.name" (deletePlaylist)="deletePlaylist()"></app-delete-playlist>
+    <th>
+    </th>
+  </tr>
+  </tbody>
+</table>
+
