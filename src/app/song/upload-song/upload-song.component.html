@@ -2,39 +2,67 @@
   <div class="form-group">
     <label for="songName">Song Name</label>
     <input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('name').hasError('required') && songUploadForm.get('name').touched">
+      Must be filled!
+    </div>
   </div>
+
   <div class="form-group">
     <label for="artistName">Artist Name</label>
     <input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('artists').hasError('required') && songUploadForm.get('artists').touched">
+      Must be filled!
+    </div>
   </div>
+
   <div class="form-group">
     <label for="releaseDate">Release Date</label>
     <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('releaseDate').hasError('required') && songUploadForm.get('releaseDate').touched">
+      Must be filled!
+    </div>
   </div>
+
   <div class="form-group">
     <input type="hidden" formControlName="album">
   </div>
   <div class="form-group">
     <label for="genres">Genres</label>
     <input type="text" class="form-control" id="genres" placeholder="Multiple genres separated by commas" formControlName="genres">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('genres').hasError('required') && songUploadForm.get('genres').touched">
+      Must be filled!
+    </div>
   </div>
+
   <div class="form-group">
     <label for="tags">Tags</label>
     <input type="text" class="form-control" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('tags').hasError('required') && songUploadForm.get('tags').touched">
+      Must be filled!
+    </div>
   </div>
+
   <div class="form-group">
     <label for="mood">Mood</label>
     <input type="text" class="form-control" id="mood" placeholder="Specify a mood" formControlName="mood">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('mood').hasError('required') && songUploadForm.get('mood').touched">
+      Must be filled!
+    </div>
   </div>
+
   <div class="form-group">
     <label for="activity">Activity</label>
     <input type="text" class="form-control" id="activity" placeholder="Specify an activity" formControlName="activity">
+    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('activity').hasError('required') && songUploadForm.get('activity').touched">
+      Must be filled!
+    </div>
   </div>
 
   <div class="form-group">
     <label for="audio">Audio File</label>
     <input type="file" class="form-control-file" id="audio" (change)="selectFile($event)">
   </div>
+
   <button type="submit" class="btn btn-primary">Submit</button>
   <span *ngIf="message">{{ message }}</span>
   <!-- Progress Bar -->

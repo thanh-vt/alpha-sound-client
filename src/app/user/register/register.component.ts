@@ -17,31 +17,26 @@ export class RegisterComponent implements OnInit {
   returnUrl: string;
   error = '';
   file: File;
-  formData = new FormData();
   message: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private userService: UserService) {
-  }
-
-  ngOnInit() {
     this.registerForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      username: ['', [Validators.required, Validators.minLength(5)]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$') ]],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       phoneNumber: ['', Validators.required],
       gender: [1, Validators.required],
       birthDate: ['', Validators.required],
-      email: ['', Validators.required]
+      email: ['', Validators.email]
     });
   }
 
-  selectFile(event) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
-    }
+  ngOnInit() {
+
   }
+  get f() { return this.registerForm.controls; }
 
   onSubmit() {
     console.log(this.registerForm.value);
@@ -53,6 +48,14 @@ export class RegisterComponent implements OnInit {
         this.message = 'Failed to create user. Cause: ' + error.message;
       }
     );
+    this.submitted = true;
+
+    // stop the process here if form is invalid
+    if (this.registerForm.invalid) {
+      return;
+    }
+
+    alert('SUCCESS!!');
   }
 }
 
