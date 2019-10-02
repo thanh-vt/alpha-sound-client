@@ -19,7 +19,7 @@
         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i
           class="fas fa-ellipsis-h fa-1x"></i></button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem>Action - 1</button>
+          <button ngbDropdownItem [routerLink]="['/playlist','add-to-playlist',song.id]">Add to playlist</button>
           <button ngbDropdownItem>Another Action</button>
           <button ngbDropdownItem>Something else is here</button>
         </div>
