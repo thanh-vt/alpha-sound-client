@@ -8,11 +8,12 @@ import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component';
 import {SharedModule} from '../shared/shared.module';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
+import { EditComponent } from './edit/edit.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, LoginComponent, RegisterComponent, UserComponent],
+  declarations: [HomeComponent, LoginComponent, RegisterComponent, UserComponent, EditComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

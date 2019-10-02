@@ -1,8 +1,8 @@
 <div class="col-md-6 offset-md-3 mt-5">
   <div class="card">
-    <h3 class="card-header">Register</h3>
+    <h3 class="card-header">Edit Profile</h3>
     <div class="card-body">
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="username"><i class="fas fa-users"></i>Username</label>
           <input id="username" type="text" formControlName="username" class="form-control"/>
@@ -43,10 +43,13 @@
           <label for="email"><i class="fas fa-envelope-square">Email</i></label>
           <input id="email" type="text" formControlName="email" class="form-control"/>
         </div>
-
+                <div class="form-group">
+                  <label for="avatar">Avatar</label>
+                  <input type="file" class="form-control-file" id="avatar" (change)="selectFile($event)">
+                </div>
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          Register
+          Update
         </button>
         <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
       </form>
