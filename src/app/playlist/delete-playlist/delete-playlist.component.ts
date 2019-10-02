@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../../service/auth.service';
+import {PlaylistService} from '../../service/playlist.service';
 
 @Component({
   selector: 'app-delete-playlist',
@@ -6,10 +11,53 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./delete-playlist.component.scss']
 })
 export class DeletePlaylistComponent implements OnInit {
+  @Input() id: number;
+  @Input() playlistName: string;
+  deleted: boolean;
+  loading = false;
+  error = '';
+  message: string;
+  closeResult: string;
+  @Output() deletePlaylist = new EventEmitter();
+  constructor(private modalService: NgbModal, private fb: FormBuilder,
+              private route: ActivatedRoute, private router: Router, private authService: AuthService,
+              private playlistService: PlaylistService) {}
 
-  constructor() { }
+  ngOnInit(): void {
+    this.deleted = false;
+  }
 
-  ngOnInit() {
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.deletePlaylist.emit();
+      this.message = '';
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+  onSubmit() {
+    this.playlistService.deletePlaylist(this.id).subscribe(
+      result => {
+        this.deleted = true;
+        this.message = 'Playlist deleted successfully!';
+      },
+      error => {
+        this.message = 'Failed to delete playlist. Cause: ' + error.message;
+        console.log(error);
+      }
+    );
   }
 
 }

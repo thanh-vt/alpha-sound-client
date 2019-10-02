@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {PlaylistComponent} from './playlist/playlist.component';
 import {PlaylistListComponent} from './playlist-list/playlist-list.component';
-import {CreatePlaylistComponent} from './create-playlist/create-playlist.component';
-import {EditPlaylistComponent} from './edit-playlist/edit-playlist.component';
 import {DeletePlaylistComponent} from './delete-playlist/delete-playlist.component';
 import {PlaylistDetailComponent} from './playlist-detail/playlist-detail.component';
 
@@ -25,18 +23,6 @@ const routes: Routes = [
       {
         path:  'detail',
         component:  PlaylistDetailComponent
-      },
-      {
-        path:  'create',
-        component:  CreatePlaylistComponent
-      },
-      {
-        path:  'edit',
-        component:  EditPlaylistComponent
-      },
-      {
-        path:  'delete',
-        component:  DeletePlaylistComponent
       }
     ]
   }
