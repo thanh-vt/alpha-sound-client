@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   @Input() msaapDisplayPlayList = true;
   @Input() msaapPageSizeOptions = [6];
   @Input() msaapDisplayVolumeControls = true;
-  @Input() expanded = true;
+  @Input() expanded = false;
 
 // Material Style Advance Audio Player Playlist
   msaapPlaylist: Track[] = [
