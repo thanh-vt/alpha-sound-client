@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
   @Input() isLoggedIn: boolean;
   @Input() username: string;
   id: number;
+  message: string;
   loginForm: FormGroup;
   searchForm: FormGroup;
   loading = false;
@@ -70,8 +71,9 @@ export class NavbarComponent implements OnInit {
         this.username = user.username;
         this.loginAction.emit(this.username);
         this.router.navigate([this.returnUrl]);
+        console.log(this.loginForm);
       }, error => {
-        console.log(error);
+        this.message = 'Ten dang nhap hoac mat khau khong chinh xac';
         this.loading = false;
       }
     );

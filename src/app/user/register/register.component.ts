@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   onSubmit() {
-    console.log(this.registerForm.value);
+    this.submitted = true;
     this.userService.createUser(this.registerForm.value).subscribe(
       result => {
         this.message = 'User created successfully!';

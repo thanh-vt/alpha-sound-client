@@ -10,8 +10,8 @@
   <tbody>
   <tr *ngFor="let song of songList; index as i">
     <th scope="row">{{ i + 1 }}</th>
-    <td>{{ song.name }}</td>
-    <td>{{ song.releaseDate | date }}</td>
+    <td>{{ song[0].name }}</td>
+    <td>{{ song[0].releaseDate | date }}</td>
     <td>
       <button class="btn btn-primary" (click)="addToPlaylist(song)" [disabled]="song.isDisabled"><i
         class="fas fa-play-circle"></i></button>

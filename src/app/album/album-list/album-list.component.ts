@@ -12,7 +12,7 @@ export class AlbumListComponent implements OnInit {
   private pageSize: number;
   private totalItems: number;
   private message;
-  private albumList: Album[];
+  private albumList: [Album[]];
 
   constructor(private albumService: AlbumService) { }
 
@@ -22,7 +22,7 @@ export class AlbumListComponent implements OnInit {
         if (result != null) {
           this.albumList = result.content;
           this.albumList.forEach((value, index) => {
-            this.albumList[index].isDisabled = false;
+            this.albumList[index][0].isDisabled = false;
           });
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
