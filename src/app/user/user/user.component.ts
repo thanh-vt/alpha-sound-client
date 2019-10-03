@@ -50,11 +50,9 @@ export class UserComponent implements OnInit {
     });
   }
 
-  onActivate(elementRef) {
-    elementRef.loginAction.subscribe((next) => {
-      this.isLoggedIn = true;
-      this.username = next.username;
-    });
+  logIn(event) {
+    this.isLoggedIn = true;
+    this.username = event;
   }
 
   logout() {

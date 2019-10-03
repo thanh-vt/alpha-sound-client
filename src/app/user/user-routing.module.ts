@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './home/home.component';
-import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {UserComponent} from './user/user.component';
 import {AuthGuard} from '../guard/auth.guard';
@@ -14,8 +13,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   { path: '', component: UserComponent, children: [
-      { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
-      { path: 'login', component: LoginComponent},
+      { path: 'home', component: HomeComponent, canActivate: []},
       { path: 'register', component: RegisterComponent},
       {path: 'user/edit/:id', component: EditComponent},
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},

@@ -9,6 +9,7 @@ import { UploadAlbumComponent } from './upload-album/upload-album.component';
 import { EditAlbumComponent } from './edit-album/edit-album.component';
 import { DeleteAlbumComponent } from './delete-album/delete-album.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {ReactiveFormsModule} from '@angular/forms';
   imports: [
     CommonModule,
     AlbumRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ]
 })
 export class AlbumModule { }

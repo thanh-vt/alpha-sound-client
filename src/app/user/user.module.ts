@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {UserRoutingModule} from './user-routing.module';
 import {HomeComponent} from './home/home.component';
@@ -13,7 +12,7 @@ import { EditComponent } from './edit/edit.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, LoginComponent, RegisterComponent, UserComponent, EditComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -21,6 +20,6 @@ import { EditComponent } from './edit/edit.component';
     SharedModule,
     NgxAudioPlayerModule
   ],
-  exports: [HomeComponent, LoginComponent, RegisterComponent, UserComponent]
+  exports: [HomeComponent, RegisterComponent, UserComponent]
 })
 export class UserModule { }

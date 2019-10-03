@@ -10,6 +10,8 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
 })
 export class UploadSongComponent implements OnInit {
   formData = new FormData();
+  isAudioFileChosen = false;
+  audioFileName = '';
   progress = 0;
   message: string;
   constructor(
@@ -35,6 +37,8 @@ export class UploadSongComponent implements OnInit {
   selectFile(event) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
+      this.isAudioFileChosen = true;
+      this.audioFileName = event.target.files[0].name;
     }
   }
 

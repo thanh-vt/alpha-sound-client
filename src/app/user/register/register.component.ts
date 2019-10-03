@@ -37,12 +37,6 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  selectFile(event) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
-    }
-  }
-
   onSubmit() {
     console.log(this.registerForm.value);
     this.userService.createUser(this.registerForm.value).subscribe(
