@@ -17,21 +17,22 @@ export class UploadSongComponent implements OnInit {
   constructor(
     private audioUploadService: AudioUploadService,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.songUploadForm = this.fb.group({
+      name: ['', Validators.required],
+      artists: ['', Validators.required],
+      releaseDate: ['', Validators.required],
+      album: [null],
+      genres: ['', Validators.required],
+      tags: ['', Validators.required],
+      country: ['', Validators.required],
+      theme: ['', Validators.required]
+    });
+  }
   songUploadForm: FormGroup;
   file: File;
 
   ngOnInit() {
-    this.songUploadForm = this.fb.group({
-      name: ['', Validators.required],
-      artists: ['', Validators.required],
-      releaseDate: [''],
-      album: [null],
-      genres: [''],
-      tags: [''],
-      country: [''],
-      theme: ['']
-    });
   }
 
   selectFile(event) {

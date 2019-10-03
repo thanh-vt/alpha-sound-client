@@ -63,6 +63,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn = !!this.authService.currentUser;
   }
 
 }

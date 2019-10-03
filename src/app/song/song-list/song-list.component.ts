@@ -20,7 +20,8 @@ export class SongListComponent implements OnInit {
     this.songService.getSongList().subscribe(
       result => {
         if (result != null) {
-          this.songList = result.content;
+          this.songList = result.content[0];
+          console.log(result.content[0]);
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
           });

@@ -30,6 +30,13 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.currentUser.subscribe(
+      user => {
+        this.username = user.username;
+      }, error => {
+        this.isLoggedIn = false;
+      }
+    );
     this.loginForm = this.fb.group({
       username: ['',  Validators.required],
       password: ['',  Validators.required]
