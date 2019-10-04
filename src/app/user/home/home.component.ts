@@ -10,17 +10,9 @@ import {User} from '../../model/user';
 })
 export class HomeComponent implements OnInit {
 
-  loading = false;
-  user: User;
-
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.loading = true;
-    this.userService.getProfile().pipe(first()).subscribe(user => {
-      this.loading = false;
-      this.user = user;
-    });
   }
 
 }

@@ -6,6 +6,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {UserToken} from '../model/userToken';
 import {FormGroup} from '@angular/forms';
+import {Token} from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getProfile(): Observable<any> {
-    return this.http.get<HttpEvent<any>>(`${environment.apiUrl}/profile`);
+  getProfile(): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/profile`);
   }
 
   createUser(formGroup): Observable<HttpEvent<any>> {

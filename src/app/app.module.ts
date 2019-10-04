@@ -13,11 +13,18 @@ import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AddSongToPlaylistService} from './service/add-song-to-playlist.service';
+import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 
+const JWT_Module_Options: JwtModuleOptions = {
+  config: {
+    // tokenGetter: yourTokenGetter,
+    // whitelistedDomains: yourWhitelistedDomains
+  }
+};
 // @ts-ignore
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,11 +36,14 @@ import {AddSongToPlaylistService} from './service/add-song-to-playlist.service';
     UserModule,
     NgxAudioPlayerModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // JwtModule.forRoot(JWT_Module_Options)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
     AddSongToPlaylistService
   ],
   bootstrap: [AppComponent]

@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
-import {map} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -13,11 +12,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class NavbarComponent implements OnInit {
   @Output() loginAction = new EventEmitter<string>();
   @Output() logoutAction = new EventEmitter();
-  isCollapsed: boolean;
   @Input() isLoggedIn: boolean;
   @Input() username: string;
   id: number;
   message: string;
+  isCollapsed: boolean;
   loginForm: FormGroup;
   searchForm: FormGroup;
   loading = false;
@@ -31,13 +30,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.currentUser.subscribe(
-      user => {
-        this.username = user.username;
-      }, error => {
-        this.isLoggedIn = false;
-      }
-    );
+    // localStorage.clear();
     this.loginForm = this.fb.group({
       username: ['',  Validators.required],
       password: ['',  Validators.required]
@@ -46,14 +39,6 @@ export class NavbarComponent implements OnInit {
       searchText: ['',  Validators.required]
     });
     this.isCollapsed = true;
-    this.isLoggedIn = (this.authService.currentUserValue != null);
-    if (this.isLoggedIn) {
-      this.userService.getProfile().subscribe(user => {
-          this.username = user.username;
-          this.id = user.id;
-        }
-      );
-    }
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
@@ -68,10 +53,9 @@ export class NavbarComponent implements OnInit {
     this.loading = true;
     this.authService.login(this.loginForm.value).subscribe(
       user => {
-        this.username = user.username;
-        this.loginAction.emit(this.username);
+        localStorage.setItem('userToken', JSON.stringify(user));
+        this.loginAction.emit(user.username);
         this.router.navigate([this.returnUrl]);
-        console.log(this.loginForm);
       }, error => {
         this.message = 'Ten dang nhap hoac mat khau khong chinh xac';
         this.loading = false;

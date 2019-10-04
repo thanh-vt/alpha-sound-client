@@ -1,40 +1,56 @@
 import {Injectable, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {UserToken} from '../model/userToken';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpRequest} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import decode from 'jwt-decode';
+
+const jwtHelper = new JwtHelperService();
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private currentUserSubject: BehaviorSubject<UserToken>;
-  public currentUser: Observable<UserToken>;
-
-  constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken')));
-    this.currentUser = this.currentUserSubject.asObservable();
+  constructor(private http: HttpClient) { }
+  cachedRequests: Array<HttpRequest<any>> = [];
+  public getToken(): string {
+    // console.log(localStorage.getItem('userToken'));
+    if (localStorage.getItem('userToken') != null) {
+      return  JSON.parse(localStorage.getItem('userToken')).accessToken;
+    } else { return ''; }
+    // return localStorage.getItem('userToken');
   }
 
-  public get currentUserValue(): UserToken {
-    return this.currentUserSubject.value;
+  public isAuthenticated(): boolean {
+    // get the token
+    const token = this.getToken();
+    // return a boolean reflecting
+    // whether or not the token is expired
+    return this.tokenNotExpired(token);
   }
+
+  public tokenNotExpired(token) {
+    if (token) {
+      // var jwtHelper = new JwtHelperService();
+      return !jwtHelper.isTokenExpired(token);
+    } else {
+      return false;
+    }
+
+  }
+  public collectFailedRequest(request): void {
+    this.cachedRequests.push(request);
+  }
+
+  public retryFailedRequests(): void {}
 
   login(loginForm) {
-    return this.http.post<any>(`${environment.apiUrl}/login`, loginForm)
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('userToken', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        return user;
-      }));
+    return this.http.post<any>(`${environment.apiUrl}/login`, loginForm);
   }
 
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('userToken');
-    this.currentUserSubject.next(null);
   }
 }
