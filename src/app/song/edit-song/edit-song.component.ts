@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Song} from '../../model/song';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SongService} from '../../service/song.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 
 @Component({
   selector: 'app-edit-song',
@@ -10,7 +10,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./edit-song.component.scss']
 })
 export class EditSongComponent implements OnInit {
-  song: Song;
+  @Input()song: Song;
   songUpdateForm: FormGroup;
   private message: string;
 
@@ -22,6 +22,7 @@ export class EditSongComponent implements OnInit {
   }
 
   ngOnInit() {
+    const id = +this.route.snapshot.paramMap.get('id');
     this.songUpdateForm = this.fb.group({
       name: ['', Validators.required],
       artists: ['', Validators.required],
@@ -32,7 +33,6 @@ export class EditSongComponent implements OnInit {
       country: [''],
       theme: ['']
     });
-
   }
 
   onSubmit() {
