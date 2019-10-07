@@ -31,23 +31,7 @@ export class UserComponent implements OnInit {
   ];
 
   constructor(private router: Router, private authService: AuthService, private addSongToPlaylistService: AddSongToPlaylistService) {
-    // this.authService.currentUser.subscribe(x => this.currentUser = x);
-    this.addSongToPlaylistService.changeEmitter$.subscribe(data => {
-      this.msaapDisplayVolumeControls = !this.msaapDisplayVolumeControls;
-      if (this.numberOfTracks === 1) {
-        this.msaapPlaylist[0] = {
-          title: data.name,
-          link: data.url
-        };
-        this.numberOfTracks++;
-      } else {
-        this.msaapPlaylist.push({
-          title: data.name,
-          link: data.url
-        });
-        this.numberOfTracks = this.msaapPlaylist.length;
-      }
-    });
+
   }
 
   logIn(event) {
@@ -66,9 +50,26 @@ export class UserComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.isLoggedIn = true;
       this.username = JSON.parse(localStorage.getItem('userToken')).username;
+      this.addSongToPlaylistService.changeEmitter$.subscribe(data => {
+        this.msaapDisplayVolumeControls = !this.msaapDisplayVolumeControls;
+        if (this.numberOfTracks === 1) {
+          this.msaapPlaylist[0] = {
+            title: data.name,
+            link: data.url
+          };
+          this.numberOfTracks++;
+        } else {
+          this.msaapPlaylist.push({
+            title: data.name,
+            link: data.url
+          });
+          this.numberOfTracks = this.msaapPlaylist.length;
+        }
+      });
     } else {
       this.isLoggedIn = false;
     }
+    console.log(this.msaapPlaylist);
   }
 
 }

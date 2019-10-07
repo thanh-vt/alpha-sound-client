@@ -8,7 +8,7 @@ import {UploadSongComponent} from './upload-song/upload-song.component';
 import {EditSongComponent} from './edit-song/edit-song.component';
 import {DeleteSongComponent} from './delete-song/delete-song.component';
 import { SongComponent } from './song/song.component';
-import {MatDatepickerModule, MatInputModule} from '@angular/material';
+import {MatAutocompleteModule, MatDatepickerModule, MatInputModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -23,7 +23,8 @@ import {HttpClientModule} from '@angular/common/http';
     HttpClientModule,
     MatInputModule,
     MatDatepickerModule,
-    NgbModule
+    NgbModule,
+    MatAutocompleteModule
   ],
   exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent],
 })

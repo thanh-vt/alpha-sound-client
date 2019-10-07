@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {Artist} from '../../model/artist';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-upload-song',
@@ -9,30 +11,55 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
   styleUrls: ['./upload-song.component.scss']
 })
 export class UploadSongComponent implements OnInit {
-  formData = new FormData();
   isAudioFileChosen = false;
   audioFileName = '';
   progress = 0;
   message: string;
+  songUploadForm: FormGroup;
+  options: Artist[] = [];
+  filteredOptions: Observable<Artist[]>;
+  formData = new FormData();
+  file: any;
   constructor(
     private audioUploadService: AudioUploadService,
     private fb: FormBuilder
-  ) {
-    this.songUploadForm = this.fb.group({
-      name: ['', Validators.required],
-      artists: ['', Validators.required],
-      releaseDate: ['', Validators.required],
-      album: [null],
-      genres: ['', Validators.required],
-      tags: ['', Validators.required],
-      country: ['', Validators.required],
-      theme: ['', Validators.required]
-    });
-  }
-  songUploadForm: FormGroup;
-  file: File;
+  ) { }
 
   ngOnInit() {
+    this.songUploadForm = this.fb.group({
+      name: ['', Validators.required],
+      artists: this.fb.array([this.createArtist()]),
+      releaseDate: ['', Validators.required],
+      album: [null],
+      genres: [null],
+      tags: [null],
+      country: [null],
+      theme: [null]
+    });
+  }
+
+  get artists(): FormArray {
+    return this.songUploadForm.get('artists') as FormArray;
+  }
+
+  createArtist(): FormGroup {
+    return this.fb.group({
+      id: [null],
+      name: '',
+      birthDate: [null],
+      avatarUrl: [null],
+      biography: [null]
+    });
+  }
+
+  addArtist(): void {
+    // this.artists = this.songUploadForm.get('artists') as FormArray;
+    this.artists.push(this.createArtist());
+  }
+
+  removeArtist(index: number) {
+    // this.artists = this.songUploadForm.get('artists') as FormArray;
+    this.artists.removeAt(index);
   }
 
   selectFile(event) {
@@ -64,40 +91,29 @@ export class UploadSongComponent implements OnInit {
   }
 
   upload() {
-    this.audioUploadService.createSong(this.songUploadForm.value).subscribe(
-      result => {
-        this.message = 'Song created successfully!';
-        this.formData.append('songId', String(result));
-        this.formData.append('audio', this.file);
-        this.audioUploadService.uploadSong(this.formData).subscribe(
-          (event: HttpEvent<any>)  => {
-            this.displayProgress(event, this.progress);
-            // switch (event.type) {
-            //   case HttpEventType.Sent:
-            //     console.log('Request has been made!');
-            //     break;
-            //   case HttpEventType.ResponseHeader:
-            //     console.log('Response header has been received!');
-            //     break;
-            //   case HttpEventType.UploadProgress:
-            //     this.progress = Math.round(event.loaded / event.total * 100);
-            //     console.log(`Uploaded! ${this.progress}%`);
-            //     break;
-            //   case HttpEventType.Response:
-            //     console.log('User successfully created!', event.body);
-            //     setTimeout(() => {
-            //       this.progress = 0;
-            //     }, 1500);
-            // }
-            this.message = 'Song uploaded successfully!';
-          },
-          error1 => {
-            this.message = 'Failed to upload song. Cause: ' + error1.songsMessage;
-          }
-        );
+    this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
+    this.formData.append('audio', this.file);
+    this.audioUploadService.uploadSong(this.formData).subscribe(
+      (event: HttpEvent<any>) => {
+        this.message = 'Song uploaded successfully!';
+        this.displayProgress(event, this.progress);
       }, error => {
-        this.message = 'Failed to create song. Cause: ' + error.songsMessage;
+        this.message = 'Failed to upload song. Cause: ' + error.songsMessage;
       }
     );
+  }
+
+  loadArtistList() {
+
+  }
+
+  displayFn(artist?: Artist): string | undefined {
+    return artist ? artist.name : undefined;
+  }
+
+  private _filter(name: string): Artist[] {
+    const filterValue = name.toLowerCase();
+
+    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }

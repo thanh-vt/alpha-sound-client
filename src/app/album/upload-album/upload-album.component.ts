@@ -166,7 +166,7 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
           }
         );
         for (let i = 0; i < this.numbersOfSongForms; i++) {
-          this.audioUploadService.createSong(this.songsForm[i].value).subscribe(
+          this.audioUploadService.uploadSong(this.songsForm[i].value).subscribe(
             createSongResult => {
               this.songsMessage[i] = 'Song created successfully!';
               this.songsFormData[i].append('songId', String(createSongResult));
