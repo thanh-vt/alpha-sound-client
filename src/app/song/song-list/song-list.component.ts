@@ -13,7 +13,7 @@ export class SongListComponent implements OnInit {
   private pageSize: number;
   private totalItems: number;
   private message;
-  private songList: [Song[]];
+  private songList: Song[];
   constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaylistService) { }
 
   ngOnInit() {
@@ -22,7 +22,7 @@ export class SongListComponent implements OnInit {
         if (result != null) {
           this.songList = result.content;
           this.songList.forEach((value, index) => {
-            this.songList[index][0].isDisabled = false;
+            this.songList[index].isDisabled = false;
           });
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
