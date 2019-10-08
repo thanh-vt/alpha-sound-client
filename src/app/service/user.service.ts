@@ -14,7 +14,9 @@ import {Token} from '@angular/compiler';
 export class UserService {
   constructor(private http: HttpClient) {
   }
-
+  getUserList() {
+    return this.http.get<any>(`${environment.apiUrl}/list`);
+  }
   getProfile(): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/profile`);
   }

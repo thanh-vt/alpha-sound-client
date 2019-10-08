@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: '', component: UserComponent, children: [
       { path: 'home', component: HomeComponent, canActivate: []},
       { path: 'register', component: RegisterComponent},
-      {path: 'user/edit/:id', component: EditComponent},
+      { path: 'user/edit/:id', component: EditComponent},
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},
       { path: 'playlist', loadChildren: () => import('../playlist/playlist.module').then(mod => mod.PlaylistModule)}

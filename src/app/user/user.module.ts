@@ -8,6 +8,7 @@ import { UserComponent } from './user/user.component';
 import {SharedModule} from '../shared/shared.module';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import { EditComponent } from './edit/edit.component';
+import {SongModule} from '../song/song.module';
 
 
 
@@ -18,7 +19,8 @@ import { EditComponent } from './edit/edit.component';
     ReactiveFormsModule,
     UserRoutingModule,
     SharedModule,
-    NgxAudioPlayerModule
+    NgxAudioPlayerModule,
+    SongModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent]
 })

@@ -28,4 +28,7 @@ export class SongService {
   deleteSongPlaylist(id: number): Observable<HttpEvent<any>> {
     return this.http.delete<any>(`${environment.apiUrl}/song/delete?id=${id}`);
   }
+  getNewSong() {
+    return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
+  }
 }

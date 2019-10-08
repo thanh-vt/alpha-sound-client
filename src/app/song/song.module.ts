@@ -12,10 +12,11 @@ import {MatAutocompleteModule, MatDatepickerModule, MatInputModule} from '@angul
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { NewSongComponent } from './new-song/new-song.component';
 
 
 @NgModule({
-  declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent],
+  declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
   imports: [
     CommonModule,
     SongRoutingModule,
@@ -26,6 +27,6 @@ import {HttpClientModule} from '@angular/common/http';
     NgbModule,
     MatAutocompleteModule
   ],
-  exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent],
+  exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
 })
 export class SongModule { }
