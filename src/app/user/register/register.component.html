@@ -16,12 +16,12 @@
 
         <div class="form-group">
           <label for="password"><i class="fas fa-key"></i>Password</label>
-          <input id="password" type="password" formControlName="password" class="form-control"/>
+          <input id="password" type="password" placeholder="Anhduc123@!" formControlName="password" class="form-control"/>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">
             Must be filled!
           </div>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('pattern') && registerForm.get('password').touched">
-            Nhap cho dung vao` !!!
+            Mật khẩu của bạn không đúng kiểu ký tự. Vui lòng thử một mật khẩu khác. !!!
           </div>
         </div>
 
@@ -77,7 +77,7 @@
             Must be filled!
           </div>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('email').hasError('email') && registerForm.get('email').touched">
-            Nhap dung kieu!
+            Bạn vui lòng nhập đúng định dạng !
           </div>
         </div>
 

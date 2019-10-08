@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AddSongToPlaylistService} from './service/add-song-to-playlist.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
+import {UserListComponent} from './user-management/user-list/user-list.component';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: {
@@ -24,7 +25,7 @@ const JWT_Module_Options: JwtModuleOptions = {
 // @ts-ignore
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

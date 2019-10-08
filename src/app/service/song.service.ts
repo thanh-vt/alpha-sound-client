@@ -32,4 +32,7 @@ export class SongService {
     return this.http.put<any>
     (`${environment.apiUrl}/song/delete-playlist-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
   }
+  getNewSong() {
+    return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
+  }
 }
