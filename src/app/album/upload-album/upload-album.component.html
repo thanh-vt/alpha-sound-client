@@ -70,13 +70,13 @@
               <td class="col-sm-4"><label for="songName">Song Name</label></td>
               <td class="col-sm-8"><input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name"></td>
             </tr>
+<!--            <tr class="row">-->
+<!--              <td class="col-sm-4"><label for="artistName">Artist Name</label></td>-->
+<!--              <td class="col-sm-8"><input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists"></td>-->
+<!--            </tr>-->
             <tr class="row">
-              <td class="col-sm-4"><label for="artistName">Artist Name</label></td>
-              <td class="col-sm-8"><input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists"></td>
-            </tr>
-            <tr class="row">
-              <td></td>
-              <td>
+              <td class="col-sm-4">Artist Name</td>
+              <td class="col-sm-8">
                 <div formArrayName="artists" class="form-group"
                      *ngFor="let artist of getAlbumArtists().controls; let k = index;">
                   <div [formGroupName]="k">
