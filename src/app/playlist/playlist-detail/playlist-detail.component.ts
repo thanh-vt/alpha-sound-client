@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PlaylistService} from '../../service/playlist.service';
 import {SongService} from '../../service/song.service';
 import {ActivatedRoute} from '@angular/router';
-import {AddSongToPlaylistService} from '../../service/add-song-to-playlist.service';
+import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 import {Song} from '../../model/song';
 import {Playlist} from '../../model/playlist';
 import {Observable, of, Subscription} from 'rxjs';
@@ -24,7 +24,7 @@ export class PlaylistDetailComponent {
     private playlistService: PlaylistService,
     private songService: SongService,
     private route: ActivatedRoute,
-    private addSongToPlaylistService: AddSongToPlaylistService
+    private addSongToPlaylistService: AddSongToPlaying
   ) {
   }
 

@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AddSongToPlaylistService {
+export class AddSongToPlaying {
 
   private emitChangeSource = new Subject<any>();
 

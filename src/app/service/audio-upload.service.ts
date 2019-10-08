@@ -16,10 +16,8 @@ export class AudioUploadService {
     });
   }
 
-  uploadAlbum(formData): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/album/upload`, formData, {reportProgress: true,
-      observe: 'events'
-    });
+  uploadAlbum(formData): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/album/upload`, formData);
   }
 
 }

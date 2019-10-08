@@ -5,6 +5,8 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Artist} from '../../model/artist';
 import {ArtistService} from '../../service/artist.service';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
+import {Progress} from '../../model/progress';
 
 @Component({
   selector: 'app-upload-song',
@@ -17,7 +19,7 @@ export class UploadSongComponent implements OnInit {
 
   isAudioFileChosen = false;
   audioFileName = '';
-  progress = 0;
+  progress: Progress = {value: 0};
   message: string;
   songUploadForm: FormGroup;
 
@@ -25,6 +27,8 @@ export class UploadSongComponent implements OnInit {
   file: any;
   isLoading = false;
   filteredArtists: Artist[];
+
+  subscription: Subscription = new Subscription();
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -58,19 +62,6 @@ export class UploadSongComponent implements OnInit {
       country: [null],
       theme: [null]
     });
-
-    for (let i = 0; i < this.artists.length; i++) {
-      this.artists.controls[i].valueChanges
-        .pipe(
-          debounceTime(300),
-          tap(() => this.isLoading = true),
-          switchMap(value => this.artistService.searchArtist(value)
-            .pipe(
-              finalize(() => this.isLoading = false),
-            )
-          )
-        ).subscribe(artists => this.filteredArtists = artists);
-    }
   }
 
   selectFile(event) {
@@ -81,7 +72,7 @@ export class UploadSongComponent implements OnInit {
     }
   }
 
-  displayProgress(event, progress) {
+  displayProgress(event, progress: Progress) {
     switch (event.type) {
       case HttpEventType.Sent:
         console.log('Request has been made!');
@@ -90,21 +81,21 @@ export class UploadSongComponent implements OnInit {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress = Math.round(event.loaded / event.total * 100);
-        console.log(`Uploaded! ${progress}%`);
+        progress.value = Math.round(event.loaded / event.total * 100);
+        console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
         console.log('Song successfully created!', event.body);
         setTimeout(() => {
-          progress = 0;
+          progress.value = 0;
         }, 1500);
     }
   }
 
   upload() {
     // for (let i = 0; i < this.artists.length; i++) {
-    //   console.log(this.artists.value[i]);
-    //   console.log(typeof this.artists.value[i]);
+    //   console.suggestSongArtist(this.artists.value[i]);
+    //   console.suggestSongArtist(typeof this.artists.value[i]);
     //   const artistName = this.artists.value[i];
     //   if (typeof this.artists.value[i] === 'string') {
     //     this.artists.controls[i].setValue({
@@ -116,13 +107,13 @@ export class UploadSongComponent implements OnInit {
     //     });
     //   }
     // }
-    console.log(this.songUploadForm.value);
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
     this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
         this.message = 'Song uploaded successfully!';
         this.displayProgress(event, this.progress);
+        console.log(this.progress);
       }, error => {
         if (error.status === 400) {
           this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
@@ -131,5 +122,17 @@ export class UploadSongComponent implements OnInit {
         }
       }
     );
+  }
+  suggestArtist(i) {
+    this.artists.controls[i].valueChanges
+      .pipe(
+        debounceTime(300),
+        tap(() => this.isLoading = true),
+        switchMap(value => this.artistService.searchArtist(value)
+          .pipe(
+            finalize(() => this.isLoading = false),
+          )
+        )
+      ).subscribe(artists => this.filteredArtists = artists);
   }
 }

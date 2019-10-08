@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
   cachedRequests: Array<HttpRequest<any>> = [];
   public getToken(): string {
-    // console.log(localStorage.getItem('userToken'));
+    // console.suggestSongArtist(localStorage.getItem('userToken'));
     if (localStorage.getItem('userToken') != null) {
       return  JSON.parse(localStorage.getItem('userToken')).accessToken;
     } else { return ''; }
@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   logout() {
-    // remove user from local storage to log user out
+    // remove user from local storage to suggestSongArtist user out
     localStorage.removeItem('userToken');
   }
 }

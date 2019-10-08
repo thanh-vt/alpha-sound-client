@@ -14,10 +14,10 @@ export class ArtistService {
   searchArtist(name: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/artist/search?name=${name}`).pipe(
       tap((response: any) => {
-        response
-          .map(artist => artist.name);
-          // .filter(artist => artist.name.includes(filter.name));
-        // return response;
+        if (response) {
+          response
+            .map(artist => artist.name);
+        }
       })
     );
   }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SongService} from '../../service/song.service';
 import {Song} from '../../model/song';
-import {AddSongToPlaylistService} from '../../service/add-song-to-playlist.service';
+import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 
 @Component({
   selector: 'app-song-list',
@@ -14,7 +14,7 @@ export class SongListComponent implements OnInit {
   private totalItems: number;
   private message;
   private songList: Song[];
-  constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaylistService) { }
+  constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaying) { }
 
   ngOnInit() {
     this.songService.getSongList().subscribe(

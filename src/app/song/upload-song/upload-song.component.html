@@ -20,7 +20,7 @@
     <div [formGroupName]="i">
       <mat-form-field>
         <label for="artistName">{{ 'Artist ' + (i + 1) + ' name' }}
-          <input matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+          <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
         </label>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
@@ -32,10 +32,6 @@
           </ng-container>
         </mat-autocomplete>
       </mat-form-field>
-<!--      <input class="form-control" type="hidden" formControlName="id">-->
-<!--      <input class="form-control" type="hidden" formControlName="birthDate">-->
-<!--      <input class="form-control" type="hidden" formControlName="avatarUrl">-->
-<!--      <input class="form-control" type="hidden" formControlName="biography">-->
       <button type="button" class="btn btn-info" (click)="addArtist()">+</button>
       <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-</button>
     </div>
@@ -63,7 +59,7 @@
   </div>
   <span *ngIf="message">{{ message }}</span>
   <!-- Progress Bar -->
-  <div class="progress form-group" *ngIf="progress > 0">
+  <div class="progress form-group" *ngIf="progress.value > 0">
     <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
     </div>
   </div>

@@ -6,6 +6,7 @@ import {Artist} from '../../model/artist';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {ArtistService} from '../../service/artist.service';
 import {isBoolean} from 'util';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-upload-album',
@@ -36,8 +37,11 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
   isSongLoading: [[boolean]] = [[false]];
   isAudioFileChosen: boolean[] = [];
   audioFileNames: string[] = [];
-  filteredSongArtist: [Artist[]];
+  filteredSongArtist: Artist[] = [];
 
+  subscription: Subscription = new Subscription();
+
+  // tslint:disable-next-line:max-line-length
   constructor(private formBuilder: FormBuilder, private audioUploadService: AudioUploadService, private renderer: Renderer2, private artistService: ArtistService) { }
 
   static createArtist(): FormControl {
@@ -61,6 +65,7 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
   }
 
   addSongArtist(i: number) {
+    console.log(this.songsForm[i]);
     this.isSongLoading[i].push(false);
     this.getSongArtists(i).push(UploadAlbumComponent.createArtist());
   }
@@ -76,7 +81,7 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked() {
     if (this.card1 && this.card2) {
-      var height = `${this.card1.nativeElement.offsetHeight}px`;
+      let height = `${this.card1.nativeElement.offsetHeight}px`;
       this.renderer.setStyle(this.card2.nativeElement, 'height', height);
     }
   }
@@ -86,10 +91,10 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
       name: [''],
       artists: this.formBuilder.array([this.formBuilder.control(null)]),
       releaseDate: [''],
-      genres: [''],
-      tags: [''],
-      country: [''],
-      theme: ['']
+      genres: [null],
+      tags: [null],
+      country: [null],
+      theme: [null]
     });
     this.songsForm[0] = this.formBuilder.group({
       name: [''],
@@ -113,35 +118,6 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
     this.isAudioFileChosen[0] = false;
     this.audioFileNames[0] = '';
     this.numbersOfSongForms++;
-
-    for (let i = 0; i < this.getAlbumArtists().length; i++) {
-      this.getAlbumArtists().controls[i].valueChanges
-        .pipe(
-          debounceTime(300),
-          tap(() => this.isAlbumLoading = true),
-          switchMap(value => this.artistService.searchArtist(value)
-            .pipe(
-              finalize(() => this.isAlbumLoading = false),
-            )
-          )
-        ).subscribe(artists => this.filteredAlbumArtists = artists);
-    }
-
-    for (let j = 0; j < this.songsForm.length; j++) {
-      for (let k = 0; k < this.getSongArtists(j).length; k++) {
-        this.getAlbumArtists().controls[k].valueChanges
-          .pipe(
-            debounceTime(300),
-            tap(() => this.isSongLoading[j][k] = true),
-            switchMap(value => this.artistService.searchArtist(value)
-              .pipe(
-                finalize(() => this.isSongLoading[j][k] = false),
-              )
-            )
-          ).subscribe(artists => this.filteredSongArtist[j] = artists);
-      }
-    }
-
   }
 
   selectImage(event) {
@@ -168,12 +144,10 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
       this.songsProgress.splice(this.numbersOfSongForms, 1, 0);
       this.isAudioFileChosen.push(false);
       this.audioFileNames.push('');
+      this.isSongLoading.push([false]);
       this.numbersOfSongForms++;
     }
-    console.log(this.songsFormData);
-    console.log(this.audioFiles);
-    console.log(this.isAudioFileChosen);
-    console.log(this.audioFileNames);
+
   }
 
   selectAudio(event, i) {
@@ -181,8 +155,6 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
       this.audioFiles.splice(i, 1, event.target.files[0]);
       this.isAudioFileChosen.splice(i, 1, true);
       this.audioFileNames.splice(i, 1, event.target.files[0].name.substr(0, 20));
-      console.log(this.isAudioFileChosen);
-      console.log(this.audioFileNames);
     }
   }
 
@@ -196,10 +168,6 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
       this.isAudioFileChosen.splice(i, 1);
       this.audioFileNames.splice(i, 1);
       this.numbersOfSongForms--;
-      console.log(this.songsFormData);
-      console.log(this.audioFiles);
-      console.log(this.isAudioFileChosen);
-      console.log(this.audioFileNames);
     }
   }
 
@@ -227,13 +195,12 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
     this.albumFormData.append('album', new Blob([JSON.stringify(this.albumForm.value)], {type: 'application/json'}));
     this.albumFormData.append('cover', this.imageFile);
     this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
-      (createAlbumEvent: HttpEvent<any>) => {
-        this.displayProgress(createAlbumEvent, this.albumProgress);
+      createAlbumResult => {
         this.albumMessage = 'Album created successfully!';
         for (let i = 0; i < this.numbersOfSongForms; i++) {
           this.songsFormData[i].append('song', new Blob([JSON.stringify(this.songsForm[i].value)], {type: 'application/json'}));
           this.songsFormData[i].append('audio', this.audioFiles[i]);
-          this.songsFormData[i].append('albumId', String(createAlbumEvent));
+          this.songsFormData[i].append('albumId', String(createAlbumResult));
           this.audioUploadService.uploadSong(this.songsFormData[i]).subscribe(
             (uploadSongEvent: HttpEvent<any>) => {
               this.displayProgress(uploadSongEvent, this.songsProgress[i]);
@@ -247,6 +214,36 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
         this.albumMessage = 'Failed to create album! Cause: ' + createAlbumError.message;
       }
     );
+  }
+
+  suggestAlbumArtist(i) {
+    this.subscription.unsubscribe();
+    this.subscription = this.getAlbumArtists().controls[i].valueChanges
+      .pipe(
+        debounceTime(300),
+        tap(() => this.isAlbumLoading = true),
+        switchMap(value => this.artistService.searchArtist(value)
+          .pipe(
+            finalize(() => this.isAlbumLoading = false),
+          )
+        )
+      ).subscribe(artists => this.filteredAlbumArtists = artists);
+  }
+
+  suggestSongArtist(j, k) {
+    this.subscription.unsubscribe();
+    this.getSongArtists(j).controls[k].valueChanges
+      .pipe(
+        debounceTime(300),
+        tap(() => {
+          this.isSongLoading[j][k] = true;
+        }),
+        switchMap(value => this.artistService.searchArtist(value)
+          .pipe(
+            finalize(() => this.isSongLoading[j][k] = false),
+          )
+        )
+      ).subscribe(artists => this.filteredSongArtist[j] = artists);
   }
 
 }

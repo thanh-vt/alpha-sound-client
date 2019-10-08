@@ -3,7 +3,7 @@ import {UserToken} from '../../model/userToken';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
-import {AddSongToPlaylistService} from '../../service/add-song-to-playlist.service';
+import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 
 @Component({
   selector: 'app-user',
@@ -30,7 +30,7 @@ export class UserComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router, private authService: AuthService, private addSongToPlaylistService: AddSongToPlaylistService) {
+  constructor(private router: Router, private authService: AuthService, private addSongToPlaying: AddSongToPlaying) {
 
   }
 
@@ -50,8 +50,13 @@ export class UserComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.isLoggedIn = true;
       this.username = JSON.parse(localStorage.getItem('userToken')).username;
-      this.addSongToPlaylistService.changeEmitter$.subscribe(data => {
+      this.addSongToPlaying.changeEmitter$.subscribe(data => {
         this.msaapDisplayVolumeControls = !this.msaapDisplayVolumeControls;
+        const reEnableVolumeControl = setTimeout(() => {
+          this.msaapDisplayVolumeControls = true;
+          console.log(this.msaapPlaylist);
+          clearTimeout(reEnableVolumeControl);
+        }, 0);
         if (this.numberOfTracks === 1) {
           this.msaapPlaylist[0] = {
             title: data.name,

@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AddSongToPlaylistService } from './add-song-to-playlist.service';
+import { AddSongToPlaying } from './add-song-to-playling.service';
 
-describe('AddSongToPlaylistService', () => {
+describe('AddSongToPlaying', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AddSongToPlaylistService = TestBed.get(AddSongToPlaylistService);
+    const service: AddSongToPlaying = TestBed.get(AddSongToPlaying);
     expect(service).toBeTruthy();
   });
 });

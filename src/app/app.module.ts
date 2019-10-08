@@ -12,7 +12,7 @@ import {ErrorInterceptor} from './helper/error.interceptor';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
-import {AddSongToPlaylistService} from './service/add-song-to-playlist.service';
+import {AddSongToPlaying} from './service/add-song-to-playling.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 import {UserListComponent} from './user-management/user-list/user-list.component';
 
@@ -45,7 +45,7 @@ const JWT_Module_Options: JwtModuleOptions = {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    AddSongToPlaylistService
+    AddSongToPlaying
   ],
   bootstrap: [AppComponent]
 })
