@@ -10,6 +10,7 @@ import { EditAlbumComponent } from './edit-album/edit-album.component';
 import { DeleteAlbumComponent } from './delete-album/delete-album.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule} from '@angular/material';
 
 
 @NgModule({
@@ -18,7 +19,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     AlbumRoutingModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AlbumModule { }

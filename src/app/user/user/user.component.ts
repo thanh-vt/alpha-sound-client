@@ -69,7 +69,6 @@ export class UserComponent implements OnInit {
     } else {
       this.isLoggedIn = false;
     }
-    console.log(this.msaapPlaylist);
   }
 
 }

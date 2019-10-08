@@ -10,26 +10,29 @@
           <label class="col-sm-4" for="albumArtists">Artists</label>
           <input type="text" class="form-control col-sm-8" id="albumArtists" placeholder="Multiple artists separated by commas" formControlName="artists">
         </div>
+        <div formArrayName="artists" class="form-group"
+             *ngFor="let artist of getAlbumArtists().controls; let i = index;">
+          <div [formGroupName]="i">
+            <mat-form-field>
+              <label for="albumArtistName">{{ 'Artist ' + (i + 1) + ' name' }}
+                <input matInput [matAutocomplete]="autoAlbum" id="albumArtistName" class="form-control" type="text" [formControl]="getAlbumArtists().controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+              </label>
+              <mat-autocomplete #autoAlbum="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngIf="isAlbumLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+                <ng-container *ngIf="!isAlbumLoading">
+                  <mat-option *ngFor="let artist of filteredAlbumArtists" [value]="artist">
+                    <span>{{ artist.name }}</span>
+                    <small> | ID: {{artist.id}}</small>
+                  </mat-option>
+                </ng-container>
+              </mat-autocomplete>
+            </mat-form-field>
+            <button type="button" class="btn btn-info" (click)="addAlbumArtist()">+</button>
+            <button type="button" class="btn btn-danger" (click)="removeAlbumArtist(i)" *ngIf="getAlbumArtists().controls.length > 1">-</button>
+          </div>
         <div class="form-group col-sm-3">
           <label class="col-sm-4" for="albumReleaseDate">Release Date</label>
           <input type="date" class="form-control col-sm-8" id="albumReleaseDate" placeholder="Release Date" formControlName="releaseDate">
-        </div>
-        <div class="form-group col-sm-3">
-          <label class="col-sm-4" for="albumGenres">Genres</label>
-          <input type="text" class="form-control col-sm-8" id="albumGenres" placeholder="Multiple genres separated by commas" formControlName="genres">
-        </div>
-
-        <div class="form-group col-sm-3">
-          <label class="col-sm-4" for="albumTags">Tags</label>
-          <input type="text" class="form-control col-sm-8" id="albumTags" placeholder="Multiple tags separated by commas" formControlName="tags">
-        </div>
-        <div class="form-group col-sm-3">
-          <label class="col-sm-4" for="albumCountry">Country</label>
-          <input type="text" class="form-control col-sm-8" id="albumCountry" placeholder="Specify a country" formControlName="country">
-        </div>
-        <div class="form-group col-sm-3">
-          <label class="col-sm-4" for="albumTheme">Theme</label>
-          <input type="text" class="form-control col-sm-8" id="albumTheme" placeholder="Specify a theme" formControlName="theme">
         </div>
         <div class="form-group col-sm-3">
           <label class="col-sm-4" for="albumCover">Cover</label>
@@ -56,12 +59,12 @@
 
 </div>
 <div class="row" style="margin-bottom: 10rem;">
-  <div class="col-sm-4" *ngFor="let form of songsForm, index as i">
+  <div class="col-sm-4" *ngFor="let form of songsForm, index as j">
     <div class="card">
       <div class="card-body" #card1>
-        <button class="btn btn-info float-sm-right" style="margin-bottom: 1rem" (click)="removeForm(i)"><i class="fas fa-times-circle"></i></button>
-        <span>index = {{ i }}</span>
-        <form [formGroup]="form">
+        <button class="btn btn-info float-sm-right" style="margin-bottom: 1rem" (click)="removeForm(j)"><i class="fas fa-times-circle"></i></button>
+        <span>index = {{ j }}</span>
+        <form [formGroup]="songsForm[j]">
           <table class="table table-striped">
             <tr class="row">
               <td class="col-sm-4"><label for="songName">Song Name</label></td>
@@ -72,41 +75,50 @@
               <td class="col-sm-8"><input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists"></td>
             </tr>
             <tr class="row">
+              <td></td>
+              <td>
+                <div formArrayName="artists" class="form-group"
+                     *ngFor="let artist of getAlbumArtists().controls; let k = index;">
+                  <div [formGroupName]="k">
+                    <mat-form-field>
+                      <label for="songArtistName">{{ 'Artist ' + (k + 1) + ' name' }}
+                        <input matInput [matAutocomplete]="autoAlbum" id="songArtistName" class="form-control" type="text" [formControl]="getSongArtists(j).controls[k]" [placeholder]="'Artist ' + (k + 1) + ' name'">
+                      </label>
+                      <mat-autocomplete #autoAlbum="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngIf="isAlbumLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+                        <ng-container *ngIf="!isAlbumLoading">
+                          <mat-option *ngFor="let artist of filteredAlbumArtists" [value]="artist">
+                            <span>{{ artist.name }}</span>
+                            <small> | ID: {{artist.id}}</small>
+                          </mat-option>
+                        </ng-container>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <button type="button" class="btn btn-info" (click)="addSongArtist(k)">+</button>
+                    <button type="button" class="btn btn-danger" (click)="removeAlbumArtist(k)" *ngIf="getAlbumArtists().controls.length > 1">-</button>
+                  </div>
+              </td>
+            </tr>
+            <tr class="row">
               <td class="col-sm-4"><label for="releaseDate">Release Date</label></td>
               <td class="col-sm-8"><input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate"></td>
-            </tr>
-            <tr class="row">
-              <td class="col-sm-4"><label for="genres">Genres</label></td>
-              <td class="col-sm-8"><input type="text" class="form-control" id="genres" placeholder="Multiple genres separated by commas" formControlName="genres"></td>
-            </tr>
-            <tr class="row">
-              <td class="col-sm-4"><label for="tags">Tags</label></td>
-              <td class="col-sm-8"><input type="text" class="form-control float-sm-right" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags"></td>
-            </tr>
-            <tr class="row">
-              <td class="col-sm-4"><label for="country">Country</label></td>
-              <td class="col-sm-8"><input type="text" class="form-control" id="country" placeholder="Specify a country" formControlName="country"></td>
-            </tr>
-            <tr class="row">
-              <td class="col-sm-4"><label for="theme">Theme</label></td>
-              <td class="col-sm-8"><input type="text" class="form-control" id="theme" placeholder="Specify a theme" formControlName="theme"></td>
             </tr>
             <tr class="row">
               <td class="col-sm-4"><label for="audio">Audio File</label></td>
               <td class="col-sm-8">
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="audio" (change)="selectAudio($event, i)">
-                  <label class="custom-file-label" *ngIf=!isAudioFileChosen[i]>Choose file</label>
-                  <label class="custom-file-label" *ngIf=isAudioFileChosen[i]>{{ audioFileNames[i] }}</label>
+                  <input type="file" class="custom-file-input" id="audio" (change)="selectAudio($event, j)">
+                  <label class="custom-file-label" *ngIf=!isAudioFileChosen[j]>Choose file</label>
+                  <label class="custom-file-label" *ngIf=isAudioFileChosen[j]>{{ audioFileNames[j] }}</label>
                 </div>
               </td>
             </tr>
           </table>
           <input type="hidden" formControlName="album">
-          <span *ngIf="songsMessage[i]">{{ songsMessage[i] }}</span>
+          <span *ngIf="songsMessage[j]">{{ songsMessage[j] }}</span>
           <!-- Progress Bar -->
-          <div class="progress form-group" *ngIf="songsProgress[i] > 0">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="songsProgress [i]">
+          <div class="progress form-group" *ngIf="songsProgress[j] > 0">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="songsProgress[j]">
             </div>
           </div>
         </form>

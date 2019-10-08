@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Artist} from '../../model/artist';
-import {Observable} from 'rxjs';
+import {ArtistService} from '../../service/artist.service';
+import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-upload-song',
@@ -11,24 +12,45 @@ import {Observable} from 'rxjs';
   styleUrls: ['./upload-song.component.scss']
 })
 export class UploadSongComponent implements OnInit {
+
+  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) { }
+
   isAudioFileChosen = false;
   audioFileName = '';
   progress = 0;
   message: string;
   songUploadForm: FormGroup;
-  options: Artist[] = [];
-  filteredOptions: Observable<Artist[]>;
+
   formData = new FormData();
   file: any;
-  constructor(
-    private audioUploadService: AudioUploadService,
-    private fb: FormBuilder
-  ) { }
+  isLoading = false;
+  filteredArtists: Artist[];
+
+  static createArtist(): FormControl {
+    return new FormControl();
+  }
+
+  get artists(): FormArray {
+    return this.songUploadForm.get('artists') as FormArray;
+  }
+
+  addArtist(): void {
+    this.artists.push(UploadSongComponent.createArtist());
+    console.log(this.songUploadForm.value);
+  }
+
+  removeArtist(index: number) {
+    this.artists.removeAt(index);
+  }
+
+  displayFn(artist: Artist) {
+    if (artist) { return artist.name; }
+  }
 
   ngOnInit() {
     this.songUploadForm = this.fb.group({
       name: ['', Validators.required],
-      artists: this.fb.array([this.createArtist()]),
+      artists: this.fb.array([UploadSongComponent.createArtist()]),
       releaseDate: ['', Validators.required],
       album: [null],
       genres: [null],
@@ -36,30 +58,19 @@ export class UploadSongComponent implements OnInit {
       country: [null],
       theme: [null]
     });
-  }
 
-  get artists(): FormArray {
-    return this.songUploadForm.get('artists') as FormArray;
-  }
-
-  createArtist(): FormGroup {
-    return this.fb.group({
-      id: [null],
-      name: '',
-      birthDate: [null],
-      avatarUrl: [null],
-      biography: [null]
-    });
-  }
-
-  addArtist(): void {
-    // this.artists = this.songUploadForm.get('artists') as FormArray;
-    this.artists.push(this.createArtist());
-  }
-
-  removeArtist(index: number) {
-    // this.artists = this.songUploadForm.get('artists') as FormArray;
-    this.artists.removeAt(index);
+    for (let i = 0; i < this.artists.length; i++) {
+      this.artists.controls[i].valueChanges
+        .pipe(
+          debounceTime(300),
+          tap(() => this.isLoading = true),
+          switchMap(value => this.artistService.searchArtist(value)
+            .pipe(
+              finalize(() => this.isLoading = false),
+            )
+          )
+        ).subscribe(artists => this.filteredArtists = artists);
+    }
   }
 
   selectFile(event) {
@@ -83,7 +94,7 @@ export class UploadSongComponent implements OnInit {
         console.log(`Uploaded! ${progress}%`);
         break;
       case HttpEventType.Response:
-        console.log('User successfully created!', event.body);
+        console.log('Song successfully created!', event.body);
         setTimeout(() => {
           progress = 0;
         }, 1500);
@@ -91,6 +102,21 @@ export class UploadSongComponent implements OnInit {
   }
 
   upload() {
+    // for (let i = 0; i < this.artists.length; i++) {
+    //   console.log(this.artists.value[i]);
+    //   console.log(typeof this.artists.value[i]);
+    //   const artistName = this.artists.value[i];
+    //   if (typeof this.artists.value[i] === 'string') {
+    //     this.artists.controls[i].setValue({
+    //       id: null,
+    //       name: artistName,
+    //       birthDate: null,
+    //       avatarUrl: null,
+    //       biography: null
+    //     });
+    //   }
+    // }
+    console.log(this.songUploadForm.value);
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
     this.audioUploadService.uploadSong(this.formData).subscribe(
@@ -98,22 +124,12 @@ export class UploadSongComponent implements OnInit {
         this.message = 'Song uploaded successfully!';
         this.displayProgress(event, this.progress);
       }, error => {
-        this.message = 'Failed to upload song. Cause: ' + error.songsMessage;
+        if (error.status === 400) {
+          this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+        } else {
+          this.message = 'Failed to upload song. Cause: ' + error.message ;
+        }
       }
     );
-  }
-
-  loadArtistList() {
-
-  }
-
-  displayFn(artist?: Artist): string | undefined {
-    return artist ? artist.name : undefined;
-  }
-
-  private _filter(name: string): Artist[] {
-    const filterValue = name.toLowerCase();
-
-    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }

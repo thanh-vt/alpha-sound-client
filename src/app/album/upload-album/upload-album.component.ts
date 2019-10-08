@@ -1,7 +1,11 @@
 import {AfterViewChecked, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {Artist} from '../../model/artist';
+import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
+import {ArtistService} from '../../service/artist.service';
+import {isBoolean} from 'util';
 
 @Component({
   selector: 'app-upload-album',
@@ -19,18 +23,56 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
   albumFormData = new FormData();
   albumProgress = 0;
   imageFile: any;
+  isAlbumLoading: boolean;
   isImageFileChosen: boolean;
   imageFileName: string;
+  filteredAlbumArtists: Artist[];
 
   songsForm: FormGroup[] = new Array(1);
   songsFormData: FormData[] = [];
   songsMessage: string[] = [];
   songsProgress: number[] = [];
   audioFiles: any[] = [];
+  isSongLoading: [[boolean]] = [[false]];
   isAudioFileChosen: boolean[] = [];
   audioFileNames: string[] = [];
+  filteredSongArtist: [Artist[]];
 
-  constructor(private formBuilder: FormBuilder, private audioUploadService: AudioUploadService, private renderer: Renderer2) { }
+  constructor(private formBuilder: FormBuilder, private audioUploadService: AudioUploadService, private renderer: Renderer2, private artistService: ArtistService) { }
+
+  static createArtist(): FormControl {
+    return new FormControl();
+  }
+
+  getAlbumArtists(): FormArray {
+    return this.albumForm.get('artists') as FormArray;
+  }
+
+  getSongArtists(i): FormArray {
+    return this.songsForm[i].get('artists') as FormArray;
+  }
+
+  addAlbumArtist(): void {
+    this.getAlbumArtists().push(UploadAlbumComponent.createArtist());
+  }
+
+  removeAlbumArtist(index: number): void {
+    this.getAlbumArtists().removeAt(index);
+  }
+
+  addSongArtist(i: number) {
+    this.isSongLoading[i].push(false);
+    this.getSongArtists(i).push(UploadAlbumComponent.createArtist());
+  }
+
+  removeSongArtist(i: number, index: number): void {
+    this.isSongLoading[i].splice(index, 1);
+    this.getSongArtists(i).removeAt(index);
+  }
+
+  displayFn(artist: Artist) {
+    if (artist) { return artist.name; }
+  }
 
   ngAfterViewChecked() {
     if (this.card1 && this.card2) {
@@ -42,7 +84,7 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.albumForm = this.formBuilder.group({
       name: [''],
-      artists: [''],
+      artists: this.formBuilder.array([this.formBuilder.control(null)]),
       releaseDate: [''],
       genres: [''],
       tags: [''],
@@ -51,14 +93,15 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
     });
     this.songsForm[0] = this.formBuilder.group({
       name: [''],
-      artists: [''],
+      artists: this.formBuilder.array([this.formBuilder.control(null)]),
       releaseDate: [''],
       album: [null],
-      genres: [''],
-      tags: [''],
-      country: [''],
-      theme: ['']
+      genres: [null],
+      tags: [null],
+      country: [null],
+      theme: [null]
     });
+
 
     this.isImageFileChosen = false;
     this.imageFileName = '';
@@ -70,6 +113,35 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
     this.isAudioFileChosen[0] = false;
     this.audioFileNames[0] = '';
     this.numbersOfSongForms++;
+
+    for (let i = 0; i < this.getAlbumArtists().length; i++) {
+      this.getAlbumArtists().controls[i].valueChanges
+        .pipe(
+          debounceTime(300),
+          tap(() => this.isAlbumLoading = true),
+          switchMap(value => this.artistService.searchArtist(value)
+            .pipe(
+              finalize(() => this.isAlbumLoading = false),
+            )
+          )
+        ).subscribe(artists => this.filteredAlbumArtists = artists);
+    }
+
+    for (let j = 0; j < this.songsForm.length; j++) {
+      for (let k = 0; k < this.getSongArtists(j).length; k++) {
+        this.getAlbumArtists().controls[k].valueChanges
+          .pipe(
+            debounceTime(300),
+            tap(() => this.isSongLoading[j][k] = true),
+            switchMap(value => this.artistService.searchArtist(value)
+              .pipe(
+                finalize(() => this.isSongLoading[j][k] = false),
+              )
+            )
+          ).subscribe(artists => this.filteredSongArtist[j] = artists);
+      }
+    }
+
   }
 
   selectImage(event) {
@@ -82,13 +154,13 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
     if (this.numbersOfSongForms < 20) {
       this.songsForm.splice(this.numbersOfSongForms, 1, new FormGroup({
         name: new FormControl(''),
-        artists: new FormControl(''),
+        artists: this.formBuilder.array([this.formBuilder.control(null)]),
         releaseDate: new FormControl(''),
         album: new FormControl(''),
-        genres: new FormControl(''),
-        tags: new FormControl(''),
-        country: new FormControl(''),
-        theme: new FormControl('')
+        genres: new FormControl(null),
+        tags: new FormControl(null),
+        country: new FormControl(null),
+        theme: new FormControl(null)
       }));
       this.songsFormData.splice(this.numbersOfSongForms, 1, new FormData());
       this.audioFiles.splice(this.numbersOfSongForms, 1, null);
@@ -152,39 +224,27 @@ export class UploadAlbumComponent implements OnInit, AfterViewChecked {
   }
 
   onSubmit() {
-    this.audioUploadService.createAlbum(this.albumForm.value).subscribe(
-      createAlbumResult => {
+    this.albumFormData.append('album', new Blob([JSON.stringify(this.albumForm.value)], {type: 'application/json'}));
+    this.albumFormData.append('cover', this.imageFile);
+    this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
+      (createAlbumEvent: HttpEvent<any>) => {
+        this.displayProgress(createAlbumEvent, this.albumProgress);
         this.albumMessage = 'Album created successfully!';
-        this.albumFormData.append('albumId', String(createAlbumResult));
-        this.albumFormData.append('cover', this.imageFile);
-        this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
-          (uploadAlbumCoverEvent: HttpEvent<any>) => {
-            this.displayProgress(uploadAlbumCoverEvent, this.albumProgress);
-            this.albumMessage = 'Album\'s cover uploaded successfully!';
-          }, uploadAlbumCoverError => {
-            this.albumMessage = 'Failed to upload album\'s cover! Cause: ' + uploadAlbumCoverError.message;
-          }
-        );
         for (let i = 0; i < this.numbersOfSongForms; i++) {
-          this.audioUploadService.uploadSong(this.songsForm[i].value).subscribe(
-            createSongResult => {
-              this.songsMessage[i] = 'Song created successfully!';
-              this.songsFormData[i].append('songId', String(createSongResult));
-              this.songsFormData[i].append('albumId', String(createAlbumResult));
-              this.songsFormData[i].append('audio', this.audioFiles[i]);
-              this.audioUploadService.uploadSong(this.songsFormData[i]).subscribe(
-                (uploadSongEvent: HttpEvent<any>) => {
-                  this.displayProgress(uploadSongEvent, this.songsProgress[i]);
-                  this.songsMessage[i] = 'Song uploaded successfully!';
-                }, uploadSongError => {
-                  this.songsMessage[i] = 'Failed to upload song! Cause: ' + uploadSongError.message;
-                }
-              );
-            }, uploadSongResult => {
-              this.songsMessage[i] = 'Failed to create song! Cause: ' + uploadSongResult.message;
+          this.songsFormData[i].append('song', new Blob([JSON.stringify(this.songsForm[i].value)], {type: 'application/json'}));
+          this.songsFormData[i].append('audio', this.audioFiles[i]);
+          this.songsFormData[i].append('albumId', String(createAlbumEvent));
+          this.audioUploadService.uploadSong(this.songsFormData[i]).subscribe(
+            (uploadSongEvent: HttpEvent<any>) => {
+              this.displayProgress(uploadSongEvent, this.songsProgress[i]);
+              this.songsMessage[i] = 'Song uploaded successfully!';
+            }, uploadSongError => {
+              this.songsMessage[i] = 'Failed to upload song! Cause: ' + uploadSongError.message;
             }
           );
         }
+      }, createAlbumError => {
+        this.albumMessage = 'Failed to create album! Cause: ' + createAlbumError.message;
       }
     );
   }

@@ -1,7 +1,7 @@
 export interface Artist {
   id: number;
   name: string;
-  birthDate: Date;
+  birthDate: number;
   avatarUrl: string;
   biography: string;
 }
