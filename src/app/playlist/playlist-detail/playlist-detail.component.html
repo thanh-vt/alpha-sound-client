@@ -15,7 +15,7 @@
     <td>
       <button class="btn btn-primary"><i
         class="fas fa-play-circle"></i></button>
-      <app-delete-playlist-song></app-delete-playlist-song>
+      <app-delete-playlist-song [songId]="song.id" [name]="song.name" (deleteSongPlaylist)="deletePlaylistSong()"></app-delete-playlist-song>
     </td>
   </tr>
   </tbody>
