@@ -9,18 +9,23 @@ import {SharedModule} from '../shared/shared.module';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import { EditComponent } from './edit/edit.component';
 import {SongModule} from '../song/song.module';
+import {UserListComponent} from '../user-management/user-list/user-list.component';
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import { SearchComponent } from './search/search.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent, NavBarComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     UserRoutingModule,
     SharedModule,
     NgxAudioPlayerModule,
-    SongModule
+    SongModule,
+    NgbPaginationModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent]
 })
