@@ -87,7 +87,7 @@
                       <mat-autocomplete #autoAlbum="matAutocomplete" [displayWith]="displayFn">
                         <mat-option *ngIf="isAlbumLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
                         <ng-container *ngIf="!isAlbumLoading">
-                          <mat-option *ngFor="let artist of filteredAlbumArtists" [value]="artist">
+                          <mat-option *ngFor="let artist of filteredSongArtist[j]" [value]="artist">
                             <span>{{ artist.name }}</span>
                             <small> | ID: {{artist.id}}</small>
                           </mat-option>
