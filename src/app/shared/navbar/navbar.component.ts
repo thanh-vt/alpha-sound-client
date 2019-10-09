@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit {
   onSearch() {
     const name = this.searchForm.get('searchText').value;
     // tslint:disable-next-line:only-arrow-functions
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
     this.router.navigate(['/', 'search', name]);

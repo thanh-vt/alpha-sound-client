@@ -4,7 +4,7 @@
     <div class="card-body">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="username"><i class="fas fa-users"></i>Username</label>
+          <label for="username"><i class="fas fa-users"></i>  Username</label>
           <input id="username" type="text" formControlName="username" class="form-control"/>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('username').hasError('required') && registerForm.get('username').touched">
             Must be filled!
@@ -15,18 +15,18 @@
         </div>
 
         <div class="form-group">
-          <label for="password"><i class="fas fa-key"></i>Password</label>
-          <input id="password" type="password" placeholder="Anhduc123@!" formControlName="password" class="form-control"/>
+          <label for="password"><i class="fas fa-key"></i>  Password</label>
+          <input id="password" type="password"  formControlName="password" class="form-control"/>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">
             Must be filled!
           </div>
-          <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('pattern') && registerForm.get('password').touched">
-            Mật khẩu của bạn không đúng kiểu ký tự. Vui lòng thử một mật khẩu khác. !!!
+          <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">
+            Mật khẩu của bạn tối thiểu 6 ký tự !!!
           </div>
         </div>
 
         <div class="form-group">
-          <label for="firstName"><i class="fas fa-user-tie"></i>First Name</label>
+          <label for="firstName"><i class="fas fa-user-tie"></i>  First Name</label>
           <input id="firstName" type="text" formControlName="firstName" class="form-control"/>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('firstName').hasError('required') && registerForm.get('firstName').touched">
             Must be filled!
@@ -40,7 +40,7 @@
         </div>
 
         <div class="form-group">
-          <label for="lastName"><i class="fas fa-user-tie"></i>Last Name</label>
+          <label for="lastName"><i class="fas fa-user-tie"></i>  Last Name</label>
           <input id="lastName" type="text" formControlName="lastName" class="form-control"/>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('lastName').hasError('required') && registerForm.get('lastName').touched">
             Must be filled!
@@ -61,17 +61,17 @@
 <!--        </div>-->
 
         <div class="form-group">
-          <label for="birthDate"><i class="fas fa-table"></i>BirthDate</label>
+          <label for="birthDate"><i class="fas fa-table"></i>  BirthDate</label>
           <input id="birthDate" type="date" formControlName="birthDate" class="form-control"/>
         </div>
 
         <div class="form-group">
-          <label for="phoneNumber"><i class="fas fa-phone"></i>PhoneNumber</label>
+          <label for="phoneNumber"><i class="fas fa-phone"></i>  PhoneNumber</label>
           <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control"/>
         </div>
 
         <div class="form-group">
-          <label for="email"><i class="fas fa-envelope-square">Email</i></label>
+          <label for="email"><i class="fas fa-envelope-square">  Email</i></label>
           <input id="email" type="text" formControlName="email" class="form-control"/>
           <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched">
             Must be filled!
