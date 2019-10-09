@@ -31,7 +31,7 @@ export class UserService {
     );
   }
 
-  updateUser(formGroup: FormGroup, id: number): Observable<HttpEvent<any>> {
+  updateUser(formGroup, id: number): Observable<HttpEvent<any>> {
     return this.http.put<any>(`${environment.apiUrl}/profile?id=${id}`, formGroup);
   }
 

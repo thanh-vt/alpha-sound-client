@@ -11,7 +11,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./add-to-playlist.component.scss']
 })
 export class AddToPlaylistComponent implements OnInit {
-  private message;
+  message: string;
   private subscription: Subscription;
   private playlistList: Playlist[];
   private songId: number;
@@ -55,7 +55,13 @@ export class AddToPlaylistComponent implements OnInit {
   }
 
   addSongToPlayList(songId: number, playlistId: number) {
-    this.songService.addSongToPlaylist(songId, playlistId).subscribe();
+    this.songService.addSongToPlaylist(songId, playlistId).subscribe(
+      next => {
+        this.message = 'Add song to playlist successfully!';
+      }, error => {
+        this.message = 'Failed add song to playlist!';
+      }
+    );
   }
 
 }

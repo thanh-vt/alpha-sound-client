@@ -119,6 +119,7 @@ export class UploadSongComponent implements OnInit {
     console.log(this.songUploadForm.value);
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
+    console.log(this.formData);
     this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
         this.message = 'Song uploaded successfully!';

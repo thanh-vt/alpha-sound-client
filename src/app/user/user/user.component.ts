@@ -15,7 +15,7 @@ export class UserComponent implements OnInit {
   currentUser: UserToken;
   isLoggedIn: boolean;
   numberOfTracks = 1;
-  userId: number;
+
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
   @Input() msaapPageSizeOptions = [6];
