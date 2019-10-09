@@ -13,6 +13,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { NewSongComponent } from './new-song/new-song.component';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { NewSongComponent } from './new-song/new-song.component';
     MatDatepickerModule,
     NgbModule,
     MatAutocompleteModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SharedModule
   ],
   exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
 })

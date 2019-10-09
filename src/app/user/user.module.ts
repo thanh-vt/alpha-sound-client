@@ -12,12 +12,9 @@ import {SongModule} from '../song/song.module';
 import {UserListComponent} from '../user-management/user-list/user-list.component';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from './search/search.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
-
-
 
 @NgModule({
-  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent, NavBarComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

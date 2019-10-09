@@ -13,7 +13,7 @@ import {Validators} from '@angular/forms';
   templateUrl: './playlist-detail.component.html',
   styleUrls: ['./playlist-detail.component.scss']
 })
-export class PlaylistDetailComponent {
+export class PlaylistDetailComponent implements OnInit{
   private message;
   private songList: any[];
   private playList: Playlist;
@@ -39,7 +39,6 @@ export class PlaylistDetailComponent {
           this.songList = this.playList.songs;
 
         }
-        console.log(this.playList);
       }, error => {
         this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
       }

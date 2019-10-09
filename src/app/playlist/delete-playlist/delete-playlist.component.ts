@@ -4,6 +4,7 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {PlaylistService} from '../../service/playlist.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-delete-playlist',
@@ -15,8 +16,10 @@ export class DeletePlaylistComponent implements OnInit {
   @Input() playlistName: string;
   deleted: boolean;
   loading = false;
-  error = '';
+  error = false;
   message: string;
+  subscription: Subscription = new Subscription();
+
   @Output() deletePlaylist = new EventEmitter();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
@@ -27,10 +30,10 @@ export class DeletePlaylistComponent implements OnInit {
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
+    }, (reason) => {
       this.deletePlaylist.emit();
       this.message = '';
-    }, (reason) => {
       console.log(this.getDismissReason(reason));
     });
   }
@@ -46,15 +49,15 @@ export class DeletePlaylistComponent implements OnInit {
   }
 
   onSubmit() {
-    this.playlistService.deletePlaylist(this.id).subscribe(
+    this.subscription = this.playlistService.deletePlaylist(this.id).subscribe(
       result => {
+        this.error = false;
         this.deleted = true;
-        console.log(this.deleted);
         this.message = 'Playlist deleted successfully!';
       },
       error => {
+        this.error = true;
         this.message = 'Failed to delete playlist. Cause: ' + error.message;
-        console.log(error);
       }
     );
   }

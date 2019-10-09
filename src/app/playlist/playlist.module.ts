@@ -21,6 +21,7 @@ import { DeletePlaylistSongComponent } from './delete-playlist-song/delete-playl
     NgbModule,
     ReactiveFormsModule
   ],
-  exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent],
+  // tslint:disable-next-line:max-line-length
+  exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, AddToPlaylistComponent, DeletePlaylistSongComponent],
 })
 export class PlaylistModule { }

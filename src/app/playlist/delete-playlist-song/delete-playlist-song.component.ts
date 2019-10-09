@@ -55,13 +55,11 @@ export class DeletePlaylistSongComponent implements OnInit {
     this.songService.deletePlaylistSong(this.songId, this.playlistId).subscribe(
       result => {
         this.deleted = true;
-        console.log(this.deleted);
         this.message = 'Song Playlist deleted successfully!';
         this.router.navigateByUrl(`/playlist/detail/${this.playlistId}`);
       },
       error => {
         this.message = 'Failed to delete song playlist. Cause: ' + error.message;
-        console.log(error);
       }
     );
   }

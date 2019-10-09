@@ -7,7 +7,6 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import {UserModule} from '../user/user.module';
 
-
 @NgModule({
   declarations: [AdminComponent, DashboardComponent, LoginComponent],
   imports: [

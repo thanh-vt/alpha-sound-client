@@ -25,7 +25,7 @@ export class AddToPlaylistComponent implements OnInit {
   ngOnInit() {
     const songId = this.route.snapshot.paramMap.get('songId');
     this.songId = Number.parseInt(songId, 10);
-    this.subscription = this.playlistService.getPlaylist().subscribe(
+    this.subscription = this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -40,7 +40,7 @@ export class AddToPlaylistComponent implements OnInit {
   }
 
   addPlaylist() {
-    this.subscription = this.playlistService.getPlaylist().subscribe(
+    this.subscription = this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;

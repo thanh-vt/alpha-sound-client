@@ -10,12 +10,13 @@ import {Subscription} from 'rxjs';
 })
 export class PlaylistListComponent implements OnInit, OnDestroy {
   private message;
-  private subscription: Subscription;
-  private playlistList: Playlist[];
+  private subscription: Subscription = new Subscription();
+  private playlistList: Playlist[] = [];
   constructor(private playlistService: PlaylistService) { }
 
   ngOnInit() {
-    this.subscription = this.playlistService.getPlaylist().subscribe(
+    // this.subscription.unsubscribe();
+    this.subscription = this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -29,8 +30,9 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     );
   }
 
-  addPlaylist() {
-    this.subscription = this.playlistService.getPlaylist().subscribe(
+  createPlaylist() {
+    // this.subscription.unsubscribe();
+    this.subscription = this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -45,7 +47,8 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   }
 
   deletePlaylist() {
-    this.subscription = this.playlistService.getPlaylist().subscribe(
+    // this.subscription.unsubscribe();
+    this.subscription = this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
