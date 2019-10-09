@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UserRoutingModule} from './user-routing.module';
 import {HomeComponent} from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -10,14 +10,13 @@ import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import { EditComponent } from './edit/edit.component';
 import {SongModule} from '../song/song.module';
 import {UserListComponent} from '../user-management/user-list/user-list.component';
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from './search/search.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent, NavBarComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -25,7 +24,10 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     SharedModule,
     NgxAudioPlayerModule,
     SongModule,
-    NgbPaginationModule
+    NgbPaginationModule,
+    NgbTabsetModule,
+    FormsModule,
+    NgbButtonsModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent]
 })

@@ -16,6 +16,10 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/list`);
   }
 
+  getSongListPage(i) {
+    return this.http.get<any>(`${environment.apiUrl}/song/list?page=${i}`);
+  }
+
   updateSong(song: Song, id: number): Observable<Song> {
     return this.http.put<Song>(`${environment.apiUrl}/song/edit?id=${id}`, song);
   }

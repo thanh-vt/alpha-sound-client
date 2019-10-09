@@ -1,1 +1,90 @@
-<app-nav-bar></app-nav-bar>
+<!--<div class="row">-->
+<!--  <div class="col-2">-->
+<!--    <ngb-tabset type="pills" orientation="vertical" (tabChange)="selectedTabId = $event.nextId">-->
+<!--      <ngb-tab id="songList" title="Song"></ngb-tab>-->
+<!--      <ngb-tab id="artistList" title="Artist List"></ngb-tab>-->
+<!--    </ngb-tabset>-->
+<!--  </div>-->
+<!--  <div class="col">-->
+<!--    <span>text</span>-->
+<!--    <div [hidden]="selectedTabId != 'songList'">-->
+<!--      <table *ngIf="songList.length > 0" class="table table-striped">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--          <th scope="col">#</th>-->
+<!--          <th scope="col">Name</th>-->
+<!--          <th scope="col">Release Date</th>-->
+<!--          <th scope="col"></th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr *ngFor="let song of songList; index as i">-->
+<!--          <th scope="row">{{ i + 1 }}</th>-->
+<!--          <td>{{ song.name }}</td>-->
+<!--          <td>{{ song.releaseDate | date }}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </table>-->
+<!--    </div>-->
+<!--    <div [hidden]="selectedTabId != 'artistList'">Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.-->
+<!--      <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table-->
+<!--        craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl-->
+<!--        cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia-->
+<!--        yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean-->
+<!--        shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero-->
+<!--        sint qui sapiente accusamus tattooed echo park.</p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<ngb-tabset type="pills" [orientation]="'horizontal'">
+  <ngb-tab>
+    <ng-template ngbTabTitle><h6>Song <span class="badge badge-secondary">{{numberSong}}</span></h6>
+    </ng-template>
+    <ng-template ngbTabContent>
+      <table *ngIf="songList.length > 0" class="table table-striped">-->
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Release Date</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let song of songList; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ song.name }}</td>
+          <td>{{ song.releaseDate | date }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab>
+    <ng-template ngbTabTitle><h6>Artist <span class="badge badge-secondary">{{numberArtist}}</span></h6></ng-template>
+    <ng-template ngbTabContent>
+      <table *ngIf="artistList.length > 0" class="table table-striped">-->
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Release Date</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let artist of artistList; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ artist.name }}</td>
+          <td>{{ artist.avatarUrl | date }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Disabled" [disabled]="true">
+    <ng-template ngbTabContent>
+      <p>Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi. Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio. Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna, egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget neque. Phasellus nec tortor vel tellus pulvinar feugiat.</p>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
