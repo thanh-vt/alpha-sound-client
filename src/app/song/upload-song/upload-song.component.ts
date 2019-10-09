@@ -109,6 +109,7 @@ export class UploadSongComponent implements OnInit {
     // }
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
+    console.log(this.formData);
     this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
         this.message = 'Song uploaded successfully!';
@@ -124,7 +125,8 @@ export class UploadSongComponent implements OnInit {
     );
   }
   suggestArtist(i) {
-    this.artists.controls[i].valueChanges
+    this.subscription.unsubscribe();
+    this.subscription = this.artists.controls[i].valueChanges
       .pipe(
         debounceTime(300),
         tap(() => this.isLoading = true),

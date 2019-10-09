@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       phoneNumber: ['', Validators.required],
-      gender: [1, Validators.required],
+      gender: [true, Validators.required],
       birthDate: ['', Validators.required],
       email: ['', Validators.email]
     });
@@ -41,6 +41,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    console.log(this.registerForm.value);
     this.userService.createUser(this.registerForm.value).subscribe(
       result => {
         this.message = 'User created successfully!';
@@ -55,8 +56,6 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-
-    alert('SUCCESS!!');
   }
 }
 

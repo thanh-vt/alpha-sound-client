@@ -16,8 +16,15 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/list`);
   }
 
-  updateSong(song: Song, id: number): Observable<Song> {
-    return this.http.put<Song>(`${environment.apiUrl}/song/edit?id=${id}`, song);
+  updateSong(song, id: number) {
+    return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song);
+  }
+
+  uploadSong(formData): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
   addSongToPlaylist(songId: number, playlistId: number) {
@@ -32,6 +39,7 @@ export class SongService {
     return this.http.put<any>
     (`${environment.apiUrl}/song/delete-playlist-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
   }
+
   getNewSong() {
     return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
   }

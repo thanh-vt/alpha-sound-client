@@ -2,18 +2,12 @@
   <div class="form-group">
     <label for="songName">Song Name</label>
     <input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
-    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('name').hasError('required') && songUploadForm.get('name').touched">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="songUploadForm.get('name').hasError('required') && songUploadForm.get('name').touched">
       Must be filled!
     </div>
   </div>
 
-<!--  <div class="form-group">-->
-<!--    <label for="artistName">Artist Name</label>-->
-<!--    <input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists">-->
-<!--    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('artists').hasError('required') && songUploadForm.get('artists').touched">-->
-<!--      Must be filled!-->
-<!--    </div>-->
-<!--  </div>-->
 
   <div formArrayName="artists" class="form-group"
        *ngFor="let artist of artists.controls; let i = index;">
@@ -23,7 +17,9 @@
           <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
         </label>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+          <mat-option *ngIf="isLoading" class="is-loading">
+            <mat-spinner diameter="25"></mat-spinner>
+          </mat-option>
           <ng-container *ngIf="!isLoading">
             <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
               <span>{{ artist.name }}</span>
@@ -33,16 +29,17 @@
         </mat-autocomplete>
       </mat-form-field>
       <button type="button" class="btn btn-info" (click)="addArtist()">+</button>
-      <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-</button>
+      <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
+      </button>
     </div>
 
-<!--    Chosen name: {{ artists.controls[i]..name.value }}-->
   </div>
 
   <div class="form-group">
     <label for="releaseDate">Release Date</label>
     <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
-    <div class="alert alert-danger" role="alert" *ngIf="songUploadForm.get('releaseDate').hasError('required') && songUploadForm.get('releaseDate').touched">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="songUploadForm.get('releaseDate').hasError('required') && songUploadForm.get('releaseDate').touched">
       Must be filled!
     </div>
   </div>
@@ -64,11 +61,3 @@
     </div>
   </div>
 </form>
-<!--<ngb-pagination>-->
-<!--  <ng-template ngbPaginationFirst>First</ng-template>-->
-<!--  <ng-template ngbPaginationLast>Last</ng-template>-->
-<!--  <ng-template ngbPaginationPrevious>Prev</ng-template>-->
-<!--  <ng-template ngbPaginationNext>Next</ng-template>-->
-<!--  <ng-template ngbPaginationEllipsis>...</ng-template>-->
-<!--  <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>-->
-<!--</ngb-pagination>-->
