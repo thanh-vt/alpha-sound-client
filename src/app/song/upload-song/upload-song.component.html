@@ -60,7 +60,7 @@
   <span *ngIf="message">{{ message }}</span>
   <!-- Progress Bar -->
   <div class="progress form-group" *ngIf="progress.value > 0">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
     </div>
   </div>
 </form>
