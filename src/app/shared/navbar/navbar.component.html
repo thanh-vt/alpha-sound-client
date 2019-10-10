@@ -77,8 +77,8 @@
     </div>
     <div class="d-inline-block">
       <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search" formGroupName="searchText">
-        <button [routerLink]="['/search/:name']" type="submit" class="btn btn-info mx-2 form-inline"><i class="fas fa-search"></i></button>
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" formControlName="searchText">
+        <button type="submit" class="btn btn-info mx-2 form-inline"><i class="fas fa-search"></i></button>
       </form>
     </div>
   </div>

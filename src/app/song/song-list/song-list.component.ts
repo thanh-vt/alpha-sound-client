@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SongService} from '../../service/song.service';
 import {Song} from '../../model/song';
 import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
+import {Page} from '../../model/page';
 
 @Component({
   selector: 'app-song-list',
@@ -11,7 +12,7 @@ import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 export class SongListComponent implements OnInit {
   private pageNumber: number;
   private pageSize: number;
-  private totalItems: number;
+  private pages: Page[] = [];
   private message;
   private songList: Song[];
   constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaying) { }
@@ -26,6 +27,10 @@ export class SongListComponent implements OnInit {
           });
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
+          this.pages = new Array(result.totalPages);
+          for (let i = 0; i < this.pages.length; i++) {
+            this.pages[i] = {pageNumber: i};
+          }
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
@@ -36,6 +41,28 @@ export class SongListComponent implements OnInit {
   addToPlaylist(song) {
     song.isDisabled = true;
     this.addSongToPlaylistService.emitChange(song);
+  }
+
+  goToPage(i) {
+    this.songService.getSongListPage(i).subscribe(
+      result => {
+        if (result != null) {
+          window.scroll(0, 0);
+          this.songList = result.content;
+          this.songList.forEach((value, index) => {
+            this.songList[index].isDisabled = false;
+          });
+          this.pageNumber = result.pageable.pageNumber;
+          this.pageSize = result.pageable.pageSize;
+          this.pages = new Array(result.totalPages);
+          for (let i = 0; i < this.pages.length; i++) {
+            this.pages[i] = {pageNumber: i};
+          }
+        }
+      }, error => {
+        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }
+    );
   }
 
 }
