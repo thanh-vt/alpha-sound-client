@@ -24,6 +24,7 @@
             <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
               <span>{{ artist.name }}</span>
               <small> | ID: {{artist.id}}</small>
+              <img [src]="artist.avatarUrl" alt="">
             </mat-option>
           </ng-container>
         </mat-autocomplete>
