@@ -1,0 +1,15 @@
+label {
+  padding-top: 0.5rem;
+}
+.card {
+  margin-top: 1rem;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0 0 0 0 !important;
+  border: 0;
+}
+
+.row {
+  margin-bottom: 0 !important;
+}

@@ -1,0 +1,22 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Name</th>
+    <th scope="col">Release Date</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let song of songList; index as i">
+    <th scope="row">{{ i + 1 }}</th>
+    <td>{{ song.name }}</td>
+    <td>{{ song.releaseDate | date }}</td>
+    <td>
+      <button class="btn btn-primary"><i
+        class="fas fa-play-circle"></i></button>
+      <app-delete-playlist-song [songId]="song.id" [name]="song.name" (deleteSongPlaylist)="deletePlaylistSong()"></app-delete-playlist-song>
+    </td>
+  </tr>
+  </tbody>
+</table>

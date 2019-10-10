@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<Br>
+<Br>
+<Br>
+
+Name: <b> {{ song.name }} </b> <Br>
+Release Date:  <b>  {{ song.releaseDate }} </b> <Br>
+Artists : <b>  {{ song.artists }} </b> <Br>
+Genre:   <b> {{ song.genres }} </b>  <Br>
+Rating: <b>  {{ song.rating }} </b>
+Mood:  <b> {{ song.mood }} </b> <Br>
+Activity:  <b>  {{ song.activity }} </b> <Br>
+Tags:  <b> {{ song.tags }}  </b> <Br>
+<button class="btn btn-primary" (click)="addToPlaylist(song)" [disabled]="song.isDisabled"><i
+  class="fas fa-play-circle"></i></button>
+<Br>
+<Br>
+
+
+<div class="align-content-around" style="
+  box-sizing: content-box;
+  padding: 10px;
+  border: 2px solid #bdbbb6;
+  background-color: #eef9f2;
+}">
+  <article>
+    <div id="fulllyric" style="font-size: 14px; overflow: auto;">
+      <span class="glyphicon glyphicon-music" aria-hidden="true"></span>
+      <b> Lyrics: </b>
+      <br>
+      <br>
+      {{song.lyrics}}
+    </div>
+  </article>
+</div>
+
+
+

@@ -1,0 +1,58 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <div class="card">
+    <h3 class="card-header">Edit Profile</h3>
+    <div class="card-body">
+      <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username"><i class="fas fa-users"></i>Username</label>
+          <input id="username" type="text" formControlName="username" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label for="password"><i class="fas fa-key"></i>Password</label>
+          <input id="password" type="password" formControlName="password" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+          <label for="firstName"><i class="fas fa-user-tie"></i>First Name</label>
+          <input id="firstName" type="text" formControlName="firstName" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName"><i class="fas fa-user-tie"></i>Last Name</label>
+          <input id="lastName" type="text" formControlName="lastName" class="form-control"/>
+        </div>
+
+        <div class=" form-group custom-control custom-radio custom-control-inline">
+          <label class="custom-control-label" for="customRadio"></label><i class="fas fa-genderless"></i>
+          <label class="custom-control-label" for="customRadio2"></label>
+          <input type="radio" class="custom-control-input" id="customRadio" formControlName="gender">
+          <input type="radio" class="custom-control-input" id="customRadio2" formControlName="gender">
+        </div>
+
+        <div class="form-group">
+          <label for="birthDate"><i class="fas fa-table"></i>BirthDate</label>
+          <input id="birthDate" type="date" formControlName="birthDate" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber"><i class="fas fa-phone"></i>PhoneNumber</label>
+          <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+          <label for="email"><i class="fas fa-envelope-square">Email</i></label>
+          <input id="email" type="text" formControlName="email" class="form-control"/>
+        </div>
+                <div class="form-group">
+                  <label for="avatar">Avatar</label>
+                  <input type="file" class="form-control-file" id="avatar" (change)="selectFile($event)">
+                </div>
+        <button [disabled]="loading" class="btn btn-primary">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Update
+        </button>
+        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+      </form>
+    </div>
+  </div>
+</div>

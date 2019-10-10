@@ -1,0 +1,22 @@
+<ng-template #content let-modal>
+  <form [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="playlist">Playlist Name</label>
+        <div class="input-group">
+          <input id="playlist" class="form-control" placeholder="Enter playlist name" formControlName="name">
+        </div>
+      </div>
+      <div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{message}}</div>
+    </div>
+    <div class="modal-footer">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Save
+      </button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+  </form>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Create new playlist</button>
