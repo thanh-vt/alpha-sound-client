@@ -16,7 +16,7 @@ const routes: Routes = [
     component: ArtistComponent,
     children: [
       {
-        path:  'detail',
+        path:  'detail/:id',
         component:  ArtistDetailComponent
       }
     ]

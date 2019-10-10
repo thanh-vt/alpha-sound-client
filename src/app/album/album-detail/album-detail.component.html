@@ -11,7 +11,7 @@
     <th scope="col">country</th>
     <th scope="col">Release Date</th>
     <th scope="col">theme</th>
-    <th scope="col"></th>
+
   </tr>
   </thead>
   <tbody>
@@ -23,13 +23,8 @@
     <td>{{ album.country}}</td>
     <td>{{ album.releaseDate}}</td>
     <td>{{ album.theme}}</td>
-    <td>
-      <button class="btn btn-primary" (click)="addToPlaylist(album)" [disabled]="album.isDisabled"><i
-        class="fas fa-play-circle"></i></button>
-
-    </td>
-
-
+   <td>     <button class="btn btn-primary" (click)="addToPlaylist(album)" [disabled]="album.isDisabled"><i
+  class="fas fa-play-circle"></i></button></td>
   </tr>
   </tbody>
 </table>
