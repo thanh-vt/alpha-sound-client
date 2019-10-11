@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { NewSongComponent } from './new-song/new-song.component';
 import {SharedModule} from '../shared/shared.module';
 
+
 @NgModule({
   declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
   imports: [

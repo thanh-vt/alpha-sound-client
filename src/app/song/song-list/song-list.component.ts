@@ -3,8 +3,6 @@ import {SongService} from '../../service/song.service';
 import {Song} from '../../model/song';
 import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 import {Page} from '../../model/page';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ModalPlaylistListComponent} from '../../shared/modal-playlist-list/modal-playlist-list.component';
 
 @Component({
   selector: 'app-song-list',
@@ -17,7 +15,7 @@ export class SongListComponent implements OnInit {
   private pages: Page[] = [];
   private message;
   private songList: Song[];
-  constructor(private songService: SongService, private modalService: NgbModal, private addSongToPlaylistService: AddSongToPlaying) { }
+  constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaying) { }
 
   ngOnInit() {
     this.songService.getSongList().subscribe(
@@ -40,12 +38,6 @@ export class SongListComponent implements OnInit {
     );
   }
 
-  open(songId) {
-    const modalRef = this.modalService.open(ModalPlaylistListComponent);
-    modalRef.componentInstance.title = 'About';
-    modalRef.componentInstance.songId = songId;
-  }
-
   addToPlaylist(song) {
     song.isDisabled = true;
     this.addSongToPlaylistService.emitChange(song);
@@ -63,8 +55,8 @@ export class SongListComponent implements OnInit {
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
           this.pages = new Array(result.totalPages);
-          for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = {pageNumber: i};
+          for (let i = 0; i < this.pages.length; i++) {
+            this.pages[i] = {pageNumber: i};
           }
         }
       }, error => {
