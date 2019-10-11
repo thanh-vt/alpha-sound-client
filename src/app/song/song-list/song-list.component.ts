@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SongService} from '../../service/song.service';
 import {Song} from '../../model/song';
 import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
@@ -9,6 +9,7 @@ import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
   styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit {
+
   private pageNumber: number;
   private pageSize: number;
   private totalItems: number;
@@ -16,6 +17,12 @@ export class SongListComponent implements OnInit {
   private songList: Song[];
   constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaying) { }
 
+  @Input() selected: boolean;
+  @Output() selectedChange = new EventEmitter<boolean>();
+  public toggleSelected() {
+    this.selected = !this.selected;
+    this.selectedChange.emit(this.selected);
+  }
   ngOnInit() {
     this.songService.getSongList().subscribe(
       result => {

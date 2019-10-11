@@ -20,7 +20,20 @@
           class="fas fa-ellipsis-h fa-1x"></i></button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <button ngbDropdownItem [routerLink]="['/playlist','add-to-playlist',song.id]">Add to playlist</button>
-          <button ngbDropdownItem>Another Action</button>
+
+          <button mat-icon-button (click)="toggleSelected()">
+            <mat-icon
+              *ngIf="selected"
+              aria-label="Example icon-button with a heart icon">
+              favorite
+            </mat-icon>
+            <mat-icon
+              *ngIf="!selected"
+              aria-label="Example icon-button with a heart icon">
+              favorite_border
+            </mat-icon>
+            </button>
+
           <button ngbDropdownItem>Something else is here</button>
         </div>
       </div>
