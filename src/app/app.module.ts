@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import {SharedModule} from './shared/shared.module';
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {UserModule} from './user/user.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {JwtInterceptor} from './helper/jwt.interceptor';
 import {ErrorInterceptor} from './helper/error.interceptor';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
@@ -14,7 +14,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AddSongToPlaying} from './service/add-song-to-playling.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
-import {UserListComponent} from './user-management/user-list/user-list.component';
+import {PlaylistListComponent} from './shared/playlist-list/playlist-list.component';
+import {ModalPlaylistListComponent} from './shared/modal-playlist-list/modal-playlist-list.component';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: {
@@ -45,9 +46,13 @@ const JWT_Module_Options: JwtModuleOptions = {
     // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    AddSongToPlaying
+    AddSongToPlaying,
+    NgbActiveModal
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ModalPlaylistListComponent
+  ]
 })
 
 export class AppRootModule { }

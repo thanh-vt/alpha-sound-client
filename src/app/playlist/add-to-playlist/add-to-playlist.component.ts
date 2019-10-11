@@ -25,7 +25,7 @@ export class AddToPlaylistComponent implements OnInit {
   ngOnInit() {
     const songId = this.route.snapshot.paramMap.get('songId');
     this.songId = Number.parseInt(songId, 10);
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
+    this.subscription = this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -40,7 +40,7 @@ export class AddToPlaylistComponent implements OnInit {
   }
 
   addPlaylist() {
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
+    this.subscription = this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -58,6 +58,18 @@ export class AddToPlaylistComponent implements OnInit {
     this.songService.addSongToPlaylist(songId, playlistId).subscribe(
       next => {
         this.message = 'Add song to playlist successfully!';
+        this.subscription = this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
+          result => {
+            if (result != null) {
+              this.playlistList = result.content;
+              this.playlistList.forEach((value, index) => {
+                this.playlistList[index].isDisabled = false;
+              });
+            }
+          }, error => {
+            this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
+          }
+        );
       }, error => {
         this.message = 'Failed add song to playlist!';
       }
