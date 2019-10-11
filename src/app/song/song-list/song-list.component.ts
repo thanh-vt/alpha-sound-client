@@ -5,6 +5,8 @@ import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 import {Page} from '../../model/page';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalPlaylistListComponent} from '../../shared/modal-playlist-list/modal-playlist-list.component';
+import {PlaylistService} from '../../service/playlist.service';
+import {Playlist} from '../../model/playlist';
 
 @Component({
   selector: 'app-song-list',
@@ -17,7 +19,9 @@ export class SongListComponent implements OnInit {
   private pages: Page[] = [];
   private message;
   private songList: Song[];
-  constructor(private songService: SongService, private modalService: NgbModal, private addSongToPlaylistService: AddSongToPlaying) { }
+  playlistList: Playlist[];
+
+  constructor(private songService: SongService, private modalService: NgbModal, private playlistService: PlaylistService, private addSongToPlaylistService: AddSongToPlaying) { }
 
   ngOnInit() {
     this.songService.getSongList().subscribe(
@@ -41,9 +45,14 @@ export class SongListComponent implements OnInit {
   }
 
   open(songId) {
-    const modalRef = this.modalService.open(ModalPlaylistListComponent);
-    modalRef.componentInstance.title = 'About';
-    modalRef.componentInstance.songId = songId;
+    this.playlistService.getPlaylistListToAdd(songId).subscribe(
+      result => {
+        const modalRef = this.modalService.open(ModalPlaylistListComponent);
+        modalRef.componentInstance.title = 'About';
+        modalRef.componentInstance.songId = songId;
+        modalRef.componentInstance.playlistList = result;
+      }
+    );
   }
 
   addToPlaylist(song) {
