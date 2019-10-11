@@ -13,7 +13,7 @@ import {Validators} from '@angular/forms';
   templateUrl: './playlist-detail.component.html',
   styleUrls: ['./playlist-detail.component.scss']
 })
-export class PlaylistDetailComponent implements OnInit{
+export class PlaylistDetailComponent implements OnInit {
   private message;
   private songList: any[];
   private playList: Playlist;
@@ -34,7 +34,6 @@ export class PlaylistDetailComponent implements OnInit{
       result => {
         if (result != null) {
           this.playList = result;
-
           this.playList.isDisabled = false;
           this.songList = this.playList.songs;
 
@@ -55,7 +54,10 @@ export class PlaylistDetailComponent implements OnInit{
     this.subscription = this.playlistService.getPlayListDetail(this.playlistId).subscribe(
       result => {
         if (result != null) {
+          console.log(result);
           this.playList = result;
+          this.playList.isDisabled = false;
+          this.songList = this.playList.songs;
         } else {
           this.playList = null;
         }
