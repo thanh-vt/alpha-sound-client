@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SongService} from '../../service/song.service';
 import {Song} from '../../model/song';
 import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 import {Page} from '../../model/page';
+import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
+import {PlaylistService} from '../../service/playlist.service';
 
 @Component({
   selector: 'app-song-list',
@@ -15,7 +17,9 @@ export class SongListComponent implements OnInit {
   private pages: Page[] = [];
   private message;
   private songList: Song[];
-  constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaying) { }
+  @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
+
+  constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying, private playlistService: PlaylistService) { }
 
   ngOnInit() {
     this.songService.getSongList().subscribe(
@@ -38,9 +42,9 @@ export class SongListComponent implements OnInit {
     );
   }
 
-  addToPlaylist(song) {
+  addToPlaying(song) {
     song.isDisabled = true;
-    this.addSongToPlaylistService.emitChange(song);
+    this.addSongToPlaying.emitChange(song);
   }
 
   goToPage(i) {
@@ -55,12 +59,22 @@ export class SongListComponent implements OnInit {
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
           this.pages = new Array(result.totalPages);
-          for (let i = 0; i < this.pages.length; i++) {
-            this.pages[i] = {pageNumber: i};
+          for (let j = 0; j < this.pages.length; j++) {
+            this.pages[j] = {pageNumber: i};
           }
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }
+    );
+  }
+
+  refreshPlaylistList(songId) {
+    this.playlistService.getPlaylistListToAdd(songId).subscribe(
+      result => {
+        this.child.playlistList = result;
+      }, error => {
+        console.log(error);
       }
     );
   }

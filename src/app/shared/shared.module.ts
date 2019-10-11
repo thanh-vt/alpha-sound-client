@@ -6,11 +6,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import { AddSongToPlaylistComponent } from './add-song-to-playlist/add-song-to-playlist.component';
+import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {PlaylistModule} from '../playlist/playlist.module';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
-  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent],
+  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent],
   imports: [
     CommonModule,
     NgbModule,
@@ -18,6 +19,6 @@ import {PlaylistModule} from '../playlist/playlist.module';
     ReactiveFormsModule,
     PlaylistModule,
   ],
-  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent]
+  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent]
 })
 export class SharedModule { }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
@@ -21,14 +21,18 @@ export class AddSongToPlaylistComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
+    this.subscription = this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
       result => {
-        this.playlistList = result.content;
+        this.playlistList = result;
       }, error => {
         this.message = 'Cannot retrieve playlist list. Cause: ' + error.message;
       }
     );
   }
+
+  // ngOnChanges(): void {
+  //   this.getPlaylistListToAdd();
+  // }
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
@@ -51,19 +55,15 @@ export class AddSongToPlaylistComponent implements OnInit {
     this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
       () => {
         this.message = 'Song added to playlist';
+        this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
+          result => {
+            this.playlistList = result;
+          }, error1 => {
+            this.message = 'Cannot retrieve playlist list. Cause: ' + error1.message;
+          }
+        );
       }, error => {
         this.message = 'Cannot add song to playlist. Cause: ' + error.message;
-      }
-    );
-  }
-
-  createPlaylist() {
-    this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
-      result => {
-        this.playlistList = result.content;
-      }, error => {
-        this.message = 'Cannot retrieve playlist list. Cause: ' + error.message;
       }
     );
   }
