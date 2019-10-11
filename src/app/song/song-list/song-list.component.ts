@@ -1,12 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SongService} from '../../service/song.service';
 import {Song} from '../../model/song';
 import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 import {Page} from '../../model/page';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ModalPlaylistListComponent} from '../../shared/modal-playlist-list/modal-playlist-list.component';
+import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {PlaylistService} from '../../service/playlist.service';
-import {Playlist} from '../../model/playlist';
 
 @Component({
   selector: 'app-song-list',
@@ -19,9 +17,9 @@ export class SongListComponent implements OnInit {
   private pages: Page[] = [];
   private message;
   private songList: Song[];
-  playlistList: Playlist[];
+  @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
 
-  constructor(private songService: SongService, private modalService: NgbModal, private playlistService: PlaylistService, private addSongToPlaylistService: AddSongToPlaying) { }
+  constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying, private playlistService: PlaylistService) { }
 
   ngOnInit() {
     this.songService.getSongList().subscribe(
@@ -44,20 +42,9 @@ export class SongListComponent implements OnInit {
     );
   }
 
-  open(songId) {
-    this.playlistService.getPlaylistListToAdd(songId).subscribe(
-      result => {
-        const modalRef = this.modalService.open(ModalPlaylistListComponent);
-        modalRef.componentInstance.title = 'About';
-        modalRef.componentInstance.songId = songId;
-        modalRef.componentInstance.playlistList = result;
-      }
-    );
-  }
-
-  addToPlaylist(song) {
+  addToPlaying(song) {
     song.isDisabled = true;
-    this.addSongToPlaylistService.emitChange(song);
+    this.addSongToPlaying.emitChange(song);
   }
 
   goToPage(i) {
@@ -78,6 +65,16 @@ export class SongListComponent implements OnInit {
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }
+    );
+  }
+
+  refreshPlaylistList(songId) {
+    this.playlistService.getPlaylistListToAdd(songId).subscribe(
+      result => {
+        this.child.playlistList = result;
+      }, error => {
+        console.log(error);
       }
     );
   }

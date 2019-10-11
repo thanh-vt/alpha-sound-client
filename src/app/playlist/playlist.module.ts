@@ -9,12 +9,11 @@ import { DeletePlaylistComponent } from './delete-playlist/delete-playlist.compo
 import { PlaylistComponent } from './playlist/playlist.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from '@angular/forms';
-import { AddToPlaylistComponent } from './add-to-playlist/add-to-playlist.component';
 import { DeletePlaylistSongComponent } from './delete-playlist-song/delete-playlist-song.component';
 
 @NgModule({
   // tslint:disable-next-line:max-line-length
-  declarations: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, AddToPlaylistComponent, DeletePlaylistSongComponent],
+  declarations: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, DeletePlaylistSongComponent],
   imports: [
     CommonModule,
     PlaylistRoutingModule,
@@ -22,6 +21,6 @@ import { DeletePlaylistSongComponent } from './delete-playlist-song/delete-playl
     ReactiveFormsModule
   ],
   // tslint:disable-next-line:max-line-length
-  exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, AddToPlaylistComponent, DeletePlaylistSongComponent],
+  exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, DeletePlaylistSongComponent],
 })
 export class PlaylistModule { }
