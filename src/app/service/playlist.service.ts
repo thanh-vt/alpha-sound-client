@@ -21,6 +21,10 @@ export class PlaylistService {
     return this.http.get<any>(`${environment.apiUrl}/playlist/list`);
   }
 
+  getPlaylistListToAdd(songId: number) {
+    return this.http.get<any>(`${environment.apiUrl}/playlist/listToAdd?songId=${songId}`);
+  }
+
   deletePlaylist(id: number): Observable<HttpEvent<any>> {
     return this.http.delete<any>(`${environment.apiUrl}/playlist/delete?id=${id}`);
   }

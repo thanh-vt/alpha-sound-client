@@ -41,7 +41,7 @@ export class SongService {
 
   deletePlaylistSong(songId: number, playlistId: number): Observable<HttpEvent<any>> {
     return this.http.put<any>
-    (`${environment.apiUrl}/song/delete-playlist-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
+    (`${environment.apiUrl}/playlist/remove-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
   }
 
   getNewSong() {

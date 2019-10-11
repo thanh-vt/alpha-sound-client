@@ -18,7 +18,7 @@ export class DeletePlaylistSongComponent implements OnInit {
   @Input() name: string;
   deleted: boolean;
   loading = false;
-  error = '';
+  error = false;
   message: string;
   @Output() deleteSongPlaylist = new EventEmitter();
 
@@ -34,9 +34,9 @@ export class DeletePlaylistSongComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.deleteSongPlaylist.emit();
       this.message = '';
     }, (reason) => {
+      this.deleteSongPlaylist.emit();
       console.log(this.getDismissReason(reason));
     });
   }
@@ -54,11 +54,13 @@ export class DeletePlaylistSongComponent implements OnInit {
   onSubmit() {
     this.songService.deletePlaylistSong(this.songId, this.playlistId).subscribe(
       result => {
+        this.error = false;
         this.deleted = true;
         this.message = 'Song Playlist deleted successfully!';
         this.router.navigateByUrl(`/playlist/detail/${this.playlistId}`);
       },
       error => {
+        this.error = true;
         this.message = 'Failed to delete song playlist. Cause: ' + error.message;
       }
     );
