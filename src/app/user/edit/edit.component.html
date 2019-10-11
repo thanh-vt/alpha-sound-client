@@ -5,11 +5,6 @@
       <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
 
         <div class="form-group">
-          <label for="password"><i class="fas fa-key"></i>Password</label>
-          <input id="password" type="password" formControlName="password" class="form-control"/>
-        </div>
-
-        <div class="form-group">
           <label for="firstName"><i class="fas fa-user-tie"></i>First Name</label>
           <input id="firstName" type="text" formControlName="firstName" class="form-control"/>
         </div>
@@ -32,7 +27,7 @@
 
         <div class="form-group">
           <label for="birthDate"><i class="fas fa-table"></i>BirthDate</label>
-          <input id="birthDate" type="date" formControlName="birthDate" class="form-control"/>
+          <input [value]="user.birthDate | date:'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" placeholder="yyyy-mm-dd" formControlName="birthDate">
         </div>
 
         <div class="form-group">

@@ -15,7 +15,7 @@ export class SongListComponent implements OnInit {
   private pages: Page[] = [];
   private message;
   private songList: Song[];
-  constructor(private songService: SongService, private addSongToPlaylistService: AddSongToPlaying) { }
+  constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying) { }
 
   ngOnInit() {
     this.songService.getSongList().subscribe(
@@ -40,7 +40,7 @@ export class SongListComponent implements OnInit {
 
   addToPlaylist(song) {
     song.isDisabled = true;
-    this.addSongToPlaylistService.emitChange(song);
+    this.addSongToPlaying.emitChange(song);
   }
 
   goToPage(i) {
@@ -55,7 +55,7 @@ export class SongListComponent implements OnInit {
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
           this.pages = new Array(result.totalPages);
-          for (let i = 0; i < this.pages.length; i++) {
+          for (let i= 0; i < this.pages.length; i++) {
             this.pages[i] = {pageNumber: i};
           }
         }

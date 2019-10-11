@@ -4,4 +4,10 @@ export interface User {
   username?: string;
   password?: string;
   imageUrl: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: boolean;
+  birthDate?: number;
+  phoneNumber?: number;
+  email?: string;
 }
