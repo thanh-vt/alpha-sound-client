@@ -19,10 +19,7 @@
         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i
           class="fas fa-ellipsis-h fa-1x"></i></button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-<!--          <app-add-song-to-playlist [songId]="song.id">-->
-<!--            <app-playlist-list></app-playlist-list>-->
-<!--          </app-add-song-to-playlist>-->
-          <button ngbDropdownItem (click)="open(song.id)">Add to a Playlist</button>
+          <app-add-song-to-playlist [songId]="song.id"></app-add-song-to-playlist>
           <button ngbDropdownItem>Another Action</button>
           <button ngbDropdownItem>Something else is here</button>
         </div>
