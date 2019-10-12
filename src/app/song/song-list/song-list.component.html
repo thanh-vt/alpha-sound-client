@@ -13,16 +13,16 @@
     <td>{{ song.name }}</td>
     <td>{{ song.releaseDate | date }}</td>
     <td>
-      <button class="btn btn-primary" (click)="addToPlaylist(song)" [disabled]="song.isDisabled"><i
+      <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
         class="fas fa-play-circle"></i></button>
       <div ngbDropdown class="d-inline-block">
         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i
           class="fas fa-ellipsis-h fa-1x"></i></button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-<!--          <app-add-song-to-playlist [songId]="song.id">-->
-<!--            <app-playlist-list></app-playlist-list>-->
-<!--          </app-add-song-to-playlist>-->
-          <button ngbDropdownItem (click)="open(song.id)">Add to a Playlist</button>
+          <app-modal>
+            <app-add-song-to-playlist class="card-body" [songId]="song.id"></app-add-song-to-playlist>
+            <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="card-footer"></app-create-playlist>
+          </app-modal>
           <button ngbDropdownItem>Another Action</button>
           <button ngbDropdownItem>Something else is here</button>
         </div>

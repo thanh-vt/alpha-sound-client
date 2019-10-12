@@ -21,7 +21,7 @@ export class PlaylistService {
     return this.http.get<any>(`${environment.apiUrl}/playlist/list`);
   }
 
-  getPlaylistListToAdd(songId: number) {
+  getPlaylistListToAdd(songId) {
     return this.http.get<any>(`${environment.apiUrl}/playlist/listToAdd?songId=${songId}`);
   }
 
