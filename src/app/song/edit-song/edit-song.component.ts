@@ -53,29 +53,63 @@ export class EditSongComponent implements OnInit {
   }
 
   ngOnInit() {
+    // const id = +this.route.snapshot.paramMap.get('id');
+    // this.songUpdateForm = this.fb.group({
+    //   name: ['', Validators.required],
+    //   artists: this.fb.array([EditSongComponent.createArtist()]),
+    //   releaseDate: [''],
+    //   album: [null],
+    //   genres: [null],
+    //   tags: [null],
+    //   country: [null],
+    //   theme: [null]
+    // });
+    // for (let i = 0; i < this.artists.length; i++) {
+    //   this.artists.controls[i].valueChanges
+    //     .pipe(
+    //       debounceTime(300),
+    //       tap(() => this.isLoading = true),
+    //       switchMap(value => this.artistService.searchArtist(value)
+    //         .pipe(
+    //           finalize(() => this.isLoading = false),
+    //         )
+    //       )
+    //     ).subscribe(artists => this.filteredArtists = artists);
+    // }
     const id = +this.route.snapshot.paramMap.get('id');
-    this.songUpdateForm = this.fb.group({
-      name: ['', Validators.required],
-      artists: this.fb.array([EditSongComponent.createArtist()]),
-      releaseDate: [''],
-      album: [null],
-      genres: [null],
-      tags: [null],
-      country: [null],
-      theme: [null]
-    });
-    for (let i = 0; i < this.artists.length; i++) {
-      this.artists.controls[i].valueChanges
-        .pipe(
-          debounceTime(300),
-          tap(() => this.isLoading = true),
-          switchMap(value => this.artistService.searchArtist(value)
+    this.songService.getdetailSong(id).subscribe(
+      result => {
+        this.song = result;
+        this.songUpdateForm = this.fb.group({
+          name: [this.song.name, Validators.required],
+          artists: this.fb.array([EditSongComponent.createArtist()]),
+          releaseDate: [this.song.releaseDate],
+          album: [null],
+          genres: [null],
+          tags: [null],
+          country: [null],
+          theme: [null]
+        });
+        for (let i = 0; i < result.artists.length; i++) {
+          this.songUpdateForm.get('artists').setValue(result.artists);
+        }
+        console.log(this.songUpdateForm.value);
+        for (let i = 0; i < this.artists.length; i++) {
+          this.artists.controls[i].valueChanges
             .pipe(
-              finalize(() => this.isLoading = false),
-            )
-          )
-        ).subscribe(artists => this.filteredArtists = artists);
-    }
+              debounceTime(300),
+              tap(() => this.isLoading = true),
+              switchMap(value => this.artistService.searchArtist(value)
+                .pipe(
+                  finalize(() => this.isLoading = false),
+                )
+              )
+            ).subscribe(artists => this.filteredArtists = artists);
+        }
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 
 

@@ -16,6 +16,7 @@ import {AddSongToPlaying} from './service/add-song-to-playling.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 import {PlaylistListComponent} from './shared/playlist-list/playlist-list.component';
 import {ModalPlaylistListComponent} from './shared/modal-playlist-list/modal-playlist-list.component';
+import {AdminModule} from './admin/admin.module';
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: {
@@ -39,6 +40,7 @@ const JWT_Module_Options: JwtModuleOptions = {
     NgxAudioPlayerModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    AdminModule
     // JwtModule.forRoot(JWT_Module_Options)
   ],
   providers: [

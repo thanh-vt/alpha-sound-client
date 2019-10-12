@@ -14,7 +14,7 @@ import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootst
 import { SearchComponent } from './search/search.component';
 
 @NgModule({
-  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
