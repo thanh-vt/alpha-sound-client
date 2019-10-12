@@ -31,7 +31,7 @@ export class CreatePlaylistComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-      this.message = '';
+      this.message = null;
     }, () => {
       this.createPlaylist.emit();
     });

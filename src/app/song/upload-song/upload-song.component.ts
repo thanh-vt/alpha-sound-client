@@ -40,7 +40,6 @@ export class UploadSongComponent implements OnInit {
 
   addArtist(): void {
     this.artists.push(UploadSongComponent.createArtist());
-    console.log(this.songUploadForm.value);
   }
 
   removeArtist(index: number) {
@@ -109,7 +108,6 @@ export class UploadSongComponent implements OnInit {
     // }
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
-    console.log(this.songUploadForm.value);
     this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
         this.message = 'Song uploaded successfully!';

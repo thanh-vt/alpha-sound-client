@@ -51,12 +51,12 @@ export class EditComponent implements OnInit {
   onSubmit() {
     const id = +this.route.snapshot.paramMap.get('id');
     console.log(this.updateForm.value);
-    // this.userService.updateUser(this.updateForm.value, id).subscribe(
+    // this.userService.updateProfile(this.updateForm.value, id).subscribe(
     //   result => {
     //     this.message = 'Song created successfully!';
     //     this.formData.append('id', String(result));
     //     this.formData.append('avatar', this.file);
-    //     this.userService.uploadUserAvatar(this.formData).subscribe(
+    //     this.userService.uploadAvatar(this.formData).subscribe(
     //       (event: HttpEvent<any>) => {
     //         switch (event.type) {
     //           case HttpEventType.Sent:
@@ -82,7 +82,7 @@ export class EditComponent implements OnInit {
     this.formData.append('user', new Blob([JSON.stringify(this.updateForm.value)], {type: 'application/json'}));
     this.formData.append('avatar', this.file);
     console.log(this.formData);
-    this.userService.updateUser(this.formData, id).subscribe(
+    this.userService.updateProfile(this.formData, id).subscribe(
       next => {
         console.log('ok');
         this.message = 'Update user success';

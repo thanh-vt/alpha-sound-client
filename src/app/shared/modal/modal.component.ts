@@ -1,20 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+  styleUrls: ['./modal.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ModalComponent implements OnInit {
+  @Input() isPoppedUp = false;
   closeResult: string;
+  @ViewChild('content', {static: false}) content: ElementRef;
+
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
+    if (this.isPoppedUp) {
+      // this.open(this.content);
+      this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true } ).result.then(() => {
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true}).result.then(() => {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
