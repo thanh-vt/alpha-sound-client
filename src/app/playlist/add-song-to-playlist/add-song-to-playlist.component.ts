@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
@@ -9,10 +9,9 @@ import {Subscription} from 'rxjs';
   templateUrl: './add-song-to-playlist.component.html',
   styleUrls: ['./add-song-to-playlist.component.scss']
 })
-export class AddSongToPlaylistComponent implements OnInit, OnChanges {
+export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
 
   @Input() songId: number;
-  load = true;
   @Input() playlistList: Playlist[] = [];
   closeResult: string;
   message: string;
@@ -21,26 +20,14 @@ export class AddSongToPlaylistComponent implements OnInit, OnChanges {
   constructor(private modalService: NgbModal, private playlistService: PlaylistService) {}
 
   ngOnInit(): void {
-    this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
-      result => {
-        this.playlistList = result;
-        console.log('fetch');
-      }, error => {
-        this.message = 'Cannot retrieve playlist list. Cause: ' + error.message;
-      }
-    );
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
+    console.log('reload');
+    this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
       result => {
         this.playlistList = result;
       }, error => {
         this.message = 'Cannot retrieve playlist list. Cause: ' + error.message;
       }
-    );
+    ));
   }
 
   open(content) {
@@ -61,19 +48,23 @@ export class AddSongToPlaylistComponent implements OnInit, OnChanges {
   }
 
   addSongToPlaylist(songId: number, playlistId: number) {
-    this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
+    this.subscription.add(this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
       () => {
         this.message = 'Song added to playlist';
-        this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
+        this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
           result => {
             this.playlistList = result;
           }, error1 => {
             this.message = 'Cannot retrieve playlist list. Cause: ' + error1.message;
           }
-        );
+        ));
       }, error => {
         this.message = 'Cannot add song to playlist. Cause: ' + error.message;
       }
-    );
+    ));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

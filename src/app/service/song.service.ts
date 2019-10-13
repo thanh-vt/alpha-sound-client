@@ -17,7 +17,11 @@ export class SongService {
   }
 
   getSongListPage(i) {
-    return this.http.get<any>(`${environment.apiUrl}/song/list?page=${i}`);
+    if (i !== null) {
+      return this.http.get<any>(`${environment.apiUrl}/song/list?page=${i}`);
+    } else {
+      return this.http.get<any>(`${environment.apiUrl}/song/list`);
+    }
   }
 
   updateSong(song: any, id: number): Observable<Song> {
@@ -46,5 +50,13 @@ export class SongService {
 
   getNewSong() {
     return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
+  }
+
+  likeSong(songId: number) {
+    return this.http.post<any>(`${environment.apiUrl}/song?like&song-id=${songId}`, {});
+  }
+
+  unlikeSong(songId: number) {
+    return this.http.post<any>(`${environment.apiUrl}/song?unlike&song-id=${songId}`, {});
   }
 }
