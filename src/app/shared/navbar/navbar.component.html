@@ -29,7 +29,7 @@
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/user','edit', userId]" >Edit</a>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']">Playlist</a>
         <div class="dropdown-divider"></div>
-        <a ngbDropdownItem class="dropdown-item" href="#">Something else here</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/user','uploaded-song-list']">Song</a>
         <a ngbDropdownItem (click)="logoutClick()" class="dropdown-item" tabindex="-1" aria-disabled="true">Logout</a>
       </div>
     </div>

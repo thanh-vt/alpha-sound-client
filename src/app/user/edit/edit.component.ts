@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {Song} from '../../model/song';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-edit',
@@ -11,6 +13,7 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
   styleUrls: ['./edit.component.scss']
 })
 export class EditComponent implements OnInit {
+  @Input() user: User;
   updateForm: FormGroup;
   loading = false;
   submitted = false;
@@ -38,6 +41,22 @@ export class EditComponent implements OnInit {
       birthDate: ['', Validators.required],
       email: ['']
     });
+    this.userService.getProfile().subscribe(
+      result => {
+        this.user = result;
+        this.updateForm = this.fb.group({
+          username: [this.user.username],
+          // tslint:disable-next-line:max-line-length
+          password: [this.user.password, [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$')]],
+          firstName: [this.user.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          lastName: [this.user.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          phoneNumber: [this.user.phoneNumber, Validators.required],
+          gender: [this.user.gender, Validators.required],
+          birthDate: [this.user.birthDate, Validators.required],
+          email: [this.user.email]
+        });
+      }
+      );
   }
 
   selectFile(event) {

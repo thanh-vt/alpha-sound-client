@@ -7,6 +7,7 @@ import {HttpEvent} from '@angular/common/http';
 import {Artist} from '../../model/artist';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {ArtistService} from '../../service/artist.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-edit-song',
@@ -20,6 +21,7 @@ export class EditSongComponent implements OnInit {
   formData = new FormData();
   filteredArtists: Artist[];
   isLoading = false;
+  currentSong: Song;
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -53,30 +55,42 @@ export class EditSongComponent implements OnInit {
   }
 
   ngOnInit() {
-    // const id = +this.route.snapshot.paramMap.get('id');
-    // this.songUpdateForm = this.fb.group({
-    //   name: ['', Validators.required],
-    //   artists: this.fb.array([EditSongComponent.createArtist()]),
-    //   releaseDate: [''],
-    //   album: [null],
-    //   genres: [null],
-    //   tags: [null],
-    //   country: [null],
-    //   theme: [null]
-    // });
-    // for (let i = 0; i < this.artists.length; i++) {
-    //   this.artists.controls[i].valueChanges
-    //     .pipe(
-    //       debounceTime(300),
-    //       tap(() => this.isLoading = true),
-    //       switchMap(value => this.artistService.searchArtist(value)
-    //         .pipe(
-    //           finalize(() => this.isLoading = false),
-    //         )
-    //       )
-    //     ).subscribe(artists => this.filteredArtists = artists);
-    // }
     const id = +this.route.snapshot.paramMap.get('id');
+    this.songService.getdetailSong(id).subscribe(
+      result => {
+        this.song = result;
+        this.songUpdateForm = this.fb.group({
+          name: [this.song.name, Validators.required],
+          artists: this.fb.array([EditSongComponent.createArtist()]),
+          releaseDate: [this.song.releaseDate],
+          album: [null],
+          genres: [null],
+          tags: [null],
+          country: [null],
+          theme: [null]
+        });
+        for (let i = 0; i < result.artists.length; i++) {
+          this.songUpdateForm.get('artists').setValue(result.artists);
+        }
+        console.log(this.songUpdateForm.value);
+        for (let i = 0; i < this.artists.length; i++) {
+          this.artists.controls[i].valueChanges
+            .pipe(
+              debounceTime(300),
+              tap(() => this.isLoading = true),
+              switchMap(value => this.artistService.searchArtist(value)
+                .pipe(
+                  finalize(() => this.isLoading = false),
+                )
+              )
+            ).subscribe(artists => this.filteredArtists = artists);
+        }
+      }, error => {
+        console.log(error);
+      }
+    );
+
+
     this.songService.getdetailSong(id).subscribe(
       result => {
         this.song = result;

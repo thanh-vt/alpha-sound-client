@@ -16,7 +16,6 @@ import { NewSongComponent } from './new-song/new-song.component';
 import {SharedModule} from '../shared/shared.module';
 import {PlaylistModule} from '../playlist/playlist.module';
 
-
 @NgModule({
   declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
   imports: [

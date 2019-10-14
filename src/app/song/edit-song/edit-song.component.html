@@ -1,7 +1,7 @@
 <form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="songName">Song Name</label>
-    <input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
+    <input [value]="" type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
     <div class="alert alert-danger" role="alert"
          *ngIf="songUpdateForm.get('name').hasError('required') && songUpdateForm.get('name').touched">
       Must be filled!
@@ -39,7 +39,7 @@
 
   <div class="form-group">
     <label for="releaseDate">Release Date</label>
-    <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+    <input [value]="song.releaseDate | date:'yyyy-MM-dd'" type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
     <div class="alert alert-danger" role="alert"
          *ngIf="songUpdateForm.get('releaseDate').hasError('required') && songUpdateForm.get('releaseDate').touched">
       Must be filled!

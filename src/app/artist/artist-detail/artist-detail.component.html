@@ -1,1 +1,53 @@
-<p>artist-detail works!</p>
+<div class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <img class="card-img-top" src="{{artist.avatarUrl}}" alt="Card image">
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <h5>Họ và tên : {{artist.name}}</h5><br>
+    <h5>Ngày sinh : {{artist.birthDate | date}}</h5><br>
+    <h5>Tiểu sử : {{artist.biography}}</h5>
+  </div>
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Release Date</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let song of songList; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ song.name }}</td>
+      <td>{{ song.releaseDate | date }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
+          class="fas fa-play-circle"></i></button>
+      </td>
+      <td><a [routerLink]="['/song','edit', song.id]">Edit</a></td>
+
+    </tr>
+    </tbody>
+  </table>
+  <nav aria-label="...">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" *ngIf="pageNumber > 0" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li *ngFor="let page of pages" class="page-item">
+        <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" *ngIf="(pageNumber < pages.length) && (pages.length > 1)" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">Next</a>
+      </li>
+    </ul>
+  </nav>
+
+
+</div>

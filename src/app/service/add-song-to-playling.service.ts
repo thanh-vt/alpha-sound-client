@@ -10,7 +10,6 @@ export class AddSongToPlaying {
   constructor(private songService: SongService) { }
 
   private emitChangeSource = new Subject<any>();
-
   changeEmitter$ = this.emitChangeSource.asObservable();
 
   emitChange(song: Song) {

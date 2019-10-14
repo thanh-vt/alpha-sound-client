@@ -29,6 +29,6 @@ import { FavoriteAlbumListComponent } from './favorite-album-list/favorite-album
     FormsModule,
     NgbButtonsModule
   ],
-  exports: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent]
+  exports: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent, FavoriteSongListComponent, FavoriteAlbumListComponent]
 })
 export class UserModule { }
