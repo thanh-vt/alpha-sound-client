@@ -9,11 +9,11 @@ import {UserManagementComponent} from './user-management/user-management.compone
 
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'list',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: '',
+    redirectTo: 'list',
+    pathMatch: 'full'
+  },
   {
     path:  '',
     component: UserManagementComponent,

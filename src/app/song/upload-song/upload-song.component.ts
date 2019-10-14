@@ -40,7 +40,6 @@ export class UploadSongComponent implements OnInit {
 
   addArtist(): void {
     this.artists.push(UploadSongComponent.createArtist());
-    console.log(this.songUploadForm.value);
   }
 
   removeArtist(index: number) {
@@ -109,13 +108,12 @@ export class UploadSongComponent implements OnInit {
     // }
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
-    console.log(this.formData);
     this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
         this.message = 'Song uploaded successfully!';
         this.displayProgress(event, this.progress);
-        console.log(this.progress);
       }, error => {
+        this.progress.value = 0;
         if (error.status === 400) {
           this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
         } else {

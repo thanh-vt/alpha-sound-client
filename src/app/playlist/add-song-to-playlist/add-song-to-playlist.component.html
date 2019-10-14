@@ -1,0 +1,5 @@
+<ul class="list-group">
+  <li *ngFor="let playlist of playlistList">
+    <a href="javascript:void(0);" (click)="addSongToPlaylist(songId, playlist.id)" class="list-group-item list-group-item-action">{{ playlist.name }}</a>
+  </li>
+</ul>

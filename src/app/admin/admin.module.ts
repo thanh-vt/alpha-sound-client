@@ -5,14 +5,18 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
-import {UserModule} from '../user/user.module';
+import {UserManagementModule} from '../user-management/user-management.module';
+import {ReactiveFormsModule} from '@angular/forms';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations: [AdminComponent, DashboardComponent, LoginComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    UserModule
+    UserManagementModule,
+    ReactiveFormsModule,
+    SharedModule
   ],
   exports: [AdminComponent, DashboardComponent, LoginComponent]
 })

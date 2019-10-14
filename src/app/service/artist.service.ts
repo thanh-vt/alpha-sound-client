@@ -11,6 +11,15 @@ export class ArtistService {
 
   constructor(private http: HttpClient) { }
 
+  getArtistList() {
+    return this.http.get<any>(`${environment.apiUrl}/artist/list`);
+  }
+  detailArtist(id: number) {
+    return this.http.get<any>(`${environment.apiUrl}/artist/detail?id=${id}`);
+  }
+  getSongList(id: number) {
+    return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}`);
+  }
   searchArtist(name: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/artist/search?name=${name}`).pipe(
       tap((response: any) => {

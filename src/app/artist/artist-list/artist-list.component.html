@@ -1,1 +1,18 @@
-<p>artist-list works!</p>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" id="name">Name</th>
+    <th scope="col" id="avatar">Avatar</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let artist of artistList; index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{artist.name}}</td>
+    <td><img class="avatar" src="{{artist.avatarUrl}}"></td>
+    <td><a [routerLink]="['/artist', 'detail', artist.id]">View</a></td>
+  </tr>
+  </tbody>
+</table>
+

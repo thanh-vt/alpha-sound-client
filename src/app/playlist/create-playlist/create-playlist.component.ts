@@ -31,21 +31,10 @@ export class CreatePlaylistComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-      this.message = '';
-    }, (reason) => {
+      this.message = null;
+    }, () => {
       this.createPlaylist.emit();
-      console.log(this.getDismissReason(reason));
     });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
   }
 
   onSubmit() {

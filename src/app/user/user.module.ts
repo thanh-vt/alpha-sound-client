@@ -9,12 +9,12 @@ import {SharedModule} from '../shared/shared.module';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import { EditComponent } from './edit/edit.component';
 import {SongModule} from '../song/song.module';
-import {UserListComponent} from '../user-management/user-list/user-list.component';
 import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from './search/search.component';
+import { UploadedSongListComponent } from './uploaded-song-list/uploaded-song-list.component';
 
 @NgModule({
-  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, UserListComponent, SearchComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent, UploadedSongListComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -27,6 +27,6 @@ import { SearchComponent } from './search/search.component';
     FormsModule,
     NgbButtonsModule
   ],
-  exports: [HomeComponent, RegisterComponent, UserComponent]
+  exports: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent]
 })
 export class UserModule { }

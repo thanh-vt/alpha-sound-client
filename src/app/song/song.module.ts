@@ -14,7 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { NewSongComponent } from './new-song/new-song.component';
 import {SharedModule} from '../shared/shared.module';
-
+import {PlaylistModule} from '../playlist/playlist.module';
 
 @NgModule({
   declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
@@ -28,7 +28,8 @@ import {SharedModule} from '../shared/shared.module';
     NgbModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
-    SharedModule
+    SharedModule,
+    PlaylistModule
   ],
   exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
 })
