@@ -12,4 +12,7 @@ export class AdminService {
   getUserList() {
     return this.http.get<any>(`${environment.apiUrl}/admin/user-list`);
   }
+  deleteUser(id: number) {
+    return this.http.delete<any>(`${environment.apiUrl}/user/delete?id=${id}`);
+  }
 }
