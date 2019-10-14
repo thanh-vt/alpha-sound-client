@@ -7,6 +7,7 @@ import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/ad
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
+import {UserComponent} from '../../user/user/user.component';
 
 @Component({
   selector: 'app-song-list',
@@ -22,7 +23,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   private isDisable: boolean;
   private subscription: Subscription = new Subscription();
   playlistList: Playlist[];
-  @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
+  @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying, private playlistService: PlaylistService) { }
 
@@ -91,7 +92,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   likeSong(songId: number) {
     this.subscription.add(this.songService.likeSong(songId).subscribe(
       () => {
-        console.log('Liked!');
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
@@ -102,7 +102,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   unlikeSong(songId: number) {
     this.songService.unlikeSong(songId).subscribe(
       () => {
-        console.log('Unliked!');
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);

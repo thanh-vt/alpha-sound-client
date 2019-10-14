@@ -52,6 +52,10 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
   }
 
+  listenToSong(songId: number) {
+    return this.http.post<any>(`${environment.apiUrl}/song?listen&song-id=${songId}`, {});
+  }
+
   likeSong(songId: number) {
     return this.http.post<any>(`${environment.apiUrl}/song?like&song-id=${songId}`, {});
   }
