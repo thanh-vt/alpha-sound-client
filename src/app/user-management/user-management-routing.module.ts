@@ -6,6 +6,7 @@ import {CreatePlaylistComponent} from '../playlist/create-playlist/create-playli
 import {DeletePlaylistComponent} from '../playlist/delete-playlist/delete-playlist.component';
 import {UserListComponent} from './user-list/user-list.component';
 import {UserManagementComponent} from './user-management/user-management.component';
+import {UserDeleteComponent} from './user-delete/user-delete.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'list',
         component: UserListComponent
+      },
+      {
+        path: 'delete/:id',
+        component: UserDeleteComponent
       }
     ]
   }

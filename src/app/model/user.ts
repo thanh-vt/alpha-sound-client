@@ -3,5 +3,5 @@ export interface User {
   id?: number;
   username?: string;
   password?: string;
-  imageUrl: string;
+  avatarUrl: string;
 }

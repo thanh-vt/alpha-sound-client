@@ -24,7 +24,8 @@ const routes: Routes = [
         loadChildren: () => import('../user-management/user-management.module').then(mod => mod.UserManagementModule)
       },
       {
-        path: 'artist', loadChildren: () => import('./artist-management/artist-management.module').then(mod => mod.ArtistManagementModule)
+        path: 'artist',
+        loadChildren: () => import('./artist-management/artist-management.module').then(mod => mod.ArtistManagementModule)
       }
     ]
   }
