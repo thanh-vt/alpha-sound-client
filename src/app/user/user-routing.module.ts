@@ -6,6 +6,9 @@ import {UserComponent} from './user/user.component';
 import {AuthGuard} from '../guard/auth.guard';
 import {EditComponent} from './edit/edit.component';
 import {SearchComponent} from './search/search.component';
+import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';
+import {FavoriteSongListComponent} from './favorite-song-list/favorite-song-list.component';
+import {FavoriteAlbumListComponent} from './favorite-album-list/favorite-album-list.component';
 
 const routes: Routes = [
   {
@@ -21,7 +24,10 @@ const routes: Routes = [
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},
       { path: 'playlist', loadChildren: () => import('../playlist/playlist.module').then(mod => mod.PlaylistModule)},
       { path: 'artist', loadChildren: () => import('../artist/artist.module').then(mod => mod.ArtistModule)},
-      { path: 'search/:name', component: SearchComponent}
+      { path: 'search/:name', component: SearchComponent},
+      { path: 'uploaded/list', component: UploadedSongListComponent},
+      { path: 'favorite-song/list', component: FavoriteSongListComponent},
+      { path: 'favorite-album/list', component: FavoriteAlbumListComponent}
     ]}
 ];
 

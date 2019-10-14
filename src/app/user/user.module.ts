@@ -11,9 +11,12 @@ import { EditComponent } from './edit/edit.component';
 import {SongModule} from '../song/song.module';
 import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from './search/search.component';
+import { UploadedSongListComponent } from './uploaded-song-list/uploaded-song-list.component';
+import { FavoriteSongListComponent } from './favorite-song-list/favorite-song-list.component';
+import { FavoriteAlbumListComponent } from './favorite-album-list/favorite-album-list.component';
 
 @NgModule({
-  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent],
+  declarations: [HomeComponent, RegisterComponent, UserComponent, EditComponent, SearchComponent, UploadedSongListComponent, FavoriteSongListComponent, FavoriteAlbumListComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
