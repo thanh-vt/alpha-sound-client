@@ -17,6 +17,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   { path: '', component: UserComponent, children: [
+      // { path: 'user-list', component: UserListComponent },
       { path: 'home', component: HomeComponent},
       { path: 'register', component: RegisterComponent},
       { path: 'user/edit/:id', component: EditComponent},

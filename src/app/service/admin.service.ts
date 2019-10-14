@@ -10,6 +10,6 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   getUserList() {
-    return this.http.get<any>(`${environment.apiUrl}/admin/list`);
+    return this.http.get<any>(`${environment.apiUrl}/admin/user-list`);
   }
 }

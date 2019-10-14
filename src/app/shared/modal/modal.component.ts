@@ -9,6 +9,9 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalComponent implements OnInit {
   @Input() isPoppedUp = false;
+  @Input() title = '';
+  @Input() body: string;
+  @Input() action: string;
   closeResult: string;
   @ViewChild('content', {static: false}) content: ElementRef;
 

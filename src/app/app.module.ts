@@ -37,6 +37,8 @@ const JWT_Module_Options: JwtModuleOptions = {
     UserModule,
     NgxAudioPlayerModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    AdminModule,
     ReactiveFormsModule
     // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     // JwtModule.forRoot(JWT_Module_Options)
