@@ -35,7 +35,7 @@ const routes: Routes = [
         component:  DeleteSongComponent
       },
       {
-        path:  'detail:/id',
+        path:  'detail',
         component:  SongDetailComponent
       }
     ]

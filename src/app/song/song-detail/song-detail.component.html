@@ -4,14 +4,15 @@
 <Br>
 <Br>
 
-<b>Name: </b>{{ song.name }} <Br>
-<b>Release Date: </b>  {{ song.releaseDate }}  <Br>
-<b> Artists : </b> {{ song.artists }} <Br>
-<b> Genre: </b> {{ song.genres }}   <Br>
-<b> Rating: </b> {{ song.rating }}
-<b> Mood: </b>  {{ song.mood }} <Br>
-<b> Activity: </b> {{ song.activity }} <Br>
-<b> Tags: </b>  {{ song.tags }}   <Br>
+<b>Name: </b>{{ song.name }} <br>
+<br>
+<b>Release Date: </b>  {{ song.releaseDate }}  <Br> <br>
+<b> Artists : </b> {{ song.artists }} <Br> <br>
+<b> Genre: </b> {{ song.genres }}   <Br> <br>
+<b> Rating: </b> {{ song.rating }} <br> <br>
+<b> Mood: </b>  {{ song.mood }} <Br> <br>
+<b> Activity: </b> {{ song.activity }} <Br> <br>
+<b> Tags: </b>  {{ song.tags }}   <Br> <br>
 <button class="btn btn-primary" (click)="addToPlaylist(song)" [disabled]="song.isDisabled"><i
   class="fas fa-play-circle"></i></button>
 <Br>
