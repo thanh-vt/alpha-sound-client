@@ -20,8 +20,8 @@
           class="fas fa-ellipsis-h fa-1x"></i></button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <app-modal>
-            <app-add-song-to-playlist class="card-body" [songId]="song.id"></app-add-song-to-playlist>
-            <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="card-footer"></app-create-playlist>
+            <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
+            <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
           </app-modal>
           <button ngbDropdownItem>Another Action</button>
           <button ngbDropdownItem>Something else is here</button>

@@ -5,6 +5,7 @@ import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 import {Page} from '../../model/page';
 import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {PlaylistService} from '../../service/playlist.service';
+import {Playlist} from '../../model/playlist';
 
 @Component({
   selector: 'app-song-list',
@@ -17,6 +18,7 @@ export class SongListComponent implements OnInit {
   private pages: Page[] = [];
   private message;
   private songList: Song[];
+  playlistList: Playlist[];
   @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
 
   constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying, private playlistService: PlaylistService) { }
@@ -72,7 +74,7 @@ export class SongListComponent implements OnInit {
   refreshPlaylistList(songId) {
     this.playlistService.getPlaylistListToAdd(songId).subscribe(
       result => {
-        this.child.playlistList = result;
+        this.playlistList = result;
       }, error => {
         console.log(error);
       }

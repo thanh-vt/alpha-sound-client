@@ -1,45 +1,49 @@
 import {Component, OnInit} from '@angular/core';
+import {ArtistService} from '../../../service/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {UserService} from '../../service/user.service';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {AuthService} from '../../../service/auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Artist} from '../../../model/artist';
 
 @Component({
-  selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  selector: 'app-artist-edit',
+  templateUrl: './artist-edit.component.html',
+  styleUrls: ['./artist-edit.component.scss']
 })
-export class EditComponent implements OnInit {
-  updateForm: FormGroup;
-  loading = false;
-  submitted = false;
-  returnUrl: string;
-  error = '';
-  file: any;
-  formData = new FormData();
-  message: string;
+export class ArtistEditComponent implements OnInit {
+  artistUpdateForm: FormGroup;
   isImageFileChoosen = false;
   imageFileName = '';
+  formData = new FormData();
+  file: any;
+  subscription: Subscription = new Subscription();
+  message: string;
+  artist: Artist;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private userService: UserService) {
+  constructor(private artistService: ArtistService, private fb: FormBuilder, private authService: AuthService,
+              private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
-    this.updateForm = this.fb.group({
-      username: [''],
-      // tslint:disable-next-line:max-line-length
-      password: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$')]],
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      phoneNumber: ['', Validators.required],
-      gender: [true, Validators.required],
-      birthDate: ['', Validators.required],
-      email: ['']
-    });
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.artistUpdateForm = this.fb.group({
+        name: ['', Validators.required],
+        birthDate: ['', Validators.required],
+        biography: ['', Validators.required]
+      }
+    );
+    this.artistService.getArtistDetail(id).subscribe(
+      result => {
+        this.artist = result;
+        this.artistUpdateForm = this.fb.group({
+          name: [this.artist.name, Validators.required],
+          birthDate: [this.artist.birthDate, Validators.required],
+          biography: [this.artist.biography, Validators.required]
+        });
+      }
+    );
   }
-
   selectFile(event) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
@@ -47,10 +51,9 @@ export class EditComponent implements OnInit {
       this.imageFileName = event.target.files[0].name;
     }
   }
-
   onSubmit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    console.log(this.updateForm.value);
+    console.log(this.artistUpdateForm.value);
     // this.userService.updateProfile(this.updateForm.value, id).subscribe(
     //   result => {
     //     this.message = 'Song created successfully!';
@@ -79,19 +82,18 @@ export class EditComponent implements OnInit {
     //     this.message = 'Failed to update user. Cause: ' + error.message;
     //   }
     // );
-    this.formData.append('user', new Blob([JSON.stringify(this.updateForm.value)], {type: 'application/json'}));
+    this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], {type: 'application/json'}));
     this.formData.append('avatar', this.file);
     console.log(this.formData);
-    this.userService.updateProfile(this.formData, id).subscribe(
+    this.artistService.updateArtist(this.formData, id).subscribe(
       next => {
         console.log('ok');
-        this.message = 'Update user success';
+        this.message = 'Update artist success';
       },
       error => {
         console.log('not ok!');
-        this.message = 'Failed update user';
+        this.message = 'Failed update artist';
       }
     );
   }
-
 }

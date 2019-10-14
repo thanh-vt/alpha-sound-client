@@ -16,21 +16,20 @@ const routes: Routes = [
   // },
   {path: 'login', component: LoginComponent},
   {
-    path: '', component: AdminComponent, canActivateChild: [], children: [
+    path: '', component: AdminComponent, children: [
       {path: 'dashboard', component: DashboardComponent},
       // tslint:disable-next-line:max-line-length
       {
         path: 'user-management',
         loadChildren: () => import('../user-management/user-management.module').then(mod => mod.UserManagementModule)
       },
-
-    ]
-  },
-  {
-    path: 'artist', component: ArtistComponent, children: [
-      {path: 'list', component: ArtistListComponent}
+      {
+        path: 'artist', loadChildren: () => import('./artist-management/artist-management.module').then(mod => mod.ArtistManagementModule)
+      }
     ]
   }
+
+
 ];
 
 @NgModule({
