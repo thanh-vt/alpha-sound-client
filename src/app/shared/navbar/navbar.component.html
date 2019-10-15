@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg py-4">
+<nav class="navbar navbar-expand-lg py-1">
   <button (click)="isCollapsed=!isCollapsed" class="navbar-toggler py-2 mx-2 my-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <i class="fas fa-bars"></i>
   </button>
@@ -6,16 +6,16 @@
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-5" id="navbarSupportedContent">
     <ul class="navbar-nav">
       <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
-        <a class="nav-link" [routerLink]="['/home']"><h2><i class="fas fa-home"></i> Home</h2></a>
+        <a class="nav-link" [routerLink]="['/home']"><h3><i class="fas fa-home"></i> Home</h3></a>
       </li>
       <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
-        <a class="nav-link" [routerLink]="['/song']"><h2><i class="fas fa-music"></i> Song</h2></a>
+        <a class="nav-link" [routerLink]="['/song']"><h3><i class="fas fa-music"></i> Song</h3></a>
       </li>
       <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
-        <a class="nav-link" [routerLink]="['/album']"><h2><i class="fas fa-compact-disc"></i> Album</h2></a>
+        <a class="nav-link" [routerLink]="['/album']"><h3><i class="fas fa-compact-disc"></i> Album</h3></a>
       </li>
       <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
-        <a class="nav-link" [routerLink]="['/artist']"><h2><i class="fas fa-microphone-alt"></i> Artist</h2></a>
+        <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> Artist</h3></a>
       </li>
     </ul>
   </div>
@@ -29,7 +29,7 @@
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/user','edit', userId]" >Edit</a>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']">Playlist</a>
         <div class="dropdown-divider"></div>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/user','uploaded-song-list']">Song</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded','list']">Song</a>
         <a ngbDropdownItem (click)="logoutClick()" class="dropdown-item" tabindex="-1" aria-disabled="true">Logout</a>
       </div>
     </div>

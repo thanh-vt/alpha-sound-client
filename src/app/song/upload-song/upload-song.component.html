@@ -10,9 +10,9 @@
   <div formArrayName="artists" class="form-group"
        *ngFor="let artist of artists.controls; let i = index;">
     <div [formGroupName]="i">
-      <mat-form-field>
+      <mat-form-field class="demo">
         <label for="artistName">{{ 'Artist ' + (i + 1) + ' name' }}
-          <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+          <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control w-100" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
         </label>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngIf="isLoading" class="is-loading">
@@ -21,8 +21,9 @@
           <ng-container *ngIf="!isLoading">
             <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
               <span>{{ artist.name }}</span>
-              <small> | ID: {{artist.id}}</small>
-              <img [src]="artist.avatarUrl" alt="">
+<!--              <small> | ID: {{artist.id}}</small>-->
+<!--              <img [src]="artist.avatarUrl" alt="">-->
+              <img style="vertical-align:middle;" aria-hidden src="{{artist.avatarUrl}}" height="40" />
             </mat-option>
           </ng-container>
         </mat-autocomplete>

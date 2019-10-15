@@ -66,4 +66,7 @@ export class SongService {
   getUserSongList() {
     return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
   }
+  deleteSong(id: number) {
+    return this.http.delete<any>(`${environment.apiUrl}/song/delete?id=${id}`);
+  }
 }
