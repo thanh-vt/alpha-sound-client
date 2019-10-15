@@ -66,4 +66,7 @@ export class SongService {
   getUserSongList() {
     return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
   }
+  commentSong(songId: number, comment: Comment) {
+  return this.http.post<any>(`${environment.apiUrl}/song?comment&song-id=${songId}`, comment);
+  }
 }

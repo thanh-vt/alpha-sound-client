@@ -1,4 +1,5 @@
 import {Artist} from './artist';
+import {Comment} from './comment';
 
 export interface Song {
   id: number;
@@ -14,4 +15,5 @@ export interface Song {
   activity?: any;
   isDisabled?: boolean;
   liked?: boolean;
+  comments?: Comment[];
 }
