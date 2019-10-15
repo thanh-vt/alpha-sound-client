@@ -5,6 +5,7 @@
     <th scope="col">Name</th>
     <th scope="col">Release Date</th>
     <th scope="col"></th>
+    <th scope="col"></th>
   </tr>
   </thead>
   <tbody>
@@ -13,27 +14,21 @@
     <td>{{ song.name }}</td>
     <td>{{ song.releaseDate | date }}</td>
     <td>
-      <button class="btn btn-primary" (click)="addToPlaylist(song)" [disabled]="song.isDisabled"><i
+      <button (click)="likeSong(song.id)" [disabled]="isDisable" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
+      <button (click)="unlikeSong(song.id)" [disabled]="isDisable" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
+    </td>
+    <td>
+      <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
         class="fas fa-play-circle"></i></button>
       <div ngbDropdown class="d-inline-block">
         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i
           class="fas fa-ellipsis-h fa-1x"></i></button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem [routerLink]="['/playlist','add-to-playlist',song.id]">Add to playlist</button>
-
-          <button mat-icon-button (click)="toggleSelected()">
-            <mat-icon
-              *ngIf="selected"
-              aria-label="Example icon-button with a heart icon">
-              favorite
-            </mat-icon>
-            <mat-icon
-              *ngIf="!selected"
-              aria-label="Example icon-button with a heart icon">
-              favorite_border
-            </mat-icon>
-            </button>
-
+          <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
+            <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
+            <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
+          </app-modal>
+          <button ngbDropdownItem>Another Action</button>
           <button ngbDropdownItem>Something else is here</button>
         </div>
       </div>
@@ -43,7 +38,16 @@
   </tr>
   </tbody>
 </table>
-<ngb-pagination
-  [(page)]="pageNumber"
-  [pageSize]="pageSize"
-  [collectionSize]="totalItems"></ngb-pagination>
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" *ngIf="pageNumber > 0" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    <li *ngFor="let page of pages" class="page-item">
+      <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" *ngIf="(pageNumber < pages.length) && (pages.length > 1)" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">Next</a>
+    </li>
+  </ul>
+</nav>

@@ -1,44 +1,54 @@
 <form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="songName">Song Name</label>
-    <input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
-  </div>
-  <div class="form-group">
-    <label for="artistName">Artist Name</label>
-    <input type="text" class="form-control" id="artistName" placeholder="Multiple artists separated by commas" formControlName="artists">
-  </div>
-  <div class="form-group">
-    <label for="releaseDate">Release Date</label>
-    <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
-  </div>
-  <div class="form-group">
-    <input type="hidden" formControlName="album">
-  </div>
-  <div class="form-group">
-    <label for="genres">Genres</label>
-    <input type="text" class="form-control" id="genres" placeholder="Multiple genres separated by commas" formControlName="genres">
-  </div>
-  <div class="form-group">
-    <label for="tags">Tags</label>
-    <input type="text" class="form-control" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags">
-  </div>
-  <div class="form-group">
-    <label for="country">Country</label>
-    <input type="text" class="form-control" id="country" placeholder="Specify a country" formControlName="country">
-  </div>
-  <div class="form-group">
-    <label for="theme">Theme</label>
-    <input type="text" class="form-control" id="theme" placeholder="Specify an theme" formControlName="theme">
+    <input [value]="" type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="songUpdateForm.get('name').hasError('required') && songUpdateForm.get('name').touched">
+      Must be filled!
+    </div>
   </div>
 
+
+  <div formArrayName="artists" class="form-group"
+       *ngFor="let artist of artists.controls; let i = index;">
+    <div [formGroupName]="i">
+      <mat-form-field>
+        <label for="artistName">{{ 'Artist ' + (i + 1) + ' name' }}
+          <input matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text"
+                 [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+        </label>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngIf="isLoading" class="is-loading">
+            <mat-spinner diameter="25"></mat-spinner>
+          </mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
+              <span>{{ artist.name }}</span>
+              <small> | ID: {{artist.id}}</small>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <button type="button" class="btn btn-info" (click)="addArtist()">+</button>
+      <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
+      </button>
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label for="releaseDate">Release Date</label>
+    <input [value]="song.releaseDate | date:'yyyy-MM-dd'" type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="songUpdateForm.get('releaseDate').hasError('required') && songUpdateForm.get('releaseDate').touched">
+      Must be filled!
+    </div>
+  </div>
+
+
   <button type="submit" class="btn btn-primary">Submit</button>
+
   <span *ngIf="message">{{ message }}</span>
+
 </form>
-<!--<ngb-pagination>-->
-<!--  <ng-template ngbPaginationFirst>First</ng-template>-->
-<!--  <ng-template ngbPaginationLast>Last</ng-template>-->
-<!--  <ng-template ngbPaginationPrevious>Prev</ng-template>-->
-<!--  <ng-template ngbPaginationNext>Next</ng-template>-->
-<!--  <ng-template ngbPaginationEllipsis>...</ng-template>-->
-<!--  <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>-->
-<!--</ngb-pagination>-->

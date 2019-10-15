@@ -5,7 +5,8 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {SongService} from '../../service/song.service';
 import {PlaylistService} from '../../service/playlist.service';
-import {AddSongToPlaylistService} from '../../service/add-song-to-playlist.service';
+
+import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
 
 @Component({
   selector: 'app-album-detail',
@@ -23,7 +24,7 @@ export class AlbumDetailComponent implements OnInit {
     private playlistService: PlaylistService,
     private songService: SongService,
     private route: ActivatedRoute,
-    private addSongToPlaylistService: AddSongToPlaylistService
+    private addSongToPlaying: AddSongToPlaying
   ) {
   }
 
@@ -46,6 +47,6 @@ export class AlbumDetailComponent implements OnInit {
   }
   addToPlaylist(song) {
     song.isDisabled = true;
-    this.addSongToPlaylistService.emitChange(song);
+    this.addSongToPlaying.emitChange(song);
   }
 }

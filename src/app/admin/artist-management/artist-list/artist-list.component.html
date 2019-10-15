@@ -1,0 +1,70 @@
+<!--<table class="table table-striped">-->
+<!--  <thead>-->
+<!--  <tr>-->
+<!--    <th scope="col">#</th>-->
+<!--    <th scope="col">Name</th>-->
+<!--    <th scope="col">Birth Date</th>-->
+<!--    <th scope="col"></th>-->
+<!--  </tr>-->
+<!--  </thead>-->
+<!--  <tbody>-->
+<!--  <tr *ngFor="let artist of artistList; index as i">-->
+<!--    <th scope="row">{{ i + 1 }}</th>-->
+<!--    <td>{{ artist.name }}</td>-->
+<!--    <td>{{ artist.birthDate | date }}</td>-->
+<!--    <td>-->
+<!--      <button class="btn btn-primary">Dropdown</button>-->
+<!--      <div ngbDropdown class="d-inline-block">-->
+<!--        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i-->
+<!--          class="fas fa-ellipsis-h fa-1x"></i></button>-->
+<!--        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">-->
+<!--          <button ngbDropdownItem>Another Action</button>-->
+<!--          <button ngbDropdownItem>Something else is here</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </td>-->
+<!--    <td><a>Edit</a></td>-->
+
+<!--  </tr>-->
+<!--  </tbody>-->
+<!--</table>-->
+<!--&lt;!&ndash;<nav aria-label="...">&ndash;&gt;-->
+<!--&lt;!&ndash;  <ul class="pagination">&ndash;&gt;-->
+<!--&lt;!&ndash;    <li class="page-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <a class="page-link" *ngIf="pageNumber > 0" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </li>&ndash;&gt;-->
+<!--&lt;!&ndash;    <li *ngFor="let page of pages" class="page-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)"&ndash;&gt;-->
+<!--&lt;!&ndash;         tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </li>&ndash;&gt;-->
+<!--&lt;!&ndash;    <li class="page-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <a class="page-link" *ngIf="(pageNumber < pages.length) && (pages.length > 1)" (click)="goToPage(pageNumber + 1)"&ndash;&gt;-->
+<!--&lt;!&ndash;         tabindex="-1" aria-disabled="true">Next</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </li>&ndash;&gt;-->
+<!--&lt;!&ndash;  </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;</nav>&ndash;&gt;-->
+<a [routerLink]="['/admin','artist','upload']">Upload new artist</a>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" id="name">Name</th>
+    <th scope="col" id="birthDate">Birth Date</th>
+    <th scope="col" >Avatar</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let artist of artistList; index as i">
+    <td>{{ i + 1 }}</td>
+    <td class="clickable" [routerLink]="['/admin','artist','detail',artist.id]">{{ artist.name }}</td>
+    <td>{{artist.birthDate | date}}</td>
+    <td><img src="{{artist.avatarUrl}}" class="img-thumbnail avatar"></td>
+    <td><app-modal [body]="'Are you sure want to delete artist ' + artist.name" [action]="'delete'">
+      <app-artist-delete class="modal-footer" [id]="artist.id" [artistName]="artist.name" (deleteArtist)="deleteArtist()"></app-artist-delete>
+    </app-modal></td>
+    <td><a [routerLink]="['/admin','artist','edit',artist.id]">Edit</a></td>
+  </tr>
+  </tbody>
+</table>

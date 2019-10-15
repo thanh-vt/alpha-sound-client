@@ -35,7 +35,7 @@ const routes: Routes = [
         component:  DeleteAlbumComponent
       },
       {
-        path:  'detail/:id',
+        path:  'detail',
         component:  AlbumDetailComponent
       }
     ]

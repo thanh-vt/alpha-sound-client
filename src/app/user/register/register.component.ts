@@ -24,11 +24,12 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(5)]],
       // tslint:disable-next-line:max-line-length
-      password: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$') ]],
+      // password: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$'), Validators.minLength(6) ]],
+      password: ['', [Validators.required, Validators.minLength(6) ]],
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       phoneNumber: ['', Validators.required],
-      gender: [1, Validators.required],
+      gender: [true, Validators.required],
       birthDate: ['', Validators.required],
       email: ['', Validators.email]
     });
@@ -41,7 +42,8 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.userService.createUser(this.registerForm.value).subscribe(
+    console.log(this.registerForm.value);
+    this.userService.register(this.registerForm.value).subscribe(
       result => {
         this.message = 'User created successfully!';
       },
@@ -55,8 +57,6 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-
-    alert('SUCCESS!!');
   }
 }
 

@@ -16,8 +16,23 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/list`);
   }
 
-  updateSong(song: Song, id: number): Observable<Song> {
+  getSongListPage(i) {
+    if (i !== null) {
+      return this.http.get<any>(`${environment.apiUrl}/song/list?page=${i}`);
+    } else {
+      return this.http.get<any>(`${environment.apiUrl}/song/list`);
+    }
+  }
+
+  updateSong(song: any, id: number): Observable<Song> {
     return this.http.put<Song>(`${environment.apiUrl}/song/edit?id=${id}`, song);
+  }
+
+  uploadSong(formData): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
   addSongToPlaylist(songId: number, playlistId: number) {
@@ -30,9 +45,25 @@ export class SongService {
 
   deletePlaylistSong(songId: number, playlistId: number): Observable<HttpEvent<any>> {
     return this.http.put<any>
-    (`${environment.apiUrl}/song/delete-playlist-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
+    (`${environment.apiUrl}/playlist/remove-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
   }
+
   getNewSong() {
     return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
+  }
+
+  listenToSong(songId: number) {
+    return this.http.post<any>(`${environment.apiUrl}/song?listen&song-id=${songId}`, {});
+  }
+
+  likeSong(songId: number) {
+    return this.http.post<any>(`${environment.apiUrl}/song?like&song-id=${songId}`, {});
+  }
+
+  unlikeSong(songId: number) {
+    return this.http.post<any>(`${environment.apiUrl}/song?unlike&song-id=${songId}`, {});
+  }
+  getUserSongList() {
+    return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
   }
 }

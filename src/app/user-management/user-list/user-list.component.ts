@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../model/user';
 import {UserService} from '../../service/user.service';
+import {AdminService} from '../../service/admin.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -14,11 +16,14 @@ export class UserListComponent implements OnInit {
   private totalItems: number;
   private message;
   private userList: User[];
-  constructor(private userService: UserService) { }
+  private subscription: Subscription = new Subscription();
+
+  constructor(private adminService: AdminService) {
+  }
 
   ngOnInit() {
-    console.log('done');
-    this.userService.getUserList().subscribe(
+
+    this.subscription = this.adminService.getUserList().subscribe(
       result => {
         if (result != null) {
           this.userList = result.content;
@@ -29,6 +34,22 @@ export class UserListComponent implements OnInit {
           this.pageSize = result.pageable.pageSize;
         }
       }, error => {
+        console.log(error.message);
+      }
+    );
+  }
+  deleteUser() {
+    // this.subscription.unsubscribe();
+    this.subscription = this.adminService.getUserList().subscribe(
+      result => {
+        if (result != null) {
+          this.userList = result.content;
+
+        } else {
+          this.userList = null;
+        }
+      }, error => {
+        this.message = 'Cannot retrieve artist list. Cause: ' + error.message;
       }
     );
   }

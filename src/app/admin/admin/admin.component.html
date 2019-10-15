@@ -1,7 +1,6 @@
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px;"
-     xmlns:padding="http://www.w3.org/1999/xhtml" xmlns:padding="http://www.w3.org/1999/xhtml">
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px;">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">LAMBDA</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"/>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" />
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="#">Sign out</a>
@@ -14,109 +13,46 @@
     <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="height: 1000px">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
-          <li><a href="#"><em class="fa fa-home"></em>Notifications</a></li>
-          <li><a href="#"><em class="fa fa-bar-chart"></em> Dashboard</a></li>
-          <li><a href="#"><em class="fa fa fa-clone"></em> Table & Data </a></li>
-          <li><a href="#"><em class="fa fa-pencil-square-o"></em> User Management</a></li>
-          <li><a href="#"><em class="fa fa-warning"></em> Song Management</a></li>
-          <li><a href="#"><em class="fa fa-hand-o-up"></em> Album Management</a></li>
-          <li><a href="#"><em class="fa fa-table"></em> Artist Management</a></li>
-          <li><a href="#"><em class="fa fa-columns"></em> Uploads Request</a></li>
+          <li class="nav-item" style="margin-top: 25px">
+            <a class="nav-link active" href="#">
+              <i class="fas fa-home"></i>
+              Dashboard <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-border-all"></i>
+              Table & Data
+            </a>
+
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-users"></i>
+              User Management
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-music"></i>
+              Song Management
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/admin/artist']" >
+              <i class="fas fa-bars"></i>
+              Artist Management
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-bell"></i>
+              Uploads Request
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
-    <div class="col-md-2.5" style="padding:10px">
-      <table class="table">
-        <thead>
-        <div class="column ">
-          <div class="card">
-            <div class="card-title">
-              <h3>New Members</h3>
-            </div>
-            <div class="card-block">
-              <table>
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Role</th>
-                  <th>Location</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>Mỹ Tâm</td>
-                  <td>Member</td>
-                  <td>Việt Nam</td>
-                </tr>
-                <tr>
-                  <td>Sơn Tùng M-TP</td>
-                  <td>Member</td>
-                  <td>Việt Nam</td>
-                </tr>
-                <tr>
-                  <td>Bùi Bích phương</td>
-                  <td>Member</td>
-                  <td>Việt Nam</td>
-                </tr>
-                <tr>
-                  <td>Mr. Siro</td>
-                  <td>Member</td>
-                  <td>Việt Nam</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        </thead>
-      </table>
-    </div>
-    <div class="col-md-3" style="padding:10px">
-        <div class="row grid-responsive mt-2">
-
-          <div class="column">
-            <div class="card">
-              <div class="card-title">
-                <h2 class="float-left">Notifications</h2>
-
-
-              </div>
-              <div class="card-block">
-                <div class="mt-1">
-
-                  <div class="float-left ml-1">
-                    <p class="m-0"><strong>Bùi Bích Phương</strong> <span
-                      class="text-muted"> uploaded a new photo</span></p>
-                    <p class="text-small text-muted">30 minutes ago</p>
-                  </div>
-                  <div class="clearfix"></div>
-                  <hr class="m-0 mb-2"/>
-                </div>
-                <div class="mt-1">
-
-                  <div class="float-left ml-1">
-                    <p class="m-0"><strong>Mr. Siro</strong> <span
-                      class="text-muted"> uploaded a new song</span>
-                    </p>
-                    <p class="text-small text-muted">12 hours ago</p>
-                  </div>
-                  <div class="clearfix"></div>
-                  <hr class="m-0 mb-2"/>
-                </div>
-                <div class="mt-1">
-
-                  <div class="float-left ml-1">
-                    <p class="m-0"><strong>Sơn Tùng M-TP </strong> <span class="text-muted"> uploaded a new album</span>
-                    </p>
-                    <p class="text-small text-muted">2 days ago</p>
-                  </div>
-                  <div class="clearfix"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="col-md-8"><router-outlet></router-outlet></div>
   </div>
-
+</div>

@@ -4,6 +4,7 @@ import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
+import {Song} from '../../model/song';
 
 @Component({
   selector: 'app-user',
@@ -15,7 +16,7 @@ export class UserComponent implements OnInit {
   currentUser: UserToken;
   isLoggedIn: boolean;
   numberOfTracks = 1;
-  userId: number;
+
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
   @Input() msaapPageSizeOptions = [6];
@@ -54,7 +55,6 @@ export class UserComponent implements OnInit {
         this.msaapDisplayVolumeControls = !this.msaapDisplayVolumeControls;
         const reEnableVolumeControl = setTimeout(() => {
           this.msaapDisplayVolumeControls = true;
-          console.log(this.msaapPlaylist);
           clearTimeout(reEnableVolumeControl);
         }, 0);
         if (this.numberOfTracks === 1) {
@@ -62,18 +62,18 @@ export class UserComponent implements OnInit {
             title: data.name,
             link: data.url
           };
-          this.numberOfTracks++;
+          // this.numberOfTracks++;
         } else {
           this.msaapPlaylist.push({
             title: data.name,
             link: data.url
           });
-          this.numberOfTracks = this.msaapPlaylist.length;
+          // this.numberOfTracks = this.msaapPlaylist.length;
         }
+        this.numberOfTracks = this.msaapPlaylist.length;
       });
     } else {
       this.isLoggedIn = false;
     }
   }
-
 }

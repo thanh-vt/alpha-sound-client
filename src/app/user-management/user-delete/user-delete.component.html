@@ -1,0 +1,10 @@
+<div>
+  <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    Delete
+  </button>
+  <!--</div>-->
+  <!--  <span *ngIf="!deleted">Do you want to delete artist {{ artistName }}?</span>-->
+  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+       [class.alert-success]="!error">{{message}}</div>
+</div>

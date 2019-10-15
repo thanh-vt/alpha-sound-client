@@ -2,20 +2,19 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Name</th>
-    <th scope="col">Avatar</th>
-    <th scope="col"></th>
+    <th scope="col" id="name">Name</th>
+    <th scope="col" >Avatar</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let user of userList; index as i">
-    <th scope="row">{{ i + 1 }}</th>
-    <td>{{ user.username }}</td>
-    <td>{{user.imageUrl}}</td>
+    <td>{{ i + 1 }}</td>
+    <td class="clickable" [routerLink]="['/admin','user-management','detail',user.id]">{{ user.username }}</td>
+    <td><img src="{{user.avatarUrl}}" class="img-thumbnail avatar"></td>
+    <td><app-modal [body]="'Are you sure want to delete user ' + user.username" [action]="'delete'">
+      <app-user-delete class="modal-footer" [id]="user.id" [username]="user.username" (deleteUser)="deleteUser()"></app-user-delete>
+    </app-modal></td>
   </tr>
   </tbody>
 </table>
-<ngb-pagination
-  [(page)]="pageNumber"
-  [pageSize]="pageSize"
-  [collectionSize]="totalItems"></ngb-pagination>

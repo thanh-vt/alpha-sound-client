@@ -13,5 +13,5 @@ export interface Song {
   mood?: any;
   activity?: any;
   isDisabled?: boolean;
-  lyrics: string;
+  liked?: boolean;
 }

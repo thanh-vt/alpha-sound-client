@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ArtistDetailComponent} from './artist-detail/artist-detail.component';
-
 import {ArtistComponent} from './artist/artist.component';
+import {ArtistListComponent} from './artist-list/artist-list.component';
+import {ArtistDetailComponent} from './artist-detail/artist-detail.component';
 
 
 const routes: Routes = [
@@ -13,15 +13,18 @@ const routes: Routes = [
   },
   {
     path:  '',
-    component: ArtistComponent,
+    component:  ArtistComponent,
     children: [
       {
-        path:  'detail',
+        path:  'list',
+        component:  ArtistListComponent
+      },
+      {
+        path:  'detail/:id',
         component:  ArtistDetailComponent
       }
     ]
   }
-
 ];
 
 @NgModule({

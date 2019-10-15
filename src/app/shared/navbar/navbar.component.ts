@@ -3,6 +3,7 @@ import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
   @Output() logoutAction = new EventEmitter();
   @Input() isLoggedIn: boolean;
   @Input() username: string;
-  id: number;
+  userId: number;
   message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
@@ -40,6 +41,9 @@ export class NavbarComponent implements OnInit {
     });
     this.isCollapsed = true;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+    if (this.authService.isAuthenticated()) {
+      this.userId = JSON.parse(localStorage.getItem('userToken')).id;
+    }
   }
 
   onSignIn() {
@@ -54,7 +58,9 @@ export class NavbarComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe(
       user => {
         localStorage.setItem('userToken', JSON.stringify(user));
+        this.userId = user.id;
         this.loginAction.emit(user.username);
+        this.loading = false;
         this.router.navigate([this.returnUrl]);
       }, error => {
         this.message = 'Ten dang nhap hoac mat khau khong chinh xac';
@@ -64,7 +70,12 @@ export class NavbarComponent implements OnInit {
   }
 
   onSearch() {
-
+    const name = this.searchForm.get('searchText').value;
+    // tslint:disable-next-line:only-arrow-functions
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    };
+    this.router.navigate(['/', 'search', name]);
   }
 
   logoutClick() {

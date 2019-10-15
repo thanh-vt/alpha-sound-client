@@ -3,5 +3,11 @@ export interface User {
   id?: number;
   username?: string;
   password?: string;
-  imageUrl: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: boolean;
+  birthDate?: number;
+  phoneNumber?: number;
+  email?: string;
+  avatarUrl: string;
 }

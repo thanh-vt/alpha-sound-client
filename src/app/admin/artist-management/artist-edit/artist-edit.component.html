@@ -1,0 +1,35 @@
+<form [formGroup]="artistUpdateForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="artistName">Artist Name</label>
+    <input type="text" class="form-control" id="artistName" placeholder="Enter song name" formControlName="name">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="artistUpdateForm.get('name').hasError('required') && artistUpdateForm.get('name').touched">
+      Must be filled!
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="birthDate">Birth Date</label>
+    <input [value]="artist.birthDate | date:'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" placeholder="yyyy-mm-dd" formControlName="birthDate">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="artistUpdateForm.get('birthDate').hasError('required') && artistUpdateForm.get('birthDate').touched">
+      Must be filled!
+    </div>
+  </div>
+
+  <label for="avatar">Avatar</label>
+  <div class="form-group custom-file">
+
+    <label class="custom-file-label" *ngIf=!isImageFileChoosen>Choose file</label>
+    <label class="custom-file-label" *ngIf=isImageFileChoosen>{{ imageFileName }}</label>
+    <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
+  </div>
+  <div class="form-group">
+    <label for="biography"></label>
+    <textarea class="form-control" id="biography" formControlName="biography"></textarea>
+  </div>
+  <div class="mt-sm-3">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  <span *ngIf="message">{{ message }}</span>
+  <!-- Progress Bar -->
+</form>

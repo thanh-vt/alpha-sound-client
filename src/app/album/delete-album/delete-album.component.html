@@ -1,1 +1,31 @@
-<p>delete-album works!</p>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col"><b>Name</b></th>
+    <th scope="col"><b>Artists</b></th>
+    <th scope="col"><b>country</b></th>
+    <th scope="col"><b>Release Date</b></th>
+    <th scope="col"><b>theme</b></th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let song of songList; index as i">
+  <tr>
+    <th scope="row">{{ i + 1 }}</th>
+    <td>{{ album.songs }}</td>
+    <td>{{ album.artists}}</td>
+    <td>{{ album.country}}</td>
+    <td>{{ album.releaseDate}}</td>
+    <td>{{ album.theme}}</td>
+<!--    <td> album.songs </td>-->
+<!--    <td> album.artists</td>-->
+<!--    <td> album.country</td>-->
+<!--    <td> album.releaseDate</td>-->
+<!--    <td> album.theme</td>-->
+
+  </tr>
+  </tbody>
+</table>
+<button (click)="deleteAlbum(album.id)"  class="btn btn-outline-danger" >Delete album</button>
