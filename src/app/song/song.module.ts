@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { NewSongComponent } from './new-song/new-song.component';
 import {SharedModule} from '../shared/shared.module';
 import {PlaylistModule} from '../playlist/playlist.module';
+import {AutoSizeInputModule} from 'ngx-autosize-input';
 
 @NgModule({
   declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
@@ -29,7 +30,8 @@ import {PlaylistModule} from '../playlist/playlist.module';
     MatAutocompleteModule,
     MatProgressSpinnerModule,
     SharedModule,
-    PlaylistModule
+    PlaylistModule,
+    AutoSizeInputModule
   ],
   exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
 })
