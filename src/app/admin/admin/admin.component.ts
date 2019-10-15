@@ -10,7 +10,6 @@ import {ModalComponent} from '../../shared/modal/modal.component';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  @Output() logoutAction = new EventEmitter();
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
 
@@ -43,7 +42,6 @@ export class AdminComponent implements OnInit {
   signOut() {
     this.hasNotLoggedInAsAdmin = true;
     this.authService.logout();
-    this.logoutAction.emit();
   }
 
   popLoginFormUp() {
