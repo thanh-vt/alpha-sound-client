@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AuthGuard} from './guard/auth.guard';
-import {UserListComponent} from './user-management/user-list/user-list.component';
+import {UserListComponent} from './admin/user-management/user-list/user-list.component';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./user/user.module').then(mod => mod.UserModule)},

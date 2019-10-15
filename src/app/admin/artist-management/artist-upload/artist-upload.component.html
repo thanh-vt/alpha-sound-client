@@ -1,7 +1,7 @@
 <form [formGroup]="artistUploadForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="artistName">Artist Name</label>
-    <input type="text" class="form-control" id="artistName" placeholder="Enter song name" formControlName="name">
+    <input type="text" class="form-control" id="artistName" placeholder="Enter artist name" formControlName="name">
     <div class="alert alert-danger" role="alert" *ngIf="artistUploadForm.get('name').hasError('required') && (artistUploadForm.get('name').touched || submitted)">
       Must be filled!
     </div>

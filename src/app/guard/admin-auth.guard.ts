@@ -17,10 +17,7 @@ import {AuthService} from '../service/auth.service';
   providedIn: 'root'
 })
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let hasRoleAdmin = false;

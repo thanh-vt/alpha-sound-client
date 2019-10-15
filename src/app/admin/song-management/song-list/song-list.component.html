@@ -1,0 +1,22 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" id="name">Created by</th>
+    <th scope="col" id="birthDate">Name</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let song of songList; index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{song.uploader.username}}</td>
+    <td>{{ song.title }}</td>
+    <td>
+      <app-modal [body]="'Are you sure want to delete artist ' + song.title" [action]="'delete'">
+        <app-song-delete class="modal-footer" [id]="song.id" [songTitle]="song.title" (deleteSong)="deleteSong()"></app-song-delete>
+      </app-modal>
+    </td>
+  </tr>
+  </tbody>
+</table>

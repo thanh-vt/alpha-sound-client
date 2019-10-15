@@ -8,10 +8,10 @@ import { LoginComponent } from './login/login.component';
 import {UserModule} from '../user/user.module';
 import {ArtistComponent} from './artist-management/artist/artist.component';
 import {ArtistManagementModule} from './artist-management/artist-management.module';
-import {UserManagementModule} from '../user-management/user-management.module';
+import {UserManagementModule} from './user-management/user-management.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
-import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AdminComponent, DashboardComponent, LoginComponent],
@@ -23,10 +23,8 @@ import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootst
     UserManagementModule,
     ReactiveFormsModule,
     SharedModule,
-    NgbPaginationModule,
-    NgbTabsetModule,
-    FormsModule,
-    NgbButtonsModule
+    NgbModule,
+    FormsModule
   ],
   exports: [AdminComponent, DashboardComponent, LoginComponent]
 })

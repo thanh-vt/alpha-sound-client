@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error = '';
+  error: string;
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private fb: FormBuilder) {
@@ -48,12 +48,10 @@ export class NavbarComponent implements OnInit {
 
   onSignIn() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
-
     this.loading = true;
     this.authService.login(this.loginForm.value).subscribe(
       user => {
@@ -63,7 +61,7 @@ export class NavbarComponent implements OnInit {
         this.loading = false;
         this.router.navigate([this.returnUrl]);
       }, error => {
-        this.message = 'Ten dang nhap hoac mat khau khong chinh xac';
+        this.message = 'Wrong username or password';
         this.loading = false;
       }
     );

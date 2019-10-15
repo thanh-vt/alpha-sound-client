@@ -6,7 +6,7 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import {UserListComponent} from './user-list/user-list.component';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import { UserDeleteComponent } from './user-delete/user-delete.component';
-import {SharedModule} from '../shared/shared.module';
+import {SharedModule} from '../../shared/shared.module';
 
 
 @NgModule({

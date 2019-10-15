@@ -8,11 +8,13 @@ import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Progress} from '../../model/progress';
 import { DatePipe } from '@angular/common';
+import {ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-upload-song',
   templateUrl: './upload-song.component.html',
-  styleUrls: ['./upload-song.component.scss']
+  styleUrls: ['./upload-song.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UploadSongComponent implements OnInit {
 

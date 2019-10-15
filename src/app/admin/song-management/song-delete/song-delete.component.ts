@@ -1,29 +1,26 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {AdminService} from '../../service/admin.service';
+import {SongService} from '../../../service/song.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: 'app-user-delete',
-  templateUrl: './user-delete.component.html',
-  styleUrls: ['./user-delete.component.scss']
+  selector: 'app-song-delete',
+  templateUrl: './song-delete.component.html',
+  styleUrls: ['./song-delete.component.scss']
 })
-export class UserDeleteComponent implements OnInit {
+export class SongDeleteComponent implements OnInit, OnDestroy {
   deleted: boolean;
-  @Input() username: string;
+  @Input() songTitle: string;
   @Input() id: number;
   loading = false;
   message: string;
   error = false;
   private subscription: Subscription = new Subscription();
-  @Output() deleteUser = new EventEmitter();
-  constructor(private adminService: AdminService, private modalService: NgbModal, private router: Router,
-              private route: ActivatedRoute) { }
+  @Output() deleteSong = new EventEmitter();
+  constructor(private songService: SongService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.deleted = false;
-  }
+
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
     }, (reason) => {
@@ -40,21 +37,28 @@ export class UserDeleteComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
+  ngOnInit() {
+    this.deleted = false;
+  }
   onSubmit() {
     this.subscription.add(
-      this.adminService.deleteUser(this.id).subscribe(
+      this.songService.deleteSong(this.id).subscribe(
         result => {
-          this.deleteUser.emit();
+          this.deleteSong.emit();
           console.log(this.id);
           this.error = false;
           this.deleted = true;
-          this.message = 'User deleted successfully!';
+          this.message = 'Song deleted successfully!';
         },
         error => {
           this.error = true;
-          this.message = 'Failed to delete user. Cause: ' + error.message;
+          this.message = 'Failed to delete song. Cause: ' + error.message;
         }
       ));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }
