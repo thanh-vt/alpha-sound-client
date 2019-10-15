@@ -11,7 +11,7 @@ import {ModalComponent} from '../../shared/modal/modal.component';
 })
 export class AdminComponent implements OnInit {
   @Output() logoutAction = new EventEmitter();
-  isLoggedInAsAdmin = false;
+  hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
 
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
@@ -20,7 +20,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     if (!this.authService.isAuthenticated()) {
-      this.isLoggedInAsAdmin = true;
+      this.hasNotLoggedInAsAdmin = true;
     } else {
       let hasRoleAdmin = false;
       const roleList = JSON.parse(localStorage.getItem('userToken')).roles;
@@ -31,17 +31,17 @@ export class AdminComponent implements OnInit {
         }
       }
       if (hasRoleAdmin) {
-        this.isLoggedInAsAdmin = false;
+        this.hasNotLoggedInAsAdmin = false;
       } else {
         this.authService.logout();
-        this.isLoggedInAsAdmin = true;
+        this.hasNotLoggedInAsAdmin = true;
         this.router.navigate(['/admin']);
       }
     }
   }
 
   signOut() {
-    this.isLoggedInAsAdmin = true;
+    this.hasNotLoggedInAsAdmin = true;
     this.authService.logout();
     this.logoutAction.emit();
   }

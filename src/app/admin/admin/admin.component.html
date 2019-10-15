@@ -3,10 +3,10 @@
   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" />
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <button class="btn btn-light" (click)="popLoginFormUp()" *ngIf="isLoggedInAsAdmin">Sign in as Administrator</button>
+      <button class="btn btn-light" (click)="popLoginFormUp()" *ngIf="hasNotLoggedInAsAdmin">Sign in as Administrator</button>
     </li>
     <li class="nav-item text-nowrap">
-      <button class="btn btn-light" (click)="signOut()" *ngIf="!isLoggedInAsAdmin">Sign out</button>
+      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">Sign out</button>
     </li>
   </ul>
 </nav>
@@ -59,6 +59,6 @@
     <div class="col-md-8"><router-outlet></router-outlet></div>
   </div>
 </div>
-<app-modal [isPoppedUp]="isLoggedInAsAdmin" [disableClose]="isLoggedInAsAdmin">
-  <app-login class="modal-body" (adminLoginAction)="isLoggedInAsAdmin = false"></app-login>
+<app-modal [isPoppedUp]="hasNotLoggedInAsAdmin" [disableClose]="hasNotLoggedInAsAdmin">
+  <app-login class="modal-body" (adminLoginAction)="hasNotLoggedInAsAdmin = false"></app-login>
 </app-modal>

@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AdminService} from '../../service/admin.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,11 +20,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
   subscription: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private adminService: AdminService) { }
+  // tslint:disable-next-line:max-line-length
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private adminService: AdminService, private authService: AuthService ) { }
 
   ngOnInit() {
     this.submitted = false;
-    this.error = false;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/admin';
     this.adminLoginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(2)]],
@@ -39,11 +40,26 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subscription.add(this.adminService.adminLogin(this.adminLoginForm.value).subscribe(
       result => {
+        let hasRoleAdmin = false;
+        const roleList = result.roles;
+        for (const role of roleList) {
+          if (role.name === 'ROLE_ADMIN') {
+            hasRoleAdmin = true;
+            break;
+          }
+        }
+        if (hasRoleAdmin) {
+          this.error = false;
+          this.message = '';
+          localStorage.setItem('userToken', JSON.stringify(result));
+          this.adminLoginAction.emit();
+          this.router.navigate([this.returnUrl]);
+        } else {
+          this.error = true;
+          this.authService.logout();
+          this.message = 'Your account is not an Administrator account';
+        }
         this.submitted = false;
-        this.error = false;
-        localStorage.setItem('userToken', JSON.stringify(result));
-        this.adminLoginAction.emit();
-        this.router.navigate([this.returnUrl]);
       }, error => {
         this.error = true;
         if (error.statusCode === 400) {
