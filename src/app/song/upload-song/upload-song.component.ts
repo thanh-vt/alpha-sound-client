@@ -7,6 +7,7 @@ import {ArtistService} from '../../service/artist.service';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Progress} from '../../model/progress';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-upload-song',
@@ -52,7 +53,7 @@ export class UploadSongComponent implements OnInit {
 
   ngOnInit() {
     this.songUploadForm = this.fb.group({
-      name: ['', Validators.required],
+      title: ['', Validators.required],
       artists: this.fb.array([UploadSongComponent.createArtist()]),
       releaseDate: ['', Validators.required],
       album: [null],
@@ -61,6 +62,7 @@ export class UploadSongComponent implements OnInit {
       country: [null],
       theme: [null]
     });
+    new DatePipe('en').transform(this.songUploadForm.value.releaseDate, 'dd/MM/yyyy');
   }
 
   selectFile(event) {

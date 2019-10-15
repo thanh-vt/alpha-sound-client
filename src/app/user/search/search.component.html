@@ -45,7 +45,7 @@
         <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Name</th>
+          <th scope="col">Title/th>
           <th scope="col">Release Date</th>
           <th scope="col"></th>
         </tr>
@@ -53,7 +53,7 @@
         <tbody>
         <tr *ngFor="let song of songList; index as i">
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ song.name }}</td>
+          <td>{{ song.title }}</td>
           <td>{{ song.releaseDate | date }}</td>
         </tr>
         </tbody>

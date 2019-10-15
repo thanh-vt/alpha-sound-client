@@ -21,7 +21,6 @@ export class EditSongComponent implements OnInit {
   formData = new FormData();
   filteredArtists: Artist[];
   isLoading = false;
-  currentSong: Song;
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -60,7 +59,7 @@ export class EditSongComponent implements OnInit {
       result => {
         this.song = result;
         this.songUpdateForm = this.fb.group({
-          name: [this.song.name, Validators.required],
+          title: [this.song.title, Validators.required],
           artists: this.fb.array([EditSongComponent.createArtist()]),
           releaseDate: [this.song.releaseDate],
           album: [null],
@@ -95,7 +94,7 @@ export class EditSongComponent implements OnInit {
       result => {
         this.song = result;
         this.songUpdateForm = this.fb.group({
-          name: [this.song.name, Validators.required],
+          title: [this.song.title, Validators.required],
           artists: this.fb.array([EditSongComponent.createArtist()]),
           releaseDate: [this.song.releaseDate],
           album: [null],

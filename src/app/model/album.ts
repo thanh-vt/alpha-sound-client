@@ -2,7 +2,7 @@ import {Artist} from './artist';
 
 export interface Album {
   id: number;
-  name: string;
+  title: string;
   releaseDate: Date;
   coverUrl: string;
   genres: [];

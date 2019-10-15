@@ -1,9 +1,9 @@
 <form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label for="songName">Song Name</label>
-    <input [value]="" type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
+    <label for="songTitle">Song Title</label>
+    <input [value]="" type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
     <div class="alert alert-danger" role="alert"
-         *ngIf="songUpdateForm.get('name').hasError('required') && songUpdateForm.get('name').touched">
+         *ngIf="songUpdateForm.get('title').hasError('required') && songUpdateForm.get('title').touched">
       Must be filled!
     </div>
   </div>

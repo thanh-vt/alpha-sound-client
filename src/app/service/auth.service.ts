@@ -1,7 +1,6 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpRequest} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import decode from 'jwt-decode';
 
@@ -15,11 +14,9 @@ export class AuthService {
   constructor(private http: HttpClient) { }
   cachedRequests: Array<HttpRequest<any>> = [];
   public getToken(): string {
-    // console.suggestSongArtist(localStorage.getItem('userToken'));
     if (localStorage.getItem('userToken') != null) {
       return  JSON.parse(localStorage.getItem('userToken')).accessToken;
     } else { return ''; }
-    // return localStorage.getItem('userToken');
   }
 
   public isAuthenticated(): boolean {

@@ -50,7 +50,7 @@ export class DeletePlaylistComponent implements OnInit {
 
   onSubmit() {
     this.subscription = this.playlistService.deletePlaylist(this.id).subscribe(
-      result => {
+      () => {
         this.error = false;
         this.deleted = true;
         this.message = 'Playlist deleted successfully!';

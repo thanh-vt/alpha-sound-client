@@ -2,7 +2,7 @@ import {Artist} from './artist';
 
 export interface Song {
   id: number;
-  name: string;
+  title: string;
   releaseDate: number;
   url: string;
   rating?: [];

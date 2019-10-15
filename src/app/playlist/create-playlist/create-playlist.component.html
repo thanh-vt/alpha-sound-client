@@ -8,15 +8,15 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="playlist">Playlist Name</label>
+        <label for="playlist">Playlist Title</label>
         <div class="input-group">
-          <input id="playlist" class="form-control" placeholder="Enter playlist name" formControlName="name">
+          <input id="playlist" class="form-control" placeholder="Enter playlist title" formControlName="title">
         </div>
       </div>
       <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-success]="!error" [class.alert-danger]="error">{{message}}</div>
     </div>
     <div class="modal-footer">
-      <button [disabled]="loading || this.createPlaylistForm.get('name').hasError('required')" class="btn btn-primary">
+      <button [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')" class="btn btn-primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Save
       </button>

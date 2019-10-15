@@ -1,14 +1,12 @@
 <form [formGroup]="songUploadForm" (ngSubmit)="upload()">
   <div class="form-group">
-    <label for="songName">Song Name</label>
-    <input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name">
+    <label for="songTitle">Song Title</label>
+    <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
     <div class="alert alert-danger" role="alert"
-         *ngIf="songUploadForm.get('name').hasError('required') && songUploadForm.get('name').touched">
+         *ngIf="songUploadForm.get('title').hasError('required') && songUploadForm.get('title').touched">
       Must be filled!
     </div>
   </div>
-
-
   <div formArrayName="artists" class="form-group"
        *ngFor="let artist of artists.controls; let i = index;">
     <div [formGroupName]="i">
@@ -33,7 +31,6 @@
       <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
       </button>
     </div>
-
   </div>
 
   <div class="form-group">

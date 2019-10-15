@@ -1,8 +1,7 @@
-
 <div class="row">
   <ng-container *ngFor="let album of albumList; index as i" >
     <div class="card col-sm-3 poly-prod mx-2" >
-      <div class="card-header">{{ album[0].name }}</div>
+      <div class="card-header">{{ album[0].title }}</div>
       <div class="card-body">
         <div class="align-items-center">
           <img [src]="album[0].coverUrl" alt=""/></div>

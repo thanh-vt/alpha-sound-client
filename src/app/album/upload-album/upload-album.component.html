@@ -6,9 +6,10 @@
     <div class="card-body">
       <form [formGroup]="albumForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="albumName">Name</label>
-          <input type="text" class="form-control" id="albumName" placeholder="Enter album name" formControlName="name">
+          <label for="albumTitle">Album Title</label>
+          <input type="text" class="form-control" id="albumTitle" placeholder="Enter album title" formControlName="title">
         </div>
+
         <label>Artist</label>
         <div formArrayName="artists"
              *ngFor="let artist of getAlbumArtists().controls; let i = index;">

@@ -59,13 +59,13 @@ export class UserComponent implements OnInit {
         }, 0);
         if (this.numberOfTracks === 1) {
           this.msaapPlaylist[0] = {
-            title: data.name,
+            title: data.title,
             link: data.url
           };
           // this.numberOfTracks++;
         } else {
           this.msaapPlaylist.push({
-            title: data.name,
+            title: data.title,
             link: data.url
           });
           // this.numberOfTracks = this.msaapPlaylist.length;

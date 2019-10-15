@@ -43,7 +43,7 @@
 <!--&lt;!&ndash;    </li>&ndash;&gt;-->
 <!--&lt;!&ndash;  </ul>&ndash;&gt;-->
 <!--&lt;!&ndash;</nav>&ndash;&gt;-->
-<a [routerLink]="['/admin','artist','upload']">Upload new artist</a>
+<a class="btn btn-primary m-2" [routerLink]="['/admin','artist','upload']">Upload new artist</a>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -60,10 +60,12 @@
     <td>{{ i + 1 }}</td>
     <td class="clickable" [routerLink]="['/admin','artist','detail',artist.id]">{{ artist.name }}</td>
     <td>{{artist.birthDate | date}}</td>
-    <td><img src="{{artist.avatarUrl}}" class="img-thumbnail avatar"></td>
-    <td><app-modal [body]="'Are you sure want to delete artist ' + artist.name" [action]="'delete'">
-      <app-artist-delete class="modal-footer" [id]="artist.id" [artistName]="artist.name" (deleteArtist)="deleteArtist()"></app-artist-delete>
-    </app-modal></td>
+    <td><img [src]="artist.avatarUrl" class="img-thumbnail avatar" alt=""></td>
+    <td>
+      <app-modal [body]="'Are you sure want to delete artist ' + artist.name" [action]="'delete'">
+        <app-artist-delete class="modal-footer" [id]="artist.id" [artistName]="artist.name" (deleteArtist)="deleteArtist()"></app-artist-delete>
+      </app-modal>
+    </td>
     <td><a [routerLink]="['/admin','artist','edit',artist.id]">Edit</a></td>
   </tr>
   </tbody>

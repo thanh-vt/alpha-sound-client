@@ -20,7 +20,6 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
   constructor(private modalService: NgbModal, private playlistService: PlaylistService) {}
 
   ngOnInit(): void {
-    console.log('reload');
     this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
       result => {
         this.playlistList = result;

@@ -8,5 +8,4 @@ export interface Artist {
   avatarUrl?: string;
   biography?: string;
   songs?: Song[];
-
 }

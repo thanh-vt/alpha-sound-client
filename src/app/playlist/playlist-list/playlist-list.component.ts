@@ -1,5 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {Song} from '../../model/song';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {Subscription} from 'rxjs';
@@ -15,8 +14,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   constructor(private playlistService: PlaylistService) { }
 
   ngOnInit() {
-    // this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
+    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -27,12 +25,11 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
       }, error => {
         this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
       }
-    );
+    ));
   }
 
   createPlaylist() {
-    // this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
+    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -43,12 +40,12 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
       }, error => {
         this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
       }
-    );
+    ));
   }
 
   deletePlaylist() {
     // this.subscription.unsubscribe();
-    this.subscription = this.playlistService.getPlaylistList().subscribe(
+    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -61,7 +58,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
       }, error => {
         this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
       }
-    );
+    ));
   }
 
   ngOnDestroy(): void {

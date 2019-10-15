@@ -42,16 +42,14 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.registerForm.value);
     this.userService.register(this.registerForm.value).subscribe(
-      result => {
+      () => {
         this.message = 'User created successfully!';
       },
       error => {
-        this.message = 'Failed to create user. Cause: ' + error.message;
+        this.message = 'Failed to register. Cause: ' + error.message;
       }
     );
-    this.submitted = true;
 
     // stop the process here if form is invalid
     if (this.registerForm.invalid) {

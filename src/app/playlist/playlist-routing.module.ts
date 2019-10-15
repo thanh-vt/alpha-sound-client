@@ -20,7 +20,7 @@ const routes: Routes = [
         component:  PlaylistListComponent
       },
       {
-        path:  'detail/:id',
+        path:  'detail',
         component:  PlaylistDetailComponent
       },
     ]

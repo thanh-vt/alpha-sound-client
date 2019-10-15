@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PlaylistService} from '../../service/playlist.service';
 import {SongService} from '../../service/song.service';
 import {ActivatedRoute} from '@angular/router';
@@ -13,24 +13,29 @@ import {Validators} from '@angular/forms';
   templateUrl: './playlist-detail.component.html',
   styleUrls: ['./playlist-detail.component.scss']
 })
-export class PlaylistDetailComponent implements OnInit {
+export class PlaylistDetailComponent implements OnInit, OnDestroy {
   private message;
-  private songList: any[];
+  private songList: Song[];
   private playList: Playlist;
-  private subscription: Subscription;
+  private subscription: Subscription = new Subscription();
   private playlistId: number;
 
   constructor(
     private playlistService: PlaylistService,
     private songService: SongService,
     private route: ActivatedRoute,
-    private addSongToPlaylistService: AddSongToPlaying
+    private addSongToPlaying: AddSongToPlaying
   ) {
   }
 
   ngOnInit() {
-    this.playlistId = +this.route.snapshot.paramMap.get('id');
-    this.subscription = this.playlistService.getPlayListDetail(this.playlistId).subscribe(
+    this.route.queryParams.subscribe(
+      params => {
+        this.playlistId = params.id;
+        console.log(this.playlistId);
+      }
+    );
+    this.subscription.add(this.playlistService.getPlayListDetail(this.playlistId).subscribe(
       result => {
         if (result != null) {
           this.playList = result;
@@ -41,20 +46,19 @@ export class PlaylistDetailComponent implements OnInit {
       }, error => {
         this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
       }
-    );
+    ));
 
   }
 
-  addToPlaylist(song) {
+  addToPlayling(song) {
     song.isDisabled = true;
-    this.addSongToPlaylistService.emitChange(song);
+    this.addSongToPlaying.emitChange(song);
   }
 
   deletePlaylistSong() {
-    this.subscription = this.playlistService.getPlayListDetail(this.playlistId).subscribe(
+    this.subscription.add(this.playlistService.getPlayListDetail(this.playlistId).subscribe(
       result => {
         if (result != null) {
-          console.log(result);
           this.playList = result;
           this.playList.isDisabled = false;
           this.songList = this.playList.songs;
@@ -64,7 +68,11 @@ export class PlaylistDetailComponent implements OnInit {
       }, error => {
         this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
       }
-    );
+    ));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

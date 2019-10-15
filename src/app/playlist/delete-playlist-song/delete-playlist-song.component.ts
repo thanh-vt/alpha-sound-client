@@ -16,11 +16,11 @@ export class DeletePlaylistSongComponent implements OnInit {
   @Input() songId: number;
   @Input() playlistId: number;
   @Input() name: string;
+  @Output() deleteSongPlaylist = new EventEmitter();
   deleted: boolean;
   loading = false;
   error = false;
   message: string;
-  @Output() deleteSongPlaylist = new EventEmitter();
 
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
@@ -33,7 +33,7 @@ export class DeletePlaylistSongComponent implements OnInit {
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
       this.message = '';
     }, (reason) => {
       this.deleteSongPlaylist.emit();
