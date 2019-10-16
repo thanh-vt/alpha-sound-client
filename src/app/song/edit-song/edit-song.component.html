@@ -45,10 +45,22 @@
       Must be filled!
     </div>
   </div>
+  <label for="audio">Audio File</label>
+  <div class="form-group custom-file">
+
+    <label class="custom-file-label" *ngIf=!isAudioFileChosen>Choose file</label>
+    <label class="custom-file-label" *ngIf=isAudioFileChosen>{{ audioFileName }}</label>
+    <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)">
+  </div>
 
 
   <button type="submit" class="btn btn-primary">Submit</button>
-
-  <span *ngIf="message">{{ message }}</span>
+  <div class="progress form-group" *ngIf="progress.value > 0">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
+    </div>
+  </div>
+  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+       [class.alert-success]="!error">{{message}}
+  </div>
 
 </form>

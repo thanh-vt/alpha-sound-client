@@ -24,8 +24,12 @@ export class SongService {
     }
   }
 
-  updateSong(song: any, id: number): Observable<Song> {
-    return this.http.put<Song>(`${environment.apiUrl}/song/edit?id=${id}`, song);
+  updateSong(song: any, id: number): Observable<HttpEvent<any>> {
+    // @ts-ignore
+    return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song, {
+      observe: 'events',
+      reportProgress: true,
+    });
   }
 
   uploadSong(formData): Observable<HttpEvent<any>> {
@@ -63,9 +67,11 @@ export class SongService {
   unlikeSong(songId: number) {
     return this.http.post<any>(`${environment.apiUrl}/song?unlike&song-id=${songId}`, {});
   }
+
   getUserSongList() {
     return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
   }
+
   deleteSong(id: number) {
     return this.http.delete<any>(`${environment.apiUrl}/song/delete?id=${id}`);
   }

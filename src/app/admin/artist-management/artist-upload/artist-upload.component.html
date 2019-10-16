@@ -32,6 +32,11 @@
   <div class="mt-sm-3">
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>
-  <span *ngIf="message">{{ message }}</span>
-  <!-- Progress Bar -->
+  <div class="progress form-group" *ngIf="progress.value > 0">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
+    </div>
+  </div>
+  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+       [class.alert-success]="!error">{{message}}
+  </div>
 </form>

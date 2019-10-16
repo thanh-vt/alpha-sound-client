@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error = '';
+  error = false;
   file: File;
   message: string;
 
@@ -44,9 +44,15 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     this.userService.register(this.registerForm.value).subscribe(
       () => {
+        this.error = false;
         this.message = 'User created successfully!';
+        const navigation = setInterval(() => {
+          this.navigate();
+          clearTimeout(navigation);
+        }, 2000);
       },
       error => {
+        this.error = true;
         this.message = 'Failed to register. Cause: ' + error.message;
       }
     );
@@ -55,6 +61,9 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
+  }
+  navigate() {
+    this.router.navigateByUrl('');
   }
 }
 

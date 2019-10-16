@@ -2,7 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ArtistService} from '../../../service/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {HttpEvent} from '@angular/common/http';
+import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {Progress} from '../../../model/progress';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-artist-upload',
@@ -11,7 +13,7 @@ import {HttpEvent} from '@angular/common/http';
 })
 export class ArtistUploadComponent implements OnInit, OnDestroy {
 
-  constructor(private artistService: ArtistService, private fb: FormBuilder) {
+  constructor(private artistService: ArtistService, private fb: FormBuilder, private router: Router) {
   }
 
   submitted = false;
@@ -22,6 +24,8 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
   formData = new FormData();
   file: any;
   subscription: Subscription = new Subscription();
+  error = false;
+  progress: Progress = {value: 0};
 
   ngOnInit() {
     this.artistUploadForm = this.fb.group({
@@ -30,6 +34,7 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
       biography: ['', Validators.required]
     });
   }
+
   selectFile(event) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
@@ -37,6 +42,28 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
       this.imageFileName = event.target.files[0].name;
     }
   }
+
+  displayProgress(event, progress: Progress): boolean {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        console.log('Request has been made!');
+        break;
+      case HttpEventType.ResponseHeader:
+        console.log('Response header has been received!');
+        break;
+      case HttpEventType.UploadProgress:
+        progress.value = Math.round(event.loaded / event.total * 100);
+        console.log(`Uploaded! ${progress.value}%`);
+        break;
+      case HttpEventType.Response:
+        console.log('Song successfully created!', event.body);
+        setTimeout(() => {
+          progress.value = 0;
+        }, 1500);
+        return true;
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
     if (this.artistUploadForm.invalid) {
@@ -46,9 +73,17 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
     this.formData.append('avatar', this.file);
     this.subscription.add(this.artistService.uploadArtist(this.formData).subscribe(
       (event: HttpEvent<any>) => {
-        this.message = 'Artist uploaded successfully!';
+        if (this.displayProgress(event, this.progress)) {
+          this.error = false;
+          this.message = 'Artist uploaded successfully!';
+        }
+        const navigation = setInterval(() => {
+          this.navigate();
+          clearTimeout(navigation);
+        }, 2000);
       }, error => {
-        this.message = 'Failed to upload artist. Cause: ' + error.message ;
+        this.error = true;
+        this.message = 'Failed to upload artist. Cause: ' + error.message;
       }
     ));
   }
@@ -56,5 +91,7 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
+  navigate() {
+    location.replace('/admin/artist');
+  }
 }

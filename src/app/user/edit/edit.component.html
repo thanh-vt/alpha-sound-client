@@ -53,8 +53,14 @@
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
           Update
         </button>
-        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-        <p *ngIf="message">{{message}}</p>
+        <div class="progress form-group" *ngIf="progress.value > 0">
+          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
+          </div>
+        </div>
+
+        <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+             [class.alert-success]="!error">{{message}}
+        </div>
       </form>
     </div>
   </div>

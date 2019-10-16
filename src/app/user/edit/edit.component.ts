@@ -6,6 +6,7 @@ import {UserService} from '../../service/user.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Song} from '../../model/song';
 import {User} from '../../model/user';
+import {Progress} from '../../model/progress';
 
 @Component({
   selector: 'app-edit',
@@ -18,12 +19,13 @@ export class EditComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error = '';
+  error = false;
   file: any;
   formData = new FormData();
   message: string;
   isImageFileChoosen = false;
   imageFileName = '';
+  progress: Progress = {value: 0};
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private userService: UserService) {
@@ -56,7 +58,7 @@ export class EditComponent implements OnInit {
           email: [this.user.email]
         });
       }
-      );
+    );
   }
 
   selectFile(event) {
@@ -64,6 +66,27 @@ export class EditComponent implements OnInit {
       this.file = event.target.files[0];
       this.isImageFileChoosen = true;
       this.imageFileName = event.target.files[0].name;
+    }
+  }
+
+  displayProgress(event, progress: Progress): boolean {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        console.log('Request has been made!');
+        break;
+      case HttpEventType.ResponseHeader:
+        console.log('Response header has been received!');
+        break;
+      case HttpEventType.UploadProgress:
+        progress.value = Math.round(event.loaded / event.total * 100);
+        console.log(`Uploaded! ${progress.value}%`);
+        break;
+      case HttpEventType.Response:
+        console.log('Song successfully created!', event.body);
+        setTimeout(() => {
+          progress.value = 0;
+        }, 1500);
+        return true;
     }
   }
 
@@ -102,15 +125,25 @@ export class EditComponent implements OnInit {
     this.formData.append('avatar', this.file);
     console.log(this.formData);
     this.userService.updateProfile(this.formData, id).subscribe(
-      next => {
-        console.log('ok');
-        this.message = 'Update user success';
+      (event: HttpEvent<any>) => {
+        if (this.displayProgress(event, this.progress)) {
+          this.error = false;
+          this.message = 'Update user success';
+        }
+        const navigation = setInterval(() => {
+          this.navigate();
+          clearTimeout(navigation);
+        }, 2000);
       },
       error => {
         console.log('not ok!');
+        this.error = true;
         this.message = 'Failed update user';
       }
     );
+  }
+  navigate() {
+    this.router.navigateByUrl('');
   }
 
 }

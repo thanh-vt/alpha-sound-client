@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
@@ -7,8 +7,9 @@ import {ArtistService} from '../../service/artist.service';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Progress} from '../../model/progress';
-import { DatePipe } from '@angular/common';
-import {ViewEncapsulation } from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {ViewEncapsulation} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-upload-song',
@@ -18,7 +19,9 @@ import {ViewEncapsulation } from '@angular/core';
 })
 export class UploadSongComponent implements OnInit {
 
-  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) { }
+  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService,
+              private fb: FormBuilder, private router: Router) {
+  }
 
   isAudioFileChosen = false;
   audioFileName = '';
@@ -30,6 +33,7 @@ export class UploadSongComponent implements OnInit {
   file: any;
   isLoading = false;
   filteredArtists: Artist[];
+  error = false;
 
   subscription: Subscription = new Subscription();
 
@@ -50,7 +54,9 @@ export class UploadSongComponent implements OnInit {
   }
 
   displayFn(artist: Artist) {
-    if (artist) { return artist.name; }
+    if (artist) {
+      return artist.name;
+    }
   }
 
   ngOnInit() {
@@ -75,7 +81,7 @@ export class UploadSongComponent implements OnInit {
     }
   }
 
-  displayProgress(event, progress: Progress) {
+  displayProgress(event, progress: Progress): boolean {
     switch (event.type) {
       case HttpEventType.Sent:
         console.log('Request has been made!');
@@ -92,6 +98,7 @@ export class UploadSongComponent implements OnInit {
         setTimeout(() => {
           progress.value = 0;
         }, 1500);
+        return true;
     }
   }
 
@@ -114,18 +121,24 @@ export class UploadSongComponent implements OnInit {
     this.formData.append('audio', this.file);
     this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
-        this.message = 'Song uploaded successfully!';
-        this.displayProgress(event, this.progress);
+        if (this.displayProgress(event, this.progress)) {
+          this.message = 'Song uploaded successfully!';
+        }
+        const navigation = setInterval(() => {
+          this.navigate();
+          clearTimeout(navigation);
+        }, 2000);
       }, error => {
         this.progress.value = 0;
         if (error.status === 400) {
           this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
         } else {
-          this.message = 'Failed to upload song. Cause: ' + error.message ;
+          this.message = 'Failed to upload song. Cause: ' + error.message;
         }
       }
     );
   }
+
   suggestArtist(i) {
     this.subscription.unsubscribe();
     this.subscription = this.artists.controls[i].valueChanges
@@ -138,5 +151,9 @@ export class UploadSongComponent implements OnInit {
           )
         )
       ).subscribe(artists => this.filteredArtists = artists);
+  }
+  navigate() {
+    // this.router.navigate(['/uploaded/list']);
+    location.replace('/uploaded/list');
   }
 }

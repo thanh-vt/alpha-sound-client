@@ -16,12 +16,15 @@ export class ArtistService {
   getArtistList() {
     return this.http.get<any>(`${environment.apiUrl}/artist/list`);
   }
+
   detailArtist(id: number) {
     return this.http.get<any>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
+
   getSongList(id: number) {
     return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}`);
   }
+
   searchArtist(name: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/artist/search?name=${name}`).pipe(
       tap((response: any) => {
@@ -49,6 +52,9 @@ export class ArtistService {
   }
 
   updateArtist(formGroup, id: number): Observable<HttpEvent<any>> {
-    return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup);
+    return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 }
