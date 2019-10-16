@@ -28,35 +28,20 @@ export class SongListComponent implements OnInit, OnDestroy {
   constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying, private playlistService: PlaylistService) { }
 
   ngOnInit() {
-    this.subscription.add(this.songService.getSongList().subscribe(
-      result => {
-        if (result != null) {
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          this.pageNumber = result.pageable.pageNumber;
-          this.pageSize = result.pageable.pageSize;
-          this.pages = new Array(result.totalPages);
-          for (let i = 0; i < this.pages.length; i++) {
-            this.pages[i] = {pageNumber: i};
-          }
-          this.isDisable = false;
-        }
-      }, error => {
-        this.isDisable = true;
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-      }
-    ));
+    this.goToPage(undefined);
   }
 
   addToPlaying(song) {
-    song.isDisabled = true;
+    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
+      () => {
+        this.goToPage(this.pageNumber);
+      }
+    ));
     this.addSongToPlaying.emitChange(song);
   }
 
   goToPage(i) {
-    this.subscription.add(this.songService.getSongListPage(i).subscribe(
+    this.subscription.add(this.songService.getSongList(i, undefined).subscribe(
       result => {
         if (result != null) {
           window.scroll(0, 0);
@@ -68,12 +53,10 @@ export class SongListComponent implements OnInit, OnDestroy {
           this.pageSize = result.pageable.pageSize;
           this.pages = new Array(result.totalPages);
           for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = {pageNumber: i};
+            this.pages[j] = {pageNumber: j};
           }
-          this.isDisable = false;
         }
       }, error => {
-        this.isDisable = true;
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
       }
     ));

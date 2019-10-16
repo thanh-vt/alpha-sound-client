@@ -30,9 +30,10 @@ a {
 }
 
 img{
-  max-width: 100%;
+  height: 3rem;
+  width: 3rem;
   vertical-align: middle;
-  border: 0;
+  border: 0.1rem solid black;
 }
 
 .title_box_key {

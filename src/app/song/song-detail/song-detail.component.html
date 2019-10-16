@@ -2,31 +2,33 @@
   <h4>Thông tin chi tiết</h4>
   <div>
     <div class="card">
-<!--      <div class="card-header">Tên bài hát : {{song.title}}</div>-->
-<!--      <div class="card-body">Ngày phát hành : {{song.releaseDate | date }}</div>-->
-<!--      <div class="card-footer">-->
-<!--        <ul class="list-group">-->
-<!--          Ca sĩ :-->
-<!--          <li class="list-group-item" *ngFor="let artist of artistList; index as i">{{artist.name}}</li>-->
-<!--        </ul>-->
-<!--      </div>-->
+      <!--      <div class="card-header">Tên bài hát : {{song.title}}</div>-->
+      <!--      <div class="card-body">Ngày phát hành : {{song.releaseDate | date }}</div>-->
+      <!--      <div class="card-footer">-->
+      <!--        <ul class="list-group">-->
+      <!--          Ca sĩ :-->
+      <!--          <li class="list-group-item" *ngFor="let artist of artistList; index as i">{{artist.name}}</li>-->
+      <!--        </ul>-->
+      <!--      </div>-->
       <div class="card-body">
         <p>Tên bài hát : {{song.title}}</p><br>
         <p>Ngày phát hành : {{song.releaseDate | date }}</p>
-        <p>Ca sĩ : <li class="list-group-item" *ngFor="let artist of artistList; index as i">{{artist.name}}</li>
+        <p>Ca sĩ : <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">{{artist.name}} , </a></p>
       </div>
     </div>
     <ul class="list-group">
-      Comment :<li class="list-group-item" *ngFor="let comment of commentList; index as i">
+      <h4>Comment :</h4>
+      <li class="list-group-item" *ngFor="let comment of commentList; index as i">
+        <img class="avatar" [src]="comment.user.avatarUrl">
         <b>{{comment.user.username}}</b><br>
-        <p>{{comment.content}}</p>
+        <p>{{comment.content}}</p><p>{{comment.localDate | date:'yyyy-MM-dd'}}</p>
       </li>
     </ul>
-            </div>
-            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-              <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
-              <div class="mt-sm-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </form>
-          </ng-container>
+  </div>
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
+    <div class="mt-sm-3">
+      <button type="submit" class="btn btn-primary">Comment</button>
+    </div>
+  </form>
+</ng-container>

@@ -16,4 +16,5 @@ export interface Song {
   isDisabled?: boolean;
   liked?: boolean;
   comments?: Comment[];
+  listeningFrequency?: number;
 }

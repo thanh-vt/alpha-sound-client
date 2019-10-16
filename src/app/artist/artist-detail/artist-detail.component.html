@@ -24,14 +24,12 @@
     <tbody>
     <tr *ngFor="let song of songList; index as i">
       <th scope="row">{{ i + 1 }}</th>
-      <td>{{ song.title }}</td>
+      <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
       <td>{{ song.releaseDate | date }}</td>
       <td>
         <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
           class="fas fa-play-circle"></i></button>
       </td>
-      <td><a [routerLink]="['/song','edit', song.id]">Edit</a></td>
-
     </tr>
     </tbody>
   </table>
