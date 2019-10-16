@@ -32,12 +32,16 @@ export class UserComponent implements OnInit {
   ];
 
   constructor(private router: Router, private authService: AuthService, private addSongToPlaying: AddSongToPlaying) {
-
+    this.authService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
   }
 
   logIn(event) {
     this.isLoggedIn = true;
-    this.username = event;
+    // this.username = event;
   }
 
   logout() {
@@ -48,9 +52,9 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.isAuthenticated()) {
+    if (!!this.currentUser) {
       this.isLoggedIn = true;
-      this.username = JSON.parse(localStorage.getItem('userToken')).username;
+      // this.username = this.currentUser.username;
       this.addSongToPlaying.changeEmitter$.subscribe(data => {
         this.msaapDisplayVolumeControls = !this.msaapDisplayVolumeControls;
         const reEnableVolumeControl = setTimeout(() => {

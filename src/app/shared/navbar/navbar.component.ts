@@ -4,6 +4,7 @@ import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {User} from '../../model/user';
+import {UserToken} from '../../model/userToken';
 
 @Component({
   selector: 'app-navbar',
@@ -11,6 +12,7 @@ import {User} from '../../model/user';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  currentUser: UserToken;
   @Output() loginAction = new EventEmitter<string>();
   @Output() logoutAction = new EventEmitter();
   @Input() isLoggedIn: boolean;
@@ -27,7 +29,11 @@ export class NavbarComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private fb: FormBuilder) {
-
+    this.authService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
   }
 
   ngOnInit() {
@@ -41,8 +47,8 @@ export class NavbarComponent implements OnInit {
     });
     this.isCollapsed = true;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-    if (this.authService.isAuthenticated()) {
-      this.userId = JSON.parse(localStorage.getItem('userToken')).id;
+    if (!!this.currentUser) {
+      this.userId = this.currentUser.id;
     }
   }
 

@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
+import {UserToken} from '../../model/userToken';
 
 @Component({
   selector: 'app-admin',
@@ -10,19 +11,26 @@ import {ModalComponent} from '../../shared/modal/modal.component';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+  currentUser: UserToken;
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
 
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
 
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
+    this.authService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   ngOnInit() {
-    if (!this.authService.isAuthenticated()) {
+    if (!this.currentUser) {
       this.hasNotLoggedInAsAdmin = true;
     } else {
       let hasRoleAdmin = false;
-      const roleList = JSON.parse(localStorage.getItem('userToken')).roles;
+      const roleList = this.currentUser.roles;
       for (const role of roleList) {
         if (role.name === 'ROLE_ADMIN') {
           hasRoleAdmin = true;

@@ -23,7 +23,7 @@
   <div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="isLoggedIn">
       <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="d-inline-block">{{ username }}</span>
+        <span class="d-inline-block">{{ currentUser.username }}</span>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/user','edit', userId]" >Edit</a>
