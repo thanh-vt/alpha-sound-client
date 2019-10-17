@@ -5,6 +5,7 @@ import {UploadAlbumComponent} from './upload-album/upload-album.component';
 import {EditAlbumComponent} from './edit-album/edit-album.component';
 import {DeleteAlbumComponent} from './delete-album/delete-album.component';
 import {AlbumComponent} from './album/album.component';
+import {AlbumDetailComponent} from './album-detail/album-detail.component';
 
 
 const routes: Routes = [
@@ -22,11 +23,15 @@ const routes: Routes = [
         component:  AlbumListComponent
       },
       {
+        path:  'detail',
+        component:  AlbumDetailComponent
+      },
+      {
         path:  'upload',
         component:  UploadAlbumComponent
       },
       {
-        path:  'edit',
+        path:  'update-profile',
         component:  EditAlbumComponent
       },
       {

@@ -6,7 +6,6 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class AdminService {
-
   constructor(private http: HttpClient) { }
 
   adminLogin(loginForm) {
@@ -16,7 +15,8 @@ export class AdminService {
   getUserList() {
     return this.http.get<any>(`${environment.apiUrl}/admin/user-list`);
   }
+
   deleteUser(id: number) {
-    return this.http.delete<any>(`${environment.apiUrl}/user/delete?id=${id}`);
+    return this.http.delete<any>(`${environment.apiUrl}/user/delete-user?id=${id}`);
   }
 }

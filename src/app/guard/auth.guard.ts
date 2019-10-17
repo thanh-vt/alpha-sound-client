@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private authService: AuthService
   ) {
-    this.authService.currentUser.subscribe(
+    this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }

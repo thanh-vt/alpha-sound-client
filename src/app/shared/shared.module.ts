@@ -18,7 +18,7 @@ import { CardComponent } from './card/card.component';
     RouterModule,
     ReactiveFormsModule,
   ],
-  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent]
+  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent]
 })
 export class SharedModule {
 }

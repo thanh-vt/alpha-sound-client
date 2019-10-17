@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AlbumService } from './album.service';
 
-describe('AlbumService', () => {
+describe('ArtistService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {

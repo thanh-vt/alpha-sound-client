@@ -8,10 +8,16 @@ import {environment} from '../../environments/environment';
 export class AudioUploadService {
   constructor(private http: HttpClient) { }
 
-  uploadSong(formData): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {reportProgress: true,
-      observe: 'events'
-    });
+  uploadSong(formData: FormData, albumId?: number): Observable<HttpEvent<any>> {
+    if (!!albumId) {
+      return this.http.post<any>(`${environment.apiUrl}/song/upload?album-id=${albumId}`, formData, {reportProgress: true,
+        observe: 'events'
+      });
+    } else {
+      return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {reportProgress: true,
+        observe: 'events'
+      });
+    }
   }
 
   uploadAlbum(formData): Observable<any> {

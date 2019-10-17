@@ -1,3 +1,5 @@
+import {Role} from './role';
+
 export interface User {
   isDisabled: boolean;
   id?: number;
@@ -10,4 +12,5 @@ export interface User {
   phoneNumber?: number;
   email?: string;
   avatarUrl: string;
+  roles?: [Role];
 }

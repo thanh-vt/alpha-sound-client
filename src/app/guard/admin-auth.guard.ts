@@ -7,20 +7,21 @@ import {
   UrlSegment,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  UrlTree,
   Router
 } from '@angular/router';
-import { Observable } from 'rxjs';
+
 import {AuthService} from '../service/auth.service';
 import {UserToken} from '../model/userToken';
+import {User} from '../model/user';
+import {UserService} from '../service/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  currentUser: UserToken;
-  constructor(private router: Router, private authService: AuthService) {
-    this.authService.currentUser.subscribe(
+  currentUser: User;
+  constructor(private router: Router, private userService: UserService) {
+    this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }

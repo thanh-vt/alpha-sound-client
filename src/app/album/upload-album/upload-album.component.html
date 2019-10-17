@@ -1,3 +1,4 @@
+<button (click)="log()"></button>
 <div class="row">
   <div class="card col-sm-12">
     <div class="card-header">
@@ -48,9 +49,11 @@
         </div>
         <div class="col-sm-9">
           <!-- Progress Bar -->
-          <div class="progress form-group col-sm-9" *ngIf="albumProgress > 0">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="albumProgress">
-            </div>
+          <div class="progress form-group col-sm-9" *ngIf="albumProgress.value > 0">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="albumProgress.value"></div>
+          </div>
+          <div *ngIf="albumMessage" class="alert mt-3 mb-0" [class.alert-danger]="albumError"
+               [class.alert-success]="!albumError">{{ albumMessage }}
           </div>
         </div>
       </form>
@@ -69,8 +72,8 @@
         <form [formGroup]="songsForm[j]">
           <table class="table table-striped">
             <tr class="row">
-              <td class="col-sm-4"><label for="songName">Song Name</label></td>
-              <td class="col-sm-8"><input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="name"></td>
+              <td class="col-sm-4"><label for="songName">Song Title</label></td>
+              <td class="col-sm-8"><input type="text" class="form-control" id="songName" placeholder="Enter song name" formControlName="title"></td>
             </tr>
             <!--            <tr class="row">-->
             <!--              <td class="col-sm-4"><label for="artistName">Artist Name</label></td>-->
@@ -116,11 +119,12 @@
               </td>
             </tr>
           </table>
-<!--          <input type="hidden" formControlName="album">-->
-          <span *ngIf="songsMessage[j]">{{ songsMessage[j] }}</span>
+          <div *ngIf="songsMessage[j]" class="alert mt-3 mb-0" [class.alert-danger]="songError[j]"
+               [class.alert-success]="!songError[j]">{{ songsMessage[j] }}
+          </div>
           <!-- Progress Bar -->
-          <div class="progress form-group" *ngIf="songsProgress[j] > 0">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="songsProgress[j]">
+          <div class="progress form-group" *ngIf="songsProgress[j].value > 0">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="songsProgress[j].value">
             </div>
           </div>
         </form>

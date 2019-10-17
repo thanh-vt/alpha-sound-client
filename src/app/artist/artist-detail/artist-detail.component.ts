@@ -34,12 +34,12 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.artistId = params.id;
-        this.subscription.add(this.artistService.detailArtist(this.artistId).subscribe(
+        this.subscription.add(this.artistService.artistDetail(this.artistId).subscribe(
           result => {
+            window.scroll(0, 0);
             this.artist = result;
             this.artistService.getSongList(this.artistId).subscribe(
               result1 => {
-                console.log(result1);
                 if (result1 != null) {
                   this.songList = result1.content;
 
@@ -53,33 +53,14 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
       }
     ));
   }
+
   addToPlaying(song) {
     this.subscription.add(this.songService.listenToSong(song.id).subscribe(
       () => {
-        this.goToPage(this.pageNumber);
-      }
-    ));
-    this.playingQueueService.emitChange(song);
-  }
-
-  goToPage(i) {
-    this.subscription.add(this.songService.getSongList(i, undefined).subscribe(
-      result => {
-        if (result != null) {
-          window.scroll(0, 0);
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          this.pageNumber = result.pageable.pageNumber;
-          this.pageSize = result.pageable.pageSize;
-          this.pages = new Array(result.totalPages);
-          for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = {pageNumber: j};
-          }
-        }
-      }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+        this.playingQueueService.addToQueue({
+          title: song.title,
+          link: song.url
+        });
       }
     ));
   }

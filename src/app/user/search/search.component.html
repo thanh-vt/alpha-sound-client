@@ -1,6 +1,6 @@
-<ngb-tabset type="pills" [orientation]="'horizontal'" [justify]="'justified'">
-  <ngb-tab>
-    <ng-template ngbTabTitle><h6>Song <span class="badge badge-secondary">{{numberSong}}</span></h6></ng-template>
+<ngb-tabset #searchTab="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'">
+  <ngb-tab id="songs">
+    <ng-template ngbTabTitle><h5>Song <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template>
     <ng-template ngbTabContent>
       <table *ngIf="songList.length > 0" class="table table-striped">
         <thead>
@@ -14,7 +14,7 @@
         <tbody>
         <tr *ngFor="let song of songList; index as i">
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ song.title }}</td>
+          <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
           <td>{{ song.releaseDate | date }}</td>
           <td></td>
         </tr>
@@ -22,8 +22,8 @@
       </table>
     </ng-template>
   </ngb-tab>
-  <ngb-tab>
-    <ng-template ngbTabTitle><h6>Artist <span class="badge badge-secondary">{{numberArtist}}</span></h6></ng-template>
+  <ngb-tab id="artists">
+    <ng-template ngbTabTitle><h5>Artist <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template>
     <ng-template ngbTabContent>
       <table *ngIf="artistList.length > 0" class="table table-striped">
         <thead>
@@ -37,8 +37,8 @@
         <tbody>
         <tr *ngFor="let artist of artistList; index as i">
           <th scope="row">{{ i + 1 }}</th>
-          <td>{{ artist.name }}</td>
-          <td>{{ artist.avatarUrl | date }}</td>
+          <td><a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
+          <td><img [src]="artist.avatarUrl" alt=""></td>
         </tr>
         </tbody>
       </table>

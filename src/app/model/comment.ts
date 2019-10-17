@@ -4,6 +4,6 @@ export interface Comment {
   isDisabled?: boolean;
   id?: number;
   content?: string;
-  localDate?: Date;
+  localDateTime?: Date;
   user?: User;
 }

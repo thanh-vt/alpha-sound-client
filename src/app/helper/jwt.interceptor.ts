@@ -8,7 +8,7 @@ import {UserToken} from '../model/userToken';
 export class JwtInterceptor implements HttpInterceptor {
   currentUser: UserToken;
   constructor(private authService: AuthService) {
-    this.authService.currentUser.subscribe(
+    this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }

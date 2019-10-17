@@ -9,6 +9,8 @@ import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {AuthService} from '../../service/auth.service';
 import {UserToken} from '../../model/userToken';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
 
 @Component({
   selector: 'app-song-list',
@@ -16,8 +18,10 @@ import {UserToken} from '../../model/userToken';
   styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
-  private pageNumber: number;
+  currentUser: User;
+  first: boolean;
+  last: boolean;
+  pageNumber = 0;
   private pageSize: number;
   private pages: Page[] = [];
   private message;
@@ -28,30 +32,28 @@ export class SongListComponent implements OnInit, OnDestroy {
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, private playlistService: PlaylistService, private authService: AuthService) {
-    this.authService.currentUser.subscribe(
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, private playlistService: PlaylistService, private userService: UserService) {
+    this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
+      }
+    );
+    this.playingQueueService.update.subscribe(
+      () => {
+        this.goToPage(this.pageNumber);
       }
     );
   }
 
   ngOnInit() {
-    this.goToPage(undefined);
+    this.goToPage(this.pageNumber);
   }
 
   addToPlaying(song) {
     this.playingQueueService.addToQueue({
       title: song.title,
       link: song.url
-    });
-    console.log(this.playingQueueService.currentQueueValue);
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.goToPage(this.pageNumber);
-      }
-    ));
-    console.log(this.playingQueueService.currentQueueValue);
+    }, song.id);
   }
 
   goToPage(i) {
@@ -63,6 +65,8 @@ export class SongListComponent implements OnInit, OnDestroy {
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
           });
+          this.first = result.first;
+          this.last = result.last;
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
           this.pages = new Array(result.totalPages);

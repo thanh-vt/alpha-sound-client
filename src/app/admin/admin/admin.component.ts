@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit {
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
 
   constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
-    this.authService.currentUser.subscribe(
+    this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }

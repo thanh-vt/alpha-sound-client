@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
@@ -16,7 +16,7 @@ import {ViewEncapsulation} from '@angular/core';
   styleUrls: ['./upload-song.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class UploadSongComponent implements OnInit {
+export class UploadSongComponent implements OnInit, OnDestroy {
 
   constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) {
   }
@@ -105,23 +105,9 @@ export class UploadSongComponent implements OnInit {
     }
   }
   upload() {
-    // for (let i = 0; i < this.artists.length; i++) {
-    //   console.suggestSongArtist(this.artists.value[i]);
-    //   console.suggestSongArtist(typeof this.artists.value[i]);
-    //   const artistName = this.artists.value[i];
-    //   if (typeof this.artists.value[i] === 'string') {
-    //     this.artists.controls[i].setValue({
-    //       id: null,
-    //       name: artistName,
-    //       birthDate: null,
-    //       avatarUrl: null,
-    //       biography: null
-    //     });
-    //   }
-    // }
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
-    this.audioUploadService.uploadSong(this.formData).subscribe(
+    this.subscription.add(this.audioUploadService.uploadSong(this.formData).subscribe(
       (event: HttpEvent<any>) => {
         if (this.displayProgress(event, this.progress)) {
           this.message = 'Song uploaded successfully!';
@@ -134,25 +120,28 @@ export class UploadSongComponent implements OnInit {
           this.message = 'Failed to upload song. Cause: ' + error.message;
         }
       }
-    );
+    ));
   }
 
   suggestArtist(i) {
-    this.subscription.unsubscribe();
-    this.subscription = this.artists.controls[i].valueChanges
+    this.subscription.add(this.artists.controls[i].valueChanges
       .pipe(
         debounceTime(300),
         tap(() => this.isLoading = true),
-        switchMap(value => this.artistService.searchArtist(value)
+        switchMap(value => this.artistService.searchArtist((typeof value === 'string') ? value : '')
           .pipe(
             finalize(() => this.isLoading = false),
           )
         )
-      ).subscribe(artists => this.filteredArtists = artists);
+      ).subscribe(artists => this.filteredArtists = artists));
   }
 
   navigate() {
     // this.router.navigate(['/uploaded/list']);
     location.replace('/uploaded/list');
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

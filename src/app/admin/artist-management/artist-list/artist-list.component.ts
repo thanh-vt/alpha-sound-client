@@ -17,14 +17,14 @@ export class ArtistListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.artistService.getArtistList().subscribe(
+    // this.artistService.artistList().subscribe(
     //   result => {
     //     this.artistList = result.content;
     //   }, error => {
     //     this.message = 'Cannot retrieve artist list. Cause:' + error.message;
     //   }
     // );
-    this.subscription = this.artistService.getArtistList().subscribe(
+    this.subscription = this.artistService.artistList().subscribe(
       result => {
         if (result != null) {
           this.artistList = result.content;
@@ -40,7 +40,7 @@ export class ArtistListComponent implements OnInit {
 
   deleteArtist() {
     // this.subscription.unsubscribe();
-    this.subscription = this.artistService.getArtistList().subscribe(
+    this.subscription = this.artistService.artistList().subscribe(
       result => {
         if (result != null) {
           this.artistList = result.content;

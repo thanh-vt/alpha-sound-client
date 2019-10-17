@@ -27,7 +27,7 @@ const routes: Routes = [
         component: ArtistUploadComponent
       },
       {
-        path: 'edit/:id',
+        path: 'update-profile',
         component: ArtistEditComponent
       },
       {
@@ -35,7 +35,7 @@ const routes: Routes = [
         component: ArtistDeleteComponent
       },
       {
-        path: 'detail/:id',
+        path: 'detail',
         component: ArtistDetailComponent
       }
     ]

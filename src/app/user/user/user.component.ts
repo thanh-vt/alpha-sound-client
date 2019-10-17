@@ -27,7 +27,7 @@ export class UserComponent implements OnInit {
   ];
 
   constructor(private router: Router, private authService: AuthService, private playingQueueService: PlayingQueueService) {
-    this.authService.currentUser.subscribe(
+    this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }

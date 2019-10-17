@@ -20,7 +20,7 @@ export class ArtistListComponent implements OnInit {
 
   ngOnInit() {
     // this.subscription.unsubscribe();
-    this.subscription = this.artistService.getArtistList().subscribe(
+    this.subscription = this.artistService.artistList().subscribe(
       result => {
         if (result != null) {
           this.artistList = result.content;

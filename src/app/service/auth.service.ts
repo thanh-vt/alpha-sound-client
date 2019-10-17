@@ -9,23 +9,25 @@ import {map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<UserToken>;
-  public currentUser: Observable<UserToken>;
+  private currentUserTokenSubject: BehaviorSubject<UserToken>;
+  public currentUserToken: Observable<UserToken>;
+  update = new EventEmitter<string>();
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken')));
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.currentUserTokenSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken')));
+    this.currentUserToken = this.currentUserTokenSubject.asObservable();
   }
 
   public get currentUserValue(): UserToken {
-    return this.currentUserSubject.value;
+    return this.currentUserTokenSubject.value;
   }
 
   login(loginForm) {
     return this.http.post<any>(`${environment.apiUrl}/login`, loginForm).pipe(map(userToken => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('userToken', JSON.stringify(userToken));
-      this.currentUserSubject.next(userToken);
+      this.currentUserTokenSubject.next(userToken);
+      this.update.emit('login');
       return userToken;
     }));
   }
@@ -33,6 +35,7 @@ export class AuthService {
   logout() {
     // remove user from local storage to suggestSongArtist user out
     localStorage.removeItem('userToken');
-    this.currentUserSubject.next(null);
+    this.currentUserTokenSubject.next(null);
+    this.update.emit('logout');
   }
 }

@@ -11,6 +11,7 @@ import { DeleteAlbumComponent } from './delete-album/delete-album.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule} from '@angular/material';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressSp
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SharedModule
   ]
 })
 export class AlbumModule { }

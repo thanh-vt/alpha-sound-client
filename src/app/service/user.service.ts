@@ -2,21 +2,37 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {User} from '../model/user';
 import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {UserToken} from '../model/userToken';
-import {FormGroup} from '@angular/forms';
-import {Token} from '@angular/compiler';
+import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient) {
+  private currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+  public currentUser = this.currentUserSubject.asObservable();
+
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.authService.update.subscribe(
+      (action) => {
+        if (action === 'login') {
+          this.getProfile();
+        } else {
+          localStorage.removeItem('user');
+          this.currentUserSubject.next(null);
+        }
+      }
+    );
   }
 
-  getProfile(): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/profile`);
+  getProfile() {
+    this.http.get<User>(`${environment.apiUrl}/profile`).subscribe(
+      user => {
+        console.log(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      });
   }
 
   register(formGroup): Observable<HttpEvent<any>> {
@@ -30,9 +46,7 @@ export class UserService {
   }
 
   updateProfile(formGroup, id: number): Observable<HttpEvent<any>> {
-    // @ts-ignore
-    // @ts-ignore
-    return this.http.put<any>(`${environment.apiUrl}/profile?id=${id}`, formGroup, {
+    return this.http.put<any>(`${environment.apiUrl}/profile`, formGroup, {
       reportProgress: true,
       observe: 'events'
     });

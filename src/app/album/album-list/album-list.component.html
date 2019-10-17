@@ -1,21 +1,29 @@
 <div class="row">
   <ng-container *ngFor="let album of albumList; index as i" >
-    <div class="card col-sm-3 poly-prod mx-2" >
-      <div class="card-header">{{ album[0].title }}</div>
-      <div class="card-body">
-        <div class="align-items-center">
-          <img [src]="album[0].coverUrl" alt=""/></div>
-        </div>
-      <div class="card-footer">
-        <button class="btn btn-info" [disabled]="album[0].isDisabled"><i class="fas fa-play-circle"></i></button>
+    <app-card class="col-3 py-2 text-center">
+      <div class="lambda_card-header"><a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a></div>
+      <div class="lambda_card-body align-items-center">
+        <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"><img [src]="album.coverUrl" alt=""/></a>
       </div>
-    </div>
+      <div class="lambda_card-footer">
+        <button (click)="addAllToPlaying(album.id)" class="btn btn-info" [disabled]="album.isDisabled"><i class="fas fa-play-circle"></i></button>
+      </div>
+    </app-card>
   </ng-container>
 </div>
-<ngb-pagination
-  [(page)]="pageNumber"
-  [pageSize]="pageSize"
-  [collectionSize]="totalItems"></ngb-pagination>
+<nav>
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" *ngIf="!first" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    <li *ngFor="let page of pages" class="page-item">
+      <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" *ngIf="!last" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">Next</a>
+    </li>
+  </ul>
+</nav>
 
 
 

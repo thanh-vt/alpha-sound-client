@@ -13,11 +13,11 @@ export class ArtistService {
   constructor(private http: HttpClient) {
   }
 
-  getArtistList() {
+  artistList() {
     return this.http.get<any>(`${environment.apiUrl}/artist/list`);
   }
 
-  detailArtist(id: number) {
+  artistDetail(id: number) {
     return this.http.get<any>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
 
@@ -52,7 +52,6 @@ export class ArtistService {
   }
 
   updateArtist(formGroup, id: number): Observable<HttpEvent<any>> {
-    // @ts-ignore
     // @ts-ignore
     // @ts-ignore
     return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup, {

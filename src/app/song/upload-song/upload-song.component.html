@@ -23,7 +23,7 @@
               <span>{{ artist.name }}</span>
 <!--              <small> | ID: {{artist.id}}</small>-->
 <!--              <img [src]="artist.avatarUrl" alt="">-->
-              <img style="vertical-align:middle;" aria-hidden src="{{artist.avatarUrl}}" height="40" />
+              <img style="vertical-align:middle;" aria-hidden [src]="artist.avatarUrl" height="40" />
             </mat-option>
           </ng-container>
         </mat-autocomplete>
@@ -48,7 +48,6 @@
   </div>
   <label for="audio">Audio File</label>
   <div class="form-group custom-file">
-
     <label class="custom-file-label" *ngIf=!isAudioFileChosen>Choose file</label>
     <label class="custom-file-label" *ngIf=isAudioFileChosen>{{ audioFileName }}</label>
     <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)">

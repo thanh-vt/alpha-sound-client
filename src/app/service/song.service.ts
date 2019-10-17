@@ -26,7 +26,6 @@ export class SongService {
         requestUrl = requestUrl + `sort=${sort}`;
       }
     }
-    console.log(requestUrl);
     return this.http.get<any>(requestUrl);
   }
 
@@ -47,7 +46,7 @@ export class SongService {
   }
 
   addSongToPlaylist(songId: number, playlistId: number) {
-    return this.http.post(`${environment.apiUrl}/song/add-to-playlist?songId=${songId}&playlistId=${playlistId}`, '');
+    return this.http.post(`${environment.apiUrl}/song/add-to-playlist?song-id=${songId}&playlist-id=${playlistId}`, '');
   }
 
   getdetailSong(id: number) {
@@ -56,7 +55,7 @@ export class SongService {
 
   deletePlaylistSong(songId: number, playlistId: number): Observable<HttpEvent<any>> {
     return this.http.put<any>
-    (`${environment.apiUrl}/playlist/remove-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
+    (`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {responseType: 'text'});
   }
 
   listenToSong(songId: number) {
@@ -70,12 +69,32 @@ export class SongService {
   unlikeSong(songId: number) {
     return this.http.post<any>(`${environment.apiUrl}/song?unlike&song-id=${songId}`, {});
   }
+
   getUserSongList() {
-    return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
+    return this.http.get<any>(`${environment.apiUrl}/song/uploaded`);
   }
+
+  getUserFavoriteSongList(page?: number, sort?: string) {
+    let requestUrl = `${environment.apiUrl}/song/my-song`;
+    if (page || sort) {
+      requestUrl = requestUrl + `?`;
+      if (page) {
+        requestUrl = requestUrl + `page=${page}`;
+        if (sort) {
+          requestUrl = requestUrl + `&`;
+        }
+      }
+      if (sort) {
+        requestUrl = requestUrl + `sort=${sort}`;
+      }
+    }
+    return this.http.get<any>(requestUrl);
+  }
+
   deleteSong(id: number) {
     return this.http.delete<any>(`${environment.apiUrl}/song/delete?id=${id}`);
   }
+
   commentSong(songId: number, comment: Comment) {
   return this.http.post<any>(`${environment.apiUrl}/song?comment&song-id=${songId}`, comment);
   }

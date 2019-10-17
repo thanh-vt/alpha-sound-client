@@ -35,6 +35,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         this.songId = params.id;
         this.subscription.add(this.songservice.getdetailSong(this.songId).subscribe(
           result => {
+            window.scroll(0, 0);
             this.song = result;
             this.artistList = this.song.artists;
             this.commentList = this.song.comments;
@@ -49,6 +50,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
       () => {
         this.subscription.add(this.songservice.getdetailSong(this.songId).subscribe(
           result => {
+            this.commentForm.reset();
             this.song = result;
             this.artistList = this.song.artists;
             this.commentList = this.song.comments;

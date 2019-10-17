@@ -15,4 +15,4 @@
 </ng-template>
 <button (click)="open(content)" *ngIf="action=='delete'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
 <button (click)="open(content)" *ngIf="action=='create'" class="btn btn-primary m-2">{{ title }}</button>
-<button ngbDropdownItem (click)="open(content)" *ngIf="action=='addToPlaylist'">Add to a playlist</button>
+<button class="btn btn-secondary" (click)="open(content)" *ngIf="action=='addToPlaylist'"><i class="fas fa-plus-square"></i></button>
