@@ -3,7 +3,6 @@ import {environment} from '../../environments/environment';
 import {Playlist} from '../model/playlist';
 import {HttpClient, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {FormGroup} from '@angular/forms';
 
 
 @Injectable({

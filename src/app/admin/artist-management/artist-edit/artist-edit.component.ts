@@ -5,6 +5,8 @@ import {AuthService} from '../../../service/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Artist} from '../../../model/artist';
+import {Progress} from '../../../model/progress';
+import {HttpEvent, HttpEventType} from '@angular/common/http';
 
 @Component({
   selector: 'app-artist-edit',
@@ -20,6 +22,8 @@ export class ArtistEditComponent implements OnInit {
   subscription: Subscription = new Subscription();
   message: string;
   artist: Artist;
+  error = false;
+  progress: Progress = {value: 0};
 
   constructor(private artistService: ArtistService, private fb: FormBuilder, private authService: AuthService,
               private route: ActivatedRoute, private router: Router) {
@@ -51,37 +55,30 @@ export class ArtistEditComponent implements OnInit {
       this.imageFileName = event.target.files[0].name;
     }
   }
+
+  displayProgress(event: HttpEvent<any>, progress: Progress): boolean {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        console.log('Request has been made!');
+        break;
+      case HttpEventType.ResponseHeader:
+        console.log('Response header has been received!');
+        break;
+      case HttpEventType.UploadProgress:
+        progress.value = Math.round(event.loaded / event.total * 100);
+        console.log(`Uploaded! ${progress.value}%`);
+        break;
+      case HttpEventType.Response:
+        console.log('Song successfully created!', event.body);
+        setTimeout(() => {
+          progress.value = 0;
+        }, 1500);
+        return true;
+    }
+  }
+
   onSubmit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    console.log(this.artistUpdateForm.value);
-    // this.userService.updateProfile(this.updateForm.value, id).subscribe(
-    //   result => {
-    //     this.message = 'Song created successfully!';
-    //     this.formData.append('id', String(result));
-    //     this.formData.append('avatar', this.file);
-    //     this.userService.uploadAvatar(this.formData).subscribe(
-    //       (event: HttpEvent<any>) => {
-    //         switch (event.type) {
-    //           case HttpEventType.Sent:
-    //             console.log('Request has been made!');
-    //             break;
-    //           case HttpEventType.ResponseHeader:
-    //             console.log('Response header has been received!');
-    //             break;
-    //
-    //           case HttpEventType.Response:
-    //             console.log('User successfully updated!', event.body);
-    //         }
-    //         this.message = 'Avatar uploaded successfully!';
-    //       },
-    //       error1 => {
-    //         this.message = 'Failed to upload avatar. Cause: ' + error1.message;
-    //       }
-    //     );
-    //   }, error => {
-    //     this.message = 'Failed to update user. Cause: ' + error.message;
-    //   }
-    // );
     this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], {type: 'application/json'}));
     this.formData.append('avatar', this.file);
     console.log(this.formData);
