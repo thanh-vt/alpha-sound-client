@@ -9,9 +9,8 @@
   <tbody>
   <tr *ngFor="let artist of artistList; index as i">
     <td>{{ i + 1 }}</td>
-    <td>{{artist.name}}</td>
-    <td><img class="avatar" src="{{artist.avatarUrl}}"></td>
-    <td><a [routerLink]="['/artist', 'detail', artist.id]">View</a></td>
+    <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
+    <td><img class="avatar" [src]="artist.avatarUrl"></td>
   </tr>
   </tbody>
 </table>

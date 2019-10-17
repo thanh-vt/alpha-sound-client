@@ -10,7 +10,6 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   adminLogin(loginForm) {
-    console.log(loginForm);
     return this.http.post<any>(`${environment.apiUrl}/login`, loginForm);
   }
 

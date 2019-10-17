@@ -1,4 +1,5 @@
 import {Artist} from './artist';
+import {Comment} from './comment';
 import {User} from './user';
 
 export interface Song {
@@ -16,4 +17,6 @@ export interface Song {
   isDisabled?: boolean;
   liked?: boolean;
   uploader?: User;
+  comments?: Comment[];
+  listeningFrequency?: number;
 }

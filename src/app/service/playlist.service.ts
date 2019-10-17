@@ -17,6 +17,7 @@ export class PlaylistService {
     return this.http.post<any>(`${environment.apiUrl}/playlist/create`, formGroup);
   }
 
+
   getPlaylistList() {
     return this.http.get<any>(`${environment.apiUrl}/playlist/list`);
   }

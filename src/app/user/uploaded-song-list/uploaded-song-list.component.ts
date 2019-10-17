@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {Playlist} from '../../model/playlist';
 import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {SongService} from '../../service/song.service';
-import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 import {PlaylistService} from '../../service/playlist.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
 
-  constructor(private songService: SongService, private addSongToPlaying: AddSongToPlaying) { }
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService) { }
 
   ngOnInit() {
     this.subscription.add(this.songService.getUserSongList().subscribe(
@@ -44,7 +44,7 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
 
   addToPlaying(song) {
     song.isDisabled = true;
-    this.addSongToPlaying.emitChange(song);
+    this.playingQueueService.emitChange(song);
   }
 
   ngOnDestroy(): void {

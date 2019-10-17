@@ -1,1 +1,36 @@
-<p>song-detail works!</p>
+<ng-container *ngIf="song">
+  <h4>Thông tin chi tiết</h4>
+  <div>
+    <div class="card">
+      <!--      <div class="card-header">Tên bài hát : {{song.title}}</div>-->
+      <!--      <div class="card-body">Ngày phát hành : {{song.releaseDate | date }}</div>-->
+      <!--      <div class="card-footer">-->
+      <!--        <ul class="list-group">-->
+      <!--          Ca sĩ :-->
+      <!--          <li class="list-group-item" *ngFor="let artist of artistList; index as i">{{artist.name}}</li>-->
+      <!--        </ul>-->
+      <!--      </div>-->
+      <div class="card-body">
+        <p>Title: {{song.title}}</p><br>
+        <p>Release Date: {{song.releaseDate | date }}</p>
+        <p>Artist(s): <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">{{artist.name}} , </a></p>
+      </div>
+    </div>
+    <h4>Comment</h4>
+    <ul class="list-group">
+      <li class="list-group-item row" *ngFor="let comment of commentList; index as i">
+        <img class="avatar col-sm-1" [src]="comment.user.avatarUrl">
+        <div class="col-sm-11">
+          <b>{{comment.user.username}}</b><br>
+          <p>{{comment.content}}</p><p>{{comment.localDate | date:'yyyy-MM-dd'}}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
+    <div class="mt-sm-3">
+      <button type="submit" class="btn btn-primary">Comment</button>
+    </div>
+  </form>
+</ng-container>

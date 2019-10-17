@@ -17,9 +17,10 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {PlaylistModule} from '../playlist/playlist.module';
 import { ModalComponent } from './modal/modal.component';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
-  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent],
+  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent],
   imports: [
     CommonModule,
     NgbModule,

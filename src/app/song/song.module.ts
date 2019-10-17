@@ -16,9 +16,10 @@ import { NewSongComponent } from './new-song/new-song.component';
 import {SharedModule} from '../shared/shared.module';
 import {PlaylistModule} from '../playlist/playlist.module';
 import {AutoSizeInputModule} from 'ngx-autosize-input';
+import { ListenSongComponent } from './listen-song/listen-song.component';
 
 @NgModule({
-  declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
+  declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent, ListenSongComponent],
   imports: [
     CommonModule,
     SongRoutingModule,
@@ -31,7 +32,7 @@ import {AutoSizeInputModule} from 'ngx-autosize-input';
     MatProgressSpinnerModule,
     SharedModule,
     PlaylistModule,
-    AutoSizeInputModule
+    // AutoSizeInputModule
   ],
   exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],
 })

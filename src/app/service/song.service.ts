@@ -12,16 +12,22 @@ export class SongService {
   constructor(private http: HttpClient) {
   }
 
-  getSongList() {
-    return this.http.get<any>(`${environment.apiUrl}/song/list`);
-  }
-
-  getSongListPage(i) {
-    if (i !== null) {
-      return this.http.get<any>(`${environment.apiUrl}/song/list?page=${i}`);
-    } else {
-      return this.http.get<any>(`${environment.apiUrl}/song/list`);
+  getSongList(page?: number, sort?: string) {
+    let requestUrl = `${environment.apiUrl}/song/list`;
+    if (page || sort) {
+      requestUrl = requestUrl + `?`;
+      if (page) {
+        requestUrl = requestUrl + `page=${page}`;
+        if (sort) {
+          requestUrl = requestUrl + `&`;
+        }
+      }
+      if (sort) {
+        requestUrl = requestUrl + `sort=${sort}`;
+      }
     }
+    console.log(requestUrl);
+    return this.http.get<any>(requestUrl);
   }
 
   updateSong(song: any, id: number): Observable<Song> {
@@ -48,10 +54,6 @@ export class SongService {
     (`${environment.apiUrl}/playlist/remove-song?songId=${songId}&playlistId=${playlistId}`, {responseType: 'text'});
   }
 
-  getNewSong() {
-    return this.http.get<any>(`${environment.apiUrl}/song/sortByDate`);
-  }
-
   listenToSong(songId: number) {
     return this.http.post<any>(`${environment.apiUrl}/song?listen&song-id=${songId}`, {});
   }
@@ -68,5 +70,8 @@ export class SongService {
   }
   deleteSong(id: number) {
     return this.http.delete<any>(`${environment.apiUrl}/song/delete?id=${id}`);
+  }
+  commentSong(songId: number, comment: Comment) {
+  return this.http.post<any>(`${environment.apiUrl}/song?comment&song-id=${songId}`, comment);
   }
 }
