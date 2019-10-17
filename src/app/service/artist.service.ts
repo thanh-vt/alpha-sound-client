@@ -52,6 +52,7 @@ export class ArtistService {
   }
 
   updateArtist(formGroup, id: number): Observable<HttpEvent<any>> {
+    // @ts-ignore
     return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup, {
       reportProgress: true,
       observe: 'events'
