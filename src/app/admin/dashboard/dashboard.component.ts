@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,15 +6,9 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  loginPopup = false;
-  subscription: Subscription = new Subscription();
-
-  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    if (this.route.snapshot.queryParams.login) {
-      this.loginPopup = true;
-    }
+
   }
 
 }

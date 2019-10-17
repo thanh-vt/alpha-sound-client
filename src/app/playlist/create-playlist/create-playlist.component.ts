@@ -23,32 +23,11 @@ export class CreatePlaylistComponent implements OnInit {
               private playlistService: PlaylistService) {}
 
   ngOnInit(): void {
-    this.createPlaylistForm = this.fb.group({
-      title: ['', Validators.required],
-      }
-    );
-  }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-      this.message = null;
-    }, () => {
-      this.createPlaylist.emit();
-    });
   }
 
   onSubmit() {
-    this.subscription.add(this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
-      () => {
-        this.error = false;
-        this.message = 'Playlist created successfully!';
-        this.createPlaylistForm.reset({name});
-      },
-      error => {
-        this.error = true;
-        this.message = 'Failed to create playlist. Cause: ' + error.message;
-      }
-    ));
+    this.createPlaylist.emit();
   }
 
 }

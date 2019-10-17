@@ -9,6 +9,10 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
+  adminLogin(loginForm) {
+    return this.http.post<any>(`${environment.apiUrl}/login`, loginForm);
+  }
+
   getUserList() {
     return this.http.get<any>(`${environment.apiUrl}/admin/user-list`);
   }

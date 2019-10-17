@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {User} from '../../model/user';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {UserToken} from '../../model/userToken';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +12,7 @@ import {User} from '../../model/user';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @Output() loginAction = new EventEmitter<string>();
-  @Output() logoutAction = new EventEmitter();
-  @Input() isLoggedIn: boolean;
-  @Input() username: string;
-  userId: number;
+  @Input() currentUser: UserToken;
   message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
@@ -23,11 +20,16 @@ export class NavbarComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error = '';
+  error: string;
+  subscription = new Subscription();
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private fb: FormBuilder) {
-
+    this.authService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
   }
 
   ngOnInit() {
@@ -41,35 +43,29 @@ export class NavbarComponent implements OnInit {
     });
     this.isCollapsed = true;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-    if (this.authService.isAuthenticated()) {
-      this.userId = JSON.parse(localStorage.getItem('userToken')).id;
-    }
   }
 
   onSignIn() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
-
     this.loading = true;
     this.authService.login(this.loginForm.value).subscribe(
       user => {
         localStorage.setItem('userToken', JSON.stringify(user));
-        this.userId = user.id;
-        this.loginAction.emit(user.username);
         this.loading = false;
         this.router.navigate([this.returnUrl]);
       }, error => {
-        this.message = 'Ten dang nhap hoac mat khau khong chinh xac';
+        this.message = 'Wrong username or password';
         this.loading = false;
       }
     );
   }
 
   onSearch() {
+    if (this.searchForm.invalid) { return; }
     const name = this.searchForm.get('searchText').value;
     // tslint:disable-next-line:only-arrow-functions
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
@@ -78,8 +74,9 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/', 'search', name]);
   }
 
-  logoutClick() {
-    this.logoutAction.emit();
+  logout() {
+    this.authService.logout();
+    // this.router.navigate(['/home']);
   }
 
 }

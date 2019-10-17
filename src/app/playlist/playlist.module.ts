@@ -10,6 +10,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from '@angular/forms';
 import { DeletePlaylistSongComponent } from './delete-playlist-song/delete-playlist-song.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   // tslint:disable-next-line:max-line-length
@@ -18,7 +19,8 @@ import { DeletePlaylistSongComponent } from './delete-playlist-song/delete-playl
     CommonModule,
     PlaylistRoutingModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   // tslint:disable-next-line:max-line-length
   exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, DeletePlaylistSongComponent],

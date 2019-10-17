@@ -1,3 +1,12 @@
+<app-modal [action]="'create'" [title]="'Create a playlist'">
+  <app-create-playlist class="modal-body"></app-create-playlist>
+  <div class="modal-footer">
+    <button (click)="createPlaylist()" [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')" class="btn btn-primary">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Save
+    </button>
+  </div>
+</app-modal>
 <table class="table table-striped">
   <thead>
   <tr>

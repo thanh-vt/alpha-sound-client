@@ -155,9 +155,14 @@ export class EditSongComponent implements OnInit {
         break;
       case HttpEventType.Response:
         console.log('Song successfully created!', event.body);
-        setTimeout(() => {
+        const complete = setTimeout(() => {
           progress.value = 0;
-        }, 1500);
+          const navigation = setInterval(() => {
+            this.navigate();
+            clearTimeout(navigation);
+            clearTimeout(complete);
+          }, 2000);
+        }, 500);
         return true;
     }
   }
@@ -174,10 +179,6 @@ export class EditSongComponent implements OnInit {
         if (this.displayProgress(event, this.progress)) {
           this.message = 'Song updated successfully!';
         }
-        const navigation = setInterval(() => {
-          this.navigate();
-          clearTimeout(navigation);
-        }, 2000);
       }, error => {
         console.log(error);
         this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';

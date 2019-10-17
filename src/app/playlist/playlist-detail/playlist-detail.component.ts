@@ -2,11 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PlaylistService} from '../../service/playlist.service';
 import {SongService} from '../../service/song.service';
 import {ActivatedRoute} from '@angular/router';
-import {AddSongToPlaying} from '../../service/add-song-to-playling.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 import {Song} from '../../model/song';
 import {Playlist} from '../../model/playlist';
 import {Observable, of, Subscription} from 'rxjs';
 import {Validators} from '@angular/forms';
+import {Track} from 'ngx-audio-player';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -24,7 +25,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     private playlistService: PlaylistService,
     private songService: SongService,
     private route: ActivatedRoute,
-    private addSongToPlaying: AddSongToPlaying
+    private playingQueueService: PlayingQueueService
   ) {
   }
 
@@ -32,7 +33,6 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(
       params => {
         this.playlistId = params.id;
-        console.log(this.playlistId);
       }
     );
     this.subscription.add(this.playlistService.getPlayListDetail(this.playlistId).subscribe(
@@ -47,12 +47,15 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
       }
     ));
-
   }
 
-  addToPlayling(song) {
+  addToPlaying(song: Song) {
     song.isDisabled = true;
-    this.addSongToPlaying.emitChange(song);
+    const track: Track = {
+      title: song.title,
+      link: song.url
+    };
+    this.playingQueueService.addToQueue(track);
   }
 
   deletePlaylistSong() {

@@ -9,19 +9,19 @@ import {ArtistComponent} from './artist-management/artist/artist.component';
 
 
 const routes: Routes = [
-  // {
-  //   path: 'ad',
-  //   redirectTo: 'dashboard',
-  //   pathMatch: 'full'
-  // },
-  {path: 'login', component: LoginComponent},
+  {
+    path: 'ad',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  // {path: 'login', component: LoginComponent},
   {
     path: '', component: AdminComponent, children: [
       {path: 'dashboard', component: DashboardComponent},
       // tslint:disable-next-line:max-line-length
       {
         path: 'user-management',
-        loadChildren: () => import('../user-management/user-management.module').then(mod => mod.UserManagementModule)
+        loadChildren: () => import('./user-management/user-management.module').then(mod => mod.UserManagementModule)
       },
       {
         path: 'artist',

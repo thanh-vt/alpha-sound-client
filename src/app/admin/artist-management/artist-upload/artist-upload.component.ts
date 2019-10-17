@@ -57,9 +57,14 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
         break;
       case HttpEventType.Response:
         console.log('Song successfully created!', event.body);
-        setTimeout(() => {
+        const complete = setTimeout(() => {
           progress.value = 0;
-        }, 1500);
+          const navigation = setInterval(() => {
+            this.navigate();
+            clearTimeout(navigation);
+            clearTimeout(complete);
+          }, 2000);
+        }, 500);
         return true;
     }
   }
@@ -77,11 +82,7 @@ export class ArtistUploadComponent implements OnInit, OnDestroy {
           this.error = false;
           this.message = 'Artist uploaded successfully!';
         }
-        const navigation = setInterval(() => {
-          this.navigate();
-          clearTimeout(navigation);
-        }, 2000);
-      }, error => {
+        }, error => {
         this.error = true;
         this.message = 'Failed to upload artist. Cause: ' + error.message;
       }

@@ -11,7 +11,7 @@ import {JwtInterceptor} from './helper/jwt.interceptor';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
-import {AddSongToPlaying} from './service/add-song-to-playling.service';
+import {PlayingQueueService} from './service/playing-queue.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 import {AdminModule} from './admin/admin.module';
 import {ErrorInterceptor} from './helper/error.interceptor';
@@ -48,7 +48,7 @@ const JWT_Module_Options: JwtModuleOptions = {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    AddSongToPlaying
+    PlayingQueueService
   ],
   bootstrap: [AppComponent]
 })

@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
         const navigation = setInterval(() => {
           this.navigate();
           clearTimeout(navigation);
-        }, 2000);
+        }, 3000);
       },
       error => {
         this.error = true;

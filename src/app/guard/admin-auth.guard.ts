@@ -12,20 +12,25 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import {AuthService} from '../service/auth.service';
+import {UserToken} from '../model/userToken';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) { }
+  currentUser: UserToken;
+  constructor(private router: Router, private authService: AuthService) {
+    this.authService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let hasRoleAdmin = false;
-    if (this.authService.isAuthenticated()) {
-      const roleList = JSON.parse(localStorage.getItem('userToken')).roles;
+    if (!!this.currentUser) {
+      const roleList = this.currentUser.roles;
       for (const role of roleList) {
         if (role.name === 'ROLE_ADMIN') {
           hasRoleAdmin = true;
@@ -45,8 +50,8 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
     }
   }
   canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.authService.isAuthenticated()) {
-      const roleList = JSON.parse(localStorage.getItem('userToken')).roles;
+    if (!!this.currentUser) {
+      const roleList = this.currentUser.roles;
       let hasRoleAdmin = false;
       for (const role of roleList) {
         if (role.name === 'ROLE_ADMIN') {

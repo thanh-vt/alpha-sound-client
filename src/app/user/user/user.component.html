@@ -1,6 +1,5 @@
 <div class="fixed-top">
-<!--  <app-header></app-header>-->
-  <app-navbar (loginAction)="logIn($event)" (logoutAction)="logout()" [isLoggedIn]="isLoggedIn" [username]="username"></app-navbar>
+  <app-navbar [currentUser]="currentUser"></app-navbar>
 </div>
 <div class="container">
   <div class="row">

@@ -9,7 +9,6 @@ import {Subscription} from 'rxjs';
 import {Progress} from '../../model/progress';
 import {DatePipe} from '@angular/common';
 import {ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-upload-song',
@@ -19,8 +18,7 @@ import {Router} from '@angular/router';
 })
 export class UploadSongComponent implements OnInit {
 
-  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService,
-              private fb: FormBuilder, private router: Router) {
+  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) {
   }
 
   isAudioFileChosen = false;
@@ -95,13 +93,17 @@ export class UploadSongComponent implements OnInit {
         break;
       case HttpEventType.Response:
         console.log('Song successfully created!', event.body);
-        setTimeout(() => {
+        const complete = setTimeout(() => {
           progress.value = 0;
-        }, 1500);
+          const navigation = setInterval(() => {
+            this.navigate();
+            clearTimeout(navigation);
+            clearTimeout(complete);
+          }, 2000);
+        }, 500);
         return true;
     }
   }
-
   upload() {
     // for (let i = 0; i < this.artists.length; i++) {
     //   console.suggestSongArtist(this.artists.value[i]);
@@ -124,10 +126,6 @@ export class UploadSongComponent implements OnInit {
         if (this.displayProgress(event, this.progress)) {
           this.message = 'Song uploaded successfully!';
         }
-        const navigation = setInterval(() => {
-          this.navigate();
-          clearTimeout(navigation);
-        }, 2000);
       }, error => {
         this.progress.value = 0;
         if (error.status === 400) {
@@ -152,6 +150,7 @@ export class UploadSongComponent implements OnInit {
         )
       ).subscribe(artists => this.filteredArtists = artists);
   }
+
   navigate() {
     // this.router.navigate(['/uploaded/list']);
     location.replace('/uploaded/list');

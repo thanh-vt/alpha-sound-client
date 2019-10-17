@@ -83,9 +83,14 @@ export class EditComponent implements OnInit {
         break;
       case HttpEventType.Response:
         console.log('Song successfully created!', event.body);
-        setTimeout(() => {
+        const complete = setTimeout(() => {
           progress.value = 0;
-        }, 1500);
+          const navigation = setInterval(() => {
+            this.navigate();
+            clearTimeout(navigation);
+            clearTimeout(complete);
+          }, 2000);
+        }, 500);
         return true;
     }
   }
@@ -130,10 +135,6 @@ export class EditComponent implements OnInit {
           this.error = false;
           this.message = 'Update user success';
         }
-        const navigation = setInterval(() => {
-          this.navigate();
-          clearTimeout(navigation);
-        }, 2000);
       },
       error => {
         console.log('not ok!');
