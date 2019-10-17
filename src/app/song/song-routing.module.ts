@@ -27,7 +27,7 @@ const routes: Routes = [
         component:  UploadSongComponent
       },
       {
-        path:  'edit/:id',
+        path:  'edit',
         component:  EditSongComponent
       },
       {

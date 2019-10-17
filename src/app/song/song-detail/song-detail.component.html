@@ -1,19 +1,14 @@
 <ng-container *ngIf="song">
-  <h4>Thông tin chi tiết</h4>
+  <h4>Song Info</h4>
   <div>
     <div class="card">
-      <!--      <div class="card-header">Tên bài hát : {{song.title}}</div>-->
-      <!--      <div class="card-body">Ngày phát hành : {{song.releaseDate | date }}</div>-->
-      <!--      <div class="card-footer">-->
-      <!--        <ul class="list-group">-->
-      <!--          Ca sĩ :-->
-      <!--          <li class="list-group-item" *ngFor="let artist of artistList; index as i">{{artist.name}}</li>-->
-      <!--        </ul>-->
-      <!--      </div>-->
       <div class="card-body">
-        <p>Title: {{song.title}}</p><br>
-        <p>Release Date: {{song.releaseDate | date }}</p>
-        <p>Artist(s): <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">{{artist.name}} , </a></p>
+        <h6 class="d-inline">Title: </h6><span>{{song.title}}</span><br>
+        <h6 class="d-inline">Release Date: </h6><span>{{song.releaseDate | date }}</span><br>
+        <h6 class="d-inline">Artist(s): </h6>
+        <ul>
+          <li *ngFor="let artist of artistList; index as i"><a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" >{{artist.name}} </a></li>
+        </ul>
       </div>
     </div>
     <h4>Comment</h4>

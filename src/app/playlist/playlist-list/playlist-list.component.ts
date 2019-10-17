@@ -18,10 +18,6 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   constructor(private playlistService: PlaylistService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.createPlaylistForm = this.fb.group({
-        title: ['', Validators.required],
-      }
-    );
     this.subscription.add(this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {
@@ -37,34 +33,21 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   }
 
   createPlaylist() {
-    this.subscription.add(this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
-      () => {
-        this.error = false;
-        this.message = 'Playlist created successfully!';
-        this.createPlaylistForm.reset({name});
-        this.subscription.add(this.playlistService.getPlaylistList().subscribe(
-          result => {
-            if (result != null) {
-              this.playlistList = result.content;
-              this.playlistList.forEach((value, index) => {
-                this.playlistList[index].isDisabled = false;
-              });
-            }
-          }, error => {
-            this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
-          }
-        ));
-      },
-      error => {
-        this.error = true;
-        this.message = 'Failed to create playlist. Cause: ' + error.message;
+    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
+      result => {
+        if (result != null) {
+          this.playlistList = result.content;
+          this.playlistList.forEach((value, index) => {
+            this.playlistList[index].isDisabled = false;
+          });
+        }
+      }, error => {
+        this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
       }
     ));
-
   }
 
   deletePlaylist() {
-    // this.subscription.unsubscribe();
     this.subscription.add(this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {

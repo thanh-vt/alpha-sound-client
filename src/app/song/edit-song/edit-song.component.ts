@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Song} from '../../model/song';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SongService} from '../../service/song.service';
@@ -16,8 +16,9 @@ import {DatePipe} from '@angular/common';
   templateUrl: './edit-song.component.html',
   styleUrls: ['./edit-song.component.scss']
 })
-export class EditSongComponent implements OnInit {
+export class EditSongComponent implements OnInit, OnDestroy {
   @Input() song: Song;
+  songId: number;
   songUpdateForm: FormGroup;
   message: string;
   formData = new FormData();
@@ -28,6 +29,7 @@ export class EditSongComponent implements OnInit {
   progress: Progress = {value: 0};
   file: any;
   error = false;
+  subscription: Subscription = new Subscription();
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -52,85 +54,48 @@ export class EditSongComponent implements OnInit {
     }
   }
 
-  constructor(
-    private route: ActivatedRoute,
-    private songService: SongService,
-    private fb: FormBuilder,
-    private artistService: ArtistService,
-    private router: Router
-  ) {
+  // tslint:disable-next-line:max-line-length
+  constructor(private route: ActivatedRoute, private songService: SongService, private fb: FormBuilder, private artistService: ArtistService) {
   }
 
   ngOnInit() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.songService.getdetailSong(id).subscribe(
-      result => {
-        this.song = result;
-        this.songUpdateForm = this.fb.group({
-          title: [this.song.title, Validators.required],
-          artists: this.fb.array([EditSongComponent.createArtist()]),
-          releaseDate: [this.song.releaseDate],
-          album: [null],
-          genres: [null],
-          tags: [null],
-          country: [null],
-          theme: [null]
-        });
-        for (let i = 0; i < result.artists.length; i++) {
-          this.songUpdateForm.get('artists').setValue(result.artists);
-        }
-        console.log(this.songUpdateForm.value);
-        for (let i = 0; i < this.artists.length; i++) {
-          this.artists.controls[i].valueChanges
-            .pipe(
-              debounceTime(300),
-              tap(() => this.isLoading = true),
-              switchMap(value => this.artistService.searchArtist(value)
+    this.subscription.add(this.route.queryParams.subscribe(
+      params => {
+        this.songId = params.id;
+        this.songService.getdetailSong(this.songId).subscribe(
+          result => {
+            this.song = result;
+            this.songUpdateForm = this.fb.group({
+              title: [this.song.title, Validators.required],
+              artists: this.fb.array([EditSongComponent.createArtist()]),
+              releaseDate: [this.song.releaseDate],
+              album: [null],
+              genres: [null],
+              tags: [null],
+              country: [null],
+              theme: [null]
+            });
+            for (let i = 0; i < result.artists.length; i++) {
+              this.songUpdateForm.get('artists').setValue(result.artists);
+            }
+            for (let i = 0; i < this.artists.length; i++) {
+              this.artists.controls[i].valueChanges
                 .pipe(
-                  finalize(() => this.isLoading = false),
-                )
-              )
-            ).subscribe(artists => this.filteredArtists = artists);
-        }
-      }, error => {
-        console.log(error);
+                  debounceTime(300),
+                  tap(() => this.isLoading = true),
+                  switchMap(value => this.artistService.searchArtist(value)
+                    .pipe(
+                      finalize(() => this.isLoading = false),
+                    )
+                  )
+                ).subscribe(artists => this.filteredArtists = artists);
+            }
+          }, error => {
+            console.log(error);
+          }
+        );
       }
-    );
-
-
-    this.songService.getdetailSong(id).subscribe(
-      result => {
-        this.song = result;
-        this.songUpdateForm = this.fb.group({
-          title: [this.song.title, Validators.required],
-          artists: this.fb.array([EditSongComponent.createArtist()]),
-          releaseDate: [this.song.releaseDate],
-          album: [null],
-          genres: [null],
-          tags: [null],
-          country: [null],
-          theme: [null]
-        });
-        for (let i = 0; i < result.artists.length; i++) {
-          this.songUpdateForm.get('artists').setValue(result.artists);
-        }
-        console.log(this.songUpdateForm.value);
-        for (let i = 0; i < this.artists.length; i++) {
-          this.artists.controls[i].valueChanges
-            .pipe(
-              debounceTime(300),
-              tap(() => this.isLoading = true),
-              switchMap(value => this.artistService.searchArtist(value)
-                .pipe(
-                  finalize(() => this.isLoading = false),
-                )
-              )
-            ).subscribe(artists => this.filteredArtists = artists);
-        }
-      }, error => {
-        console.log(error);
-      }
-    );
+    ));
   }
 
   selectFile(event) {
@@ -168,23 +133,30 @@ export class EditSongComponent implements OnInit {
   }
 
   onSubmit() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    console.log(this.songUpdateForm);
-    this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], {type: 'application/json'}));
-    this.formData.append('audio', this.file);
-    console.log(JSON.stringify(this.songUpdateForm.value));
-    this.songService.updateSong(this.formData, id).subscribe(
-      (event: HttpEvent<any>) => {
-        console.log('ok');
-        if (this.displayProgress(event, this.progress)) {
-          this.message = 'Song updated successfully!';
-        }
-      }, error => {
-        console.log(error);
-        this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+    this.subscription.add(this.route.queryParams.subscribe(
+      params => {
+        this.songId = params.id;
+        this.subscription.add(
+          this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], {type: 'application/json'})));
+        this.formData.append('audio', this.file);
+        this.songService.updateSong(this.formData, this.songId).subscribe(
+          (event: HttpEvent<any>) => {
+            if (this.displayProgress(event, this.progress)) {
+              this.message = 'Song updated successfully!';
+            }
+          }, error => {
+            console.log(error);
+            this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+          }
+        );
       }
-    );
+    ));
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   navigate() {
     location.replace('/uploaded/list');
   }

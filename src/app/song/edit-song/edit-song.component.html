@@ -39,7 +39,7 @@
 
   <div class="form-group">
     <label for="releaseDate">Release Date</label>
-    <input [value]="song.releaseDate | date:'yyyy-MM-dd'" type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+    <input [value]="song.releaseDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
     <div class="alert alert-danger" role="alert"
          *ngIf="songUpdateForm.get('releaseDate').hasError('required') && songUpdateForm.get('releaseDate').touched">
       Must be filled!
