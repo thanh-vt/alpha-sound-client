@@ -9,9 +9,9 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./artist-list.component.scss']
 })
 export class ArtistListComponent implements OnInit {
-  private artistList: Artist[];
-  private message: string;
-  private subscription: Subscription = new Subscription();
+  artistList: Artist[];
+  message: string;
+  subscription: Subscription = new Subscription();
 
   constructor(private artistService: ArtistService) {
   }

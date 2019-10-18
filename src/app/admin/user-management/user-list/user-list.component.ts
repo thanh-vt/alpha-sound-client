@@ -11,12 +11,12 @@ import {Subscription} from 'rxjs';
 })
 export class UserListComponent implements OnInit {
 
-  private pageNumber: number;
-  private pageSize: number;
-  private totalItems: number;
-  private message;
-  private userList: User[];
-  private subscription: Subscription = new Subscription();
+  pageNumber: number;
+  pageSize: number;
+  totalItems: number;
+  message: string;
+  userList: User[];
+  subscription: Subscription = new Subscription();
 
   constructor(private adminService: AdminService) {
   }

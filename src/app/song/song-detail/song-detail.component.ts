@@ -16,10 +16,10 @@ import {Subscription} from 'rxjs';
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
   @Input() song: Song;
-  private message;
-  private songId;
-  private  artistList: Artist[];
-  private  commentList: Comment[];
+  message: string;
+  songId: number;
+  artistList: Artist[];
+  commentList: Comment[];
   commentForm: FormGroup;
   error = false;
   subscription: Subscription = new Subscription();

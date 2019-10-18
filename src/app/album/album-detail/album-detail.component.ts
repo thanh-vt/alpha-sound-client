@@ -16,10 +16,10 @@ import {Song} from '../../model/song';
 })
 export class AlbumDetailComponent implements OnInit, OnDestroy {
 
-  private album: Album;
-  private albumId;
+  album: Album;
+  albumId;
   songList: Song[];
-  private subscription: Subscription = new Subscription();
+  subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private albumService: AlbumService, private songService: SongService, private playingQueueService: PlayingQueueService) { }

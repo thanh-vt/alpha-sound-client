@@ -11,9 +11,9 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  private message;
-  private songList: Song[];
-  private subscription: Subscription = new Subscription();
+  message;
+  songList: Song[];
+  subscription: Subscription = new Subscription();
 
   constructor(private route: ActivatedRoute, private songService: SongService, private playingQueueService: PlayingQueueService) {
   }

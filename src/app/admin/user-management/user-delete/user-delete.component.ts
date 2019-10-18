@@ -16,7 +16,7 @@ export class UserDeleteComponent implements OnInit {
   loading = false;
   message: string;
   error = false;
-  private subscription: Subscription = new Subscription();
+  subscription: Subscription = new Subscription();
   @Output() deleteUser = new EventEmitter();
   constructor(private adminService: AdminService, private modalService: NgbModal, private router: Router,
               private route: ActivatedRoute) { }

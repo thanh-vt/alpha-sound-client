@@ -13,9 +13,9 @@ import {SongService} from '../../service/song.service';
 })
 export class ArtistListComponent implements OnInit {
 
-  private message;
-  private subscription: Subscription = new Subscription();
-  private artistList: Artist[] = [];
+  message: string;
+  subscription: Subscription = new Subscription();
+  artistList: Artist[] = [];
   constructor(private artistService: ArtistService, private songService: SongService) { }
 
   ngOnInit() {

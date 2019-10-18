@@ -17,15 +17,15 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
   styleUrls: ['./artist-detail.component.scss']
 })
 export class ArtistDetailComponent implements OnInit, OnDestroy {
-  private artist: Artist;
-  private artistId;
-  private message;
-  private pageNumber: number;
-  private pageSize: number;
-  private pages: Page[] = [];
-  private songList: Song[];
-  private isDisable: boolean;
-  private subscription: Subscription = new Subscription();
+  artist: Artist;
+  artistId: number;
+  message: string;
+  pageNumber: number;
+  pageSize: number;
+  pages: Page[] = [];
+  songList: Song[];
+  isDisable: boolean;
+  subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private artistService: ArtistService, private songService: SongService, private playingQueueService: PlayingQueueService) { }

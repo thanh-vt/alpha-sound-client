@@ -3,7 +3,6 @@ import {Song} from '../../model/song';
 import {SongService} from '../../service/song.service';
 import {Page} from '../../model/page';
 import {PlayingQueueService} from '../../service/playing-queue.service';
-import {ActivatedRoute} from '@angular/router';
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
@@ -17,13 +16,13 @@ import {AuthService} from '../../service/auth.service';
 })
 export class NewSongComponent implements OnInit, OnDestroy {
   currentUser: UserToken;
-  private pageNumber: number;
-  private pageSize: number;
-  private pages: Page[] = [];
-  private message;
-  private songList: Song[];
-  private isDisable: boolean;
-  private subscription: Subscription = new Subscription();
+  pageNumber: number;
+  pageSize: number;
+  pages: Page[] = [];
+  message: string;
+  songList: Song[];
+  isDisable: boolean;
+  subscription: Subscription = new Subscription();
   playlistList: Playlist[];
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
