@@ -47,7 +47,7 @@ export class UserService {
   updateProfile(formGroup, id: number): Observable<HttpEvent<Blob>> {
     return this.http.put<any>(`${environment.apiUrl}/profile`, formGroup, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'body'
     });
   }
 
