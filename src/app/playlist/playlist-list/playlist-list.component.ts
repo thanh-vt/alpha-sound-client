@@ -12,9 +12,9 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   loading = false;
   error = false;
   createPlaylistForm: FormGroup;
-  private message;
-  private subscription: Subscription = new Subscription();
-  private playlistList: Playlist[] = [];
+   message: string;
+   subscription: Subscription = new Subscription();
+   playlistList: Playlist[] = [];
   constructor(private playlistService: PlaylistService, private fb: FormBuilder) { }
 
   ngOnInit() {

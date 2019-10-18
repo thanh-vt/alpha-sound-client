@@ -22,12 +22,12 @@ export class SongListComponent implements OnInit, OnDestroy {
   first: boolean;
   last: boolean;
   pageNumber = 0;
-  private pageSize: number;
-  private pages: Page[] = [];
-  private message;
-  private songList: Song[];
-  private isDisable: boolean;
-  private subscription: Subscription = new Subscription();
+  pageSize: number;
+  pages: Page[] = [];
+  message;
+  songList: Song[];
+  isDisable: boolean;
+  subscription: Subscription = new Subscription();
   playlistList: Playlist[];
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
