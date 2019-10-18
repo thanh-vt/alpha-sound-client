@@ -29,7 +29,6 @@ export class UserService {
   getProfile() {
     this.http.get<User>(`${environment.apiUrl}/profile`).subscribe(
       user => {
-        console.log(user);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
       });
@@ -48,7 +47,7 @@ export class UserService {
   updateProfile(formGroup, id: number): Observable<HttpEvent<any>> {
     return this.http.put<any>(`${environment.apiUrl}/profile`, formGroup, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'body'
     });
   }
 

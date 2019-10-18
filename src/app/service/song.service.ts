@@ -33,10 +33,8 @@ export class SongService {
   }
 
   updateSong(song: any, id: number): Observable<HttpEvent<any>> {
-    // @ts-ignore
-    // @ts-ignore
     return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song, {
-      observe: 'events',
+      observe: 'body',
       reportProgress: true,
     });
   }
