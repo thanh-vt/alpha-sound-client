@@ -5,8 +5,7 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Artist} from '../../model/artist';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {ArtistService} from '../../service/artist.service';
-import {isBoolean} from 'util';
-import {Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {Progress} from '../../model/progress';
 
 @Component({
@@ -34,8 +33,8 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   songsForm: FormGroup[] = new Array(1);
   songsFormData: FormData[] = [];
   songsMessage: string[] = [];
-  songError: boolean[];
-  songsProgress: Progress[];
+  songError: boolean[] = [];
+  songsProgress: Progress[] = [];
   audioFiles: any[] = [];
   isSongLoading: [[boolean]] = [[false]];
   isAudioFileChosen: boolean[] = [];
@@ -116,6 +115,7 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
     this.imageFileName = '';
 
     this.songsMessage[0] = '';
+    this.songError[0] = false;
     this.songsProgress[0] = {value: 0};
     this.songsFormData[0] = new FormData();
     this.audioFiles[0] = null;
