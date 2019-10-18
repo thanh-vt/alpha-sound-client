@@ -1,0 +1,36 @@
+.poly-prod{
+  text-align:center;
+  padding:5px;
+  float: left;
+}
+
+.poly-prod .panel-body img{
+  height: 150px;
+  max-width: 95%;
+}
+
+img {
+  height: 8rem;
+  width: 8rem;
+}
+
+.dropdown-toggle::after{
+  content:initial
+}
+button {
+  margin-right: 0.5rem;
+}
+
+.active {
+  color: #FFFFFF;
+  background-color: #0055aa;
+}
+
+.modal-footer {
+  border: 0;
+}
+
+a {
+  cursor: pointer;
+}
+

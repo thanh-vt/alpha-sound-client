@@ -1,0 +1,44 @@
+<div *ngIf="album" class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <img *ngIf="album" class="card-img-top" [src]="album.coverUrl" alt="Card image">
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <h6 class="d-inline">Title: </h6><span class="text-secondary">{{album.title}}</span><br>
+    <h6 class="d-inline">Release Date: </h6><span class="text-secondary">{{album.releaseDate | date}}</span><br>
+    <h6 class="d-inline">Genre(s): </h6>
+    <ul *ngIf="!!album.genres && album.genres.length > 0">
+      <li *ngFor="let genre of album.genres">{{ genre.name }}</li>
+    </ul>
+    <ul *ngIf="!!album.tags && album.tags.length > 0">
+      <li *ngFor="let genre of album.tags">{{ genre.name }}</li>
+    </ul>
+    <h6 class="d-inline">Country: </h6><span *ngIf="!!album.country" class="text-secondary">{{ album.country.name | date}}</span><br>
+    <h6 class="d-inline">Theme: </h6><span *ngIf="!!album.theme" class="text-secondary">{{ album.theme.name | date}}</span><br>
+  </div>
+</div>
+<div *ngIf="album">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Release Date</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let song of songList; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
+      <td>{{ song.releaseDate | date }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
+          class="fas fa-play-circle"></i></button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,65 @@
+<form [formGroup]="songUploadForm" (ngSubmit)="upload()">
+  <div class="form-group">
+    <label for="songTitle">Song Title</label>
+    <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="songUploadForm.get('title').hasError('required') && songUploadForm.get('title').touched">
+      Must be filled!
+    </div>
+  </div>
+  <div formArrayName="artists" class="form-group"
+       *ngFor="let artist of artists.controls; let i = index;">
+    <div [formGroupName]="i">
+      <mat-form-field class="demo">
+        <label for="artistName">{{ 'Artist ' + (i + 1) + ' name' }}
+          <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control w-100" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+        </label>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngIf="isLoading" class="is-loading">
+            <mat-spinner diameter="25"></mat-spinner>
+          </mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
+              <span>{{ artist.name }}</span>
+<!--              <small> | ID: {{artist.id}}</small>-->
+<!--              <img [src]="artist.avatarUrl" alt="">-->
+              <img style="vertical-align:middle;" aria-hidden [src]="artist.avatarUrl" height="40" />
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button type="button" class="btn btn-info" (click)="addArtist()">+</button>
+      <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="releaseDate">Release Date</label>
+    <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+    <div class="alert alert-danger" role="alert"
+         *ngIf="songUploadForm.get('releaseDate').hasError('required') && songUploadForm.get('releaseDate').touched">
+      Must be filled!
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="tags">Tags</label>
+    <input type="text" class="form-control" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags">
+  </div>
+  <label for="audio">Audio File</label>
+  <div class="form-group custom-file">
+    <label class="custom-file-label" *ngIf=!isAudioFileChosen>Choose file</label>
+    <label class="custom-file-label" *ngIf=isAudioFileChosen>{{ audioFileName }}</label>
+    <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)">
+  </div>
+  <div class="mt-sm-3">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  <div class="progress form-group" *ngIf="progress.value > 0">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
+    </div>
+  </div>
+  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+       [class.alert-success]="!error">{{message}}
+  </div>
+</form>

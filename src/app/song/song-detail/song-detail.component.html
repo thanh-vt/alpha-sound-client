@@ -1,0 +1,31 @@
+<ng-container *ngIf="song">
+  <h4>Song Info</h4>
+  <div>
+    <div class="card">
+      <div class="card-body">
+        <h6 class="d-inline">Title: </h6><span>{{song.title}}</span><br>
+        <h6 class="d-inline">Release Date: </h6><span>{{song.releaseDate | date }}</span><br>
+        <h6 class="d-inline">Artist(s): </h6>
+        <ul>
+          <li *ngFor="let artist of artistList; index as i"><a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" >{{artist.name}} </a></li>
+        </ul>
+      </div>
+    </div>
+    <h4>Comment</h4>
+    <ul class="list-group">
+      <li class="list-group-item row" *ngFor="let comment of commentList; index as i">
+        <img class="avatar border" [src]="comment.user.avatarUrl" alt="">
+        <div class="col-sm-11">
+          <b>{{comment.user.username}}</b><br>
+          <p>{{comment.content}}</p><p>{{ comment.localDateTime }}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
+    <div class="mt-sm-3">
+      <button type="submit" class="btn btn-primary">Comment</button>
+    </div>
+  </form>
+</ng-container>

@@ -1,0 +1,91 @@
+<nav class="navbar navbar-expand-lg py-0">
+  <button (click)="isCollapsed=!isCollapsed" class="navbar-toggler py-2 mx-2 my-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-5" id="navbarSupportedContent">
+    <ul class="navbar-nav">
+      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded" style="width: 200px">
+        <a class="nav-link" [routerLink]="['/home']"><img style="width: 100%" src="../../../assets/images/ClimaxSound_LogoFull.png" alt=""></a>
+      </li>
+      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+        <a class="nav-link" [routerLink]="['/song']"><h3><i class="fas fa-music"></i> Song</h3></a>
+      </li>
+      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+        <a class="nav-link" [routerLink]="['/album']"><h3><i class="fas fa-compact-disc"></i> Album</h3></a>
+      </li>
+      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+        <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> Artist</h3></a>
+      </li>
+    </ul>
+  </div>
+
+  <div>
+    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
+      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user"></i></span>
+        <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
+        <span> {{ currentUser.username }}</span>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/update-profile']" ><span><i class="fas fa-user-edit"></i> Update Profile</span></a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"><span><i class="fas fa-headphones-alt"></i> Playlist</span></a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']">Uploaded</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']">Favorites</a>
+        <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true">Logout</a>
+      </div>
+    </div>
+    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
+      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-upload"></i>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']" >Upload Song</a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">Upload Album</a>
+      </div>
+    </div>
+    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!currentUser">
+      <button class="btn btn-info" id="dropdownForm1" ngbDropdownToggle>Sign In</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownForm1">
+        <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
+          <div class="form-group">
+            <label for="exampleDropdownFormEmail1">Username</label>
+            <input formControlName="username" type="text" class="form-control" id="exampleDropdownFormEmail1" placeholder="username" >
+          </div>
+          <div class="form-group">
+            <label for="exampleDropdownFormPassword1">Password</label>
+            <input formControlName="password" type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password" >
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="loginForm.invalid && submitted">
+            Fields must be filled in!
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="message">
+            {{ message }}
+          </div>
+<!--          <div class="form-check">-->
+<!--            <input type="checkbox" class="form-check-input" id="dropdownCheck">-->
+<!--            <label class="form-check-label" for="dropdownCheck">-->
+<!--              Remember me-->
+<!--            </label>-->
+<!--          </div>-->
+          <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">
+            <span>Sign in</span>
+          </button>
+          <div *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></div>
+
+        </form>
+        <div class="dropdown-divider"></div>
+        <button ngbDropdownItem><a ngbDropdownItem class="dropdown-item" [routerLink]="['/register']">New around here? Sign up</a></button>
+        <button ngbDropdownItem>Forgot password?</button>
+      </div>
+    </div>
+    <div class="d-inline-block">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" formControlName="searchText">
+        <button type="submit" class="btn btn-info mx-2 form-inline"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+  </div>
+</nav>

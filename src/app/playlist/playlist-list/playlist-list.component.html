@@ -1,0 +1,17 @@
+<app-create-playlist (createPlaylist)="createPlaylist()" class="modal-body"></app-create-playlist>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" id="name">Title</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let playlist of playlistList; index as i">
+    <td>{{ i + 1 }}</td>
+    <td class="clickable" [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}">{{ playlist.title }}</td>
+    <td><app-delete-playlist [id]="playlist.id" [playlistName]="playlist.title" (deletePlaylist)="deletePlaylist()"></app-delete-playlist></td>
+  </tr>
+  </tbody>
+</table>
+

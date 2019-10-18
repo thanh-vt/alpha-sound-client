@@ -1,0 +1,51 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Title</th>
+    <th scope="col">Release Date</th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let song of songList; index as i">
+    <th scope="row">{{ i + 1 }}</th>
+    <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{song.title}}</a></td>
+    <td>{{ song.releaseDate | date }}</td>
+    <td><span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></td>
+    <td>
+      <ng-container *ngIf="!!currentUser">
+        <button (click)="likeSong(song.id)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
+        <button (click)="unlikeSong(song.id)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
+      </ng-container>
+    </td>
+    <td>
+      <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
+        class="fas fa-play-circle"></i>
+      </button>
+    </td>
+    <td>
+      <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
+        <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
+        <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
+      </app-modal>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<nav>
+  <ul class="pagination">
+    <li class="page-item" *ngIf="!first">
+      <a class="page-link" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    <li *ngFor="let page of pages" class="page-item">
+      <a class="page-link" class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
+    </li>
+    <li class="page-item" *ngIf="!last">
+      <a class="page-link" class="page-link" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">Next</a>
+    </li>
+  </ul>
+</nav>

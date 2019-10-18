@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="card-header">
+    <ng-content select=".lambda_card-header"></ng-content>
+    <ng-content select=".lambda_card-title"></ng-content>
+    <div class="card-subtitle mb-2 text-muted">
+      <ng-content select=".card-subtitle"></ng-content>
+    </div>
+  </div>
+  <div class="card-body">
+    <ng-content select=".lambda_card-body"></ng-content>
+    <ng-content select=".card-text"></ng-content>
+    <ng-content select=".card-link"></ng-content>
+  </div>
+  <div class="card-footer">
+    <ng-content select=".lambda_card-footer"></ng-content>
+  </div>
+</div>
