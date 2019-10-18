@@ -32,9 +32,9 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/list-top?sort=listeningFrequency`);
   }
 
-  updateSong(song: any, id: number): Observable<HttpEvent<any>> {
+  updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {
     return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song, {
-      observe: 'body',
+      observe: 'events',
       reportProgress: true,
     });
   }

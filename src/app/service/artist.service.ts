@@ -51,10 +51,10 @@ export class ArtistService {
     return this.http.get<Artist>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
 
-  updateArtist(formGroup, id: number): Observable<HttpEvent<any>> {
+  updateArtist(formGroup, id: number): Observable<HttpEvent<Blob>> {
     return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup, {
       reportProgress: true,
-      observe: 'body'
+      observe: 'events'
     });
   }
 }
