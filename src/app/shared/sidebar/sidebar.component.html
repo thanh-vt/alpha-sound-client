@@ -1,14 +1,14 @@
-<div class="list_music listSong" style="margin-top: 120px">
-  <div class="fram_select" style="margin-top: -20px">
+<div class="list_music listSong">
+  <div class="fram_select">
     <div class="tile_box_key">
       <h2><span class="icon_song"></span>
         <a title="Bài Hát" href="https://www.nhaccuatui.com/bai-hat/bai-hat-moi-nhat.html">
-          <p>BXH BÀI HÁT</p>
+          <p>Board</p>
         </a>
       </h2>
     </div>
     <ul class="list-group" *ngFor="let song of songList; index as i">
-      <li class="list-group-item"><img [src]="song.artists[0].avatarUrl" alt=""><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
+      <li class="list-group-item"><img [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:''" alt=""><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
         <span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></li>
     </ul>
   </div>
