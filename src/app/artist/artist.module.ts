@@ -8,6 +8,7 @@ import { ArtistDetailComponent } from './artist-detail/artist-detail.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 import {PlaylistModule} from '../playlist/playlist.module';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [ArtistComponent, ArtistListComponent, ArtistDetailComponent],
@@ -16,7 +17,8 @@ import {PlaylistModule} from '../playlist/playlist.module';
     ArtistRoutingModule,
     ReactiveFormsModule,
     SharedModule,
-    PlaylistModule
+    PlaylistModule,
+    InfiniteScrollModule
   ]
 })
 export class ArtistModule { }

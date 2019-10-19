@@ -21,8 +21,8 @@ export class ArtistService {
     return this.http.get<any>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
 
-  getSongList(id: number) {
-    return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}`);
+  getSongListOfArtist(id: number, page: number) {
+    return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}&page=${page}$`);
   }
 
   searchArtist(name: string): Observable<any> {
@@ -51,8 +51,8 @@ export class ArtistService {
     return this.http.get<Artist>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
 
-  updateArtist(formGroup, id: number): Observable<HttpEvent<Blob>> {
-    return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup, {
+  updateArtist(formGroup, id: number): Observable<HttpEvent<any>> {
+    return this.http.put<any>(`${environment.apiUrl}/artist/edit?id=${id}`, formGroup, {
       reportProgress: true,
       observe: 'body'
     });

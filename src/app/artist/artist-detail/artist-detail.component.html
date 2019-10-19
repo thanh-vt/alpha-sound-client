@@ -10,7 +10,11 @@
     <h6 class="d-inline">Biography: </h6><p class="text-secondary" style="overflow-wrap: break-word">{{artist.biography}}</p>
   </div>
 </div>
-<div>
+<div class="search-results"
+     infiniteScroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="50"
+     (scrolled)="onScroll(++pageNumber)">
   <table class="table table-striped">
     <thead>
     <tr>
@@ -49,17 +53,4 @@
     </tr>
     </tbody>
   </table>
-  <nav>
-    <ul class="pagination">
-      <li class="page-item" *ngIf="!first">
-        <a class="page-link" (click)="goToPage(pageNumber - 1, true)" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li *ngFor="let page of pages" class="page-item">
-        <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber, true)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
-      </li>
-      <li class="page-item" *ngIf="!last">
-        <a class="page-link" (click)="goToPage(pageNumber + 1, true)" tabindex="-1" aria-disabled="true">Next</a>
-      </li>
-    </ul>
-  </nav>
 </div>

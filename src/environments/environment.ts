@@ -3,7 +3,7 @@
 // The list of audioFiles replacements can be found in `angular.json`.
 
 export const environment = {
-  apiUrl: 'https://climax-sound.herokuapp.com/climax-sound/api',
+  apiUrl: 'http://localhost:8080/climax-sound/api',
   production: false
 };
 
