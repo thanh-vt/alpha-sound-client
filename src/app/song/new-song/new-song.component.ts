@@ -16,9 +16,11 @@ import {AuthService} from '../../service/auth.service';
 })
 export class NewSongComponent implements OnInit, OnDestroy {
   currentUser: UserToken;
-  pageNumber: number;
+  pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
+  first: boolean;
+  last: boolean;
   message: string;
   songList: Song[];
   isDisable: boolean;
@@ -36,32 +38,27 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.goToPage(undefined);
+    this.goToPage(this.pageNumber, true);
   }
 
-  addToPlaying(song) {
+  addToPlaying(song: Song) {
     this.playingQueueService.addToQueue({
       title: song.title,
       link: song.url
-    });
-    console.log(this.playingQueueService.currentQueueValue);
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.goToPage(this.pageNumber);
-      }
-    ));
-    // this.playingQueueService.emitChange(song);
+    }, song.id);
   }
 
-  goToPage(i) {
-    this.songService.getSongList(i, 'releaseDate').subscribe(
+  goToPage(i: number, scrollUp?: boolean) {
+    this.subscription.add(this.songService.getSongList(i, 'releaseDate').subscribe(
       result => {
         if (result != null) {
-          window.scroll(0, 0);
+          if (scrollUp) {window.scroll(0, 0); }
           this.songList = result.content;
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
           });
+          this.first = result.first;
+          this.last = result.last;
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;
           this.pages = new Array(result.totalPages);
@@ -72,7 +69,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
       }
-    );
+    ));
   }
 
   refreshPlaylistList(songId) {

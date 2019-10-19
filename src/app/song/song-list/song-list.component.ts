@@ -26,9 +26,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   pages: Page[] = [];
   message;
   songList: Song[];
+  playlistList: Playlist[];
   isDisable: boolean;
   subscription: Subscription = new Subscription();
-  playlistList: Playlist[];
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   // tslint:disable-next-line:max-line-length
@@ -46,7 +46,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.goToPage(this.pageNumber);
+    this.goToPage(this.pageNumber, true);
   }
 
   addToPlaying(song) {
@@ -56,11 +56,11 @@ export class SongListComponent implements OnInit, OnDestroy {
     }, song.id);
   }
 
-  goToPage(i) {
+  goToPage(i: number, scrollUp?: boolean) {
     this.subscription.add(this.songService.getSongList(i, undefined).subscribe(
       result => {
         if (result != null) {
-          window.scroll(0, 0);
+          if (scrollUp) {window.scroll(0, 0); }
           this.songList = result.content;
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;

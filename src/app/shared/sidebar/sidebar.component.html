@@ -1,54 +1,10 @@
-<div class="list_music listSong">
-  <div class="fram_select">
-    <div class="tile_box_key">
-      <h2><span class="icon_song"></span>
-        <a title="Bài Hát" href="https://www.nhaccuatui.com/bai-hat/bai-hat-moi-nhat.html">
-          <p>Board</p>
-        </a>
-      </h2>
-    </div>
-    <ul class="list-group" *ngFor="let song of songList; index as i">
-      <li class="list-group-item"><img [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:''" alt=""><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
-        <span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></li>
-    </ul>
-  </div>
-</div>
-
-<div class="box_topic_music">
-  <div class="tile_box_key">
-    <h3><a href="https://www.nhaccuatui.com/chu-de.html" title="Chủ Đề Hot"><p style="margin-left: 40px;">Chủ Đề Hot</p></a></h3>
-  </div>
-  <ul>
-    <li>
-      <a title="Cà Phê" target="target" href="https://www.nhaccuatui.com/chu-de/ca-phe.weocfcben.html">
-        <img src="https://avatar-nct.nixcdn.com/topic/thumb/2018/11/19/9/1/5/9/1542607452664_org.jpg" alt="ca phe">
-      </a>
-    </li>
-
-    <li>
-      <a title="Rap Việt" target="target" href="https://www.nhaccuatui.com/chu-de/rap-viet.weiyslqrl.html">
-        <img src="https://avatar-nct.nixcdn.com/topic/thumb/2018/11/19/9/1/5/9/1542616461197_org.jpg" alt="rap viet" />
-      </a>
-    </li>
-
-    <li>
-      <a title="Ca Sĩ Âu Mỹ" target="target" href="https://www.nhaccuatui.com/chu-de/ca-si-au-my.weoldimjy.html">
-        <img src="https://avatar-nct.nixcdn.com/topic/thumb/2018/11/19/9/1/5/9/1542608109958_org.jpg" alt="ca si au my">
-      </a>
-    </li>
-
-    <li>
-      <a title="Tập Trung Tư Duy" target="target" href="https://www.nhaccuatui.com/chu-de/tap-trung-tu-duy.wepjtmyfz.html">
-        <img src="https://avatar-nct.nixcdn.com/topic/thumb/2018/11/19/9/1/5/9/1542602890873_org.jpg" alt="tap trung tu duy" />
-      </a>
-    </li>
-
-    <li>
-      <a title="Piano" target="target" href="https://www.nhaccuatui.com/chu-de/piano.wepdpfwej.html">
-        <img src="https://avatar-nct.nixcdn.com/topic/thumb/2018/11/19/9/1/5/9/1542614641368_org.jpg" alt="piano">
-      </a>
-    </li>
+<div>
+  <h2>Board</h2>
+  <ul class="list-group" *ngFor="let song of songList; index as i">
+    <li class="list-group-item"><img [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:''" alt=""><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
+      <span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></li>
   </ul>
 </div>
+
 
 
