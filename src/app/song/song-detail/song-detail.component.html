@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <ng-container *ngIf="song">
   <h4>Song Info</h4>
   <div>
@@ -22,10 +25,12 @@
       </li>
     </ul>
   </div>
-  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-    <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
-    <div class="mt-sm-3">
-      <button type="submit" class="btn btn-primary">Comment</button>
-    </div>
-  </form>
+  <ng-container *ngIf="!!currentUser">
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
+      <div class="mt-sm-3">
+        <button type="submit" class="btn btn-primary">Comment</button>
+      </div>
+    </form>
+  </ng-container>
 </ng-container>

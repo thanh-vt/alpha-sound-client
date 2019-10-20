@@ -7,6 +7,8 @@ import {Artist} from '../../model/artist';
 import {Song} from '../../model/song';
 import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
 
 
 @Component({
@@ -16,7 +18,9 @@ import {Subscription} from 'rxjs';
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
   @Input() song: Song;
+  currentUser: User;
   message: string;
+  loading: boolean;
   songId: number;
   artistList: Artist[];
   commentList: Comment[];
@@ -24,7 +28,15 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   error = false;
   subscription: Subscription = new Subscription();
   // tslint:disable-next-line:max-line-length
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService, private songservice: SongService) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute,
+              private router: Router, private authService: AuthService,
+              private songService: SongService, private userService: UserService) {
+    this.userService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   ngOnInit() {
     this.commentForm = this.fb.group({
@@ -33,7 +45,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.songId = params.id;
-        this.subscription.add(this.songservice.songDetail(this.songId).subscribe(
+        this.loading = true;
+        this.subscription.add(this.songService.songDetail(this.songId).subscribe(
           result => {
             window.scroll(0, 0);
             this.song = result;
@@ -41,14 +54,16 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.commentList = this.song.comments;
           }, error => {
             this.message = 'Cannot retrieve Song . Cause: ' + error.message;
+          }, () => {
+            this.loading = false;
           }
         ));
       }));
   }
   onSubmit() {
-    this.subscription.add(this.songservice.commentSong(this.songId, this.commentForm.value).subscribe(
+    this.subscription.add(this.songService.commentSong(this.songId, this.commentForm.value).subscribe(
       () => {
-        this.subscription.add(this.songservice.songDetail(this.songId).subscribe(
+        this.subscription.add(this.songService.songDetail(this.songId).subscribe(
           result => {
             this.commentForm.reset();
             this.song = result;
