@@ -39,7 +39,7 @@
       <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
       <td>{{ song.releaseDate | date }}</td>
       <td>
-        <ng-container>
+        <ng-container *ngIf="!!currentUser">
           <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
           <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
         </ng-container>
