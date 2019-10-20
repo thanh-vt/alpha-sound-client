@@ -19,7 +19,7 @@
     </ul>
     <h6 class="d-inline">Country: </h6><span *ngIf="!!album.country" class="text-secondary">{{ album.country.name | date}}</span><br>
     <h6 class="d-inline">Theme: </h6><span *ngIf="!!album.theme" class="text-secondary">{{ album.theme.name | date}}</span><br>
-    <button class="btn btn-primary" [disabled]="album.isDisabled" (click)="addAllToPlaying()"><i class="fas fa-play-circle"></button>
+    <button class="btn btn-primary" [disabled]="album.isDisabled" (click)="addAllToPlaying()"><i class="fas fa-play-circle"></i></button>
   </div>
 </div>
 <div *ngIf="album">
