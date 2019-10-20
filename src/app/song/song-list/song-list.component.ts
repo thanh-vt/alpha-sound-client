@@ -27,7 +27,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   message;
   songList: Song[];
   playlistList: Playlist[];
-  isDisable: boolean;
+  loading: boolean;
   subscription: Subscription = new Subscription();
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 

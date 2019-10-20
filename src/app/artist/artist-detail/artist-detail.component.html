@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading1">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <div *ngIf="artist" class="row">
   <div class="col-sm-4">
     <div class="card">
@@ -10,6 +13,9 @@
     <h6 class="d-inline">Biography: </h6><p class="text-secondary" style="overflow-wrap: break-word">{{artist.biography}}</p>
   </div>
 </div>
+<ng-container *ngIf="loading2">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <div class="songList py-2"
      infiniteScroll
      [scrollWindow]="false"
@@ -33,7 +39,7 @@
       <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
       <td>{{ song.releaseDate | date }}</td>
       <td>
-        <ng-container *ngIf="!!currentUser">
+        <ng-container>
           <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
           <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
         </ng-container>
@@ -51,6 +57,9 @@
         </ng-container>
       </td>
     </tr>
+    <ng-container *ngIf="loading3">
+      <app-spinner [type]="0"></app-spinner>
+    </ng-container>
     </tbody>
   </table>
 </div>

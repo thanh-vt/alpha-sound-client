@@ -34,9 +34,7 @@ export class CreatePlaylistComponent implements OnInit {
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
       this.message = null;
-    }, () => {
-      this.createPlaylist.emit();
-    });
+    }, () => {});
   }
 
   onSubmit() {
@@ -45,8 +43,8 @@ export class CreatePlaylistComponent implements OnInit {
         this.error = false;
         this.message = 'Playlist created successfully!';
         this.createPlaylistForm.reset({name});
-      },
-      error => {
+        this.createPlaylist.emit();
+      }, error => {
         this.error = true;
         this.message = 'Failed to create playlist. Cause: ' + error.message;
       }

@@ -28,7 +28,10 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   last: boolean;
   pageNumber = 0;
   pageSize: number;
-  isDisable: boolean;
+  loading1: boolean;
+  loading2: boolean;
+  loading3: boolean;
+  loadingButton: boolean;
   totalPages: number;
   songList: Song[] = [];
   playlistList: Playlist[] = [];
@@ -48,13 +51,19 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
+        this.loading1 = true;
         this.artistId = params.id;
         this.subscription.add(this.artistService.artistDetail(this.artistId).subscribe(
           result => {
             window.scroll(0, 0);
             this.artist = result;
+          }, (error) => {
+            console.log(error);
+          }, () => {
+            this.loading1 = false;
           }
         ));
+        this.loading2 = true;
         this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
           result1 => {
             if (result1 != null) {
@@ -66,6 +75,8 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
             }
           }, error => {
             this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
+          }, () => {
+            this.loading2 = false;
           }
         ));
       }
@@ -73,6 +84,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   }
 
   onScroll() {
+    this.loading3 = true;
     this.pageNumber = ++this.pageNumber;
     if (this.pageNumber < this.totalPages) {
       this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
@@ -93,6 +105,8 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
           }
         }, error => {
           this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+        }, () => {
+          this.loading3 = false;
         }
       ));
     } else {
@@ -118,29 +132,40 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   }
 
   refreshSong(id: number, index: number) {
+    this.loadingButton = true;
     this.subscription.add(this.songService.songDetail(id).subscribe(
       result => {
         this.songList[index] = result;
+      }, error => {
+        console.log(error);
+      }, () => {
+        this.loadingButton = false;
       }
     ));
   }
 
   likeSong(song: Song, index: number) {
+    this.loadingButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.refreshSong(song.id, index));
       }, error => {
         console.log(error);
+      }, () => {
+        this.loadingButton = false;
       }
     ));
   }
 
   unlikeSong(song: Song, index: number) {
+    this.loadingButton = true;
     this.songService.unlikeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.refreshSong(song.id, index));
       }, error => {
         console.log(error);
+      }, () => {
+        this.loadingButton = false;
       }
     );
   }

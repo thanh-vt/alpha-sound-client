@@ -9,16 +9,17 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { ModalComponent } from './modal/modal.component';
 import { CardComponent } from './card/card.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
-  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent],
+  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent],
   imports: [
     CommonModule,
     NgbModule,
     RouterModule,
     ReactiveFormsModule,
   ],
-  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent]
+  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent]
 })
 export class SharedModule {
 }
