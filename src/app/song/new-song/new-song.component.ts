@@ -23,7 +23,8 @@ export class NewSongComponent implements OnInit, OnDestroy {
   last: boolean;
   message: string;
   songList: Song[];
-  isDisable: boolean;
+  loading: boolean;
+  loadingButton: boolean;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[];
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
@@ -38,6 +39,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.goToPage(this.pageNumber, true);
   }
 
@@ -68,6 +70,8 @@ export class NewSongComponent implements OnInit, OnDestroy {
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }, () => {
+        this.loading = false;
       }
     ));
   }
@@ -83,21 +87,27 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   likeSong(songId: number) {
+    this.loadingButton = true;
     this.subscription.add(this.songService.likeSong(songId).subscribe(
       () => {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
+      }, () => {
+        this.loadingButton = false;
       }
     ));
   }
 
   unlikeSong(songId: number) {
+    this.loadingButton = true;
     this.songService.unlikeSong(songId).subscribe(
       () => {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
+      }, () => {
+        this.loadingButton = false;
       }
     );
   }

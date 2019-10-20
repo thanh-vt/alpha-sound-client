@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -18,8 +21,14 @@
     <td><span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></td>
     <td>
       <ng-container *ngIf="!!currentUser">
-        <button (click)="likeSong(song.id)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
-        <button (click)="unlikeSong(song.id)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
+        <button (click)="likeSong(song.id)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="loadingButton">
+          <span *ngIf="loadingButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <i class="far fa-heart"></i>
+        </button>
+        <button (click)="unlikeSong(song.id)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="loadingButton">
+          <span *ngIf="loadingButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <i class="fas fa-heart"></i>
+        </button>
       </ng-container>
     </td>
     <td>

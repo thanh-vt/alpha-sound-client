@@ -40,8 +40,14 @@
       <td>{{ song.releaseDate | date }}</td>
       <td>
         <ng-container *ngIf="!!currentUser">
-          <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
-          <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
+          <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="loadingButton">
+            <span *ngIf="loadingButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <i class="far fa-heart"></i>
+          </button>
+          <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="loadingButton">
+            <span *ngIf="loadingButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <i class="fas fa-heart"></i>
+          </button>
         </ng-container>
       </td>
       <td>
@@ -58,7 +64,7 @@
       </td>
     </tr>
     <ng-container *ngIf="loading3">
-      <app-spinner [type]="0"></app-spinner>
+      <app-spinner [type]="1"></app-spinner>
     </ng-container>
     </tbody>
   </table>
