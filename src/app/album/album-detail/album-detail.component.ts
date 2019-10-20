@@ -51,6 +51,11 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
           }, error => {
             this.message = 'Cannot retrieve album detail. Cause: ' + error.message;
           }, () => {
+            for (const song of this.songList) {
+              if (song.loadingLikeButton) {
+                song.loadingLikeButton = false;
+              }
+            }
             this.loading = false;
           }
         ));
@@ -97,8 +102,6 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
             this.album = result;
           }, error => {
             console.log(error);
-          }, () => {
-            song.loadingLikeButton = false;
           }
         ));
       }, error => {
@@ -120,8 +123,6 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
             song.loadingLikeButton = false;
           }
         ));
-      }, error => {
-        console.log(error);
       }
     ));
   }

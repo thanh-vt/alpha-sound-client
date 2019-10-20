@@ -6,7 +6,32 @@
   <div>
     <div class="card">
       <div class="card-body">
-        <h6 class="d-inline">Title: </h6><span>{{song.title}}</span><br>
+        <h6 class="d-inline">Title: </h6><span>{{song.title}}</span>
+        <div class="d-inline-block float-right mx-1">
+          <ng-container *ngIf="!!currentUser">
+            <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
+              <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
+              <app-create-playlist (createPlaylist)="refreshPlaylistList(song)" class="modal-footer"></app-create-playlist>
+            </app-modal>
+          </ng-container>
+        </div>
+        <div class="d-inline-block float-right mx-1">
+          <button class="btn btn-primary" (click)="addToPlaying(song)" [disabled]="song.isDisabled"><i
+            class="fas fa-play-circle"></i>
+          </button>
+        </div>
+        <div class="d-inline-block float-right mx-1">
+          <ng-container *ngIf="!!currentUser">
+            <button (click)="likeSong(song)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
+              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
+            </button>
+            <button (click)="unlikeSong(song)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
+              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
+            </button>
+          </ng-container>
+        </div><br>
         <h6 class="d-inline">Release Date: </h6><span>{{song.releaseDate | date }}</span><br>
         <h6 class="d-inline">Artist(s): </h6>
         <ul>

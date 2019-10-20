@@ -9,6 +9,9 @@ import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
 import {User} from '../../model/user';
 import {UserService} from '../../service/user.service';
+import {Playlist} from '../../model/playlist';
+import {PlaylistService} from '../../service/playlist.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 
 
 @Component({
@@ -23,6 +26,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   loading: boolean;
   songId: number;
   artistList: Artist[];
+  playlistList: Playlist[];
   commentList: Comment[];
   commentForm: FormGroup;
   error = false;
@@ -30,7 +34,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
   constructor(private fb: FormBuilder, private route: ActivatedRoute,
               private router: Router, private authService: AuthService,
-              private songService: SongService, private userService: UserService) {
+              private songService: SongService, private userService: UserService,
+              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
@@ -60,6 +65,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         ));
       }));
   }
+
   onSubmit() {
     this.subscription.add(this.songService.commentSong(this.songId, this.commentForm.value).subscribe(
       () => {
@@ -73,6 +79,61 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.message = 'Cannot retrieve Song . Cause: ' + error.message;
           }
         ));
+      }
+    ));
+  }
+
+  addToPlaying(song) {
+    this.playingQueueService.addToQueue({
+      title: song.title,
+      link: song.url
+    }, song.id);
+  }
+
+  refreshPlaylistList(song: Song) {
+    this.subscription.add(this.playlistService.getPlaylistListToAdd(song.id).subscribe(
+      result => {
+        this.playlistList = result;
+      }, error => {
+        console.log(error);
+      }
+    ));
+  }
+
+  likeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.songService.songDetail(song.id).subscribe(
+          songDetail => {
+            this.song = songDetail;
+          }, error1 => {
+            console.log(error1);
+          }
+        ));
+      }, error => {
+        console.log(error);
+      }, () => {
+        song.loadingLikeButton = false;
+      }
+    ));
+  }
+
+  unlikeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.songService.songDetail(song.id).subscribe(
+          songDetail => {
+            this.song = songDetail;
+          }, error1 => {
+            console.log(error1);
+          }
+        ));
+      }, error => {
+        console.log(error);
+      }, () => {
+        song.loadingLikeButton = false;
       }
     ));
   }

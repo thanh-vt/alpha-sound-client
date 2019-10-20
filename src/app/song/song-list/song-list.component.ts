@@ -24,9 +24,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
-  message;
-  songList: Song[];
-  playlistList: Playlist[];
+  message: string;
+  songList: Song[] = [];
+  playlistList: Playlist[] = [];
   loading: boolean;
   subscription: Subscription = new Subscription();
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
@@ -50,7 +50,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.goToPage(this.pageNumber, true);
   }
 
-  addToPlaying(song) {
+  addToPlaying(song: Song) {
     this.playingQueueService.addToQueue({
       title: song.title,
       link: song.url
@@ -78,6 +78,11 @@ export class SongListComponent implements OnInit, OnDestroy {
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
       }, () => {
+        for (const song of this.songList) {
+          if (song.loadingLikeButton) {
+            song.loadingLikeButton = false;
+          }
+        }
         this.loading = false;
       }
     ));
@@ -100,8 +105,6 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
-      }, () => {
-        song.loadingLikeButton = false;
       }
     ));
   }
@@ -113,8 +116,6 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
-      }, () => {
-        song.loadingLikeButton = false;
       }
     ));
   }
