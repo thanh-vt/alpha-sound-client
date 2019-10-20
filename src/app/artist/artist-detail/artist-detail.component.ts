@@ -57,26 +57,26 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
           result => {
             window.scroll(0, 0);
             this.artist = result;
+            this.loading2 = true;
+            this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+              result1 => {
+                if (result1 != null) {
+                  this.totalPages = result1.totalPages;
+                  // tslint:disable-next-line:prefer-for-of
+                  for (let i = 0; i < result1.content.length; i++) {
+                    this.songList.push(result1.content[i]);
+                  }
+                }
+              }, error => {
+                this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
+              }, () => {
+                this.loading2 = false;
+              }
+            ));
           }, (error) => {
             console.log(error);
           }, () => {
             this.loading1 = false;
-          }
-        ));
-        this.loading2 = true;
-        this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
-          result1 => {
-            if (result1 != null) {
-              this.totalPages = result1.totalPages;
-              // tslint:disable-next-line:prefer-for-of
-              for (let i = 0; i < result1.content.length; i++) {
-                this.songList.push(result1.content[i]);
-              }
-            }
-          }, error => {
-            this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
-          }, () => {
-            this.loading2 = false;
           }
         ));
       }
