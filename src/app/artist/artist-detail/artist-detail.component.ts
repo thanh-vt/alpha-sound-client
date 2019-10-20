@@ -31,7 +31,6 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   loading1: boolean;
   loading2: boolean;
   loading3: boolean;
-  loadingButton: boolean;
   totalPages: number;
   songList: Song[] = [];
   playlistList: Playlist[] = [];
@@ -84,9 +83,9 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   }
 
   onScroll() {
-    this.loading3 = true;
     this.pageNumber = ++this.pageNumber;
     if (this.pageNumber < this.totalPages) {
+      this.loading3 = true;
       this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
         result => {
           if (result != null) {
@@ -119,6 +118,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
       title: song.title,
       link: song.url
     });
+    song.isDisabled = true;
   }
 
   refreshPlaylistList(songId: number) {
@@ -131,41 +131,35 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  refreshSong(id: number, index: number) {
-    this.loadingButton = true;
-    this.subscription.add(this.songService.songDetail(id).subscribe(
+  refreshSong(song: Song, index: number) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.songDetail(song.id).subscribe(
       result => {
         this.songList[index] = result;
       }, error => {
         console.log(error);
       }, () => {
-        this.loadingButton = false;
+        song.loadingLikeButton = false;
       }
     ));
   }
 
   likeSong(song: Song, index: number) {
-    this.loadingButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
-        this.subscription.add(this.refreshSong(song.id, index));
+        this.subscription.add(this.refreshSong(song, index));
       }, error => {
         console.log(error);
-      }, () => {
-        this.loadingButton = false;
       }
     ));
   }
 
   unlikeSong(song: Song, index: number) {
-    this.loadingButton = true;
     this.songService.unlikeSong(song.id).subscribe(
       () => {
-        this.subscription.add(this.refreshSong(song.id, index));
+        this.subscription.add(this.refreshSong(song, index));
       }, error => {
         console.log(error);
-      }, () => {
-        this.loadingButton = false;
       }
     );
   }

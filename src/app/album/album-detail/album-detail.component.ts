@@ -8,6 +8,10 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
 import {Album} from '../../model/album';
 import {AlbumService} from '../../service/album.service';
 import {Song} from '../../model/song';
+import {UserService} from '../../service/user.service';
+import {User} from '../../model/user';
+import {Playlist} from '../../model/playlist';
+import {PlaylistService} from '../../service/playlist.service';
 
 @Component({
   selector: 'app-album-detail',
@@ -15,23 +19,39 @@ import {Song} from '../../model/song';
   styleUrls: ['./album-detail.component.scss']
 })
 export class AlbumDetailComponent implements OnInit, OnDestroy {
-
+  currentUser: User;
   album: Album;
-  albumId;
+  albumId: number;
   songList: Song[];
+  playlistList: Playlist[];
+  loading: boolean;
+  message: string;
   subscription: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private albumService: AlbumService, private songService: SongService, private playingQueueService: PlayingQueueService) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
+              private authService: AuthService, private albumService: AlbumService,
+              private songService: SongService, private playingQueueService: PlayingQueueService,
+              private userService: UserService, private playlistService: PlaylistService) {
+    this.userService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   ngOnInit() {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
+        this.loading = true;
         this.albumId = params.id;
         this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
           result => {
             this.album = result;
             this.songList = result.songs;
+          }, error => {
+            this.message = 'Cannot retrieve album detail. Cause: ' + error.message;
+          }, () => {
+            this.loading = false;
           }
         ));
       }
@@ -45,6 +65,7 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
           title: song.title,
           link: song.url
         });
+        song.isDisabled = true;
       }
     ));
   }
@@ -54,6 +75,55 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.album.songs.length; i++) {
       this.addToPlaying(this.album.songs[i]);
     }
+    this.album.isDisabled = true;
+  }
+
+  refreshPlaylistList(songId: number) {
+    this.subscription.add(this.playlistService.getPlaylistListToAdd(songId).subscribe(
+      result => {
+        this.playlistList = result;
+      }, error => {
+        console.log(error);
+      }
+    ));
+  }
+
+  likeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
+          result => {
+            this.album = result;
+          }, error => {
+            console.log(error);
+          }, () => {
+            song.loadingLikeButton = false;
+          }
+        ));
+      }, error => {
+        console.log(error);
+      }
+    ));
+  }
+
+  unlikeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
+          result => {
+            this.album = result;
+          }, error => {
+            console.log(error);
+          }, () => {
+            song.loadingLikeButton = false;
+          }
+        ));
+      }, error => {
+        console.log(error);
+      }
+    ));
   }
 
   ngOnDestroy(): void {

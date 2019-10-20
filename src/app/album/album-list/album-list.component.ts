@@ -21,11 +21,13 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
-  message;
+  message: string;
+  loading: boolean;
+  disabled: boolean;
   albumList: Album[];
   subscription: Subscription = new Subscription();
-
-  constructor(private albumService: AlbumService, private userService: UserService, private songService: SongService, private playingQueueService: PlayingQueueService) {
+  constructor(private albumService: AlbumService, private userService: UserService,
+              private songService: SongService, private playingQueueService: PlayingQueueService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
@@ -34,6 +36,7 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.goToPage(this.pageNumber);
   }
 
@@ -57,6 +60,8 @@ export class AlbumListComponent implements OnInit, OnDestroy {
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }, () => {
+        this.loading = false;
       }
     ));
   }
@@ -68,6 +73,9 @@ export class AlbumListComponent implements OnInit, OnDestroy {
           title: song.title,
           link: song.url
         });
+      }, error => {
+        song.disabled = true;
+        console.log(error);
       }
     ));
   }

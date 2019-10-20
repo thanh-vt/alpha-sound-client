@@ -23,4 +23,5 @@ export interface Song {
   uploader?: User;
   comments?: Comment[];
   listeningFrequency?: number;
+  loadingLikeButton?: boolean;
 }

@@ -40,13 +40,13 @@
       <td>{{ song.releaseDate | date }}</td>
       <td>
         <ng-container *ngIf="!!currentUser">
-          <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="loadingButton">
-            <span *ngIf="loadingButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <i class="far fa-heart"></i>
+          <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
+            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
           </button>
-          <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="loadingButton">
-            <span *ngIf="loadingButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <i class="fas fa-heart"></i>
+          <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
+            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
           </button>
         </ng-container>
       </td>

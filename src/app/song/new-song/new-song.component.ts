@@ -24,7 +24,6 @@ export class NewSongComponent implements OnInit, OnDestroy {
   message: string;
   songList: Song[];
   loading: boolean;
-  loadingButton: boolean;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[];
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
@@ -86,30 +85,30 @@ export class NewSongComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(songId: number) {
-    this.loadingButton = true;
-    this.subscription.add(this.songService.likeSong(songId).subscribe(
+  likeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
       }, () => {
-        this.loadingButton = false;
+        song.loadingLikeButton = false;
       }
     ));
   }
 
-  unlikeSong(songId: number) {
-    this.loadingButton = true;
-    this.songService.unlikeSong(songId).subscribe(
+  unlikeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
       }, () => {
-        this.loadingButton = false;
+        song.loadingLikeButton = false;
       }
-    );
+    ));
   }
 
   ngOnDestroy(): void {
