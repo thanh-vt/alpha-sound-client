@@ -5,6 +5,8 @@ import {PlaylistService} from '../../service/playlist.service';
 import {Artist} from '../../model/artist';
 import {ArtistService} from '../../service/artist.service';
 import {SongService} from '../../service/song.service';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
 
 @Component({
   selector: 'app-artist-list',
@@ -12,15 +14,24 @@ import {SongService} from '../../service/song.service';
   styleUrls: ['./artist-list.component.scss']
 })
 export class ArtistListComponent implements OnInit {
-
+  currentUser: User;
   message: string;
+  loading: boolean;
   subscription: Subscription = new Subscription();
   artistList: Artist[] = [];
-  constructor(private artistService: ArtistService, private songService: SongService) { }
+  constructor(private artistService: ArtistService, private songService: SongService,
+              userService: UserService) {
+    userService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   ngOnInit() {
     // this.subscription.unsubscribe();
-    this.subscription = this.artistService.artistList().subscribe(
+    this.loading = true;
+    this.subscription.add(this.artistService.artistList().subscribe(
       result => {
         if (result != null) {
           this.artistList = result.content;
@@ -30,8 +41,10 @@ export class ArtistListComponent implements OnInit {
         }
       }, error => {
         this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
+      }, () => {
+        this.loading = false;
       }
-    );
+    ));
   }
 
 }

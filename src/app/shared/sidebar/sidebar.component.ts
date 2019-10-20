@@ -11,7 +11,8 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  message;
+  message: string;
+  loading: boolean;
   songList: Song[];
   subscription: Subscription = new Subscription();
 
@@ -28,6 +29,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   goToPage() {
+    this.loading = true;
     this.subscription.add(this.songService.getTop10SongsByFrequency().subscribe(
       result => {
         if (result != null) {
@@ -39,6 +41,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }, () => {
+        this.loading = false;
       }
     ));
   }

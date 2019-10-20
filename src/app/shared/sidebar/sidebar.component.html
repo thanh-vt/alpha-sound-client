@@ -1,5 +1,8 @@
 <div>
   <h2>Board</h2>
+  <ng-container *ngIf="loading">
+    <app-spinner [type]="4"></app-spinner>
+  </ng-container>
   <ul class="list-group" *ngFor="let song of songList; index as i">
     <li class="list-group-item"><img [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:''" alt=""><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
       <span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></li>
