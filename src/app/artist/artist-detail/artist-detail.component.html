@@ -10,18 +10,18 @@
     <h6 class="d-inline">Biography: </h6><p class="text-secondary" style="overflow-wrap: break-word">{{artist.biography}}</p>
   </div>
 </div>
-<div class="search-results"
+<div class="songList py-2"
      infiniteScroll
+     [scrollWindow]="false"
      [infiniteScrollDistance]="2"
      [infiniteScrollThrottle]="50"
-     (scrolled)="onScroll(++pageNumber)">
+     (scrolled)="onScroll()">
   <table class="table table-striped">
     <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Title</th>
       <th scope="col">Release Date</th>
-      <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
@@ -34,8 +34,8 @@
       <td>{{ song.releaseDate | date }}</td>
       <td>
         <ng-container *ngIf="!!currentUser">
-          <button (click)="likeSong(song.id)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
-          <button (click)="unlikeSong(song.id)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
+          <button (click)="likeSong(song, i)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
+          <button (click)="unlikeSong(song, i)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
         </ng-container>
       </td>
       <td>

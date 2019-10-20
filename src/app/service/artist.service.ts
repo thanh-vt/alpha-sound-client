@@ -22,7 +22,7 @@ export class ArtistService {
   }
 
   getSongListOfArtist(id: number, page: number) {
-    return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}&page=${page}$`);
+    return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}&page=${page}`);
   }
 
   searchArtist(name: string): Observable<any> {

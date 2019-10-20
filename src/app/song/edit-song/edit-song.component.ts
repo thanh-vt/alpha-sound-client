@@ -62,7 +62,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.songId = params.id;
-        this.songService.getdetailSong(this.songId).subscribe(
+        this.songService.songDetail(this.songId).subscribe(
           result => {
             this.song = result;
             this.songUpdateForm = this.fb.group({

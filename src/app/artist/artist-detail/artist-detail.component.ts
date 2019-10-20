@@ -29,9 +29,9 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   pageNumber = 0;
   pageSize: number;
   isDisable: boolean;
-  pages: Page[] = [];
-  songList: Song[];
-  playlistList: Playlist[];
+  totalPages: number;
+  songList: Song[] = [];
+  playlistList: Playlist[] = [];
   subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
@@ -55,40 +55,49 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
             this.artist = result;
           }
         ));
-        this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+        this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
           result1 => {
             if (result1 != null) {
-              this.songList.push(result1.content);
+              this.totalPages = result1.totalPages;
+              // tslint:disable-next-line:prefer-for-of
+              for (let i = 0; i < result1.content.length; i++) {
+                this.songList.push(result1.content[i]);
+              }
             }
           }, error => {
             this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
           }
-        );
+        ));
       }
     ));
   }
 
-  onScroll(pageNumber) {
-    this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, pageNumber).subscribe(
-      result => {
-        if (result != null) {
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          this.first = result.first;
-          this.last = result.last;
-          this.pageNumber = result.pageable.pageNumber;
-          this.pageSize = result.pageable.pageSize;
-          this.pages = new Array(result.totalPages);
-          for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = {pageNumber: j};
+  onScroll() {
+    this.pageNumber = ++this.pageNumber;
+    if (this.pageNumber < this.totalPages) {
+      this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+        result => {
+          if (result != null) {
+            this.totalPages = result.totalPages;
+            // tslint:disable-next-line:prefer-for-of
+            for (let i = 0; i < result.content.length; i++) {
+              this.songList.push(result.content[i]);
+            }
+            this.songList.forEach((value, index) => {
+              this.songList[index].isDisabled = false;
+            });
+            this.first = result.first;
+            this.last = result.last;
+            this.pageNumber = result.pageable.pageNumber;
+            this.pageSize = result.pageable.pageSize;
           }
+        }, error => {
+          this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
         }
-      }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-      }
-    ));
+      ));
+    } else {
+      this.pageNumber = --this.pageNumber;
+    }
   }
 
   addToPlaying(song: Song) {
@@ -108,30 +117,28 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  refreshSongList(pageNumber: number) {
-    this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+  refreshSong(id: number, index: number) {
+    this.subscription.add(this.songService.songDetail(id).subscribe(
       result => {
-        for (let i = 0; i < this.pageSize; i++) {
-          this.songList[this.pageSize * this.pageNumber + i] = result.content[i];
-        }
+        this.songList[index] = result;
       }
-    );
+    ));
   }
 
-  likeSong(songId: number) {
-    this.subscription.add(this.songService.likeSong(songId).subscribe(
+  likeSong(song: Song, index: number) {
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
-        this.subscription.add(this.refreshSongList(this.pageNumber));
+        this.subscription.add(this.refreshSong(song.id, index));
       }, error => {
         console.log(error);
       }
     ));
   }
 
-  unlikeSong(songId: number) {
-    this.songService.unlikeSong(songId).subscribe(
+  unlikeSong(song: Song, index: number) {
+    this.songService.unlikeSong(song.id).subscribe(
       () => {
-        this.subscription.add(this.refreshSongList(this.pageNumber));
+        this.subscription.add(this.refreshSong(song.id, index));
       }, error => {
         console.log(error);
       }

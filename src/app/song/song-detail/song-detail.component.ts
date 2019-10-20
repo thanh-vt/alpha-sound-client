@@ -33,7 +33,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.songId = params.id;
-        this.subscription.add(this.songservice.getdetailSong(this.songId).subscribe(
+        this.subscription.add(this.songservice.songDetail(this.songId).subscribe(
           result => {
             window.scroll(0, 0);
             this.song = result;
@@ -48,7 +48,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.subscription.add(this.songservice.commentSong(this.songId, this.commentForm.value).subscribe(
       () => {
-        this.subscription.add(this.songservice.getdetailSong(this.songId).subscribe(
+        this.subscription.add(this.songservice.songDetail(this.songId).subscribe(
           result => {
             this.commentForm.reset();
             this.song = result;
