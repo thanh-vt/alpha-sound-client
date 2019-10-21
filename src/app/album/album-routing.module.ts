@@ -6,6 +6,7 @@ import {EditAlbumComponent} from './edit-album/edit-album.component';
 import {DeleteAlbumComponent} from './delete-album/delete-album.component';
 import {AlbumComponent} from './album/album.component';
 import {AlbumDetailComponent} from './album-detail/album-detail.component';
+import {AuthGuard} from '../guard/auth.guard';
 
 
 const routes: Routes = [
@@ -28,14 +29,17 @@ const routes: Routes = [
       },
       {
         path:  'upload',
+        canActivate: [AuthGuard],
         component:  UploadAlbumComponent
       },
       {
-        path:  'update-profile',
+        path:  'edit',
+        canActivate: [AuthGuard],
         component:  EditAlbumComponent
       },
       {
         path:  'delete',
+        canActivate: [AuthGuard],
         component:  DeleteAlbumComponent
       }
     ]

@@ -13,7 +13,6 @@ import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootst
 import {SearchComponent} from './search/search.component';
 import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';
 import {FavoritesComponent} from './favorites/favorites.component';
-import {PlaylistComponent} from '../playlist/playlist/playlist.component';
 
 @NgModule({
   declarations: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent,

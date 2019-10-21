@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},
       // tslint:disable-next-line:max-line-length
-      { path: 'playlist', canActivate: [AuthGuard], loadChildren: () => import('../playlist/playlist.module').then(mod => mod.PlaylistModule)},
+      { path: 'playlist', canActivate: [AuthGuard], canActivateChild: [AuthGuard], loadChildren: () => import('../playlist/playlist.module').then(mod => mod.PlaylistModule)},
       { path: 'artist', loadChildren: () => import('../artist/artist.module').then(mod => mod.ArtistModule)},
       { path: 'search', component: SearchComponent},
       { path: 'uploaded', canActivate: [AuthGuard], component: UploadedSongListComponent},

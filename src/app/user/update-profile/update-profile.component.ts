@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
@@ -6,24 +6,26 @@ import {UserService} from '../../service/user.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Progress} from '../../model/progress';
 import {User} from '../../model/user';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './update-profile.component.html'
 })
-export class UpdateProfileComponent implements OnInit {
+export class UpdateProfileComponent implements OnInit, OnDestroy {
   currentUser: User;
   updateForm: FormGroup;
-  loading = false;
+  loading: boolean;
   submitted = false;
   returnUrl: string;
-  error = false;
+  error: boolean;
   file: any;
   formData = new FormData();
   message: string;
   isImageFileChoosen = false;
   imageFileName = '';
   progress: Progress = {value: 0};
+  subscription: Subscription = new Subscription();
 
   // tslint:disable-next-line:max-line-length
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService, private userService: UserService) {
@@ -85,7 +87,7 @@ export class UpdateProfileComponent implements OnInit {
   onSubmit() {
     this.formData.append('user', new Blob([JSON.stringify(this.updateForm.value)], {type: 'application/json'}));
     this.formData.append('avatar', this.file);
-    this.userService.updateProfile(this.formData, this.currentUser.id).subscribe(
+    this.subscription.add(this.userService.updateProfile(this.formData, this.currentUser.id).subscribe(
       (event: HttpEvent<any>) => {
         this.userService.getProfile();
         if (this.displayProgress(event, this.progress)) {
@@ -98,11 +100,15 @@ export class UpdateProfileComponent implements OnInit {
         this.error = true;
         this.message = 'Failed to update profile';
       }
-    );
+    ));
   }
 
   navigate() {
     this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

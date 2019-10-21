@@ -7,20 +7,20 @@ import {UserToken} from '../model/userToken';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  currentUser: UserToken;
+  currentUserToken: UserToken;
   constructor(
     private router: Router,
     private authService: AuthService
   ) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
-        this.currentUser = currentUser;
+        this.currentUserToken = currentUser;
       }
     );
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!!this.currentUser) {
+    if (!!this.currentUserToken) {
       // logged in so return true
       return true;
     } else {
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!!this.currentUser) {
+    if (!!this.currentUserToken) {
       // logged in so return true
       return true;
     } else {

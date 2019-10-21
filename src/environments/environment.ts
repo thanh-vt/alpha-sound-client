@@ -4,7 +4,6 @@
 
 export const environment = {
   apiUrl: 'http://localhost:8080/climax-sound/api',
-  // apiUrl: 'https://climax-sound.herokuapp.com/climax-sound/api',
   production: false
 };
 

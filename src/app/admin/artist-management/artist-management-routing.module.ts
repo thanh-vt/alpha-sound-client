@@ -6,11 +6,14 @@ import {ArtistUploadComponent} from './artist-upload/artist-upload.component';
 import {ArtistEditComponent} from './artist-edit/artist-edit.component';
 import {ArtistDeleteComponent} from './artist-delete/artist-delete.component';
 import {ArtistDetailComponent} from './artist-detail/artist-detail.component';
+import {AdminAuthGuard} from '../../guard/admin-auth.guard';
 
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AdminAuthGuard],
+    canActivateChild: [AdminAuthGuard],
     redirectTo: 'list',
     pathMatch: 'full'
   },
