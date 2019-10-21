@@ -11,6 +11,9 @@
   </tr>
   </thead>
   <tbody>
+  <ng-container *ngIf="!artistList">
+    <app-spinner></app-spinner>
+  </ng-container>
   <tr *ngFor="let artist of artistList; index as i">
     <td>{{ i + 1 }}</td>
     <td><a [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>

@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -18,8 +21,14 @@
     <td><span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></td>
     <td>
       <ng-container *ngIf="!!currentUser">
-        <button (click)="likeSong(song.id)" class="btn btn-outline-danger" *ngIf="!song.liked"><i class="far fa-heart"></i></button>
-        <button (click)="unlikeSong(song.id)" class="btn btn-outline-danger" *ngIf="song.liked"><i class="fas fa-heart"></i></button>
+        <button (click)="likeSong(song)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
+          <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
+        </button>
+        <button (click)="unlikeSong(song)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
+          <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
+        </button>
       </ng-container>
     </td>
     <td>
@@ -28,10 +37,12 @@
       </button>
     </td>
     <td>
-      <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
-        <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
-        <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
-      </app-modal>
+      <ng-container *ngIf="!!currentUser">
+        <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
+          <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
+          <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
+        </app-modal>
+      </ng-container>
     </td>
   </tr>
   </tbody>
@@ -39,13 +50,13 @@
 <nav>
   <ul class="pagination">
     <li class="page-item" *ngIf="!first">
-      <a class="page-link" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>
+      <a class="page-link" (click)="goToPage(pageNumber - 1, true)" tabindex="-1" aria-disabled="true">Previous</a>
     </li>
     <li *ngFor="let page of pages" class="page-item">
-      <a class="page-link" class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
+      <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber, true)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
     </li>
     <li class="page-item" *ngIf="!last">
-      <a class="page-link" class="page-link" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">Next</a>
+      <a class="page-link" (click)="goToPage(pageNumber + 1, true)" tabindex="-1" aria-disabled="true">Next</a>
     </li>
   </ul>
 </nav>

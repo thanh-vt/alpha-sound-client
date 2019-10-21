@@ -10,17 +10,16 @@ import {
   Router
 } from '@angular/router';
 
-import {AuthService} from '../service/auth.service';
-import {UserToken} from '../model/userToken';
 import {User} from '../model/user';
 import {UserService} from '../service/user.service';
+import {AuthService} from '../service/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   currentUser: User;
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService, private authService: AuthService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
@@ -41,6 +40,7 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
       if (hasRoleAdmin) {
         return true;
       } else {
+        this.authService.logout();
         this.router.navigate(['/', 'admin', 'dashboard'], { queryParams: {login: true}, queryParamsHandling: 'merge' } );
         return false;
       }

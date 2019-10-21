@@ -9,21 +9,15 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./artist-list.component.scss']
 })
 export class ArtistListComponent implements OnInit {
-  private artistList: Artist[];
-  private message: string;
-  private subscription: Subscription = new Subscription();
+  artistList: Artist[];
+  message: string;
+  subscription: Subscription = new Subscription();
+  loading: boolean;
 
   constructor(private artistService: ArtistService) {
   }
 
   ngOnInit() {
-    // this.artistService.artistList().subscribe(
-    //   result => {
-    //     this.artistList = result.content;
-    //   }, error => {
-    //     this.message = 'Cannot retrieve artist list. Cause:' + error.message;
-    //   }
-    // );
     this.subscription = this.artistService.artistList().subscribe(
       result => {
         if (result != null) {

@@ -46,10 +46,9 @@ export class PlayingQueueService {
       if (!isExistence) {
         this.queue.push(track);
         this.currentQueueSubject.next(this.queue);
+        this.update.emit();
         this.subscription.add(this.songService.listenToSong(songId).subscribe(
-          () => {
-            this.update.emit();
-          }
+          () => {}
         ));
       }
     }

@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <div class="row">
   <ng-container *ngFor="let album of albumList; index as i" >
     <app-card class="col-3 py-2 text-center">

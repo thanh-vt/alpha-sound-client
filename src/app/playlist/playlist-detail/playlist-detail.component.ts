@@ -15,11 +15,11 @@ import {Track} from 'ngx-audio-player';
   styleUrls: ['./playlist-detail.component.scss']
 })
 export class PlaylistDetailComponent implements OnInit, OnDestroy {
-  private message;
-  private songList: Song[];
-  private playList: Playlist;
-  private subscription: Subscription = new Subscription();
-  private playlistId: number;
+  message: string;
+  songList: Song[];
+  playList: Playlist;
+  subscription: Subscription = new Subscription();
+  playlistId: number;
 
   constructor(
     private playlistService: PlaylistService,

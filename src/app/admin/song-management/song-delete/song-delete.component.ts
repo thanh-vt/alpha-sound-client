@@ -16,7 +16,7 @@ export class SongDeleteComponent implements OnInit, OnDestroy {
   loading = false;
   message: string;
   error = false;
-  private subscription: Subscription = new Subscription();
+  subscription: Subscription = new Subscription();
   @Output() deleteSong = new EventEmitter();
   constructor(private songService: SongService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
 

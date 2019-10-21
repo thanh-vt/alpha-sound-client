@@ -10,9 +10,9 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit {
-  private songList: Song[];
-  private subscription: Subscription = new Subscription();
-  private message: string;
+  songList: Song[];
+  subscription: Subscription = new Subscription();
+  message: string;
 
   constructor(private songService: SongService, private route: ActivatedRoute, router: Router) {
   }

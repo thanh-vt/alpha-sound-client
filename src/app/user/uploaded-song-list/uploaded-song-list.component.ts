@@ -15,13 +15,13 @@ import {PlaylistService} from '../../service/playlist.service';
 })
 export class UploadedSongListComponent implements OnInit, OnDestroy {
 
-  private pageNumber: number;
-  private pageSize: number;
-  private pages: Page[] = [];
-  private message;
-  private songList: Song[];
-  private isDisable: boolean;
-  private subscription: Subscription = new Subscription();
+  pageNumber: number;
+  pageSize: number;
+  pages: Page[] = [];
+  message: string;
+  songList: Song[];
+  isDisable: boolean;
+  subscription: Subscription = new Subscription();
   @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService) { }

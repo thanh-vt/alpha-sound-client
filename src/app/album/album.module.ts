@@ -12,6 +12,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule} from '@angular/material';
 import {SharedModule} from '../shared/shared.module';
+import {PlaylistModule} from '../playlist/playlist.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {SharedModule} from '../shared/shared.module';
     MatAutocompleteModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    SharedModule
+    SharedModule,
+    PlaylistModule
   ]
 })
 export class AlbumModule { }

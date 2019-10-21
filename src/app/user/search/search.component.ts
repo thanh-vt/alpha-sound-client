@@ -13,10 +13,10 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 export class SearchComponent implements OnInit {
   selectedTabId = 'simple';
   searchText: string;
-  private songList: Song[] = [];
-  private artistList: Artist[];
-  private numberOfSongs: number;
-  private numberOfArtists: number;
+  songList: Song[] = [];
+  artistList: Artist[];
+  numberOfSongs: number;
+  numberOfArtists: number;
 
   @ViewChild('searchTab', {static: false}) searchTab: NgbTabset;
 

@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -7,10 +10,10 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let artist of artistList; index as i">
+  <tr  *ngFor="let artist of artistList; index as i">
     <td>{{ i + 1 }}</td>
     <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
-    <td><img class="avatar" [src]="artist.avatarUrl"></td>
+    <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}"><img class="avatar" [src]="artist.avatarUrl" alt=""></a></td>
   </tr>
   </tbody>
 </table>

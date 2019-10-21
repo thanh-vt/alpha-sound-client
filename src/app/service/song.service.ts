@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpEvent} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {Song} from '../model/song';
 import {Observable} from 'rxjs';
+import {Song} from '../model/song';
 
 @Injectable({
   providedIn: 'root'
@@ -29,13 +29,12 @@ export class SongService {
     return this.http.get<any>(requestUrl);
   }
 
-  updateSong(song: any, id: number): Observable<HttpEvent<any>> {
-    // @ts-ignore
-    // @ts-ignore
-    return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song, {
-      observe: 'events',
-      reportProgress: true,
-    });
+  getTop10SongsByFrequency() {
+    return this.http.get<any>(`${environment.apiUrl}/song/list-top?sort=listeningFrequency`);
+  }
+
+  updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {
+    return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song);
   }
 
   uploadSong(formData): Observable<HttpEvent<any>> {
@@ -49,7 +48,7 @@ export class SongService {
     return this.http.post(`${environment.apiUrl}/song/add-to-playlist?song-id=${songId}&playlist-id=${playlistId}`, '');
   }
 
-  getdetailSong(id: number) {
+  songDetail(id: number): Observable<Song> {
     return this.http.get<any>(`${environment.apiUrl}/song/detail?id=${id}`);
   }
 

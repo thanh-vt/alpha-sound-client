@@ -7,6 +7,11 @@ import {Artist} from '../../model/artist';
 import {Song} from '../../model/song';
 import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
+import {Playlist} from '../../model/playlist';
+import {PlaylistService} from '../../service/playlist.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 
 
 @Component({
@@ -16,15 +21,27 @@ import {Subscription} from 'rxjs';
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
   @Input() song: Song;
-  private message;
-  private songId;
-  private  artistList: Artist[];
-  private  commentList: Comment[];
+  currentUser: User;
+  message: string;
+  loading: boolean;
+  songId: number;
+  artistList: Artist[];
+  playlistList: Playlist[];
+  commentList: Comment[];
   commentForm: FormGroup;
   error = false;
   subscription: Subscription = new Subscription();
   // tslint:disable-next-line:max-line-length
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService, private songservice: SongService) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute,
+              private router: Router, private authService: AuthService,
+              private songService: SongService, private userService: UserService,
+              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService) {
+    this.userService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   ngOnInit() {
     this.commentForm = this.fb.group({
@@ -33,7 +50,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.songId = params.id;
-        this.subscription.add(this.songservice.getdetailSong(this.songId).subscribe(
+        this.loading = true;
+        this.subscription.add(this.songService.songDetail(this.songId).subscribe(
           result => {
             window.scroll(0, 0);
             this.song = result;
@@ -41,14 +59,17 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.commentList = this.song.comments;
           }, error => {
             this.message = 'Cannot retrieve Song . Cause: ' + error.message;
+          }, () => {
+            this.loading = false;
           }
         ));
       }));
   }
+
   onSubmit() {
-    this.subscription.add(this.songservice.commentSong(this.songId, this.commentForm.value).subscribe(
+    this.subscription.add(this.songService.commentSong(this.songId, this.commentForm.value).subscribe(
       () => {
-        this.subscription.add(this.songservice.getdetailSong(this.songId).subscribe(
+        this.subscription.add(this.songService.songDetail(this.songId).subscribe(
           result => {
             this.commentForm.reset();
             this.song = result;
@@ -58,6 +79,61 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.message = 'Cannot retrieve Song . Cause: ' + error.message;
           }
         ));
+      }
+    ));
+  }
+
+  addToPlaying(song) {
+    this.playingQueueService.addToQueue({
+      title: song.title,
+      link: song.url
+    }, song.id);
+  }
+
+  refreshPlaylistList(song: Song) {
+    this.subscription.add(this.playlistService.getPlaylistListToAdd(song.id).subscribe(
+      result => {
+        this.playlistList = result;
+      }, error => {
+        console.log(error);
+      }
+    ));
+  }
+
+  likeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.songService.songDetail(song.id).subscribe(
+          songDetail => {
+            this.song = songDetail;
+          }, error1 => {
+            console.log(error1);
+          }
+        ));
+      }, error => {
+        console.log(error);
+      }, () => {
+        song.loadingLikeButton = false;
+      }
+    ));
+  }
+
+  unlikeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.songService.songDetail(song.id).subscribe(
+          songDetail => {
+            this.song = songDetail;
+          }, error1 => {
+            console.log(error1);
+          }
+        ));
+      }, error => {
+        console.log(error);
+      }, () => {
+        song.loadingLikeButton = false;
       }
     ));
   }

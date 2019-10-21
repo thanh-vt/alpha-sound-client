@@ -22,13 +22,13 @@ export class SongListComponent implements OnInit, OnDestroy {
   first: boolean;
   last: boolean;
   pageNumber = 0;
-  private pageSize: number;
-  private pages: Page[] = [];
-  private message;
-  private songList: Song[];
-  private isDisable: boolean;
-  private subscription: Subscription = new Subscription();
-  playlistList: Playlist[];
+  pageSize: number;
+  pages: Page[] = [];
+  message: string;
+  songList: Song[] = [];
+  playlistList: Playlist[] = [];
+  loading: boolean;
+  subscription: Subscription = new Subscription();
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   // tslint:disable-next-line:max-line-length
@@ -46,21 +46,22 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.goToPage(this.pageNumber);
+    this.loading = true;
+    this.goToPage(this.pageNumber, true);
   }
 
-  addToPlaying(song) {
+  addToPlaying(song: Song) {
     this.playingQueueService.addToQueue({
       title: song.title,
       link: song.url
     }, song.id);
   }
 
-  goToPage(i) {
+  goToPage(i: number, scrollUp?: boolean) {
     this.subscription.add(this.songService.getSongList(i, undefined).subscribe(
       result => {
         if (result != null) {
-          window.scroll(0, 0);
+          if (scrollUp) {window.scroll(0, 0); }
           this.songList = result.content;
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
@@ -76,6 +77,13 @@ export class SongListComponent implements OnInit, OnDestroy {
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }, () => {
+        for (const song of this.songList) {
+          if (song.loadingLikeButton) {
+            song.loadingLikeButton = false;
+          }
+        }
+        this.loading = false;
       }
     ));
   }
@@ -90,8 +98,9 @@ export class SongListComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(songId: number) {
-    this.subscription.add(this.songService.likeSong(songId).subscribe(
+  likeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
@@ -100,14 +109,15 @@ export class SongListComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(songId: number) {
-    this.songService.unlikeSong(songId).subscribe(
+  unlikeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.goToPage(this.pageNumber));
       }, error => {
         console.log(error);
       }
-    );
+    ));
   }
 
   ngOnDestroy(): void {
