@@ -43,10 +43,15 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   addToPlaying(song: Song) {
-    this.playingQueueService.addToQueue({
-      title: song.title,
-      link: song.url
-    }, song.id);
+    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
+      () => {
+        this.playingQueueService.addToQueue({
+          title: song.title,
+          link: song.url
+        });
+        song.isDisabled = true;
+      }
+    ));
   }
 
   goToPage(i: number, scrollUp?: boolean) {

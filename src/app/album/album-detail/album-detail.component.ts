@@ -63,7 +63,7 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  addToPlaying(song) {
+  addToPlaying(song: Song) {
     this.subscription.add(this.songService.listenToSong(song.id).subscribe(
       () => {
         this.playingQueueService.addToQueue({
