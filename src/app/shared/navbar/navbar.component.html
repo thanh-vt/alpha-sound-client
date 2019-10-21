@@ -23,17 +23,17 @@
   <div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
       <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user"></i></span>
+        <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
         <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
         <span> {{ currentUser.username }}</span>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/update-profile']" ><span><i class="fas fa-user-edit"></i> Update Profile</span></a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile']"><span><i class="fas fa-user"></i> Profile</span></a>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"><span><i class="fas fa-headphones-alt"></i> Playlist</span></a>
         <div class="dropdown-divider"></div>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']">Uploaded</a>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']">Favorites</a>
-        <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true">Logout</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']"><i class="fas fa-upload"></i> Uploaded</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']"><i class="fab fa-gratipay"></i> Favorites</a>
+        <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true"><i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
@@ -41,13 +41,13 @@
         <i class="fas fa-upload"></i>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']" >Upload Song</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">Upload Song</a>
         <div class="dropdown-divider"></div>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">Upload Album</a>
       </div>
     </div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!currentUser">
-      <button class="btn btn-info" id="dropdownForm1" ngbDropdownToggle>Sign In</button>
+      <button class="btn btn-info" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> Sign In</button>
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
           <div class="form-group">
@@ -71,10 +71,9 @@
 <!--            </label>-->
 <!--          </div>-->
           <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             <span>Sign in</span>
           </button>
-          <div *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></div>
-
         </form>
         <div class="dropdown-divider"></div>
         <button ngbDropdownItem><a ngbDropdownItem class="dropdown-item" [routerLink]="['/register']">New around here? Sign up</a></button>

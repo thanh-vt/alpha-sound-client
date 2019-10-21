@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-card',
@@ -6,10 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
+  @Input() type: number;
+  @Input() title: string;
+  @Input() imgSrc: string;
+  @Input() showEditButton: boolean;
+  @Output() showEditForm = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  showHideEditForm() {
+    this.showEditForm.emit();
   }
 
 }

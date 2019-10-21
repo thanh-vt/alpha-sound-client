@@ -8,10 +8,10 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let user of userList; index as i">
+  <tr *ngFor="let user of userList; index as i" [routerLink]="['/admin','user-management','detail']" [queryParams]="{id: user.id}">
     <td>{{ i + 1 }}</td>
-    <td class="clickable" [routerLink]="['/admin','user-management','detail',user.id]">{{ user.username }}</td>
-    <td><img src="{{user.avatarUrl}}" class="img-thumbnail avatar"></td>
+    <td>{{ user.username }}</td>
+    <td><img src="{{user.avatarUrl}}" class="img-thumbnail avatar" alt=""></td>
     <td><app-modal [body]="'Are you sure want to delete user ' + user.username" [action]="'delete'">
       <app-user-delete class="modal-footer" [id]="user.id" [username]="user.username" (deleteUser)="deleteUser()"></app-user-delete>
     </app-modal></td>

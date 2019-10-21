@@ -13,10 +13,13 @@ import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootst
 import {SearchComponent} from './search/search.component';
 import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';
 import {FavoritesComponent} from './favorites/favorites.component';
+import { ProfileComponent } from './profile/profile.component';
+import { UserProfileComponent } from './user-management/user-profile/user-profile.component';
+import {PlaylistModule} from '../playlist/playlist.module';
 
 @NgModule({
   declarations: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent,
-      SearchComponent, UploadedSongListComponent, FavoritesComponent],
+      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -27,7 +30,8 @@ import {FavoritesComponent} from './favorites/favorites.component';
     NgbPaginationModule,
     NgbTabsetModule,
     FormsModule,
-    NgbButtonsModule
+    NgbButtonsModule,
+    PlaylistModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent, SearchComponent]
 })

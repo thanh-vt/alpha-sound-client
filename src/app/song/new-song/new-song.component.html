@@ -1,27 +1,13 @@
-<ngb-carousel>
-  <ng-template ngbSlide>
-    <div class="picsum-img-wrapper">
-      <img src="../../../assets/background/mohammad-metri-1oKxSKSOowE-unsplash.jpg" alt="Random first slide" class="d-block w-100">
-    </div>
+<ngb-carousel #carousel interval="2000" [pauseOnHover]="pauseOnHover" (slide)="onSlide($event)">
+  <ng-template ngbSlide *ngFor="let img of images; index as i">
     <div class="carousel-caption">
-      <h3>Bring you the climax music</h3>
+      <h3>{{ description[i] }}</h3>
     </div>
-  </ng-template>
-  <ng-template ngbSlide>
-    <div class="picsum-img-wrapper">
-      <img src="../../../assets/background/simon-noh-0rmby-3OTeI-unsplash.jpg" alt="Random second slide" class="d-block w-100">
-    </div>
-    <div class="carousel-caption">
-      <h3>Hundreds of songs and albums</h3>
-    </div>
-  </ng-template>
-  <ng-template ngbSlide>
-    <div class="picsum-img-wrapper">
-      <img src="../../../assets/background/hanny-naibaho-aWXVxy8BSzc-unsplash.jpg" alt="Random third slide" class="d-block w-100">
-    </div>
-    <div class="carousel-caption">
-      <h3>Customize your personal playlist</h3>
-    </div>
+    <a href="https://www.google.fr/?q=Number+{{i+1}}" target="_blank" rel="nofollow noopener noreferrer">
+      <div class="picsum-img-wrapper">
+        <img [src]="img" [alt]="description[i]" width="100%">
+      </div>
+    </a>
   </ng-template>
 </ngb-carousel>
 <ng-container *ngIf="loading">

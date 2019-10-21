@@ -10,8 +10,8 @@
   <tbody>
   <tr *ngFor="let song of songList; index as i">
     <td>{{ i + 1 }}</td>
-    <td>{{song.uploader.username}}</td>
-    <td>{{ song.title }}</td>
+    <td>{{ song.uploader.username }}</td>
+    <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
     <td>
       <app-modal [body]="'Are you sure want to delete artist ' + song.title" [action]="'delete'">
         <app-song-delete class="modal-footer" [id]="song.id" [songTitle]="song.title" (deleteSong)="deleteSong()"></app-song-delete>

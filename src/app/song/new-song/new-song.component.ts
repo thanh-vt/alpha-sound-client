@@ -9,6 +9,7 @@ import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {UserToken} from '../../model/userToken';
 import {AuthService} from '../../service/auth.service';
+import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-new-song',
   templateUrl: './new-song.component.html',
@@ -22,11 +23,20 @@ export class NewSongComponent implements OnInit, OnDestroy {
   first: boolean;
   last: boolean;
   message: string;
-  songList: Song[];
   loading: boolean;
+  songList: Song[];
+  imageOrder = 0;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[];
+
+  images = [1, 2, 3].map(() => `../../../assets/slides/slide_number_${this.roll()}.jpg`);
+  description: string[] = ['Bring you the climax music', 'Hundreds of songs and albums', 'Customize your own playlist'];
+  paused = false;
+  unpauseOnArrow = false;
+  pauseOnIndicator = false;
+  pauseOnHover = true;
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
+  @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 
   // tslint:disable-next-line:max-line-length
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService, private playlistService: PlaylistService, private authService: AuthService) {
@@ -40,6 +50,13 @@ export class NewSongComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.goToPage(this.pageNumber, true);
+  }
+
+  roll() {
+    if (this.imageOrder === 3) {
+      this.imageOrder = 0;
+    }
+    return ++this.imageOrder;
   }
 
   addToPlaying(song: Song) {
@@ -115,6 +132,25 @@ export class NewSongComponent implements OnInit, OnDestroy {
         console.log(error);
       }
     ));
+  }
+
+  togglePaused() {
+    if (this.paused) {
+      this.carousel.cycle();
+    } else {
+      this.carousel.pause();
+    }
+    this.paused = !this.paused;
+  }
+
+  onSlide(slideEvent: NgbSlideEvent) {
+    if (this.unpauseOnArrow && slideEvent.paused &&
+      (slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)) {
+      this.togglePaused();
+    }
+    if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
+      this.togglePaused();
+    }
   }
 
   ngOnDestroy(): void {

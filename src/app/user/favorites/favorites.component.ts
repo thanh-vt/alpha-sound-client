@@ -1,7 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Song} from '../../model/song';
-import {ActivatedRoute} from '@angular/router';
-import {SearchService} from '../../service/search.service';
 import {User} from '../../model/user';
 import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
@@ -24,15 +22,17 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
-  message;
-  songList: Song[];
-  isDisable: boolean;
-  subscription: Subscription = new Subscription();
+  songList: Song[] = [];
   playlistList: Playlist[];
+  message: string;
+  loading: boolean;
+  subscription: Subscription = new Subscription();
+
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, private playlistService: PlaylistService, private userService: UserService) {
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
+              private playlistService: PlaylistService, private userService: UserService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
@@ -46,7 +46,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.goToPage(this.pageNumber);
+    this.goToPage(this.pageNumber, true);
   }
 
   addToPlaying(song) {
@@ -56,11 +56,12 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     }, song.id);
   }
 
-  goToPage(i) {
+  goToPage(i: number, scroll?: boolean) {
+    this.loading = true;
     this.subscription.add(this.songService.getUserFavoriteSongList(i, undefined).subscribe(
       result => {
         if (result != null) {
-          window.scroll(0, 0);
+          if (scroll) { window.scroll(0, 0); }
           this.songList = result.content;
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
@@ -73,15 +74,19 @@ export class FavoritesComponent implements OnInit, OnDestroy {
           for (let j = 0; j < this.pages.length; j++) {
             this.pages[j] = {pageNumber: j};
           }
+        } else {
+          this.songList = [];
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }, () => {
+        this.loading = false;
       }
     ));
   }
 
-  refreshPlaylistList(songId) {
-    this.subscription.add(this.playlistService.getPlaylistListToAdd(songId).subscribe(
+  refreshPlaylistList(song: Song) {
+    this.subscription.add(this.playlistService.getPlaylistListToAdd(song.id).subscribe(
       result => {
         this.playlistList = result;
       }, error => {
@@ -90,22 +95,28 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(songId: number) {
-    this.subscription.add(this.songService.likeSong(songId).subscribe(
+  likeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
-        this.subscription.add(this.goToPage(this.pageNumber));
+        this.subscription.add(this.goToPage(this.pageNumber, false));
       }, error => {
         console.log(error);
+      }, () => {
+        song.loadingLikeButton = false;
       }
     ));
   }
 
-  unlikeSong(songId: number) {
-    this.songService.unlikeSong(songId).subscribe(
+  unlikeSong(song: Song) {
+    song.loadingLikeButton = true;
+    this.songService.unlikeSong(song.id).subscribe(
       () => {
-        this.subscription.add(this.goToPage(this.pageNumber));
+        this.subscription.add(this.goToPage(this.pageNumber, false));
       }, error => {
         console.log(error);
+      }, () => {
+        song.loadingLikeButton = false;
       }
     );
   }

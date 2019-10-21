@@ -1,4 +1,4 @@
-<div class="card">
+<div *ngIf="type === 1" class="card">
   <div class="card-header">
     <ng-content select=".lambda_card-header"></ng-content>
     <ng-content select=".lambda_card-title"></ng-content>
@@ -13,5 +13,20 @@
   </div>
   <div class="card-footer">
     <ng-content select=".lambda_card-footer"></ng-content>
+  </div>
+</div>
+<div *ngIf="type === 2" class="card mb-3 w-100">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img [src]="imgSrc" class="card-img img-thumbnail" alt="">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary float-right"><ng-content select=".lambda_card-button"></ng-content></button>
+        <h3 class="card-title text-center ">{{ title }}</h3>
+        <p class="card-text"><ng-content select=".lambda_card-text"></ng-content></p>
+        <p class="card-text"><small class="text-muted"><ng-content select=".lambda_card-text-muted"></ng-content></small></p>
+      </div>
+    </div>
   </div>
 </div>

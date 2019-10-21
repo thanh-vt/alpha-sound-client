@@ -13,7 +13,6 @@
             Username must have at least 6 characters
           </div>
         </div>
-
         <div class="form-group">
           <label for="password"><i class="fas fa-key"></i>  Password</label>
           <input id="password" type="password"  formControlName="password" class="form-control"/>
@@ -37,7 +36,6 @@
             First name can only contain up to 20 characters
           </div>
         </div>
-
         <div class="form-group">
           <label for="lastName"><i class="fas fa-user-tie"></i> Last Name</label>
           <input id="lastName" type="text" formControlName="lastName" class="form-control"/>
@@ -51,28 +49,25 @@
             First name can only contain up to 30 characters
           </div>
         </div>
-
+        <label><i class="fas fa-venus-mars"></i> Gender</label>
         <div class="form-group">
-          <label>
-            <input type="radio" [value]=true formControlName="gender">
-            <span>Male</span>
-          </label>
-          <label>
-            <input type="radio" [value]=false formControlName="gender">
-            <span>Female</span>
-          </label>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="male" [value]=true formControlName="gender">
+            <label class="form-check-label ml-2" for="male"><i class="fas fa-mars"></i> Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="female" [value]=false formControlName="gender">
+            <label class="form-check-label ml-2" for="female"><i class="fas fa-venus"></i> Female</label>
+          </div>
         </div>
-
         <div class="form-group">
           <label for="birthDate"><i class="fas fa-table"></i> BirthDate</label>
           <input id="birthDate" type="date" formControlName="birthDate" class="form-control"/>
         </div>
-
         <div class="form-group">
           <label for="phoneNumber"><i class="fas fa-phone"></i> PhoneNumber</label>
           <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control"/>
         </div>
-
         <div class="form-group">
           <label for="email"><i class="fas fa-envelope-square"> Email</i></label>
           <input id="email" type="text" formControlName="email" class="form-control"/>
@@ -83,8 +78,6 @@
             Not a valid Email
           </div>
         </div>
-
-
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
           Register

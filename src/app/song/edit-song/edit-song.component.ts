@@ -41,7 +41,6 @@ export class EditSongComponent implements OnInit, OnDestroy {
 
   addArtist(): void {
     this.artists.push(EditSongComponent.createArtist());
-    console.log(this.songUpdateForm.value);
   }
 
   removeArtist(index: number) {

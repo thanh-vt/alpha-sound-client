@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
@@ -9,7 +9,7 @@ import {User} from '../../model/user';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-edit',
+  selector: 'app-update-profile',
   templateUrl: './update-profile.component.html'
 })
 export class UpdateProfileComponent implements OnInit, OnDestroy {
@@ -22,7 +22,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   file: any;
   formData = new FormData();
   message: string;
-  isImageFileChoosen = false;
+  isImageFileChosen = false;
   imageFileName = '';
   progress: Progress = {value: 0};
   subscription: Subscription = new Subscription();
@@ -53,7 +53,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   selectFile(event) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
-      this.isImageFileChoosen = true;
+      this.isImageFileChosen = true;
       this.imageFileName = event.target.files[0].name;
     }
   }
@@ -85,14 +85,34 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.formData.append('user', new Blob([JSON.stringify(this.updateForm.value)], {type: 'application/json'}));
     this.formData.append('avatar', this.file);
-    this.subscription.add(this.userService.updateProfile(this.formData, this.currentUser.id).subscribe(
-      (event: HttpEvent<any>) => {
-        this.userService.getProfile();
-        if (this.displayProgress(event, this.progress)) {
-          this.error = false;
-          this.message = 'Profile updated successfully';
+    this.subscription.add(this.userService.updateProfile(this.updateForm.value).subscribe(
+      () => {
+        this.error = false;
+        this.message = 'Profile updated successfully';
+        if (this.isImageFileChosen) {
+          this.subscription.add(this.userService.uploadAvatar(this.formData).subscribe(
+            (event: HttpEvent<any>) => {
+              console.log(event);
+              if (this.displayProgress(event, this.progress)) {
+                this.error = false;
+                this.message = 'Avatar uploaded successfully';
+              }
+            },
+            error => {
+              console.log(error);
+              this.error = true;
+              this.message = 'Failed to upload avatar';
+            }, () => {
+              this.userService.setProfile();
+            }
+          ));
+        } else {
+          this.userService.getProfile().subscribe(
+            currentUser => {
+              this.currentUser = currentUser;
+            }
+          );
         }
       },
       error => {

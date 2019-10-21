@@ -4,6 +4,9 @@ import {AdminService} from '../../service/admin.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
+import {UserService} from '../../service/user.service';
+import {User} from '../../model/user';
+import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +15,7 @@ import {AuthService} from '../../service/auth.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @Output() adminLoginAction = new EventEmitter();
+  currentUser: User;
   adminLoginForm: FormGroup;
   submitted = false;
   loading = false;
@@ -21,9 +25,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   // tslint:disable-next-line:max-line-length
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private adminService: AdminService, private authService: AuthService ) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
+              private adminService: AdminService, private authService: AuthService, private userService: UserService) {
+    userService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
+      }
+    );
+  }
 
   ngOnInit() {
+    console.log(localStorage);
     this.submitted = false;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/admin';
     this.adminLoginForm = this.fb.group({
@@ -38,28 +50,31 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.loading = true;
-    this.subscription.add(this.adminService.adminLogin(this.adminLoginForm.value).subscribe(
-      result => {
-        let hasRoleAdmin = false;
-        const roleList = result.roles;
-        for (const role of roleList) {
-          if (role.name === 'ROLE_ADMIN') {
-            hasRoleAdmin = true;
-            break;
+    this.subscription.add(this.authService.login(this.adminLoginForm.value).subscribe(
+      () => {
+        this.userService.getProfile().subscribe(
+          currentUser => {
+            let hasRoleAdmin = false;
+            const roleList = currentUser.roles;
+            for (const role of roleList) {
+              if (role.name === 'ROLE_ADMIN') {
+                hasRoleAdmin = true;
+                break;
+              }
+            }
+            if (hasRoleAdmin) {
+              this.error = false;
+              this.message = '';
+              this.adminLoginAction.emit();
+              this.router.navigate(['/admin']);
+            } else {
+              this.error = true;
+              this.authService.logout();
+              this.message = 'Your account is not an Administrator account';
+            }
+            this.submitted = false;
           }
-        }
-        if (hasRoleAdmin) {
-          this.error = false;
-          this.message = '';
-          localStorage.setItem('userToken', JSON.stringify(result));
-          this.adminLoginAction.emit();
-          this.router.navigate([this.returnUrl]);
-        } else {
-          this.error = true;
-          this.authService.logout();
-          this.message = 'Your account is not an Administrator account';
-        }
-        this.submitted = false;
+        );
       }, error => {
         this.error = true;
         if (error.statusCode === 400) {
@@ -69,6 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       }, () => {
         this.loading = false;
+        console.log(localStorage);
       }
     ));
   }

@@ -8,6 +8,7 @@ import {UpdateProfileComponent} from './update-profile/update-profile.component'
 import {SearchComponent} from './search/search.component';
 import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';
 import {FavoritesComponent} from './favorites/favorites.component';
+import {ProfileComponent} from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: '', component: UserComponent, children: [
       { path: 'home', component: HomeComponent},
       { path: 'register', component: RegisterComponent},
-      { path: 'update-profile', component: UpdateProfileComponent, canActivate: [AuthGuard]},
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},
       // tslint:disable-next-line:max-line-length

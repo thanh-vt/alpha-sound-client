@@ -5,6 +5,7 @@ import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {AuthService} from './auth.service';
+import {FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class UserService {
     this.authService.update.subscribe(
       (action) => {
         if (action === 'login') {
-          this.getProfile();
+          this.setProfile();
         } else {
           localStorage.removeItem('user');
           this.currentUserSubject.next(null);
@@ -26,7 +27,7 @@ export class UserService {
     );
   }
 
-  getProfile() {
+  setProfile() {
     this.http.get<User>(`${environment.apiUrl}/profile`).subscribe(
       user => {
         localStorage.setItem('user', JSON.stringify(user));
@@ -34,18 +35,22 @@ export class UserService {
       });
   }
 
+  getProfile(): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/profile`);
+  }
+
   register(formGroup): Observable<HttpEvent<any>> {
     return this.http.post<any>(`${environment.apiUrl}/register`, formGroup);
   }
 
-  uploadAvatar(formData): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/avatar`, formData, {reportProgress: true, observe: 'events'}).pipe(
+  uploadAvatar(formData: FormData): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/upload-avatar`, formData, {reportProgress: true, observe: 'events'}).pipe(
       catchError(this.errorMgmt)
     );
   }
 
-  updateProfile(formGroup, id: number): Observable<HttpEvent<Blob>> {
-    return this.http.put<any>(`${environment.apiUrl}/profile?id=${id}`, formGroup);
+  updateProfile(formGroup): Observable<HttpEvent<any>> {
+    return this.http.put<any>(`${environment.apiUrl}/profile`, formGroup);
   }
 
   errorMgmt(error: HttpErrorResponse) {

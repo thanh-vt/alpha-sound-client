@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
 import {UserToken} from '../../model/userToken';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,14 +13,14 @@ import {UserToken} from '../../model/userToken';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  currentUser: UserToken;
+  currentUser: User;
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
 
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
 
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
-    this.authService.currentUserToken.subscribe(
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, private userService: UserService) {
+    this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }
@@ -37,13 +39,11 @@ export class AdminComponent implements OnInit {
           break;
         }
       }
-      if (hasRoleAdmin) {
-        this.hasNotLoggedInAsAdmin = false;
-      } else {
-        this.authService.logout();
-        this.hasNotLoggedInAsAdmin = true;
-        this.router.navigate(['/admin']);
-      }
+      this.hasNotLoggedInAsAdmin = !hasRoleAdmin;
+    }
+    if (this.hasNotLoggedInAsAdmin) {
+      this.signOut();
+      this.router.navigate(['/admin']);
     }
   }
 

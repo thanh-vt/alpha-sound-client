@@ -3,7 +3,7 @@
 </ng-container>
 <div class="row">
   <ng-container *ngFor="let album of albumList; index as i" >
-    <app-card class="col-3 py-2 text-center">
+    <app-card [type]="1" class="col-3 py-2 text-center">
       <div class="lambda_card-header"><a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a></div>
       <div class="lambda_card-body align-items-center">
         <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"><img [src]="album.coverUrl" alt=""/></a>
