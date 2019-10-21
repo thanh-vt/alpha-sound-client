@@ -10,7 +10,7 @@
   <div formArrayName="artists" class="form-group"
        *ngFor="let artist of artists.controls; let i = index;">
     <div [formGroupName]="i">
-      <mat-form-field class="demo">
+      <mat-form-field floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
         <label for="artistName">{{ 'Artist ' + (i + 1) + ' name' }}
           <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control w-100" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
         </label>

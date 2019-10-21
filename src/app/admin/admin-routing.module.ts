@@ -10,7 +10,7 @@ import {ArtistComponent} from './artist-management/artist/artist.component';
 
 const routes: Routes = [
   {
-    path: 'ad',
+    path: 'admin',
     redirectTo: 'dashboard',
     pathMatch: 'full'
   },

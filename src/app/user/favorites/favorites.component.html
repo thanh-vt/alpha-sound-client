@@ -30,7 +30,7 @@
     <td>
       <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
         <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
-        <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
+<!--        <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>-->
       </app-modal>
     </td>
   </tr>

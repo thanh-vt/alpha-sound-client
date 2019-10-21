@@ -1,9 +1,9 @@
-.mat-input-wrapper{
-  width: 100% !important;
-}
-mat-form-field {
-  width: 100% !important;
-}
+//.mat-input-wrapper{
+//  width: 100% !important;
+//}
+//mat-form-field {
+//  width: 100% !important;
+//}
 //
 //.mat-input-wrapper{
 //  width:400px !important;
@@ -15,3 +15,7 @@ mat-form-field {
 //.mat-input-wrapper{
 //  width:400px !important;
 //}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0 0 0 0 !important;
+  border: 0;
+}

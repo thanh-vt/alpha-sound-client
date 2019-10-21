@@ -71,7 +71,7 @@ export class SongService {
   }
 
   getUserSongList() {
-    return this.http.get<any>(`${environment.apiUrl}/song/uploaded`);
+    return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
   }
 
   getUserFavoriteSongList(page?: number, sort?: string) {
