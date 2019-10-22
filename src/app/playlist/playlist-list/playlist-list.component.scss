@@ -1,7 +1,7 @@
-.clickable {
+tr {
   cursor:pointer;
 }
-.clickable:hover {
+
+tr:nth-child(n + 1):hover {
   background-color: #c7c7c7;
-  color: orangered;
 }

@@ -32,7 +32,8 @@ export class DeletePlaylistSongComponent implements OnInit {
     this.playlistId = +this.route.snapshot.paramMap.get('id');
   }
 
-  open(content) {
+  open(content, event) {
+    event.stopPropagation();
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
       this.message = '';
     }, (reason) => {

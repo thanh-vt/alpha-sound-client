@@ -41,7 +41,9 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
           this.playList = result;
           this.playList.isDisabled = false;
           this.songList = this.playList.songs;
-
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
         }
       }, error => {
         this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
@@ -49,17 +51,21 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  addToPlaying(song: Song) {
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
     this.playingQueueService.addToQueue(song);
   }
 
-  deletePlaylistSong() {
+  refreshPlaylistDetail() {
     this.subscription.add(this.playlistService.getPlayListDetail(this.playlistId).subscribe(
       result => {
         if (result != null) {
           this.playList = result;
           this.playList.isDisabled = false;
           this.songList = this.playList.songs;
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
         } else {
           this.playList = null;
         }
@@ -67,6 +73,17 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
       }
     ));
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {

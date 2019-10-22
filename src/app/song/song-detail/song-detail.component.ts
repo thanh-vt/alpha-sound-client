@@ -31,7 +31,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   commentForm: FormGroup;
   error = false;
   subscription: Subscription = new Subscription();
-  // tslint:disable-next-line:max-line-length
+
   constructor(private fb: FormBuilder, private route: ActivatedRoute,
               private router: Router, private authService: AuthService,
               private songService: SongService, private userService: UserService,

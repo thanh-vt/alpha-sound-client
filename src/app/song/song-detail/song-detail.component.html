@@ -35,7 +35,10 @@
         <h6 class="d-inline">Release Date: </h6><span>{{song.releaseDate | date }}</span><br>
         <h6 class="d-inline">Artist(s): </h6>
         <ul>
-          <li *ngFor="let artist of artistList; index as i"><a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" >{{artist.name}} </a></li>
+          <li *ngFor="let artist of artistList; index as i">
+            <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="">
+            <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" >{{artist.name}}</a>
+          </li>
         </ul>
       </div>
     </div>

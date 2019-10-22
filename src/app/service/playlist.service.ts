@@ -3,6 +3,7 @@ import {environment} from '../../environments/environment';
 import {Playlist} from '../model/playlist';
 import {HttpClient, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {analyticsPackageSafelist} from '@angular/cli/models/analytics';
 
 
 @Injectable({
@@ -25,6 +26,10 @@ export class PlaylistService {
     return this.http.get<any>(`${environment.apiUrl}/playlist/list-to-add?song-id=${songId}`);
   }
 
+  editPlaylist(formGroup, playlistId: number) {
+    return this.http.put<any>(`${environment.apiUrl}/playlist/edit?id=${playlistId}`, formGroup);
+  }
+
   deletePlaylist(id: number): Observable<HttpEvent<any>> {
     return this.http.delete<any>(`${environment.apiUrl}/playlist/delete?id=${id}`);
   }
@@ -36,6 +41,4 @@ export class PlaylistService {
   addSongToPlaylist(songId: number, playlistId): Observable<void> {
     return this.http.post<any>(`${environment.apiUrl}/playlist/add-song?song-id=${songId}&playlist-id=${playlistId}`, {});
   }
-
-  // deleteSongFromPlaylist()
 }

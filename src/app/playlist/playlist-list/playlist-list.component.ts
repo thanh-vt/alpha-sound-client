@@ -11,10 +11,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class PlaylistListComponent implements OnInit, OnDestroy {
   loading = false;
   error = false;
-  createPlaylistForm: FormGroup;
-   message: string;
-   subscription: Subscription = new Subscription();
-   playlistList: Playlist[] = [];
+  message: string;
+  subscription: Subscription = new Subscription();
+  playlistList: Playlist[] = [];
   constructor(private playlistService: PlaylistService, private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -47,7 +46,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     ));
   }
 
-  deletePlaylist() {
+  refreshPlaylistList() {
     this.subscription.add(this.playlistService.getPlaylistList().subscribe(
       result => {
         if (result != null) {

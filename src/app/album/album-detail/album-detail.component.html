@@ -3,7 +3,7 @@
 </ng-container>
 <ng-container *ngIf="album">
   <app-card [type]="2" [showEditButton]="false" [title]="'Album Info'" [imgSrc]="album.coverUrl">
-      <div class="lambda_card-text">
+      <div class="lambda_card-text_2">
         <button class="btn btn-primary float-right" [disabled]="album.isDisabled" (click)="addAllToPlaying($event)"><i class="fas fa-play-circle"></i></button>
         <h6 class="d-inline">Title: </h6><span class="text-secondary">{{album.title}}</span><br>
         <h6 class="d-inline">Release Date: </h6><span class="text-secondary">{{album.releaseDate | date}}</span><br>

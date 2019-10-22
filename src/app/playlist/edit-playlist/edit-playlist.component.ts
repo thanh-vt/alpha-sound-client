@@ -1,39 +1,41 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {PlaylistService} from '../../service/playlist.service';
-import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-delete-playlist',
-  templateUrl: './delete-playlist.component.html',
-  styleUrls: ['./delete-playlist.component.scss']
+  selector: 'app-edit-playlist',
+  templateUrl: './edit-playlist.component.html',
+  styleUrls: ['./edit-playlist.component.scss']
 })
-export class DeletePlaylistComponent implements OnInit, OnDestroy {
+export class EditPlaylistComponent implements OnInit, OnDestroy {
   @Input() id: number;
   @Input() playlistName: string;
-  deleted: boolean;
+  playlistEditForm: FormGroup;
   loading = false;
   error = false;
   message: string;
+  @Output() editPlaylist = new EventEmitter();
   subscription: Subscription = new Subscription();
-
-  @Output() deletePlaylist = new EventEmitter();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private playlistService: PlaylistService) {}
 
   ngOnInit(): void {
-    this.deleted = false;
+    this.playlistEditForm = this.fb.group({
+        title: [this.playlistName, Validators.required],
+      }
+    );
   }
 
   open(content, event) {
     event.stopPropagation();
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
     }, (reason) => {
-      this.deletePlaylist.emit();
+      this.editPlaylist.emit();
       this.message = '';
       console.log(this.getDismissReason(reason));
     });
@@ -50,10 +52,9 @@ export class DeletePlaylistComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.subscription.add(this.playlistService.deletePlaylist(this.id).subscribe(
+    this.subscription.add(this.playlistService.editPlaylist(this.playlistEditForm.value, this.id).subscribe(
       () => {
         this.error = false;
-        this.deleted = true;
         this.message = 'Playlist deleted successfully!';
       },
       error => {

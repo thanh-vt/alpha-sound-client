@@ -4,13 +4,17 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col" id="name">Title</th>
+    <th scope="col"></th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let playlist of playlistList; index as i">
+  <tr [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}" *ngFor="let playlist of playlistList; index as i">
     <td>{{ i + 1 }}</td>
-    <td class="clickable" [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}">{{ playlist.title }}</td>
-    <td><app-delete-playlist [id]="playlist.id" [playlistName]="playlist.title" (deletePlaylist)="deletePlaylist()"></app-delete-playlist></td>
+    <td><a [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}">{{ playlist.title }}</a></td>
+    <td class="text-center">
+      <app-delete-playlist [id]="playlist.id" [playlistName]="playlist.title" (deletePlaylist)="refreshPlaylistList()"></app-delete-playlist>
+      <app-edit-playlist [id]="playlist.id" [playlistName]="playlist.title" (editPlaylist)="refreshPlaylistList()"></app-edit-playlist>
+    </td>
   </tr>
   </tbody>
 </table>
