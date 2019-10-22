@@ -1,20 +1,17 @@
-<form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()" *ngIf="song">
   <div class="form-group">
     <label for="songTitle">Song Title</label>
-    <input [value]="" type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
-    <div class="alert alert-danger" role="alert"
-         *ngIf="songUpdateForm.get('title').hasError('required') && songUpdateForm.get('title').touched">
+    <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
+    <div class="alert alert-danger" role="alert" *ngIf="songUpdateForm.get('title').hasError('required') && songUpdateForm.get('title').touched">
       Must be filled!
     </div>
   </div>
-
-
   <div formArrayName="artists" class="form-group"
        *ngFor="let artist of artists.controls; let i = index;">
     <div [formGroupName]="i">
       <mat-form-field>
         <label for="artistName">{{ 'Artist ' + (i + 1) + ' name' }}
-          <input matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text"
+          <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text"
                  [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
         </label>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -34,7 +31,6 @@
       <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
       </button>
     </div>
-
   </div>
 
   <div class="form-group">
@@ -47,20 +43,14 @@
   </div>
   <label for="audio">Audio File</label>
   <div class="form-group custom-file">
-
     <label class="custom-file-label" *ngIf=!isAudioFileChosen>Choose file</label>
     <label class="custom-file-label" *ngIf=isAudioFileChosen>{{ audioFileName }}</label>
     <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)">
   </div>
-
-
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary my-2">Submit</button>
   <div class="progress form-group" *ngIf="progress.value > 0">
     <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
     </div>
   </div>
-  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-       [class.alert-success]="!error">{{message}}
-  </div>
-
+  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error" [class.alert-success]="!error">{{message}}</div>
 </form>

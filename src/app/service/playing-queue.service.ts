@@ -11,8 +11,8 @@ import {SongService} from './song.service';
 export class PlayingQueueService {
   currentQueueSubject: BehaviorSubject<Track[]>;
   currentQueue: Observable<Track[]>;
-  update = new EventEmitter();
   queue: Track[];
+  update = new EventEmitter();
   subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient, private songService: SongService) {
@@ -22,23 +22,30 @@ export class PlayingQueueService {
       }];
     this.currentQueueSubject = new BehaviorSubject<Track[]>(this.queue);
     this.currentQueue = this.currentQueueSubject.asObservable();
-
   }
 
   public get currentQueueValue(): Track[] {
     return this.currentQueueSubject.value;
   }
 
-  addToQueue(track: Track, songId?: number) {
+  addToQueue(song: Song) {
+    song.isDisabled = true;
+    const track = {
+      title: song.title,
+      link: song.url
+    };
     if (this.queue[0].link === '') {
       this.queue[0] = track;
       this.currentQueueSubject.next(this.queue);
       this.update.emit();
+      this.subscription.add(this.songService.listenToSong(song.id).subscribe(
+        () => { },
+        error => { console.log(error); },
+      ));
     } else {
       let isExistence = false;
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.queue.length; i++) {
-        if (this.queue[i].link === track.link) {
+      for (const trackInQueue of this.queue) {
+        if (trackInQueue.link === track.link) {
           isExistence = true;
           break;
         }
@@ -47,16 +54,11 @@ export class PlayingQueueService {
         this.queue.push(track);
         this.currentQueueSubject.next(this.queue);
         this.update.emit();
-        this.subscription.add(this.songService.listenToSong(songId).subscribe(
-          () => {}
+        this.subscription.add(this.songService.listenToSong(song.id).subscribe(
+          () => { },
+          error => { console.log(error); },
         ));
       }
     }
-  }
-
-
-  emitChange(song: Song) {
-    // this.songService.listenToSong(song.id);
-    // this.emitChangeSource.next(song);
   }
 }

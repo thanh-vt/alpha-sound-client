@@ -22,7 +22,7 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   currentUser: User;
   album: Album;
   albumId: number;
-  songList: Song[];
+  songList: Song[] = [];
   playlistList: Playlist[];
   loading: boolean;
   message: string;
@@ -48,6 +48,9 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
           result => {
             this.album = result;
             this.songList = result.songs;
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
+            }
           }, error => {
             this.message = 'Cannot retrieve album detail. Cause: ' + error.message;
           }, () => {
@@ -63,22 +66,15 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  addToPlaying(song: Song) {
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.playingQueueService.addToQueue({
-          title: song.title,
-          link: song.url
-        });
-        song.isDisabled = true;
-      }
-    ));
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
+    this.playingQueueService.addToQueue(song);
   }
 
-  addAllToPlaying() {
+  addAllToPlaying(event) {
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.album.songs.length; i++) {
-      this.addToPlaying(this.album.songs[i]);
+      this.addToPlaying(this.album.songs[i], event);
     }
     this.album.isDisabled = true;
   }
@@ -93,15 +89,40 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(song: Song) {
+  likeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
           result => {
             this.album = result;
+            this.songList = result.songs;
           }, error => {
             console.log(error);
+          }, () => {
+            song.loadingLikeButton = false;
+      }
+        ));
+      }, error => {
+        console.log(error);
+      }
+    ));
+  }
+
+  unlikeSong(song: Song, event) {
+    event.stopPropagation();
+    song.loadingLikeButton = true;
+    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
+      () => {
+        this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
+          result => {
+            this.album = result;
+            this.songList = result.songs;
+          }, error => {
+            console.log(error);
+          }, () => {
+            song.loadingLikeButton = false;
           }
         ));
       }, error => {
@@ -110,21 +131,15 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(song: Song) {
-    song.loadingLikeButton = true;
-    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
-          result => {
-            this.album = result;
-          }, error => {
-            console.log(error);
-          }, () => {
-            song.loadingLikeButton = false;
-          }
-        ));
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
       }
-    ));
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {

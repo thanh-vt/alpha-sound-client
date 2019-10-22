@@ -67,17 +67,7 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   }
 
   addToPlaying(song) {
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.playingQueueService.addToQueue({
-          title: song.title,
-          link: song.url
-        });
-      }, error => {
-        song.disabled = true;
-        console.log(error);
-      }
-    ));
+    this.playingQueueService.addToQueue(song)
   }
 
   addAllToPlaying(albumId: number) {

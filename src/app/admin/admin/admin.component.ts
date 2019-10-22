@@ -52,8 +52,8 @@ export class AdminComponent implements OnInit {
     this.authService.logout();
   }
 
-  popLoginFormUp() {
-    this.loginModal.open(this.loginModal.content);
+  popLoginFormUp(event) {
+    this.loginModal.open(this.loginModal.content, event);
   }
 
 }

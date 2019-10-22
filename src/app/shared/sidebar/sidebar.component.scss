@@ -4,3 +4,11 @@ img{
   vertical-align: middle;
   border: 0.1rem solid black;
 }
+
+li, a {
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #c7c7c7;
+}

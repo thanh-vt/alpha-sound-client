@@ -54,10 +54,21 @@ export class EditSongComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:max-line-length
-  constructor(private route: ActivatedRoute, private songService: SongService, private fb: FormBuilder, private artistService: ArtistService) {
+  constructor(private route: ActivatedRoute, private songService: SongService,
+              private fb: FormBuilder, private artistService: ArtistService) {
   }
 
   ngOnInit() {
+    this.songUpdateForm = this.fb.group({
+      title: ['', Validators.required],
+      artists: this.fb.array([EditSongComponent.createArtist()]),
+      releaseDate: [''],
+      album: [null],
+      genres: [null],
+      tags: [null],
+      country: [null],
+      theme: [null]
+    });
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.songId = params.id;
@@ -74,9 +85,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
               country: [null],
               theme: [null]
             });
-            for (let i = 0; i < result.artists.length; i++) {
-              this.songUpdateForm.get('artists').setValue(result.artists);
-            }
+            this.songUpdateForm.get('artists').setValue(result.artists);
             for (let i = 0; i < this.artists.length; i++) {
               this.artists.controls[i].valueChanges
                 .pipe(
@@ -152,11 +161,24 @@ export class EditSongComponent implements OnInit, OnDestroy {
     ));
   }
 
+  suggestArtist(i) {
+    this.subscription.add(this.artists.controls[i].valueChanges
+      .pipe(
+        debounceTime(300),
+        tap(() => this.isLoading = true),
+        switchMap(value => this.artistService.searchArtist((typeof value === 'string') ? value : '')
+          .pipe(
+            finalize(() => this.isLoading = false),
+          )
+        )
+      ).subscribe(artists => this.filteredArtists = artists));
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
   navigate() {
-    location.replace('/uploaded/list');
+    location.replace('/uploaded');
   }
 }

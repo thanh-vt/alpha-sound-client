@@ -65,6 +65,9 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
                   for (let i = 0; i < result1.content.length; i++) {
                     this.songList.push(result1.content[i]);
                   }
+                  for (const song of this.songList) {
+                    this.checkDisabledSong(song);
+                  }
                 }
               }, error => {
                 this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
@@ -97,6 +100,9 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
             this.songList.forEach((value, index) => {
               this.songList[index].isDisabled = false;
             });
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
+            }
             this.first = result.first;
             this.last = result.last;
             this.pageNumber = result.pageable.pageNumber;
@@ -113,12 +119,9 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToPlaying(song: Song) {
-    this.playingQueueService.addToQueue({
-      title: song.title,
-      link: song.url
-    });
-    song.isDisabled = true;
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
+    this.playingQueueService.addToQueue(song);
   }
 
   refreshPlaylistList(songId: number) {
@@ -144,7 +147,8 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(song: Song, index: number) {
+  likeSong(song: Song, index: number, event) {
+    event.stopPropagation();
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.refreshSong(song, index));
@@ -154,7 +158,8 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(song: Song, index: number) {
+  unlikeSong(song: Song, index: number, event) {
+    event.stopPropagation();
     this.songService.unlikeSong(song.id).subscribe(
       () => {
         this.subscription.add(this.refreshSong(song, index));
@@ -162,6 +167,17 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
         console.log(error);
       }
     );
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {

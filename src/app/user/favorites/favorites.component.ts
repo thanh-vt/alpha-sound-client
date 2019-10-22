@@ -49,11 +49,9 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     this.goToPage(this.pageNumber, true);
   }
 
-  addToPlaying(song) {
-    this.playingQueueService.addToQueue({
-      title: song.title,
-      link: song.url
-    }, song.id);
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
+    this.playingQueueService.addToQueue(song);
   }
 
   goToPage(i: number, scroll?: boolean) {
@@ -73,6 +71,9 @@ export class FavoritesComponent implements OnInit, OnDestroy {
           this.pages = new Array(result.totalPages);
           for (let j = 0; j < this.pages.length; j++) {
             this.pages[j] = {pageNumber: j};
+          }
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
           }
         } else {
           this.songList = [];
@@ -95,7 +96,8 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(song: Song) {
+  likeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
@@ -108,7 +110,8 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(song: Song) {
+  unlikeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.songService.unlikeSong(song.id).subscribe(
       () => {
@@ -119,6 +122,17 @@ export class FavoritesComponent implements OnInit, OnDestroy {
         song.loadingLikeButton = false;
       }
     );
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {

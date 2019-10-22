@@ -83,16 +83,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  addToPlaying(song: Song) {
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.playingQueueService.addToQueue({
-          title: song.title,
-          link: song.url
-        });
-        song.isDisabled = true;
-      }
-    ));
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
+    this.playingQueueService.addToQueue(song);
   }
 
   refreshPlaylistList(song: Song) {
@@ -105,7 +98,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(song: Song) {
+  likeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
@@ -124,7 +118,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(song: Song) {
+  unlikeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
       () => {

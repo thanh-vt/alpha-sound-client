@@ -4,7 +4,7 @@
 <ng-container *ngIf="currentUser">
   <app-card [type]="2" [imgSrc]="currentUser.avatarUrl" [title]="'Profile'" [showEditButton]="true" (showEditForm)="showEditForm=!showEditForm">
     <span class="lambda_card-button"><i class="fas fa-user-edit"></i></span>
-    <div class="lambda_card-text">
+    <div class="lambda_card-text_2">
       <h6 class="d-inline">Name: </h6><span class="text-secondary">{{currentUser.username}}</span><br>
       <h6 class="d-inline">First Name: </h6><span class="text-secondary">{{currentUser.firstName}}</span><br>
       <h6 class="d-inline">Last Name: </h6><span class="text-secondary">{{currentUser.lastName}}</span><br>
@@ -18,5 +18,7 @@
   </app-card>
 </ng-container>
 <ng-container *ngIf="showEditForm">
-  <app-update-profile></app-update-profile>
+  <app-card [type]="3" [title]="'Edit Profile'">
+    <app-update-profile class="lambda_card-text_3"></app-update-profile>
+  </app-card>
 </ng-container>

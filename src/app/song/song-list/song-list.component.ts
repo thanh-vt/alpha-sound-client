@@ -29,18 +29,14 @@ export class SongListComponent implements OnInit, OnDestroy {
   playlistList: Playlist[] = [];
   loading: boolean;
   subscription: Subscription = new Subscription();
+
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
-  // tslint:disable-next-line:max-line-length
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, private playlistService: PlaylistService, private userService: UserService) {
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
+              private playlistService: PlaylistService, private userService: UserService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
-      }
-    );
-    this.playingQueueService.update.subscribe(
-      () => {
-        this.goToPage(this.pageNumber);
       }
     );
   }
@@ -48,18 +44,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.goToPage(this.pageNumber, true);
-  }
-
-  addToPlaying(song: Song) {
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.playingQueueService.addToQueue({
-          title: song.title,
-          link: song.url
-        });
-        song.isDisabled = true;
-      }
-    ));
   }
 
   goToPage(i: number, scrollUp?: boolean) {
@@ -79,6 +63,9 @@ export class SongListComponent implements OnInit, OnDestroy {
           for (let j = 0; j < this.pages.length; j++) {
             this.pages[j] = {pageNumber: j};
           }
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
         }
       }, error => {
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
@@ -93,6 +80,11 @@ export class SongListComponent implements OnInit, OnDestroy {
     ));
   }
 
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
+    this.playingQueueService.addToQueue(song);
+  }
+
   refreshPlaylistList(songId) {
     this.subscription.add(this.playlistService.getPlaylistListToAdd(songId).subscribe(
       result => {
@@ -103,7 +95,8 @@ export class SongListComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(song: Song) {
+  likeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
@@ -114,7 +107,8 @@ export class SongListComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(song: Song) {
+  unlikeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
       () => {
@@ -123,6 +117,17 @@ export class SongListComponent implements OnInit, OnDestroy {
         console.log(error);
       }
     ));
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {

@@ -59,16 +59,9 @@ export class NewSongComponent implements OnInit, OnDestroy {
     return ++this.imageOrder;
   }
 
-  addToPlaying(song: Song) {
-    this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-      () => {
-        this.playingQueueService.addToQueue({
-          title: song.title,
-          link: song.url
-        });
-        song.isDisabled = true;
-      }
-    ));
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
+    this.playingQueueService.addToQueue(song);
   }
 
   goToPage(i: number, scrollUp?: boolean) {
@@ -87,6 +80,9 @@ export class NewSongComponent implements OnInit, OnDestroy {
           this.pages = new Array(result.totalPages);
           for (let j = 0; j < this.pages.length; j++) {
             this.pages[j] = {pageNumber: j};
+          }
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
           }
         }
       }, error => {
@@ -112,7 +108,8 @@ export class NewSongComponent implements OnInit, OnDestroy {
     ));
   }
 
-  likeSong(song: Song) {
+  likeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.likeSong(song.id).subscribe(
       () => {
@@ -123,7 +120,8 @@ export class NewSongComponent implements OnInit, OnDestroy {
     ));
   }
 
-  unlikeSong(song: Song) {
+  unlikeSong(song: Song, event) {
+    event.stopPropagation();
     song.loadingLikeButton = true;
     this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
       () => {
@@ -132,6 +130,17 @@ export class NewSongComponent implements OnInit, OnDestroy {
         console.log(error);
       }
     ));
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   togglePaused() {

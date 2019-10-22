@@ -50,12 +50,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   }
 
   addToPlaying(song: Song) {
-    song.isDisabled = true;
-    const track: Track = {
-      title: song.title,
-      link: song.url
-    };
-    this.playingQueueService.addToQueue(track);
+    this.playingQueueService.addToQueue(song);
   }
 
   deletePlaylistSong() {

@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   addToPlaying(song) {
     song.isDisabled = true;
-    this.playingQueueService.emitChange(song);
+    this.playingQueueService.addToQueue(song);
   }
 
   goToPage() {

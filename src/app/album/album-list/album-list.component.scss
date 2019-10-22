@@ -30,7 +30,15 @@ button {
   border: 0;
 }
 
-a {
+.card-body {
+  height: 18rem;
+}
+
+app-card, a {
   cursor: pointer;
+}
+
+app-card:nth-child(n):hover {
+  background-color: #c7c7c7;
 }
 

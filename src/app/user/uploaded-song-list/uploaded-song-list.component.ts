@@ -20,13 +20,14 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   pages: Page[] = [];
   message: string;
   songList: Song[];
-  isDisable: boolean;
+  loading: boolean;
   subscription: Subscription = new Subscription();
   @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.subscription.add(this.songService.getUserSongList().subscribe(
       result => {
         if (result != null) {
@@ -34,17 +35,33 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
           });
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
         }
       }, error => {
-        this.isDisable = true;
         this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+      }, () => {
+        this.loading = false;
       }
     ));
   }
 
-  addToPlaying(song) {
+  addToPlaying(song: Song, event) {
+    event.stopPropagation();
     song.isDisabled = true;
-    this.playingQueueService.emitChange(song);
+    this.playingQueueService.addToQueue(song);
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {

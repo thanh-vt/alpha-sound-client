@@ -1,18 +1,18 @@
 <div *ngIf="type === 1" class="card">
   <div class="card-header">
-    <ng-content select=".lambda_card-header"></ng-content>
-    <ng-content select=".lambda_card-title"></ng-content>
-    <div class="card-subtitle mb-2 text-muted">
-      <ng-content select=".card-subtitle"></ng-content>
+    <ng-content select=".lambda_card-header_1"></ng-content>
+    <ng-content select=".lambda_card-title_1"></ng-content>
+    <div class="card-subtitle mb-2 text-muted_1">
+      <ng-content select=".card-subtitle_1"></ng-content>
     </div>
   </div>
   <div class="card-body">
-    <ng-content select=".lambda_card-body"></ng-content>
-    <ng-content select=".card-text"></ng-content>
-    <ng-content select=".card-link"></ng-content>
+    <ng-content select=".lambda_card-body_1"></ng-content>
+    <ng-content select=".lambda_card-text_1"></ng-content>
+    <ng-content select=".lambda_card-link_1"></ng-content>
   </div>
   <div class="card-footer">
-    <ng-content select=".lambda_card-footer"></ng-content>
+    <ng-content select=".lambda_card-footer_1"></ng-content>
   </div>
 </div>
 <div *ngIf="type === 2" class="card mb-3 w-100">
@@ -23,10 +23,23 @@
     <div class="col-md-8">
       <div class="card-body">
         <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary float-right"><ng-content select=".lambda_card-button"></ng-content></button>
-        <h3 class="card-title text-center ">{{ title }}</h3>
-        <p class="card-text"><ng-content select=".lambda_card-text"></ng-content></p>
-        <p class="card-text"><small class="text-muted"><ng-content select=".lambda_card-text-muted"></ng-content></small></p>
+        <h3 class="card-title text-center">{{ title }}</h3>
+        <div class="card-text"><ng-content select=".lambda_card-text_2"></ng-content></div>
+        <small class="text-muted"><ng-content select=".lambda_card-text-muted_2"></ng-content></small>
       </div>
     </div>
+  </div>
+</div>
+<div *ngIf="type === 3" class="card w-100">
+  <div class="card-header text-center">
+    <h3>{{ title }}</h3>
+    <div class="card-subtitle mb-2 text-muted">
+      <ng-content select=".lambda_card-subtitle_3"></ng-content>
+    </div>
+  </div>
+  <div class="card-body">
+    <ng-content select=".lambda_card-body_3"></ng-content>
+    <ng-content select=".lambda_card-text_3"></ng-content>
+    <ng-content select=".lambda_card-link_3"></ng-content>
   </div>
 </div>

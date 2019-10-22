@@ -58,7 +58,8 @@ export class ModalComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  open(content) {
+  open(content, event) {
+    event.stopPropagation();
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true}).result.then(() => {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

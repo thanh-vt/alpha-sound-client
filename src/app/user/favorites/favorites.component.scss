@@ -3,6 +3,10 @@
   background-color: #0055aa;
 }
 
-a {
+tr, a {
   cursor: pointer;
+}
+
+tr:nth-child(n):hover {
+  background-color: #c7c7c7;
 }

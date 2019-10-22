@@ -259,8 +259,4 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
     this.subscription.unsubscribe();
   }
 
-  log() {
-    console.log(this.getSongArtists);
-  }
-
 }
