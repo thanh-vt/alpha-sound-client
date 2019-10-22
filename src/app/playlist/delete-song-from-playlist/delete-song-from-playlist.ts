@@ -9,10 +9,10 @@ import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-delete-playlist-song',
-  templateUrl: './delete-playlist-song.component.html',
-  styleUrls: ['./delete-playlist-song.component.scss']
+  templateUrl: './delete-song-from-playlist.html',
+  styleUrls: ['./delete-song-from-playlist.scss']
 })
-export class DeletePlaylistSongComponent implements OnInit {
+export class DeleteSongFromPlaylistComponent implements OnInit {
   @Input() songId: number;
   @Input() playlistId: number;
   @Input() name: string;
