@@ -20,7 +20,7 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
   styleUrls: ['./song-detail.component.scss']
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
-  @Input() song: Song;
+  song: Song;
   currentUser: User;
   message: string;
   loading: boolean;
@@ -57,6 +57,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.song = result;
             this.artistList = this.song.artists;
             this.commentList = this.song.comments;
+            this.checkDisabledSong(this.song);
           }, error => {
             this.message = 'Cannot retrieve Song . Cause: ' + error.message;
           }, () => {
@@ -136,6 +137,17 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         song.loadingLikeButton = false;
       }
     ));
+  }
+
+  checkDisabledSong(song: Song) {
+    let isDisabled = false;
+    for (const track of this.playingQueueService.currentQueueSubject.value) {
+      if (song.url === track.link) {
+        isDisabled = true;
+        break;
+      }
+    }
+    song.isDisabled = isDisabled;
   }
 
   ngOnDestroy(): void {
