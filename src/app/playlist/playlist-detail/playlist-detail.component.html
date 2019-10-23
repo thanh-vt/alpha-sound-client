@@ -16,7 +16,7 @@
       <button (click)="addToPlaying(song, $event)" class="btn btn-primary" [disabled]="song.isDisabled">
         <i class="fas fa-play-circle"></i>
       </button>
-      <app-delete-playlist-song [songId]="song.id" [name]="song.title" (deleteSongPlaylist)="refreshPlaylistDetail()"></app-delete-playlist-song>
+      <app-delete-playlist-song [playlistId]="playlistId" [songId]="song.id" [name]="song.title" (deleteSongPlaylist)="refreshPlaylistDetail()"></app-delete-playlist-song>
     </td>
   </tr>
   </tbody>
