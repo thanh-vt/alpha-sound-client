@@ -52,7 +52,7 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/detail?id=${id}`);
   }
 
-  deletePlaylistSong(songId: number, playlistId: number): Observable<HttpEvent<any>> {
+  deleteSongFromPlaylist(songId: number, playlistId: number): Observable<HttpEvent<any>> {
     return this.http.put<any>
     (`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {responseType: 'text'});
   }

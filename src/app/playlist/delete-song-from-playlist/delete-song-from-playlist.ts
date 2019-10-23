@@ -29,7 +29,6 @@ export class DeleteSongFromPlaylistComponent implements OnInit {
 
   ngOnInit(): void {
     this.deleted = false;
-    this.playlistId = +this.route.snapshot.paramMap.get('id');
   }
 
   open(content, event) {
@@ -53,12 +52,12 @@ export class DeleteSongFromPlaylistComponent implements OnInit {
   }
 
   onSubmit() {
-    this.songService.deletePlaylistSong(this.songId, this.playlistId).subscribe(
+    this.songService.deleteSongFromPlaylist(this.songId, this.playlistId).subscribe(
       result => {
         this.error = false;
         this.deleted = true;
         this.message = 'Song Playlist deleted successfully!';
-        this.router.navigateByUrl(`/playlist/detail/${this.playlistId}`);
+        this.router.navigate(['/playlist/detail'], { queryParams: {id: this.playlistId}});
       },
       error => {
         this.error = true;
