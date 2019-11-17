@@ -3,6 +3,7 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-song-to-playlist',
@@ -17,7 +18,7 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
   message: string;
   subscription: Subscription = new Subscription();
 
-  constructor(private modalService: NgbModal, private playlistService: PlaylistService) {}
+  constructor(private modalService: NgbModal, private playlistService: PlaylistService, private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(

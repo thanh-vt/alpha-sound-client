@@ -17,13 +17,13 @@
 <nav>
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" *ngIf="!first" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">Previous</a>
+      <a class="page-link" *ngIf="!first" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true">{{ 'Previous' | translate}}</a>
     </li>
     <li *ngFor="let page of pages" class="page-item">
       <a class="page-link" [class.active]="page.pageNumber === pageNumber" (click)="goToPage(page.pageNumber)" tabindex="-1" aria-disabled="true">{{ page.pageNumber + 1 }}</a>
     </li>
     <li class="page-item">
-      <a class="page-link" *ngIf="!last" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">Next</a>
+      <a class="page-link" *ngIf="!last" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">{{ 'Next' | translate }}</a>
     </li>
   </ul>
 </nav>

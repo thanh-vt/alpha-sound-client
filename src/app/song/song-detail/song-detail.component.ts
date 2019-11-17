@@ -12,6 +12,7 @@ import {UserService} from '../../service/user.service';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private route: ActivatedRoute,
               private router: Router, private authService: AuthService,
               private songService: SongService, private userService: UserService,
-              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService) {
+              // tslint:disable-next-line:max-line-length
+              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, private translate: TranslateService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

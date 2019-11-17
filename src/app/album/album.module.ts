@@ -13,6 +13,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule} from '@angular/material';
 import {SharedModule} from '../shared/shared.module';
 import {PlaylistModule} from '../playlist/playlist.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {PlaylistModule} from '../playlist/playlist.module';
     MatInputModule,
     MatProgressSpinnerModule,
     SharedModule,
-    PlaylistModule
+    PlaylistModule,
+    TranslateModule
   ]
 })
 export class AlbumModule { }

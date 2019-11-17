@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {UserService} from '../../service/user.service';
 
 @Component({
@@ -45,7 +44,7 @@ export class RegisterComponent implements OnInit {
     this.userService.register(this.registerForm.value).subscribe(
       () => {
         this.error = false;
-        this.message = 'User created successfully!';
+        this.message = 'User registered successfully!';
         const navigation = setInterval(() => {
           this.navigate();
           clearTimeout(navigation);

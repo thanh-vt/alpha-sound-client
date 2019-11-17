@@ -10,6 +10,7 @@ import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add
 import { ModalComponent } from './modal/modal.component';
 import { CardComponent } from './card/card.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent],
@@ -18,6 +19,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     NgbModule,
     RouterModule,
     ReactiveFormsModule,
+    TranslateModule,
   ],
   exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent]
 })

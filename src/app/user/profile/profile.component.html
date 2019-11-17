@@ -2,14 +2,14 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="currentUser">
-  <app-card [type]="2" [imgSrc]="currentUser.avatarUrl" [title]="'Profile'" [showEditButton]="true" (showEditForm)="showEditForm=!showEditForm">
+  <app-card [type]="2" [imgSrc]="currentUser.avatarUrl" [title]="'Profile' | translate" [showEditButton]="true" (showEditForm)="showEditForm=!showEditForm">
     <span class="lambda_card-button"><i class="fas fa-user-edit"></i></span>
     <div class="lambda_card-text_2">
-      <h6 class="d-inline">Name: </h6><span class="text-secondary">{{currentUser.username}}</span><br>
-      <h6 class="d-inline">First Name: </h6><span class="text-secondary">{{currentUser.firstName}}</span><br>
-      <h6 class="d-inline">Last Name: </h6><span class="text-secondary">{{currentUser.lastName}}</span><br>
-      <h6 class="d-inline">Date of Birth: </h6><span class="text-secondary">{{currentUser.birthDate | date}}</span><br>
-      <h6 class="d-inline">Gender: </h6>
+      <h6 class="d-inline">{{ 'Username' | translate }}: </h6><span class="text-secondary">{{currentUser.username}}</span><br>
+      <h6 class="d-inline">{{ 'First Name' | translate }}: </h6><span class="text-secondary">{{currentUser.firstName}}</span><br>
+      <h6 class="d-inline">{{ 'Last Name' | translate }}: </h6><span class="text-secondary">{{currentUser.lastName}}</span><br>
+      <h6 class="d-inline">{{ 'BirthDate' | translate }}: </h6><span class="text-secondary">{{currentUser.birthDate | date: 'fullDate' : '' : translate.currentLang}}</span><br>
+      <h6 class="d-inline">{{ 'Gender' | translate }}: </h6>
       <span *ngIf="currentUser.gender"><i class="fas fa-mars text-primary fa-1x"></i></span>
       <span *ngIf="!currentUser.gender"><i class="fas fa-venus fa-1x" style="color: hotpink"></i></span>
       <br>
@@ -18,7 +18,7 @@
   </app-card>
 </ng-container>
 <ng-container *ngIf="showEditForm">
-  <app-card [type]="3" [title]="'Edit Profile'">
+  <app-card [type]="3" [title]="'Edit Profile' | translate">
     <app-update-profile class="lambda_card-text_3"></app-update-profile>
   </app-card>
 </ng-container>

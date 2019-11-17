@@ -9,3 +9,10 @@ tr, a {
 tr:nth-child(n):hover {
   background-color: #c7c7c7;
 }
+
+img {
+  border: 0.1rem solid black;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+}

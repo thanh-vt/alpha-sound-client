@@ -2,8 +2,8 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Title</th>
-    <th scope="col">Release Date</th>
+    <th scope="col">{{ 'Title' | translate }}</th>
+    <th scope="col">{{ 'Release Date' | translate }}</th>
     <th scope="col"></th>
   </tr>
   </thead>
@@ -11,7 +11,7 @@
   <tr [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
     <th scope="row">{{ i + 1 }}</th>
     <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
-    <td>{{ song.releaseDate | date }}</td>
+    <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
     <td>
       <button (click)="addToPlaying(song, $event)" class="btn btn-primary" [disabled]="song.isDisabled">
         <i class="fas fa-play-circle"></i>

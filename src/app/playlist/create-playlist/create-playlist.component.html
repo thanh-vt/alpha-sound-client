@@ -1,27 +1,26 @@
 <ng-template #content let-modal>
   <form [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Create playlist</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <h4 class="modal-title" id="modal-basic-title">{{ 'Create playlist' | translate }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); message = ''">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="playlist">Playlist Title</label>
+        <label for="playlist">{{ 'Title' | translate }}</label>
         <div class="input-group">
           <input id="playlist" class="form-control" placeholder="Enter playlist title" formControlName="title">
         </div>
       </div>
-      <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-success]="!error" [class.alert-danger]="error">{{message}}</div>
+      <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-success]="!error" [class.alert-danger]="error">{{ message | translate }}</div>
     </div>
     <div class="modal-footer">
       <button [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')" class="btn btn-primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Save
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Save' | translate }}
       </button>
     </div>
   </form>
 </ng-template>
 
-<button class="btn btn-lg btn-primary my-3" (click)="open(content)">Create new playlist</button>
+<button class="btn btn-lg btn-primary my-3" (click)="open(content)">{{ 'Create new playlist' | translate}}</button>

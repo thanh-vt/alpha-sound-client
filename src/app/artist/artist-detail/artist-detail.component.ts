@@ -13,6 +13,7 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {UserService} from '../../service/user.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-artist-detail',
@@ -39,7 +40,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private artistService: ArtistService,
               private songService: SongService, private playlistService: PlaylistService,
-              private playingQueueService: PlayingQueueService, private userService: UserService) {
+              private playingQueueService: PlayingQueueService, private userService: UserService, private translate: TranslateService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

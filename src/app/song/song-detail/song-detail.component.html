@@ -2,11 +2,11 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="song">
-  <h4>Song Info</h4>
+  <h4>{{ 'Song Info' | translate }}</h4>
   <div>
     <div class="card">
       <div class="card-body">
-        <h6 class="d-inline">Title: </h6><span>{{song.title}}</span>
+        <h6 class="d-inline">{{ 'Title' | translate }}: </h6><span>{{song.title}}</span>
         <div class="d-inline-block float-right mx-1">
           <ng-container *ngIf="!!currentUser">
             <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
@@ -32,8 +32,8 @@
             </button>
           </ng-container>
         </div><br>
-        <h6 class="d-inline">Release Date: </h6><span>{{song.releaseDate | date }}</span><br>
-        <h6 class="d-inline">Artist(s): </h6>
+        <h6 class="d-inline">{{ 'Release Date' | translate }}: </h6><span>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</span><br>
+        <h6 class="d-inline">{{ 'Artist(s)' | translate }}: </h6>
         <ul>
           <li *ngFor="let artist of artistList; index as i">
             <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="">
@@ -42,13 +42,13 @@
         </ul>
       </div>
     </div>
-    <h4>Comment</h4>
+    <h4>{{ 'Comment' | translate }}</h4>
     <ul class="list-group">
       <li class="list-group-item row" *ngFor="let comment of commentList; index as i">
         <img class="avatar border" [src]="comment.user.avatarUrl" alt="">
         <div class="col-sm-11">
           <b>{{comment.user.username}}</b><br>
-          <p>{{comment.content}}</p><p>{{ comment.localDateTime }}</p>
+          <p>{{comment.content}}</p><p>{{ comment.localDateTime | date: 'full' : '' : translate.currentLang }}</p>
         </div>
       </li>
     </ul>

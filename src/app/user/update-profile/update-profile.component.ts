@@ -7,6 +7,7 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Progress} from '../../model/progress';
 import {User} from '../../model/user';
 import {Subscription} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-update-profile',
@@ -28,7 +29,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   // tslint:disable-next-line:max-line-length
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
+              private authService: AuthService, private userService: UserService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

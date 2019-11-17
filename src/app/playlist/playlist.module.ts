@@ -12,6 +12,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { DeleteSongFromPlaylistComponent } from './delete-song-from-playlist/delete-song-from-playlist';
 import {SharedModule} from '../shared/shared.module';
 import { EditPlaylistComponent } from './edit-playlist/edit-playlist.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   // tslint:disable-next-line:max-line-length
@@ -21,7 +22,8 @@ import { EditPlaylistComponent } from './edit-playlist/edit-playlist.component';
     PlaylistRoutingModule,
     NgbModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ],
   // tslint:disable-next-line:max-line-length
   exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, DeleteSongFromPlaylistComponent],

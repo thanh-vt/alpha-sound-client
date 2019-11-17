@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {SharedModule} from './shared/shared.module';
-import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {UserModule} from './user/user.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {JwtInterceptor} from './helper/jwt.interceptor';
@@ -15,6 +15,14 @@ import {PlayingQueueService} from './service/playing-queue.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 import {AdminModule} from './admin/admin.module';
 import {ErrorInterceptor} from './helper/error.interceptor';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import localeVi from '@angular/common/locales/vi';
+import localeEn from '@angular/common/locales/en';
+import {registerLocaleData} from '@angular/common';
+
+registerLocaleData(localeVi);
+registerLocaleData(localeEn);
 
 const JWT_Module_Options: JwtModuleOptions = {
   config: {
@@ -22,6 +30,12 @@ const JWT_Module_Options: JwtModuleOptions = {
     // whitelistedDomains: yourWhitelistedDomains
   }
 };
+
+// loader module
+export  function  HttpLoaderFactory(http: HttpClient) {
+  return  new  TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 // @ts-ignore
 @NgModule({
   declarations: [
@@ -39,11 +53,19 @@ const JWT_Module_Options: JwtModuleOptions = {
     BrowserAnimationsModule,
     ReactiveFormsModule,
     AdminModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide:  TranslateLoader,
+        useFactory:  HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
     // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     // JwtModule.forRoot(JWT_Module_Options)
   ],
-  providers: [
+  exports: [TranslateModule],
+  providers: [TranslateService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

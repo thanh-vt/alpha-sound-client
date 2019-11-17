@@ -1,18 +1,18 @@
 <div class="card w-100">
   <div class="card-header">
-    <h3 class="text-center">Edit Song</h3>
+    <h3 class="text-center">{{ 'Upload Song' | translate }}</h3>
   </div>
   <div class="card-body">
     <form [formGroup]="songUploadForm" (ngSubmit)="upload()">
       <div class="form-group">
-        <label for="songTitle">Song Title</label>
+        <label for="songTitle">{{ 'Title' | translate }}</label>
         <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
         <div class="alert alert-danger" role="alert"
              *ngIf="songUploadForm.get('title').hasError('required') && songUploadForm.get('title').touched">
           Must be filled!
         </div>
       </div>
-      <label>Artist </label>
+      <label>{{ 'Artist' | translate }} </label>
       <div formArrayName="artists" class="form-group"
            *ngFor="let artist of artists.controls; let i = index;">
         <div [formGroupName]="i">
@@ -35,7 +35,7 @@
       </div>
 
       <div class="form-group">
-        <label for="releaseDate">Release Date</label>
+        <label for="releaseDate">{{ 'Release Date' | translate }}</label>
         <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
         <div class="alert alert-danger" role="alert"
              *ngIf="songUploadForm.get('releaseDate').hasError('required') && songUploadForm.get('releaseDate').touched">
@@ -43,24 +43,24 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="tags">Tags</label>
+        <label for="tags">{{ 'Tags' | translate }}</label>
         <input type="text" class="form-control" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags">
       </div>
-      <label for="audio">Audio File</label>
+      <label for="audio">{{ 'Audio File' | translate}}</label>
       <div class="form-group custom-file">
-        <label class="custom-file-label" *ngIf=!isAudioFileChosen>Choose file</label>
+        <label class="custom-file-label" *ngIf=!isAudioFileChosen>{{ 'Choose File' | translate}}</label>
         <label class="custom-file-label" *ngIf=isAudioFileChosen>{{ audioFileName }}</label>
         <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)">
       </div>
       <div class="mt-sm-3">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
       </div>
       <div class="progress form-group" *ngIf="progress.value > 0">
         <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
         </div>
       </div>
       <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-           [class.alert-success]="!error">{{message}}
+           [class.alert-success]="!error">{{ message | translate }}
       </div>
     </form>
   </div>

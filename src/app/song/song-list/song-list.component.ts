@@ -11,6 +11,7 @@ import {AuthService} from '../../service/auth.service';
 import {UserToken} from '../../model/userToken';
 import {User} from '../../model/user';
 import {UserService} from '../../service/user.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-song-list',
@@ -33,7 +34,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private userService: UserService) {
+              private playlistService: PlaylistService, private userService: UserService, private translate: TranslateService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

@@ -1,15 +1,15 @@
 <div class="row">
   <div class="card col-sm-12">
     <div class="card-header">
-      <h4 class="text-center">Album</h4>
+      <h4 class="text-center">{{ 'Upload Album' | translate }}</h4>
     </div>
     <div class="card-body">
       <form [formGroup]="albumForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="albumTitle">Album Title</label>
+          <label for="albumTitle">{{ 'Title' | translate }}</label>
           <input type="text" class="form-control" id="albumTitle" placeholder="Enter album title" formControlName="title">
         </div>
-        <label>Artist</label>
+        <label>{{ 'Artist' | translate }}</label>
         <div formArrayName="artists"
              *ngFor="let artist of getAlbumArtists().controls; let i = index;">
           <div [formGroupName]="i" >
@@ -30,11 +30,11 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="albumReleaseDate">Release Date</label>
+          <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
           <input type="date" class="form-control" id="albumReleaseDate" placeholder="Release Date" formControlName="releaseDate">
         </div>
         <div class="form-group">
-          <label class="col-sm-4 px-0" for="albumCover">Cover</label>
+          <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="albumCover" placeholder="Upload album cover" (change)="selectImage($event)">
             <label class="custom-file-label" for="albumCover" *ngIf=!isImageFileChosen>Choose file</label>
@@ -42,8 +42,8 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <button type="submit" class="btn btn-primary mb-2">Submit</button>
-          <span *ngIf="albumMessage">{{ albumMessage }}</span>
+          <button type="submit" class="btn btn-primary mb-2">{{ 'Submit' | translate }}</button>
+          <span *ngIf="albumMessage">{{ albumMessage | translate }}</span>
         </div>
         <div class="col-sm-9">
           <!-- Progress Bar -->
@@ -51,7 +51,7 @@
             <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="albumProgress.value"></div>
           </div>
           <div *ngIf="albumMessage" class="alert mt-3 mb-0" [class.alert-danger]="albumError"
-               [class.alert-success]="!albumError">{{ albumMessage }}
+               [class.alert-success]="!albumError">{{ albumMessage | translate }}
           </div>
         </div>
       </form>
@@ -62,17 +62,17 @@
   <div class="row" style="margin-bottom: 10rem;">
     <div class="card col-sm-12" #card1>
       <div class="card-header">
-        <h4 class="text-center">#{{ j + 1 }} Song</h4>
+        <h4 class="text-center">{{ 'Song' | translate }} #{{ j + 1 }}</h4>
       </div>
       <div class="card-body">
         <button class="btn btn-info float-sm-right" style="margin-bottom: 1rem" (click)="removeForm(j)"><i class="fas fa-times-circle"></i></button>
         <form [formGroup]="songsForm[j]">
           <div class="form-group">
-            <label for="songTitle">Song Title</label>
+            <label for="songTitle">{{ 'Title' | translate }}</label>
             <input type="text" class="form-control" id="songTitle" placeholder="Enter song name" formControlName="title">
           </div>
           <div class="form-group">
-            <label>Artist</label>
+            <label>{{ 'Artist' | translate }}</label>
             <div formArrayName="artists" class="form-group"
                  *ngFor="let artist of getSongArtists(j).controls; let k = index;">
               <div [formGroupName]="k">
@@ -94,19 +94,19 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="releaseDate">Release Date</label>
+            <label for="releaseDate">{{ 'Release Date' | translate }}</label>
             <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
           </div>
           <div class="form-group">
-            <label for="audio">Audio File</label>
+            <label for="audio">{{ 'Audio File' | translate }}</label>
             <div class="custom-file">
               <input type="file" class="custom-file-input" id="audio" (change)="selectAudio($event, j)">
-              <label class="custom-file-label" *ngIf=!isAudioFileChosen[j]>Choose file</label>
+              <label class="custom-file-label" *ngIf=!isAudioFileChosen[j]>{{ 'Choose File' | translate }}</label>
               <label class="custom-file-label" *ngIf=isAudioFileChosen[j]>{{ audioFileNames[j] }}</label>
             </div>
           </div>
           <div *ngIf="songsMessage[j]" class="alert mt-3 mb-0" [class.alert-danger]="songError[j]"
-               [class.alert-success]="!songError[j]">{{ songsMessage[j] }}
+               [class.alert-success]="!songError[j]">{{ songsMessage[j] | translate }}
           </div>
           <!-- Progress Bar -->
           <div class="progress form-group" *ngIf="songsProgress[j].value > 0">

@@ -16,6 +16,7 @@ import { NewSongComponent } from './new-song/new-song.component';
 import {SharedModule} from '../shared/shared.module';
 import {PlaylistModule} from '../playlist/playlist.module';
 import { ListenSongComponent } from './listen-song/listen-song.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent, ListenSongComponent],
@@ -31,6 +32,7 @@ import { ListenSongComponent } from './listen-song/listen-song.component';
     MatProgressSpinnerModule,
     SharedModule,
     PlaylistModule,
+    TranslateModule,
     // AutoSizeInputModule
   ],
   exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, DeleteSongComponent, SongComponent, NewSongComponent],

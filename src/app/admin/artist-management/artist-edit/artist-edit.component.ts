@@ -22,6 +22,7 @@ export class ArtistEditComponent implements OnInit {
   subscription: Subscription = new Subscription();
   message: string;
   artist: Artist;
+  artistId: number;
   error = false;
   progress: Progress = {value: 0};
 
@@ -31,21 +32,25 @@ export class ArtistEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = +this.route.snapshot.paramMap.get('id');
     this.artistUpdateForm = this.fb.group({
         name: ['', Validators.required],
         birthDate: ['', Validators.required],
         biography: ['', Validators.required]
       }
     );
-    this.artistService.getArtistDetail(id).subscribe(
-      result => {
-        this.artist = result;
-        this.artistUpdateForm = this.fb.group({
-          name: [this.artist.name, Validators.required],
-          birthDate: [this.artist.birthDate, Validators.required],
-          biography: [this.artist.biography, Validators.required]
-        });
+    this.route.queryParams.subscribe(
+      params => {
+        this.artistId = params.id;
+        this.artistService.getArtistDetail(this.artistId).subscribe(
+          result => {
+            this.artist = result;
+            this.artistUpdateForm = this.fb.group({
+              name: [this.artist.name, Validators.required],
+              birthDate: [this.artist.birthDate, Validators.required],
+              biography: [this.artist.biography, Validators.required]
+            });
+          }
+        );
       }
     );
   }

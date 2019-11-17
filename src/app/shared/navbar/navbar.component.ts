@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -6,12 +6,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserToken} from '../../model/userToken';
 import {Subscription} from 'rxjs';
 import {User} from '../../model/user';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
+
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: User;
   message: string;
@@ -24,8 +26,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   error: string;
   subscription = new Subscription();
 
+  @ViewChild('language', {static: false}) language: ElementRef;
+
   // tslint:disable-next-line:max-line-length
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private fb: FormBuilder) {
+  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService,
+              private userService: UserService, private fb: FormBuilder, private translate: TranslateService) {
+    const currentLanguage = this.translate.getBrowserLang();
+    translate.setDefaultLang(currentLanguage);
+    translate.use(currentLanguage);
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
@@ -35,8 +43,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // localStorage.clear();
-    console.log(localStorage);
-    console.log(this.currentUser);
     this.loginForm = this.fb.group({
       username: ['',  Validators.required],
       password: ['',  Validators.required]
@@ -83,6 +89,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home']);
       clearTimeout(navigation);
     }, 500);
+  }
+
+  translatePage() {
+    this.translate.use(this.language.nativeElement.value);
   }
 
   ngOnDestroy(): void {

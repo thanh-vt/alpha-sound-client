@@ -2,20 +2,28 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="album">
-  <app-card [type]="2" [showEditButton]="false" [title]="'Album Info'" [imgSrc]="album.coverUrl">
+  <app-card [type]="2" [showEditButton]="false" [title]="'Album Info' | translate" [imgSrc]="album.coverUrl">
       <div class="lambda_card-text_2">
         <button class="btn btn-primary float-right" [disabled]="album.isDisabled" (click)="addAllToPlaying($event)"><i class="fas fa-play-circle"></i></button>
-        <h6 class="d-inline">Title: </h6><span class="text-secondary">{{album.title}}</span><br>
-        <h6 class="d-inline">Release Date: </h6><span class="text-secondary">{{album.releaseDate | date}}</span><br>
-        <h6 class="d-inline">Genre(s): </h6>
+        <h6 class="d-inline">{{ 'Title' | translate }}: </h6><span class="text-secondary">{{album.title}}</span><br>
+        <h6 class="d-inline">{{ 'Artist(s)' | translate }}: </h6>
+        <ul>
+          <li *ngFor="let artist of album.artists; index as i">
+            <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="">
+            <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" >{{artist.name}}</a>
+          </li>
+        </ul>
+        <h6 class="d-inline">{{ 'Release Date' | translate }}: </h6><span class="text-secondary">{{album.releaseDate | date: 'fullDate' : '' : translate.currentLang}}</span><br>
+        <h6 class="d-inline">{{ 'Genre(s)' | translate }}: </h6>
         <ul *ngIf="!!album.genres && album.genres.length > 0">
           <li *ngFor="let genre of album.genres">{{ genre.name }}</li>
         </ul>
         <ul *ngIf="!!album.tags && album.tags.length > 0">
           <li *ngFor="let genre of album.tags">{{ genre.name }}</li>
         </ul>
-        <h6 class="d-inline">Country: </h6><span *ngIf="!!album.country" class="text-secondary">{{ album.country.name | date}}</span><br>
-        <h6 class="d-inline">Theme: </h6><span *ngIf="!!album.theme" class="text-secondary">{{ album.theme.name | date}}</span><br>
+        <br>
+        <h6 class="d-inline">{{ 'Country' | translate }}: </h6><span *ngIf="!!album.country" class="text-secondary">{{ album.country.name }}</span><br>
+        <h6 class="d-inline">{{ 'Theme' | translate}}: </h6><span *ngIf="!!album.theme" class="text-secondary">{{ album.theme.name }}</span><br>
       </div>
   </app-card>
 </ng-container>
@@ -24,8 +32,9 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Release Date</th>
+      <th scope="col">{{ 'Title' | translate }}</th>
+      <th scope="col">{{ 'Release Date' | translate }}</th>
+      <th scope="col">{{ 'Artist(s)' | translate }}</th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
@@ -36,7 +45,7 @@
     <tr [routerLink]="['/song/detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
       <th scope="row">{{ i + 1 }}</th>
       <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
-      <td>{{ song.releaseDate | date }}</td>
+      <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
       <td><span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></td>
       <td>
         <ng-container *ngIf="!!currentUser">

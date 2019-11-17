@@ -16,6 +16,7 @@ import {FavoritesComponent} from './favorites/favorites.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserProfileComponent } from './user-management/user-profile/user-profile.component';
 import {PlaylistModule} from '../playlist/playlist.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent,
@@ -31,7 +32,8 @@ import {PlaylistModule} from '../playlist/playlist.module';
     NgbTabsetModule,
     FormsModule,
     NgbButtonsModule,
-    PlaylistModule
+    PlaylistModule,
+    TranslateModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent, SearchComponent]
 })

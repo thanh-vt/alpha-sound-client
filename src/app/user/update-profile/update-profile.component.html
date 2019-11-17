@@ -1,13 +1,13 @@
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser">
   <div class="form-group">
-    <label for="firstName"><i class="fas fa-user-tie"></i> First Name</label>
+    <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'First Name' | translate }}</label>
     <input id="firstName" type="text" formControlName="firstName" class="form-control"/>
   </div>
   <div class="form-group">
-    <label for="lastName"><i class="fas fa-user-tie"></i> Last Name</label>
+    <label for="lastName"><i class="fas fa-user-tie"></i> {{ 'Last Name' | translate}}</label>
     <input id="lastName" type="text" formControlName="lastName" class="form-control"/>
   </div>
-  <label><i class="fas fa-venus-mars"></i> Gender</label>
+  <label><i class="fas fa-venus-mars"></i> {{ 'Gender' | translate }}</label>
   <div class="form-group">
     <div class="form-check form-check-inline">
       <input type="radio" id="male" [value]=true formControlName="gender">
@@ -19,28 +19,28 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="birthDate"><i class="fas fa-table"></i> BirthDate</label>
-    <input [value]="currentUser.birthDate | date:'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" placeholder="yyyy-mm-dd" formControlName="birthDate">
+    <label for="birthDate"><i class="fas fa-table"></i> {{ 'BirthDate' | translate }}</label>
+    <input [value]="currentUser.birthDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" formControlName="birthDate">
   </div>
   <div class="form-group">
-    <label for="phoneNumber"><i class="fas fa-phone"></i> PhoneNumber</label>
+    <label for="phoneNumber"><i class="fas fa-phone"></i> {{ 'PhoneNumber' | translate }}</label>
     <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control"/>
   </div>
-  <label><i class="fas fa-user-circle"></i> Avatar</label>
+  <label><i class="fas fa-user-circle"></i> {{ 'Avatar' | translate }}</label>
   <div class="form-group custom-file">
-    <label class="custom-file-label" *ngIf=!isImageFileChosen>Choose file</label>
+    <label class="custom-file-label" *ngIf=!isImageFileChosen>{{ 'Choose file' | translate }}</label>
     <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
     <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
   </div>
   <button [disabled]="loading" class="btn btn-primary my-2">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-    <span>Update</span>
+    <span>{{ 'Update' | translate }}</span>
   </button>
   <div class="progress form-group" *ngIf="progress.value > 0">
     <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
     </div>
   </div>
   <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-       [class.alert-success]="!error">{{message}}
+       [class.alert-success]="!error">{{ message | translate }}
   </div>
 </form>

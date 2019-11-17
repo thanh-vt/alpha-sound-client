@@ -41,12 +41,12 @@ export class CreatePlaylistComponent implements OnInit {
     this.subscription.add(this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
       () => {
         this.error = false;
-        this.message = 'Playlist created successfully!';
+        this.message = 'Playlist saved successfully!';
         this.createPlaylistForm.reset({name});
         this.createPlaylist.emit();
       }, error => {
         this.error = true;
-        this.message = 'Failed to create playlist. Cause: ' + error.message;
+        this.message = 'Failed to save playlist. Cause: ' + error.message;
       }
     ));
   }

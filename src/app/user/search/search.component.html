@@ -1,13 +1,13 @@
 <ngb-tabset #searchTab="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'">
   <ngb-tab id="songs">
-    <ng-template ngbTabTitle><h5>Song <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template>
+    <ng-template ngbTabTitle><h5>{{ 'Song' | translate }} <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template>
     <ng-template ngbTabContent>
       <table *ngIf="songList.length > 0" class="table table-striped">
         <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Title</th>
-          <th scope="col">Release Date</th>
+          <th scope="col">{{ 'Song Name' | translate }}</th>
+          <th scope="col">{{ 'Release Date' | translate }}</th>
           <th scope="col"></th>
         </tr>
         </thead>
@@ -23,14 +23,14 @@
     </ng-template>
   </ngb-tab>
   <ngb-tab id="artists">
-    <ng-template ngbTabTitle><h5>Artist <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template>
+    <ng-template ngbTabTitle><h5>{{ 'Artist' | translate }} <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template>
     <ng-template ngbTabContent>
       <table *ngIf="artistList.length > 0" class="table table-striped">
         <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Release Date</th>
+          <th scope="col">{{ 'Artist Name' | translate }}</th>
+          <th scope="col">{{ 'Release Date' | translate }}</th>
           <th scope="col"></th>
         </tr>
         </thead>

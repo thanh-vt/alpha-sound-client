@@ -8,6 +8,7 @@ import {Playlist} from '../../model/playlist';
 import {Observable, of, Subscription} from 'rxjs';
 import {Validators} from '@angular/forms';
 import {Track} from 'ngx-audio-player';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -21,12 +22,8 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   playlistId: number;
 
-  constructor(
-    private playlistService: PlaylistService,
-    private songService: SongService,
-    private route: ActivatedRoute,
-    private playingQueueService: PlayingQueueService
-  ) {
+  constructor(private playlistService: PlaylistService, private songService: SongService,
+              private route: ActivatedRoute, private playingQueueService: PlayingQueueService, private translate: TranslateService) {
   }
 
   ngOnInit() {

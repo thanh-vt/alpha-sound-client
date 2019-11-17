@@ -55,11 +55,11 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
     this.subscription.add(this.playlistService.editPlaylist(this.playlistEditForm.value, this.id).subscribe(
       () => {
         this.error = false;
-        this.message = 'Playlist deleted successfully!';
+        this.message = 'Playlist updated successfully!';
       },
       error => {
         this.error = true;
-        this.message = 'Failed to delete playlist. Cause: ' + error.message;
+        this.message = 'Failed to update playlist. Cause: ' + error.message;
       }
     ));
   }

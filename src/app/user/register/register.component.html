@@ -1,5 +1,5 @@
 <app-card [type]="3" [title]="'Create new account'">
-  <h3 class="lambda_card-header_3 text-center">Register</h3>
+  <h3 class="lambda_card-header_3 text-center">{{ 'Sign Up' | translate }}</h3>
   <div class="lambda_card-body_3">
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
@@ -82,7 +82,7 @@
         <span>Register</span>
       </button>
       <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-           [class.alert-success]="!error">{{message}}
+           [class.alert-success]="!error">{{ message | translate }}
       </div>
     </form>
   </div>

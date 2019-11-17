@@ -14,7 +14,7 @@ export class SearchComponent implements OnInit {
   selectedTabId = 'simple';
   searchText: string;
   songList: Song[] = [];
-  artistList: Artist[];
+  artistList: Artist[] = [];
   numberOfSongs: number;
   numberOfArtists: number;
 

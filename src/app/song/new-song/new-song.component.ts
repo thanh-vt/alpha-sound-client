@@ -10,6 +10,7 @@ import {UserComponent} from '../../user/user/user.component';
 import {UserToken} from '../../model/userToken';
 import {AuthService} from '../../service/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-new-song',
   templateUrl: './new-song.component.html',
@@ -39,7 +40,8 @@ export class NewSongComponent implements OnInit, OnDestroy {
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, private playlistService: PlaylistService, private authService: AuthService) {
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
+              private playlistService: PlaylistService, private authService: AuthService, private translate: TranslateService) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
