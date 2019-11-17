@@ -7,6 +7,7 @@ import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/ad
 import {SongService} from '../../service/song.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {PlaylistService} from '../../service/playlist.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-uploaded-song-list',
@@ -24,7 +25,7 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
 
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService) { }
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, public translate: TranslateService) { }
 
   ngOnInit() {
     this.loading = true;

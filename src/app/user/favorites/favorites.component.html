@@ -5,8 +5,8 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Title</th>
-    <th scope="col">Release Date</th>
+    <th scope="col">{{ 'Title' | translate }}</th>
+    <th scope="col">{{ 'Release Date' | date: 'full' : '' : translate.currentLang }}</th>
     <th scope="col"></th>
     <th scope="col"></th>
     <th scope="col"></th>
@@ -37,7 +37,7 @@
       </button>
     </td>
     <td>
-      <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
+      <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add' | translate">
         <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
         <app-create-playlist (createPlaylist)="refreshPlaylistList(song)" class="modal-footer"></app-create-playlist>
       </app-modal>

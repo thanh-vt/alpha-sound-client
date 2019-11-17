@@ -1,13 +1,13 @@
 <ng-container *ngIf="loading">
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
-<h3 class="text-center">Uploaded Song List</h3>
+<h3 class="text-center">{{ 'Uploaded' | translate }}</h3>
 <table class="table table-striped">
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Title</th>
-    <th scope="col">Release Date</th>
+    <th scope="col">{{ 'Title' | translate }}</th>
+    <th scope="col">{{ 'Release Date' | translate }}</th>
     <th scope="col"></th>
     <th scope="col"></th>
   </tr>
@@ -16,7 +16,7 @@
   <tr [routerLink]="['/song', 'detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
     <th scope="row">{{ i + 1 }}</th>
     <td><a [routerLink]="['/song', 'detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
-    <td>{{ song.releaseDate | date }}</td>
+    <td>{{ song.releaseDate | date: 'full' : '' : translate.currentLang }}</td>
     <td>
       <button class="btn btn-primary" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled"><i
         class="fas fa-play-circle"></i></button>

@@ -4,6 +4,7 @@ import {SearchService} from '../../service/search.service';
 import {Song} from '../../model/song';
 import {Artist} from '../../model/artist';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search',
@@ -20,7 +21,7 @@ export class SearchComponent implements OnInit {
 
   @ViewChild('searchTab', {static: false}) searchTab: NgbTabset;
 
-  constructor(private route: ActivatedRoute, private searchService: SearchService) {
+  constructor(private route: ActivatedRoute, private searchService: SearchService, public translate: TranslateService) {
     this.searchText = this.route.snapshot.paramMap.get('name');
   }
 

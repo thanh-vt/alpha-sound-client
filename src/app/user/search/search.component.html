@@ -12,10 +12,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let song of songList; index as i">
+        <tr [routerLink]="['/song/detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
           <th scope="row">{{ i + 1 }}</th>
           <td><a [routerLink]="['/song/detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
-          <td>{{ song.releaseDate | date }}</td>
+          <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
           <td></td>
         </tr>
         </tbody>
@@ -30,14 +30,15 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">{{ 'Artist Name' | translate }}</th>
-          <th scope="col">{{ 'Release Date' | translate }}</th>
+          <th scope="col">{{ 'BirthDate' | translate }}</th>
           <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let artist of artistList; index as i">
+        <tr [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
           <th scope="row">{{ i + 1 }}</th>
           <td><a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
+          <td>{{ artist.birthDate | date: 'fullDate' : '' : translate.currentLang }}</td>
           <td><img [src]="artist.avatarUrl" alt=""></td>
         </tr>
         </tbody>
