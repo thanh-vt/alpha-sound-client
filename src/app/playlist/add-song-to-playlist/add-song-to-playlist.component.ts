@@ -4,6 +4,7 @@ import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-song-to-playlist',
@@ -16,16 +17,23 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
   @Input() playlistList: Playlist[] = [];
   closeResult: string;
   message: string;
+  loading: boolean;
   subscription: Subscription = new Subscription();
 
   constructor(private modalService: NgbModal, private playlistService: PlaylistService, private translate: TranslateService) {}
 
   ngOnInit(): void {
-    this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
+    this.loading = true;
+    this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId)
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
       result => {
         this.playlistList = result;
       }, error => {
-        this.message = 'Cannot retrieve playlist list. Cause: ' + error.message;
+        this.message = 'An error has occurred.';
+        console.log(error.message);
       }
     ));
   }

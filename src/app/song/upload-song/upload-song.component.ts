@@ -114,14 +114,15 @@ export class UploadSongComponent implements OnInit, OnDestroy {
       this.subscription.add(this.audioUploadService.uploadSong(this.formData).subscribe(
         (event: HttpEvent<any>) => {
           if (this.displayProgress(event, this.progress)) {
-            this.message = 'Song uploaded successfully!';
+            this.message = 'Song uploaded successfully.';
           }
         }, error => {
           this.progress.value = 0;
           if (error.status === 400) {
             this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
           } else {
-            this.message = 'Failed to upload song. Cause: ' + error.message;
+            this.message = 'Failed to upload song.';
+            console.log(error.message);
           }
         }
       ));

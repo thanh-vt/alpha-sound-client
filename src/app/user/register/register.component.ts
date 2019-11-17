@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.subscription.add(this.userService.register(this.registerForm.value).subscribe(
         () => {
           this.error = false;
-          this.message = 'User registered successfully!';
+          this.message = 'User registered successfully.';
           const navigation = setInterval(() => {
             this.navigate();
             clearTimeout(navigation);
@@ -56,7 +56,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         error => {
           this.error = true;
-          this.message = 'Failed to register. Cause: ' + error.message;
+          this.message = 'Failed to register.';
+          console.log(error.message);
         }
       ));
     }

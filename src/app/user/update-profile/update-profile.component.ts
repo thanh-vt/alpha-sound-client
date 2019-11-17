@@ -93,20 +93,19 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       this.subscription.add(this.userService.updateProfile(this.updateForm.value).subscribe(
         () => {
           this.error = false;
-          this.message = 'Profile updated successfully';
+          this.message = 'Profile updated successfully.';
           if (this.isImageFileChosen) {
             this.subscription.add(this.userService.uploadAvatar(this.formData).subscribe(
               (event: HttpEvent<any>) => {
                 console.log(event);
                 if (this.displayProgress(event, this.progress)) {
                   this.error = false;
-                  this.message = 'Avatar uploaded successfully';
+                  this.message = 'Avatar uploaded successfully.';
                 }
               },
               error => {
-                console.log(error);
                 this.error = true;
-                this.message = 'Failed to upload avatar';
+                this.message = 'Failed to upload avatar.';
               }, () => {
                 this.userService.setProfile();
               }
@@ -120,9 +119,9 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          console.log(error);
           this.error = true;
-          this.message = 'Failed to update profile';
+          this.message = 'Failed to update profile.';
+          console.log(error);
         }
       ));
     }

@@ -54,11 +54,12 @@ export class DeletePlaylistComponent implements OnInit, OnDestroy {
       () => {
         this.error = false;
         this.deleted = true;
-        this.message = 'Playlist removed successfully!';
+        this.message = 'Playlist removed successfully.';
       },
       error => {
         this.error = true;
-        this.message = 'Failed to remove playlist. Cause: ' + error.message;
+        this.message = 'Failed to remove playlist.';
+        console.log(error.message);
       }
     ));
   }

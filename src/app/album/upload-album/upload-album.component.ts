@@ -216,7 +216,7 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
       this.subscription.add(this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
         createAlbumResult => {
           this.albumError = false;
-          this.albumMessage = 'Album created successfully!';
+          this.albumMessage = 'Album created successfully.';
           for (let i = 0; i < this.numbersOfSongForms; i++) {
             this.songsFormData[i].append('song', new Blob([JSON.stringify(this.songsForm[i].value)], {type: 'application/json'}));
             this.songsFormData[i].append('audio', this.audioFiles[i]);
@@ -224,15 +224,17 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
               (uploadSongEvent: HttpEvent<any>) => {
                 this.displayProgress(uploadSongEvent, this.songsProgress[i]);
                 this.songError[i] = false;
-                this.songsMessage[i] = 'Song uploaded successfully!';
+                this.songsMessage[i] = 'Song uploaded successfully.';
               }, uploadSongError => {
                 this.songError[i] = true;
-                this.songsMessage[i] = 'Failed to upload song! Cause: ' + uploadSongError.message;
+                this.songsMessage[i] = 'Failed to upload song.';
+                console.log(uploadSongError.message);
               }
             ));
           }
         }, createAlbumError => {
-          this.albumMessage = 'Failed to create album! Cause: ' + createAlbumError.message;
+          this.albumMessage = 'Failed to create album.';
+          console.log(createAlbumError.message);
         }
       ));
     }

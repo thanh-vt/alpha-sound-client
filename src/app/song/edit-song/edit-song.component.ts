@@ -154,7 +154,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
               this.message = 'Song updated successfully!';
             }
           }, error => {
-            console.log(error);
+            console.log(error.message);
             this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
           }
         );
