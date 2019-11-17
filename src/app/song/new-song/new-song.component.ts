@@ -41,7 +41,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private authService: AuthService, private translate: TranslateService) {
+              private playlistService: PlaylistService, private authService: AuthService, public translate: TranslateService) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;

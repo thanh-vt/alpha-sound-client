@@ -32,7 +32,7 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private albumService: AlbumService,
               private songService: SongService, private playingQueueService: PlayingQueueService,
-              private userService: UserService, private playlistService: PlaylistService, private translate: TranslateService) {
+              private userService: UserService, private playlistService: PlaylistService, public translate: TranslateService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

@@ -34,7 +34,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private userService: UserService, private translate: TranslateService) {
+              private playlistService: PlaylistService, private userService: UserService, public translate: TranslateService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

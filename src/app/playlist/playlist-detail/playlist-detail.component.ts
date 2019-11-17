@@ -23,7 +23,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playlistId: number;
 
   constructor(private playlistService: PlaylistService, private songService: SongService,
-              private route: ActivatedRoute, private playingQueueService: PlayingQueueService, private translate: TranslateService) {
+              private route: ActivatedRoute, private playingQueueService: PlayingQueueService, public translate: TranslateService) {
   }
 
   ngOnInit() {

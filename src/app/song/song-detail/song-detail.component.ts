@@ -37,7 +37,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
               private router: Router, private authService: AuthService,
               private songService: SongService, private userService: UserService,
               // tslint:disable-next-line:max-line-length
-              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, private translate: TranslateService) {
+              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;

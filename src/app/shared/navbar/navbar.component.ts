@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService,
-              private userService: UserService, private fb: FormBuilder, private translate: TranslateService) {
+              private userService: UserService, private fb: FormBuilder, public translate: TranslateService) {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
     translate.use(currentLanguage);
