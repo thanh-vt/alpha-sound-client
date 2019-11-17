@@ -205,7 +205,14 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
     this.albumFormData.append('album', new Blob([JSON.stringify(this.albumForm.value)], {type: 'application/json'}));
     this.albumFormData.append('cover', this.imageFile);
     this.submitted = true;
-    if (this.albumForm.valid) {
+    let isSongFormsValid = true;
+    for (const songForm of this.songsForm) {
+      if (!songForm.valid) {
+        isSongFormsValid = false;
+        break;
+      }
+    }
+    if (this.albumForm.valid && isSongFormsValid) {
       this.subscription.add(this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
         createAlbumResult => {
           this.albumError = false;
