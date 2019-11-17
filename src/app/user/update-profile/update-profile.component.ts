@@ -87,42 +87,45 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.submitted = true;
     this.formData.append('avatar', this.file);
-    this.subscription.add(this.userService.updateProfile(this.updateForm.value).subscribe(
-      () => {
-        this.error = false;
-        this.message = 'Profile updated successfully';
-        if (this.isImageFileChosen) {
-          this.subscription.add(this.userService.uploadAvatar(this.formData).subscribe(
-            (event: HttpEvent<any>) => {
-              console.log(event);
-              if (this.displayProgress(event, this.progress)) {
-                this.error = false;
-                this.message = 'Avatar uploaded successfully';
+    if (this.updateForm.valid) {
+      this.subscription.add(this.userService.updateProfile(this.updateForm.value).subscribe(
+        () => {
+          this.error = false;
+          this.message = 'Profile updated successfully';
+          if (this.isImageFileChosen) {
+            this.subscription.add(this.userService.uploadAvatar(this.formData).subscribe(
+              (event: HttpEvent<any>) => {
+                console.log(event);
+                if (this.displayProgress(event, this.progress)) {
+                  this.error = false;
+                  this.message = 'Avatar uploaded successfully';
+                }
+              },
+              error => {
+                console.log(error);
+                this.error = true;
+                this.message = 'Failed to upload avatar';
+              }, () => {
+                this.userService.setProfile();
               }
-            },
-            error => {
-              console.log(error);
-              this.error = true;
-              this.message = 'Failed to upload avatar';
-            }, () => {
-              this.userService.setProfile();
-            }
-          ));
-        } else {
-          this.userService.getProfile().subscribe(
-            currentUser => {
-              this.currentUser = currentUser;
-            }
-          );
+            ));
+          } else {
+            this.userService.getProfile().subscribe(
+              currentUser => {
+                this.currentUser = currentUser;
+              }
+            );
+          }
+        },
+        error => {
+          console.log(error);
+          this.error = true;
+          this.message = 'Failed to update profile';
         }
-      },
-      error => {
-        console.log(error);
-        this.error = true;
-        this.message = 'Failed to update profile';
-      }
-    ));
+      ));
+    }
   }
 
   navigate() {

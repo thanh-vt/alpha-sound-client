@@ -2,10 +2,28 @@
   <div class="form-group">
     <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'First Name' | translate }}</label>
     <input id="firstName" type="text" formControlName="firstName" class="form-control"/>
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('required') && (updateForm.get('firstName').touched || this.submitted)">
+      {{ 'First Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
+    </div>
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('minlength') && (updateForm.get('firstName').touched || this.submitted)">
+      {{ 'First Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
+    </div>
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('maxlength') && (updateForm.get('firstName').touched || this.submitted)">
+      {{ 'First Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
+    </div>
   </div>
   <div class="form-group">
     <label for="lastName"><i class="fas fa-user-tie"></i> {{ 'Last Name' | translate}}</label>
     <input id="lastName" type="text" formControlName="lastName" class="form-control"/>
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('lastName').hasError('required') && (updateForm.get('lastName').touched || this.submitted)">
+      {{ 'Last Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
+    </div>
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('lastName').hasError('minlength') && (updateForm.get('lastName').touched || this.submitted)">
+      {{ 'Last Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
+    </div>
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('lastName').hasError('maxlength') && (updateForm.get('lastName').touched || this.submitted)">
+      {{ 'Last Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
+    </div>
   </div>
   <label><i class="fas fa-venus-mars"></i> {{ 'Gender' | translate }}</label>
   <div class="form-group">
@@ -21,6 +39,9 @@
   <div class="form-group">
     <label for="birthDate"><i class="fas fa-table"></i> {{ 'BirthDate' | translate }}</label>
     <input [value]="currentUser.birthDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" formControlName="birthDate">
+    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('birthDate').hasError('required') && (updateForm.get('email').touched || this.submitted)">
+      {{'BirthDate' | translate }}{{' '}}{{ 'must be picked' | translate }}{{'!'}}
+    </div>
   </div>
   <div class="form-group">
     <label for="phoneNumber"><i class="fas fa-phone"></i> {{ 'PhoneNumber' | translate }}</label>
