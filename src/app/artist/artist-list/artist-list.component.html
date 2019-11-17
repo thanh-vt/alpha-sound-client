@@ -5,8 +5,8 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col" id="name">Name</th>
-    <th scope="col" id="avatar">Avatar</th>
+    <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
+    <th scope="col" id="avatar">{{ 'Avatar' | translate }}</th>
   </tr>
   </thead>
   <tbody>
@@ -17,4 +17,5 @@
   </tr>
   </tbody>
 </table>
+<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
 

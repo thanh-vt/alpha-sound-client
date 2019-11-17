@@ -57,19 +57,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
   onSignIn() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
+    if (this.loginForm.valid) {
+      this.loading = true;
+      this.subscription.add(this.authService.login(this.loginForm.value).subscribe(
+        () => {
+          this.loading = false;
+          this.router.navigate([this.returnUrl]);
+        }, () => {
+          this.message = 'Wrong username or password';
+        }, () => {
+          this.loading = false;
+        }
+      ));
     }
-    this.loading = true;
-    this.subscription.add(this.authService.login(this.loginForm.value).subscribe(
-      () => {
-        this.loading = false;
-        this.router.navigate([this.returnUrl]);
-      }, () => {
-        this.message = 'Wrong username or password';
-        this.loading = false;
-      }
-    ));
   }
 
   onSearch() {

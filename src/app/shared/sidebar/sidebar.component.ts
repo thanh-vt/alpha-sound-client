@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {SongService} from '../../service/song.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {Subscription} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -30,7 +31,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   goToPage() {
     this.loading = true;
-    this.subscription.add(this.songService.getTop10SongsByFrequency().subscribe(
+    this.subscription.add(this.songService.getTop10SongsByFrequency()
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
       result => {
         if (result != null) {
           window.scroll(0, 0);
@@ -40,9 +45,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
           });
         }
       }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-      }, () => {
-        this.loading = false;
+        this.message = 'An error has occurred.';
+        console.log(error.message);
       }
     ));
   }

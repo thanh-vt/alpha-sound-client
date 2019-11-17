@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   loading = false;
   submitted = false;
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
   error = false;
   file: File;
   message: string;
+  subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
               private userService: UserService) {
@@ -37,32 +39,34 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
 
   }
+
   get f() { return this.registerForm.controls; }
 
   onSubmit() {
     this.submitted = true;
-    this.userService.register(this.registerForm.value).subscribe(
-      () => {
-        this.error = false;
-        this.message = 'User registered successfully!';
-        const navigation = setInterval(() => {
-          this.navigate();
-          clearTimeout(navigation);
-        }, 3000);
-      },
-      error => {
-        this.error = true;
-        this.message = 'Failed to register. Cause: ' + error.message;
-      }
-    );
-
-    // stop the process here if form is invalid
-    if (this.registerForm.invalid) {
-      return;
+    if (this.registerForm.valid) {
+      this.subscription.add(this.userService.register(this.registerForm.value).subscribe(
+        () => {
+          this.error = false;
+          this.message = 'User registered successfully!';
+          const navigation = setInterval(() => {
+            this.navigate();
+            clearTimeout(navigation);
+          }, 3000);
+        },
+        error => {
+          this.error = true;
+          this.message = 'Failed to register. Cause: ' + error.message;
+        }
+      ));
     }
   }
   navigate() {
     this.router.navigateByUrl('');
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
 

@@ -55,10 +55,11 @@
   </div>
   <ng-container *ngIf="!!currentUser">
     <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-      <label for="comment"></label><textarea class="form-control" id="comment" placeholder="Comment here" formControlName="content"></textarea>
+      <label for="comment"></label><textarea class="form-control" id="comment" [placeholder]="'Leave comment here' | translate" formControlName="content"></textarea>
       <div class="mt-sm-3">
         <button type="submit" class="btn btn-primary">Comment</button>
       </div>
     </form>
   </ng-container>
 </ng-container>
+<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>

@@ -17,6 +17,7 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   @ViewChild('card1', {static: false}) card1;
   @ViewChild('card2', {static: false}) card2;
 
+  submitted: boolean;
   numbersOfSongForms = 0;
 
   albumForm: FormGroup;
@@ -203,28 +204,31 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   onSubmit() {
     this.albumFormData.append('album', new Blob([JSON.stringify(this.albumForm.value)], {type: 'application/json'}));
     this.albumFormData.append('cover', this.imageFile);
-    this.subscription.add(this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
-      createAlbumResult => {
-        this.albumError = false;
-        this.albumMessage = 'Album created successfully!';
-        for (let i = 0; i < this.numbersOfSongForms; i++) {
-          this.songsFormData[i].append('song', new Blob([JSON.stringify(this.songsForm[i].value)], {type: 'application/json'}));
-          this.songsFormData[i].append('audio', this.audioFiles[i]);
-          this.subscription.add(this.audioUploadService.uploadSong(this.songsFormData[i], createAlbumResult).subscribe(
-            (uploadSongEvent: HttpEvent<any>) => {
-              this.displayProgress(uploadSongEvent, this.songsProgress[i]);
-              this.songError[i] = false;
-              this.songsMessage[i] = 'Song uploaded successfully!';
-            }, uploadSongError => {
-              this.songError[i] = true;
-              this.songsMessage[i] = 'Failed to upload song! Cause: ' + uploadSongError.message;
-            }
-          ));
+    this.submitted = true;
+    if (this.albumForm.valid) {
+      this.subscription.add(this.audioUploadService.uploadAlbum(this.albumFormData).subscribe(
+        createAlbumResult => {
+          this.albumError = false;
+          this.albumMessage = 'Album created successfully!';
+          for (let i = 0; i < this.numbersOfSongForms; i++) {
+            this.songsFormData[i].append('song', new Blob([JSON.stringify(this.songsForm[i].value)], {type: 'application/json'}));
+            this.songsFormData[i].append('audio', this.audioFiles[i]);
+            this.subscription.add(this.audioUploadService.uploadSong(this.songsFormData[i], createAlbumResult).subscribe(
+              (uploadSongEvent: HttpEvent<any>) => {
+                this.displayProgress(uploadSongEvent, this.songsProgress[i]);
+                this.songError[i] = false;
+                this.songsMessage[i] = 'Song uploaded successfully!';
+              }, uploadSongError => {
+                this.songError[i] = true;
+                this.songsMessage[i] = 'Failed to upload song! Cause: ' + uploadSongError.message;
+              }
+            ));
+          }
+        }, createAlbumError => {
+          this.albumMessage = 'Failed to create album! Cause: ' + createAlbumError.message;
         }
-      }, createAlbumError => {
-        this.albumMessage = 'Failed to create album! Cause: ' + createAlbumError.message;
-      }
-    ));
+      ));
+    }
   }
 
   suggestAlbumArtist(i) {

@@ -7,6 +7,8 @@
   "Song Info": "Song Info",
   "Album Info": "Album Info",
   "Artist Info": "Artist Info",
+  "Album title": "Album title",
+  "Song title": "Song title",
   "Profile": "Profile",
   "Uploaded": "Uploaded",
   "Favorites": "Favorites",
@@ -44,7 +46,11 @@
   "Choose File": "Choose file",
   "Submit": "Submit",
   "Audio File": "Audio File",
+  "Image File": "Image File",
   "Cover": "Cover",
+  "Multiple tags separated by commas": "Multiple tags separated by commas",
+  "Comment":"Comment",
+  "Leave comment here":"Leave comment here",
 
   "Username": "Username",
   "Password": "Password",
@@ -55,6 +61,11 @@
   "BirthDate": "Date of Birth",
   "PhoneNumber": "Phone Number",
   "Avatar": "Avatar",
+  "Create new account": "Create new account",
+  "Wrong username or password": "Wrong username or password",
+  "Enter": "Enter",
+  "Pick": "Pick",
+  "Forgot password?": "Forgot password?",
 
 
   "Playlist created successfully!": "Playlist created successfully!",
@@ -64,5 +75,17 @@
   "Playlist removed successfully!": "Playlist removed successfully!",
   "Failed to remove playlist. Cause: ": "Failed to remove playlist. Cause: ",
   "User registered successfully!": "User registered successfully!",
-  "Failed to register. Cause: ": "Failed to register. Cause: "
+  "Failed to register. Cause: ": "Failed to register. Cause: ",
+  "Song uploaded successfully!": "Song uploaded successfully!",
+  "Failed to upload song. Cause: ": "Failed to upload song. Cause: ",
+  "Album created successfully!": "Album created successfully!",
+  "Failed to create album. Cause: ": "Failed to create album. Cause: ",
+  "An error has occurred.": "An error has occurred.",
+
+  "must be filled": "must be filled",
+  "must be picked": "must be picked",
+  "must have at least": "must have at least",
+  "can only contain up to": "can only contain up to",
+  "characters": "characters",
+  "Not a valid Email": "Not a valid Email"
 }

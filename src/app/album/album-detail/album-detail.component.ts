@@ -13,6 +13,7 @@ import {User} from '../../model/user';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-album-detail',
@@ -45,7 +46,11 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
       params => {
         this.loading = true;
         this.albumId = params.id;
-        this.subscription.add(this.albumService.albumDetail(this.albumId).subscribe(
+        this.subscription.add(this.albumService.albumDetail(this.albumId)
+          .pipe(finalize(() => {
+            this.loading = false;
+          }))
+          .subscribe(
           result => {
             this.album = result;
             this.songList = result.songs;
@@ -53,14 +58,14 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
               this.checkDisabledSong(song);
             }
           }, error => {
-            this.message = 'Cannot retrieve album detail. Cause: ' + error.message;
+            this.message = 'An error has occurred.';
+            console.log(error.message);
           }, () => {
             for (const song of this.songList) {
               if (song.loadingLikeButton) {
                 song.loadingLikeButton = false;
               }
             }
-            this.loading = false;
           }
         ));
       }

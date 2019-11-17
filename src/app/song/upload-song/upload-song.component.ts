@@ -18,8 +18,7 @@ import {ViewEncapsulation} from '@angular/core';
 })
 export class UploadSongComponent implements OnInit, OnDestroy {
 
-  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) {
-  }
+  submitted: boolean;
 
   isAudioFileChosen = false;
   audioFileName = '';
@@ -34,6 +33,9 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   error = false;
 
   subscription: Subscription = new Subscription();
+
+  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) {
+  }
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -107,20 +109,23 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   upload() {
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
-    this.subscription.add(this.audioUploadService.uploadSong(this.formData).subscribe(
-      (event: HttpEvent<any>) => {
-        if (this.displayProgress(event, this.progress)) {
-          this.message = 'Song uploaded successfully!';
+    this.submitted = true;
+    if (this.songUploadForm.valid) {
+      this.subscription.add(this.audioUploadService.uploadSong(this.formData).subscribe(
+        (event: HttpEvent<any>) => {
+          if (this.displayProgress(event, this.progress)) {
+            this.message = 'Song uploaded successfully!';
+          }
+        }, error => {
+          this.progress.value = 0;
+          if (error.status === 400) {
+            this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+          } else {
+            this.message = 'Failed to upload song. Cause: ' + error.message;
+          }
         }
-      }, error => {
-        this.progress.value = 0;
-        if (error.status === 400) {
-          this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
-        } else {
-          this.message = 'Failed to upload song. Cause: ' + error.message;
-        }
-      }
-    ));
+      ));
+    }
   }
 
   suggestArtist(i) {

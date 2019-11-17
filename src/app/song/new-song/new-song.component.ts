@@ -11,6 +11,7 @@ import {UserToken} from '../../model/userToken';
 import {AuthService} from '../../service/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 @Component({
   selector: 'app-new-song',
   templateUrl: './new-song.component.html',
@@ -67,7 +68,11 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   goToPage(i: number, scrollUp?: boolean) {
-    this.subscription.add(this.songService.getSongList(i, 'releaseDate').subscribe(
+    this.subscription.add(this.songService.getSongList(i, 'releaseDate')
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
       result => {
         if (result != null) {
           if (scrollUp) {window.scroll(0, 0); }
@@ -88,14 +93,14 @@ export class NewSongComponent implements OnInit, OnDestroy {
           }
         }
       }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+        this.message = 'An error has occurred.';
+        console.log(error.message);
       }, () => {
         for (const song of this.songList) {
           if (song.loadingLikeButton) {
             song.loadingLikeButton = false;
           }
         }
-        this.loading = false;
       }
     ));
   }

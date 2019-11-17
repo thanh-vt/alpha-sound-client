@@ -14,6 +14,7 @@ import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {UserService} from '../../service/user.service';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-artist-detail',
@@ -53,7 +54,11 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
       params => {
         this.loading1 = true;
         this.artistId = params.id;
-        this.subscription.add(this.artistService.artistDetail(this.artistId).subscribe(
+        this.subscription.add(this.artistService.artistDetail(this.artistId)
+          .pipe(finalize(() => {
+            this.loading1 = false;
+          }))
+          .subscribe(
           result => {
             window.scroll(0, 0);
             this.artist = result;
@@ -71,15 +76,15 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
                   }
                 }
               }, error => {
-                this.message = 'Cannot retrieve Playlist . Cause: ' + error.message;
+                this.message = 'An error has occurred.';
+                console.log(error.message);
               }, () => {
                 this.loading2 = false;
               }
             ));
-          }, (error) => {
-            console.log(error);
-          }, () => {
-            this.loading1 = false;
+          }, error => {
+            this.message = 'An error has occurred.';
+            console.log(error.message);
           }
         ));
       }

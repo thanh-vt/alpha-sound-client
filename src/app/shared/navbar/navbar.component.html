@@ -51,15 +51,24 @@
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
           <div class="form-group">
-            <label for="exampleDropdownFormEmail1">Username</label>
-            <input formControlName="username" type="text" class="form-control" id="exampleDropdownFormEmail1" placeholder="username" >
+            <label for="exampleDropdownFormEmail1">{{ 'Username' | translate }}</label>
+            <input formControlName="username" type="text" class="form-control" id="exampleDropdownFormEmail1" [placeholder]="('Enter' | translate) + ' ' + ('Username' | translate)" >
+            <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('username').hasError('required') && (loginForm.get('username').touched || this.submitted)">
+              {{ 'Username' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('username').hasError('minlength') && (loginForm.get('username').touched || this.submitted)">
+              {{ 'Username' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 6 '}}{{ 'characters' | translate }}{{'!'}}
+            </div>
           </div>
           <div class="form-group">
-            <label for="exampleDropdownFormPassword1">Password</label>
-            <input formControlName="password" type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password" >
-          </div>
-          <div class="alert alert-danger" role="alert" *ngIf="loginForm.invalid && submitted">
-            Fields must be filled in!
+            <label for="exampleDropdownFormPassword1">{{ 'Password' | translate }}</label>
+            <input formControlName="password" type="password" class="form-control" id="exampleDropdownFormPassword1" [placeholder]="('Enter' | translate) + ' ' + ('Password' | translate)">
+            <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('password').hasError('required') && (loginForm.get('password').touched || this.submitted)">
+              {{ 'Password' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="loginForm.get('password').hasError('minlength') && (loginForm.get('password').touched || this.submitted)">
+              {{ 'Password' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 6 '}}{{ 'characters' | translate }}{{'!'}}
+            </div>
           </div>
           <div class="alert alert-danger" role="alert" *ngIf="message">
             {{ message }}
@@ -72,12 +81,12 @@
 <!--          </div>-->
           <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            <span>{{ 'Sign in' | translate }}</span>
+            <span>{{ 'Sign In' | translate }}</span>
           </button>
         </form>
         <div class="dropdown-divider"></div>
         <button ngbDropdownItem><a ngbDropdownItem class="dropdown-item" [routerLink]="['/register']">{{ 'New around here? Sign up' | translate}}</a></button>
-        <button ngbDropdownItem>Forgot password?</button>
+        <button ngbDropdownItem>{{ 'Forgot password?' | translate }}</button>
       </div>
     </div>
     <div class="d-inline-block">

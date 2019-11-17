@@ -7,14 +7,14 @@
       <form [formGroup]="albumForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="albumTitle">{{ 'Title' | translate }}</label>
-          <input type="text" class="form-control" id="albumTitle" placeholder="Enter album title" formControlName="title">
+          <input type="text" class="form-control" id="albumTitle" [placeholder]="('Enter' | translate) + ' ' + ('Album title' | translate)" formControlName="title">
         </div>
         <label>{{ 'Artist' | translate }}</label>
         <div formArrayName="artists"
              *ngFor="let artist of getAlbumArtists().controls; let i = index;">
           <div [formGroupName]="i" >
             <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
-              <input (focus)="suggestAlbumArtist(i)" class="form-control" matInput [matAutocomplete]="autoAlbum" aria-label="Song" id="albumArtistName" type="text" [formControl]="getAlbumArtists().controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+              <input (focus)="suggestAlbumArtist(i)" class="form-control" matInput [matAutocomplete]="autoAlbum" aria-label="Song" id="albumArtistName" type="text" [formControl]="getAlbumArtists().controls[i]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
               <mat-autocomplete #autoAlbum="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngIf="isAlbumLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                 <ng-container *ngIf="!isAlbumLoading">
@@ -36,8 +36,8 @@
         <div class="form-group">
           <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="albumCover" placeholder="Upload album cover" (change)="selectImage($event)">
-            <label class="custom-file-label" for="albumCover" *ngIf=!isImageFileChosen>Choose file</label>
+            <input type="file" class="custom-file-input" id="albumCover" [placeholder]="'Image File' | translate" (change)="selectImage($event)">
+            <label class="custom-file-label" for="albumCover" *ngIf=!isImageFileChosen>{{ 'Choose File' | translate }}</label>
             <label class="custom-file-label" for="albumCover" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
           </div>
         </div>
@@ -77,7 +77,7 @@
                  *ngFor="let artist of getSongArtists(j).controls; let k = index;">
               <div [formGroupName]="k">
                 <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
-                  <input (focus)="suggestSongArtist(j, k)" matInput [matAutocomplete]="autoSong" class="form-control" aria-label="Song" type="text" [formControl]="getSongArtists(j).controls[k]" [placeholder]="'Artist ' + (k + 1) + ' name'">
+                  <input (focus)="suggestSongArtist(j, k)" matInput [matAutocomplete]="autoSong" class="form-control" aria-label="Song" type="text" [formControl]="getSongArtists(j).controls[k]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
                   <mat-autocomplete #autoSong="matAutocomplete" [displayWith]="displayFn">
                     <mat-option *ngIf="isSongLoading[j][k]" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                     <ng-container *ngIf="!isSongLoading[j][k]">
@@ -95,7 +95,7 @@
           </div>
           <div class="form-group">
             <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-            <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+            <input type="date" class="form-control" id="releaseDate" [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)" formControlName="releaseDate">
           </div>
           <div class="form-group">
             <label for="audio">{{ 'Audio File' | translate }}</label>

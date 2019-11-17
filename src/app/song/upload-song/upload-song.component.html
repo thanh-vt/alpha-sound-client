@@ -6,10 +6,10 @@
     <form [formGroup]="songUploadForm" (ngSubmit)="upload()">
       <div class="form-group">
         <label for="songTitle">{{ 'Title' | translate }}</label>
-        <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
+        <input type="text" class="form-control" id="songTitle" [placeholder]="('Enter' | translate) + ' ' + ('Song title' | translate)" formControlName="title">
         <div class="alert alert-danger" role="alert"
-             *ngIf="songUploadForm.get('title').hasError('required') && songUploadForm.get('title').touched">
-          Must be filled!
+             *ngIf="songUploadForm.get('title').hasError('required') && (songUploadForm.get('title').touched || this.submitted)">
+          {{ 'Title' | translate }}{{' '}}{{ 'must be filled!' | translate}}
         </div>
       </div>
       <label>{{ 'Artist' | translate }} </label>
@@ -17,7 +17,7 @@
            *ngFor="let artist of artists.controls; let i = index;">
         <div [formGroupName]="i">
           <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
-            <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" class="form-control" aria-label="Song" type="text" [formControl]="artists.controls[i]" [placeholder]="'Artist ' + (i + 1) + ' name'">
+            <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" class="form-control" aria-label="Song" type="text" [formControl]="artists.controls[i]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
               <ng-container *ngIf="!isLoading">
@@ -36,15 +36,15 @@
 
       <div class="form-group">
         <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-        <input type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
+        <input type="date" class="form-control" id="releaseDate" [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)" formControlName="releaseDate">
         <div class="alert alert-danger" role="alert"
-             *ngIf="songUploadForm.get('releaseDate').hasError('required') && songUploadForm.get('releaseDate').touched">
-          Must be filled!
+             *ngIf="songUploadForm.get('releaseDate').hasError('required') && (songUploadForm.get('releaseDate').touched || this.submitted)">
+          {{ 'Release Date' | translate }}{{' '}}{{ 'must be picked!' | translate}}
         </div>
       </div>
       <div class="form-group">
         <label for="tags">{{ 'Tags' | translate }}</label>
-        <input type="text" class="form-control" id="tags" placeholder="Multiple tags separated by commas" formControlName="tags">
+        <input type="text" class="form-control" id="tags" [placeholder]="'Multiple tags separated by commas' | translate" formControlName="tags">
       </div>
       <label for="audio">{{ 'Audio File' | translate}}</label>
       <div class="form-group custom-file">

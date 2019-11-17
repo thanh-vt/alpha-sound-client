@@ -1,9 +1,9 @@
-<app-create-playlist (createPlaylist)="createPlaylist()" class="modal-body"></app-create-playlist>
+<app-create-playlist (createPlaylist)="refreshPlaylistList()" class="modal-body"></app-create-playlist>
 <table class="table table-striped">
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col" id="name">Title</th>
+    <th scope="col" id="name">{{ 'Title' | translate }}</th>
     <th scope="col"></th>
   </tr>
   </thead>
@@ -18,4 +18,5 @@
   </tr>
   </tbody>
 </table>
+<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
 

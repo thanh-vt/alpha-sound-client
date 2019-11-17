@@ -8,6 +8,7 @@ import {User} from '../../model/user';
 import {UserService} from '../../service/user.service';
 import {SongService} from '../../service/song.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-album-list',
@@ -41,7 +42,11 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   }
 
   goToPage(i) {
-    this.subscription.add(this.albumService.albumList(i, undefined).subscribe(
+    this.subscription.add(this.albumService.albumList(i, undefined)
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
       result => {
         if (result != null) {
           window.scroll(0, 0);
@@ -59,15 +64,14 @@ export class AlbumListComponent implements OnInit, OnDestroy {
           }
         }
       }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-      }, () => {
-        this.loading = false;
+          this.message = 'An error has occurred.';
+          console.log(error.message);
       }
     ));
   }
 
   addToPlaying(song) {
-    this.playingQueueService.addToQueue(song)
+    this.playingQueueService.addToQueue(song);
   }
 
   addAllToPlaying(albumId: number) {

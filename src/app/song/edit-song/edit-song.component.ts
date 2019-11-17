@@ -99,7 +99,8 @@ export class EditSongComponent implements OnInit, OnDestroy {
                 ).subscribe(artists => this.filteredArtists = artists);
             }
           }, error => {
-            console.log(error);
+            this.message = 'An error has occurred.';
+            console.log(error.message);
           }
         );
       }

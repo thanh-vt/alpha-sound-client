@@ -13,6 +13,7 @@ import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 
 
 @Component({
@@ -53,7 +54,11 @@ export class SongDetailComponent implements OnInit, OnDestroy {
       params => {
         this.songId = params.id;
         this.loading = true;
-        this.subscription.add(this.songService.songDetail(this.songId).subscribe(
+        this.subscription.add(this.songService.songDetail(this.songId)
+          .pipe(finalize(() => {
+            this.loading = false;
+          }))
+          .subscribe(
           result => {
             window.scroll(0, 0);
             this.song = result;
@@ -61,9 +66,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.commentList = this.song.comments;
             this.checkDisabledSong(this.song);
           }, error => {
-            this.message = 'Cannot retrieve Song . Cause: ' + error.message;
-          }, () => {
-            this.loading = false;
+            this.message = 'An error has occurred.';
+            console.log(error.message);
           }
         ));
       }));

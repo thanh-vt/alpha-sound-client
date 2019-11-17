@@ -3,6 +3,7 @@ import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {finalize} from 'rxjs/operators';
 @Component({
   selector: 'app-playlist-list',
   templateUrl: './playlist-list.component.html',
@@ -17,37 +18,16 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   constructor(private playlistService: PlaylistService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
-      result => {
-        if (result != null) {
-          this.playlistList = result.content;
-          this.playlistList.forEach((value, index) => {
-            this.playlistList[index].isDisabled = false;
-          });
-        }
-      }, error => {
-        this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
-      }
-    ));
-  }
-
-  createPlaylist() {
-    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
-      result => {
-        if (result != null) {
-          this.playlistList = result.content;
-          this.playlistList.forEach((value, index) => {
-            this.playlistList[index].isDisabled = false;
-          });
-        }
-      }, error => {
-        this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
-      }
-    ));
+    this.refreshPlaylistList();
   }
 
   refreshPlaylistList() {
-    this.subscription.add(this.playlistService.getPlaylistList().subscribe(
+    this.loading = true;
+    this.subscription.add(this.playlistService.getPlaylistList()
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
       result => {
         if (result != null) {
           this.playlistList = result.content;
@@ -58,7 +38,8 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
           this.playlistList = null;
         }
       }, error => {
-        this.message = 'Cannot retrieve Playlist list. Cause: ' + error.message;
+          this.message = 'An error has occurred.';
+          console.log(error.message);
       }
     ));
   }
