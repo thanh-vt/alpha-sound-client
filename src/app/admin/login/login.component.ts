@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   message: string;
   error = false;
   returnUrl: string;
+  userId: number;
   subscription: Subscription = new Subscription();
 
   // tslint:disable-next-line:max-line-length
@@ -50,8 +51,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     this.subscription.add(this.authService.login(this.adminLoginForm.value).subscribe(
-      () => {
-        this.userService.getProfile(this.currentUser.id).subscribe(
+      (next) => {
+        this.userId = next.userId;
+        this.userService.getProfile(this.userId).subscribe(
           currentUser => {
             let hasRoleAdmin = false;
             const roleList = currentUser.roles;
