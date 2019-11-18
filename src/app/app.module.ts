@@ -24,7 +24,7 @@ import {registerLocaleData} from '@angular/common';
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
 
-const JwtModuleOptions: JwtModuleOptions = {
+const JWT_Module_Options: JwtModuleOptions = {
   config: {
     // tokenGetter: yourTokenGetter,
     // whitelistedDomains: yourWhitelistedDomains
