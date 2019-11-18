@@ -18,24 +18,7 @@
         <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> {{ 'Artist' | translate }}</h3></a>
       </li>
     </ul>
-  </div>
 
-  <div>
-    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
-      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
-        <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
-        <span> {{ currentUser.username }}</span>
-      </button>
-      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile']"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"><span><i class="fas fa-headphones-alt"></i> {{ 'Playlist' | translate }}</span></a>
-        <div class="dropdown-divider"></div>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']"><i class="fas fa-upload"></i> {{ 'Uploaded' | translate }}</a>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']"><i class="fab fa-gratipay"></i> {{ 'Favorites' | translate }}</a>
-        <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true"><i class="fas fa-sign-out-alt"></i> {{ 'Sign Out' | translate }}</a>
-      </div>
-    </div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
       <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-upload"></i>
@@ -73,12 +56,12 @@
           <div class="alert alert-danger" role="alert" *ngIf="message">
             {{ message }}
           </div>
-<!--          <div class="form-check">-->
-<!--            <input type="checkbox" class="form-check-input" id="dropdownCheck">-->
-<!--            <label class="form-check-label" for="dropdownCheck">-->
-<!--              Remember me-->
-<!--            </label>-->
-<!--          </div>-->
+          <!--          <div class="form-check">-->
+          <!--            <input type="checkbox" class="form-check-input" id="dropdownCheck">-->
+          <!--            <label class="form-check-label" for="dropdownCheck">-->
+          <!--              Remember me-->
+          <!--            </label>-->
+          <!--          </div>-->
           <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             <span>{{ 'Sign In' | translate }}</span>
@@ -91,9 +74,27 @@
     </div>
     <div class="d-inline-block">
       <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
-        <input class="form-control" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText">
-        <button type="submit" class="btn btn-info mx-2 form-inline"><i class="fas fa-search"></i></button>
+        <input class="form-control" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 15rem;">
+        <button type="submit" class="btn btn-info mx-2"><i class="fas fa-search"></i></button>
       </form>
+    </div>
+  </div>
+
+  <div>
+    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
+      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
+        <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
+        <span> {{ currentUser.username }}</span>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile']"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"><span><i class="fas fa-headphones-alt"></i> {{ 'Playlist' | translate }}</span></a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']"><i class="fas fa-upload"></i> {{ 'Uploaded' | translate }}</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']"><i class="fab fa-gratipay"></i> {{ 'Favorites' | translate }}</a>
+        <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true"><i class="fas fa-sign-out-alt"></i> {{ 'Sign Out' | translate }}</a>
+      </div>
     </div>
     <div class="d-inline-block">
       <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded">{{ 'Language' | translate }}
