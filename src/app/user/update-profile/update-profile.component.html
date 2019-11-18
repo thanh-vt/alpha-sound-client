@@ -1,7 +1,7 @@
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser">
   <div class="form-group">
     <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'First Name' | translate }}</label>
-    <input id="firstName" type="text" [placeholder]="('Enter' | translate) + ' ' + ('Username' | translate)" formControlName="firstName" class="form-control"/>
+    <input id="firstName" type="text" [placeholder]="('Enter' | translate) + ' ' + ('First Name' | translate)" formControlName="firstName" class="form-control"/>
     <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('required') && (updateForm.get('firstName').touched || this.submitted)">
       {{ 'First Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
     </div>

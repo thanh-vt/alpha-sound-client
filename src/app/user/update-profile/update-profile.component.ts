@@ -43,7 +43,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this.updateForm = this.fb.group({
       username: [this.currentUser.username],
       // tslint:disable-next-line:max-line-length
-      password: [this.currentUser.password, [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$')]],
+      password: [this.currentUser.password],
       firstName: [this.currentUser.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       lastName: [this.currentUser.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       phoneNumber: [this.currentUser.phoneNumber, Validators.required],
@@ -90,6 +90,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.formData.append('avatar', this.file);
+    console.log(this.updateForm);
     if (this.updateForm.valid) {
       this.subscription.add(this.userService.updateProfile(this.updateForm.value)
         .pipe(finalize(() => {

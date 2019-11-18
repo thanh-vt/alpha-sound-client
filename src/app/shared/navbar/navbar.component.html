@@ -18,31 +18,30 @@
         <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> {{ 'Artist' | translate }}</h3></a>
       </li>
     </ul>
+    <div class="search_upload">
+      <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser" >
+        <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-upload"></i>
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
+          <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">{{ 'Upload Song' | translate }}</a>
+          <div class="dropdown-divider"></div>
+          <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">{{ 'Upload Album' | translate }}</a>
+        </div>
+      </div>
 
-    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
-      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-upload"></i>
-      </button>
-      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">{{ 'Upload Song' | translate }}</a>
-        <div class="dropdown-divider"></div>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">{{ 'Upload Album' | translate }}</a>
+      <div class="d-inline-block mr-sm-2">
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
+          <input class="form-control" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
+          <button type="submit" class="btn btn-info mx-2"><i class="fas fa-search"></i></button>
+        </form>
       </div>
     </div>
-
-    <div class="d-inline-block m-1">
-      <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
-        <input class="form-control" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
-        <button type="submit" class="btn btn-info mx-2"><i class="fas fa-search"></i></button>
-      </form>
     </div>
-  </div>
-
   <div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!currentUser">
       <button class="btn btn-info" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownForm1">
-        <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
+      <div ngbDropdownMenu aria-labelledby="dropdownForm1">s="      <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
           <div class="form-group">
             <label for="exampleDropdownFormEmail1">{{ 'Username' | translate }}</label>
             <input formControlName="username" type="text" class="form-control" id="exampleDropdownFormEmail1" [placeholder]="('Enter' | translate) + ' ' + ('Username' | translate)" >
