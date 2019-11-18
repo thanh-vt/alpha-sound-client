@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Song} from '../../model/song';
-import {SongService} from '../../service/song.service';
+import {SongService} from '../../services/song.service';
 import {Page} from '../../model/page';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {PlaylistService} from '../../service/playlist.service';
+import {PlayingQueueService} from '../../services/playing-queue.service';
+import {PlaylistService} from '../../services/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {UserToken} from '../../model/userToken';
-import {AuthService} from '../../service/auth.service';
+import {AuthService} from '../../services/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';

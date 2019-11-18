@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../../service/auth.service';
-import {UserService} from '../../service/user.service';
+import {AuthService} from '../../services/auth.service';
+import {UserService} from '../../services/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserToken} from '../../model/userToken';

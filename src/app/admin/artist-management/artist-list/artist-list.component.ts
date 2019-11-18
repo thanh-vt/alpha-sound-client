@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
+import {ArtistService} from '../../../services/artist.service';
 import {Artist} from '../../../model/artist';
 import {Subscription} from 'rxjs';
 

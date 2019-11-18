@@ -72,7 +72,7 @@
       </div>
       <div class="form-group">
         <label for="email"><i class="fas fa-envelope-square"> Email</i></label>
-        <input id="email" type="text" formControlName="email" class="form-control"/>
+        <input id="email" type="text" [placeholder]="('Enter' | translate) + ' email'" formControlName="email" class="form-control"/>
         <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('email').hasError('email') && (registerForm.get('email').touched || this.submitted)">
           {{ 'Not a valid Email' | translate }}
         </div>

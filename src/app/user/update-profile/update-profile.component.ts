@@ -1,13 +1,14 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {UserService} from '../../service/user.service';
+import {AuthService} from '../../services/auth.service';
+import {UserService} from '../../services/user.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Progress} from '../../model/progress';
 import {User} from '../../model/user';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-update-profile',
@@ -90,7 +91,15 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.formData.append('avatar', this.file);
     if (this.updateForm.valid) {
-      this.subscription.add(this.userService.updateProfile(this.updateForm.value).subscribe(
+      this.subscription.add(this.userService.updateProfile(this.updateForm.value)
+        .pipe(finalize(() => {
+          this.subscription.add(this.userService.getProfile(this.currentUser.id).subscribe(
+            currentUser => {
+              this.currentUser = currentUser;
+            }
+          ));
+        }))
+        .subscribe(
         () => {
           this.error = false;
           this.message = 'Profile updated successfully.';
@@ -106,16 +115,11 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
               error => {
                 this.error = true;
                 this.message = 'Failed to upload avatar.';
+                console.log(error);
               }, () => {
-                this.userService.setProfile();
+                this.userService.setProfile(this.currentUser.id);
               }
             ));
-          } else {
-            this.userService.getProfile().subscribe(
-              currentUser => {
-                this.currentUser = currentUser;
-              }
-            );
           }
         },
         error => {

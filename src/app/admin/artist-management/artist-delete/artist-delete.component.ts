@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
+import {ArtistService} from '../../../services/artist.service';
 import {Subscription} from 'rxjs';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder} from '@angular/forms';
-import {AuthService} from '../../../service/auth.service';
+import {AuthService} from '../../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Song} from '../../../model/song';
 import {Subscription} from 'rxjs';
-import {SongService} from '../../../service/song.service';
+import {SongService} from '../../../services/song.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({

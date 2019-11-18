@@ -11,7 +11,7 @@ import {JwtInterceptor} from './helper/jwt.interceptor';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
-import {PlayingQueueService} from './service/playing-queue.service';
+import {PlayingQueueService} from './services/playing-queue.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 import {AdminModule} from './admin/admin.module';
 import {ErrorInterceptor} from './helper/error.interceptor';
@@ -24,7 +24,7 @@ import {registerLocaleData} from '@angular/common';
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
 
-const JWT_Module_Options: JwtModuleOptions = {
+const JwtModuleOptions: JwtModuleOptions = {
   config: {
     // tokenGetter: yourTokenGetter,
     // whitelistedDomains: yourWhitelistedDomains

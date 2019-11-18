@@ -17,8 +17,8 @@ export class UserService {
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.update.subscribe(
       (action) => {
-        if (action === 'login') {
-          this.setProfile();
+        if (action[0] === 'login') {
+          this.setProfile(action[1]);
         } else {
           localStorage.removeItem('user');
           this.currentUserSubject.next(null);
@@ -27,16 +27,16 @@ export class UserService {
     );
   }
 
-  setProfile() {
-    this.http.get<User>(`${environment.apiUrl}/profile`).subscribe(
+  setProfile(userId: number) {
+    this.http.get<User>(`${environment.apiUrl}/profile/${userId}`).subscribe(
       user => {
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
       });
   }
 
-  getProfile(): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/profile`);
+  getProfile(userId: number): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/profile/${userId}`);
   }
 
   register(formGroup): Observable<HttpEvent<any>> {

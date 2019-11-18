@@ -11,7 +11,7 @@ import {map} from 'rxjs/operators';
 export class AuthService {
   private currentUserTokenSubject: BehaviorSubject<UserToken>;
   public currentUserToken: Observable<UserToken>;
-  update = new EventEmitter<string>();
+  update = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {
     this.currentUserTokenSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken')));
@@ -23,11 +23,11 @@ export class AuthService {
   }
 
   login(loginForm) {
-    return this.http.post<any>(`${environment.apiUrl}/login`, loginForm).pipe(map(userToken => {
+    return this.http.post<UserToken>(`${environment.apiUrl}/login`, loginForm).pipe(map(userToken => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('userToken', JSON.stringify(userToken));
       this.currentUserTokenSubject.next(userToken);
-      this.update.emit('login');
+      this.update.emit(['login', userToken.userId]);
       return userToken;
     }));
   }

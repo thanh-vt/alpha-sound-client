@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AudioUploadService} from '../../service/audio-upload.service';
+import {AudioUploadService} from '../../services/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Artist} from '../../model/artist';
-import {ArtistService} from '../../service/artist.service';
+import {ArtistService} from '../../services/artist.service';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {Progress} from '../../model/progress';

@@ -89,7 +89,7 @@
         <span> {{ currentUser.username }}</span>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile']"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUser.id]"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"><span><i class="fas fa-headphones-alt"></i> {{ 'Playlist' | translate }}</span></a>
         <div class="dropdown-divider"></div>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']"><i class="fas fa-upload"></i> {{ 'Uploaded' | translate }}</a>
@@ -99,7 +99,7 @@
     </div>
     <div class="d-inline-block">
       <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded">{{ 'Language' | translate }}
-        <select class="custom-select mr-sm-2 ml-sm-1" name="" id="language" #language (change)="translatePage()" style="width: 8rem">
+        <select class="custom-select mr-sm-2 ml-sm-1" name="" id="language" #language (change)="translatePage()" style="width: 6rem">
           <option [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
           <option [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
         </select>

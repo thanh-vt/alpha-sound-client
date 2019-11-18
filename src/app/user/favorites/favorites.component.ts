@@ -5,10 +5,10 @@ import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
 import {Playlist} from '../../model/playlist';
 import {UserComponent} from '../user/user.component';
-import {SongService} from '../../service/song.service';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {PlaylistService} from '../../service/playlist.service';
-import {UserService} from '../../service/user.service';
+import {SongService} from '../../services/song.service';
+import {PlayingQueueService} from '../../services/playing-queue.service';
+import {PlaylistService} from '../../services/playlist.service';
+import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

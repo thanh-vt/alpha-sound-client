@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
+import {AuthService} from '../../services/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
 import {UserToken} from '../../model/userToken';
 import {User} from '../../model/user';
-import {UserService} from '../../service/user.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-admin',

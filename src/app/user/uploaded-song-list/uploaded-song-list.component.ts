@@ -4,9 +4,9 @@ import {Song} from '../../model/song';
 import {Subscription} from 'rxjs';
 import {Playlist} from '../../model/playlist';
 import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
-import {SongService} from '../../service/song.service';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {PlaylistService} from '../../service/playlist.service';
+import {SongService} from '../../services/song.service';
+import {PlayingQueueService} from '../../services/playing-queue.service';
+import {PlaylistService} from '../../services/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

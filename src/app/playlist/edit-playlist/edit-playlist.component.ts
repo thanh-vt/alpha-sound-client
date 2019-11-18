@@ -3,8 +3,8 @@ import {Subscription} from 'rxjs';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {PlaylistService} from '../../service/playlist.service';
+import {AuthService} from '../../services/auth.service';
+import {PlaylistService} from '../../services/playlist.service';
 
 @Component({
   selector: 'app-edit-playlist',

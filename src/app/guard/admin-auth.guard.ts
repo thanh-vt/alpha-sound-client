@@ -11,8 +11,8 @@ import {
 } from '@angular/router';
 
 import {User} from '../model/user';
-import {UserService} from '../service/user.service';
-import {AuthService} from '../service/auth.service';
+import {UserService} from '../services/user.service';
+import {AuthService} from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'

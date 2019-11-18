@@ -1,17 +1,17 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {SongService} from '../../service/song.service';
+import {AuthService} from '../../services/auth.service';
+import {SongService} from '../../services/song.service';
 import {Artist} from '../../model/artist';
 import {Song} from '../../model/song';
 import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
 import {User} from '../../model/user';
-import {UserService} from '../../service/user.service';
+import {UserService} from '../../services/user.service';
 import {Playlist} from '../../model/playlist';
-import {PlaylistService} from '../../service/playlist.service';
-import {PlayingQueueService} from '../../service/playing-queue.service';
+import {PlaylistService} from '../../services/playlist.service';
+import {PlayingQueueService} from '../../services/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 
@@ -50,6 +50,10 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     this.commentForm = this.fb.group({
       content: ['']
     });
+    this.retrieveSongList();
+  }
+
+  retrieveSongList() {
     this.subscription.add(this.route.queryParams.subscribe(
       params => {
         this.songId = params.id;
@@ -59,17 +63,17 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.loading = false;
           }))
           .subscribe(
-          result => {
-            window.scroll(0, 0);
-            this.song = result;
-            this.artistList = this.song.artists;
-            this.commentList = this.song.comments;
-            this.checkDisabledSong(this.song);
-          }, error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
-          }
-        ));
+            result => {
+              window.scroll(0, 0);
+              this.song = result;
+              this.artistList = this.song.artists;
+              this.commentList = this.song.comments;
+              this.checkDisabledSong(this.song);
+            }, error => {
+              this.message = 'An error has occurred.';
+              console.log(error.message);
+            }
+          ));
       }));
   }
 
@@ -158,5 +162,16 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  deleteComment(commentId: number) {
+    this.songService.deleteComment(commentId).subscribe(
+      next => {
+        this.retrieveSongList();
+      }, error => {
+        this.message = 'Cannot delete comment';
+        console.log(error.message);
+      }
+    );
   }
 }

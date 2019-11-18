@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
+import {ArtistService} from '../../../services/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {HttpEvent, HttpEventType} from '@angular/common/http';

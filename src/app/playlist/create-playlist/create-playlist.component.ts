@@ -2,8 +2,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {PlaylistService} from '../../service/playlist.service';
+import {AuthService} from '../../services/auth.service';
+import {PlaylistService} from '../../services/playlist.service';
 import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-create-playlist',

@@ -2,12 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {ArtistService} from '../../service/artist.service';
-import {SongService} from '../../service/song.service';
-import {PlaylistService} from '../../service/playlist.service';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {UserService} from '../../service/user.service';
+import {AuthService} from '../../services/auth.service';
+import {ArtistService} from '../../services/artist.service';
+import {SongService} from '../../services/song.service';
+import {PlaylistService} from '../../services/playlist.service';
+import {PlayingQueueService} from '../../services/playing-queue.service';
+import {UserService} from '../../services/user.service';
 import {User} from '../../model/user';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -21,6 +21,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   message: string;
   loading: boolean;
   showEditForm = false;
+  userId: number;
+  user: User;
   subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
@@ -35,6 +37,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.userId = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+    this.userService.getProfile(this.userId).subscribe(
+      next => {
+        this.user = next;
+      }, error => {
+        this.message = 'Cannot retrieve user information.';
+        console.log(error.message);
+      }
+    );
   }
 
   ngOnDestroy(): void {

@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: '', component: UserComponent, children: [
       { path: 'home', component: HomeComponent},
       { path: 'register', component: RegisterComponent},
-      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: 'profile/:id', component: ProfileComponent},
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},
       // tslint:disable-next-line:max-line-length

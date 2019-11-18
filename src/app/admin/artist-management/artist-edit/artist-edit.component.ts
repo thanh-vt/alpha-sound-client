@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
+import {ArtistService} from '../../../services/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../service/auth.service';
+import {AuthService} from '../../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Artist} from '../../../model/artist';

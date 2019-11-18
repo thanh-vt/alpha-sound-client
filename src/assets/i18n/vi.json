@@ -68,6 +68,7 @@
   "Enter": "Điền",
   "Pick": "Chọn",
   "Forgot password?": "Quên mật khẩu?",
+  "Cannot retrieve user information.": "Không thể lấy thông tin người dùng.",
 
   "Playlist saved successfully.": "Danh sách phát được tạo thành công!",
   "Failed to save playlist.": "Tạo danh sách phát thất bại.",
@@ -96,5 +97,5 @@
   "must have at least": "phải có tối thiểu",
   "can only contain up to": "chỉ có thể chứa tối đa",
   "characters": "ký tự",
-  "Not a valid Email": "Định dạng email không đúng"
+  "Not a valid Email": "Địa chỉ email không hợp lệ"
 }

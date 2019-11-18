@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UserToken} from '../../model/userToken';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {PlayingQueueService} from '../../service/playing-queue.service';
+import {AuthService} from '../../services/auth.service';
+import {PlayingQueueService} from '../../services/playing-queue.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',

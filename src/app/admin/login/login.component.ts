@@ -1,10 +1,10 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AdminService} from '../../service/admin.service';
+import {AdminService} from '../../services/admin.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {UserService} from '../../service/user.service';
+import {AuthService} from '../../services/auth.service';
+import {UserService} from '../../services/user.service';
 import {User} from '../../model/user';
 import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
 
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subscription.add(this.authService.login(this.adminLoginForm.value).subscribe(
       () => {
-        this.userService.getProfile().subscribe(
+        this.userService.getProfile(this.currentUser.id).subscribe(
           currentUser => {
             let hasRoleAdmin = false;
             const roleList = currentUser.roles;
