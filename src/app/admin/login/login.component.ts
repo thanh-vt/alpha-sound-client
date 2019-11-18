@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(localStorage);
     this.submitted = false;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/admin';
     this.adminLoginForm = this.fb.group({
