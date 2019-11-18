@@ -14,7 +14,7 @@
       </div>
       <label>{{ 'Artist' | translate }} </label>
       <div formArrayName="artists" class="form-group"
-           *ngFor="let artist of artists.controls; let i = index;">
+           *ngFor="let artistField of artists.controls; let i = index;">
         <div [formGroupName]="i">
           <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
             <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" class="form-control" aria-label="Song" type="text" [formControl]="artists.controls[i]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
@@ -29,7 +29,7 @@
             </mat-autocomplete>
           </mat-form-field>
           <div class="alert alert-danger" role="alert"
-               *ngIf="songUploadForm.get('artists').controls[i].hasError('required') && (songUploadForm.get('artists').controls[i].touched || this.submitted)">
+               *ngIf="artists.controls[i].hasError('required') && (artists.controls[i].touched || this.submitted)">
             {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
           </div>
           <button type="button" class="btn btn-info col-sm-1" (click)="addArtist()">+</button>

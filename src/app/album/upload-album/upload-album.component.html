@@ -30,7 +30,7 @@
               </mat-autocomplete>
             </mat-form-field>
             <div class="alert alert-danger" role="alert"
-                 *ngIf="albumForm.get('artists').controls[i].hasError('required') && (albumForm.get('artists').controls[i].touched || this.submitted)">
+                 *ngIf="getAlbumArtists().controls[i].hasError('required') && (getAlbumArtists().controls[i].touched || this.submitted)">
               {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
             </div>
             <button type="button" class="btn btn-info col-sm-1" (click)="addAlbumArtist()">+</button>
@@ -90,7 +90,7 @@
           <div class="form-group">
             <label>{{ 'Artist' | translate }}</label>
             <div formArrayName="artists" class="form-group"
-                 *ngFor="let artist of getSongArtists(j).controls; let k = index;">
+                 *ngFor="let artistField of getSongArtists(j).controls; let k = index;">
               <div [formGroupName]="k">
                 <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
                   <input (focus)="suggestSongArtist(j, k)" matInput [matAutocomplete]="autoSong" class="form-control" aria-label="Song" type="text" [formControl]="getSongArtists(j).controls[k]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
@@ -105,7 +105,7 @@
                   </mat-autocomplete>
                 </mat-form-field>
                 <div class="alert alert-danger" role="alert"
-                     *ngIf="songsForm[j].get('artists').controls[k].hasError('required') && (songsForm[j].get('artists').controls[k].touched || this.submitted)">
+                     *ngIf="getSongArtists(j).controls[k].hasError('required') && (getSongArtists(j).controls[k].touched || this.submitted)">
                   {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
                 </div>
                 <button type="button" class="btn btn-info col-sm-1" (click)="addSongArtist(j)">+</button>

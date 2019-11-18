@@ -40,7 +40,7 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   isSongLoading: [[boolean]] = [[false]];
   isAudioFileChosen: boolean[] = [];
   audioFileNames: string[] = [];
-  filteredSongArtist: Artist[] = [];
+  filteredSongArtist: [Artist[]] = [[]];
 
   subscription: Subscription = new Subscription();
 
