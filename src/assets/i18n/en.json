@@ -38,6 +38,7 @@
   "Biography": "Biography",
   "Select a playlist to add": "Select a playlist to add",
   "Create playlist": "Create playlist",
+  "Enter playlist title": "Enter playlist title",
   "Create new playlist": "Create new playlist",
   "Save": "Save",
   "Do you want to delete playlist": "Do you want to delete playlist",
@@ -87,7 +88,8 @@
   "Failed to upload avatar.": "Failed to upload Avatar.",
   "Song from playlist removed successfully.": "Song from playlist removed successfully.",
   "Failed to remove song playlist.": "Failed to remove song playlist.",
-  "Do you want to delete playlist song": "Do you want to delete playlist song",
+  "Are you sure that you want to remove from playlist song": "Do you want to remove from playlist song",
+  "Are you sure that you want to remove artist": "Are you sure that you want to remove from artist",
   "An error has occurred.": "An error has occurred.",
 
   "must be filled": "must be filled",

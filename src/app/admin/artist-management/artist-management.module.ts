@@ -11,6 +11,7 @@ import {ArtistDetailComponent} from './artist-detail/artist-detail.component';
 import {ArtistUploadComponent} from './artist-upload/artist-upload.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../../shared/shared.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {SharedModule} from '../../shared/shared.module';
     ArtistManagementRoutingModule,
     NgbDropdownModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ]
 })
 export class ArtistManagementModule {

@@ -10,7 +10,7 @@
       <div class="form-group">
         <label for="playlist">{{ 'Title' | translate }}</label>
         <div class="input-group">
-          <input id="playlist" class="form-control" placeholder="Enter playlist title" formControlName="title">
+          <input id="playlist" class="form-control" [placeholder]="'Enter playlist title' | translate" formControlName="title">
         </div>
       </div>
       <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-success]="!error" [class.alert-danger]="error">{{ message | translate }}</div>

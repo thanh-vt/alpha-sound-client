@@ -32,8 +32,8 @@ export class ArtistListComponent implements OnInit {
     );
   }
 
-  deleteArtist() {
-    // this.subscription.unsubscribe();
+  deleteArtist(event) {
+    event.stopPropagation();
     this.subscription = this.artistService.artistList().subscribe(
       result => {
         if (result != null) {

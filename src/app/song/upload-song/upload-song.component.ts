@@ -38,7 +38,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   static createArtist(): FormControl {
-    return new FormControl();
+    return new FormControl('', Validators.compose([Validators.required]));
   }
 
   get artists(): FormArray {
@@ -63,7 +63,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     this.songUploadForm = this.fb.group({
       title: ['', Validators.required],
       artists: this.fb.array([UploadSongComponent.createArtist()]),
-      releaseDate: ['', Validators.required],
+      releaseDate: ['', Validators.compose([Validators.required])],
       album: [null],
       genres: [null],
       tags: [null],

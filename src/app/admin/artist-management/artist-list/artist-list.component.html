@@ -3,9 +3,9 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col" id="name">Name</th>
-    <th scope="col" id="birthDate">Birth Date</th>
-    <th scope="col" >Avatar</th>
+    <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
+    <th scope="col" id="birthDate">{{ 'Birth Date' | translate }}</th>
+    <th scope="col" >{{ 'Avatar' | translate }}</th>
     <th></th>
     <th></th>
   </tr>
@@ -14,14 +14,14 @@
   <ng-container *ngIf="!artistList">
     <app-spinner></app-spinner>
   </ng-container>
-  <tr *ngFor="let artist of artistList; index as i">
+  <tr [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
     <td>{{ i + 1 }}</td>
     <td><a [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
     <td>{{artist.birthDate | date}}</td>
     <td><img [src]="artist.avatarUrl" class="img-thumbnail avatar" alt=""></td>
     <td>
-      <app-modal [body]="'Are you sure want to delete artist ' + artist.name" [action]="'delete'">
-        <app-artist-delete class="modal-footer" [id]="artist.id" [artistName]="artist.name" (deleteArtist)="deleteArtist()"></app-artist-delete>
+      <app-modal [body]="('Are you sure that you want to remove artist' | translate) + ' ' + artist.name" [action]="'delete'">
+        <app-artist-delete class="modal-footer" [id]="artist.id" [artistName]="artist.name" (deleteArtist)="deleteArtist($event)"></app-artist-delete>
       </app-modal>
     </td>
     <td><a [routerLink]="['/admin','artist','update-profile']" [queryParams]="{id: artist.id}">Edit</a></td>

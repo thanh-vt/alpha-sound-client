@@ -8,6 +8,10 @@
         <div class="form-group">
           <label for="albumTitle">{{ 'Title' | translate }}</label>
           <input type="text" class="form-control" id="albumTitle" [placeholder]="('Enter' | translate) + ' ' + ('Album title' | translate)" formControlName="title">
+          <div class="alert alert-danger" role="alert"
+               *ngIf="albumForm.get('title').hasError('required') && (albumForm.get('title').touched || this.submitted)">
+            {{ 'Title' | translate }}{{' '}}{{ 'must be filled' | translate}}
+          </div>
         </div>
         <label>{{ 'Artist' | translate }}</label>
         <div formArrayName="artists"
@@ -25,6 +29,10 @@
                 </ng-container>
               </mat-autocomplete>
             </mat-form-field>
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="albumForm.get('artists').controls[i].hasError('required') && (albumForm.get('artists').controls[i].touched || this.submitted)">
+              {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
+            </div>
             <button type="button" class="btn btn-info col-sm-1" (click)="addAlbumArtist()">+</button>
             <button type="button" class="btn btn-danger col-sm-1" (click)="removeAlbumArtist(i)" *ngIf="getAlbumArtists().controls.length > 1">-</button>
           </div>
@@ -32,6 +40,10 @@
         <div class="form-group">
           <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
           <input type="date" class="form-control" id="albumReleaseDate" placeholder="Release Date" formControlName="releaseDate">
+          <div class="alert alert-danger" role="alert"
+               *ngIf="albumForm.get('releaseDate').hasError('required') && (albumForm.get('releaseDate').touched || this.submitted)">
+            {{ 'Release Date' | translate }}{{' '}}{{ 'must be picked' | translate}}
+          </div>
         </div>
         <div class="form-group">
           <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>
@@ -69,7 +81,11 @@
         <form [formGroup]="songsForm[j]">
           <div class="form-group">
             <label for="songTitle">{{ 'Title' | translate }}</label>
-            <input type="text" class="form-control" id="songTitle" placeholder="Enter song name" formControlName="title">
+            <input type="text" class="form-control" id="songTitle" [placeholder]="('Enter' | translate) + ' ' + ('Song title' | translate)" formControlName="title">
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="songsForm[j].get('title').hasError('required') && (songsForm[j].get('title').touched || this.submitted)">
+              {{ 'Title' | translate }}{{' '}}{{ 'must be filled' | translate}}
+            </div>
           </div>
           <div class="form-group">
             <label>{{ 'Artist' | translate }}</label>
@@ -88,6 +104,10 @@
                     </ng-container>
                   </mat-autocomplete>
                 </mat-form-field>
+                <div class="alert alert-danger" role="alert"
+                     *ngIf="songsForm[j].get('artists').controls[k].hasError('required') && (songsForm[j].get('artists').controls[k].touched || this.submitted)">
+                  {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
+                </div>
                 <button type="button" class="btn btn-info col-sm-1" (click)="addSongArtist(j)">+</button>
                 <button type="button" class="btn btn-danger col-sm-1" (click)="removeSongArtist(j, k)" *ngIf="getSongArtists(j).controls.length > 1">-</button>
               </div>
@@ -96,6 +116,10 @@
           <div class="form-group">
             <label for="releaseDate">{{ 'Release Date' | translate }}</label>
             <input type="date" class="form-control" id="releaseDate" [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)" formControlName="releaseDate">
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="songsForm[j].get('releaseDate').hasError('required') && (songsForm[j].get('releaseDate').touched || this.submitted)">
+              {{ 'Release Date' | translate }}{{' '}}{{ 'must be picked' | translate}}
+            </div>
           </div>
           <div class="form-group">
             <label for="audio">{{ 'Audio File' | translate }}</label>

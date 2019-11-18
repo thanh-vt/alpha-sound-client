@@ -9,7 +9,7 @@
     <form [formGroup]="playlistEditForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="title">{{ 'Title' | translate}}</label>
-        <input class="form-control" type="text" id="title" placeholder="Enter playlist title" formControlName="title">
+        <input class="form-control" type="text" id="title" [placeholder]="'Enter playlist title' | translate" formControlName="title">
       </div>
     </form>
     <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error" [class.alert-success]="!error">{{ message | translate }}</div>

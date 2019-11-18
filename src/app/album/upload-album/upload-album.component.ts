@@ -90,18 +90,18 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
 
   ngOnInit() {
     this.albumForm = this.formBuilder.group({
-      title: [''],
-      artists: this.formBuilder.array([this.formBuilder.control(null)]),
-      releaseDate: [''],
+      title: ['', Validators.compose([Validators.required])],
+      artists: this.formBuilder.array([this.formBuilder.control(null, Validators.compose([Validators.required]))]),
+      releaseDate: ['', Validators.compose([Validators.required])],
       genres: [null],
       tags: [null],
       country: [null],
       theme: [null]
     });
     this.songsForm[0] = this.formBuilder.group({
-      title: [''],
-      artists: this.formBuilder.array([this.formBuilder.control(null)]),
-      releaseDate: [''],
+      title: ['', Validators.compose([Validators.required])],
+      artists: this.formBuilder.array([this.formBuilder.control(null, Validators.compose([Validators.required]))]),
+      releaseDate: ['', Validators.compose([Validators.required])],
       album: [null],
       genres: [null],
       tags: [null],
@@ -136,9 +136,9 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   addForm() {
     if (this.numbersOfSongForms < 20) {
       this.songsForm.splice(this.numbersOfSongForms, 1, new FormGroup({
-        title: new FormControl(''),
-        artists: this.formBuilder.array([this.formBuilder.control(null)]),
-        releaseDate: new FormControl(''),
+        title: new FormControl('', Validators.compose([Validators.required])),
+        artists: this.formBuilder.array([this.formBuilder.control(null, Validators.compose([Validators.required]))]),
+        releaseDate: new FormControl('', Validators.compose([Validators.required])),
         album: new FormControl(''),
         genres: new FormControl(null),
         tags: new FormControl(null),
