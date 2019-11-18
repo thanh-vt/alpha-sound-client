@@ -2,8 +2,8 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <div class="row">
-  <ng-container *ngFor="let album of albumList; index as i" >
-    <app-card [type]="1" class="col-3 py-2 text-center">
+  <div *ngFor="let album of albumList; index as i" >
+    <app-card [type]="1">
       <div class="lambda_card-header_1"><a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a></div>
       <div class="lambda_card-text_1 align-items-center">
         <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"><img [src]="album.coverUrl" alt=""/></a>
@@ -12,7 +12,7 @@
         <button (click)="addAllToPlaying(album.id)" class="btn btn-info" [disabled]="album.isDisabled"><i class="fas fa-play-circle"></i></button>
       </div>
     </app-card>
-  </ng-container>
+  </div>
 </div>
 <div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
 <nav>
