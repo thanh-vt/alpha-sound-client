@@ -7,6 +7,7 @@ import {UserToken} from '../../model/userToken';
 import {Subscription} from 'rxjs';
 import {User} from '../../model/user';
 import {TranslateService} from '@ngx-translate/core';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -59,14 +60,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // stop here if form is invalid
     if (this.loginForm.valid) {
       this.loading = true;
-      this.subscription.add(this.authService.login(this.loginForm.value).subscribe(
+      this.subscription.add(this.authService.login(this.loginForm.value)
+        .pipe(finalize(() => {
+          this.loading = false;
+        }))
+        .subscribe(
         () => {
           this.loading = false;
           this.router.navigate([this.returnUrl]);
         }, () => {
           this.message = 'Wrong username or password';
-        }, () => {
-          this.loading = false;
         }
       ));
     }
