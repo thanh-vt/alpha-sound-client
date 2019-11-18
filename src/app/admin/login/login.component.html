@@ -17,9 +17,9 @@
       {{ message }}
     </div>
     <button type="submit" class="btn btn-dark" [disabled]="adminLoginForm.invalid">
-      <span>Sign in</span>
+      <span>{{ 'Sign In' | translate }}</span>
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
     </button>
-    <div *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></div>
   </form>
 </div>
 

@@ -10,7 +10,7 @@
     <span *ngIf="body">{{ body }}</span>
   </div>
   <div class="modal-footer">
-    <ng-content select=".modal-footer"></ng-content>
+    <ng-content select=".modal_footer"></ng-content>
   </div>
 </ng-template>
 <button (click)="open(content, $event)" *ngIf="action=='delete'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>

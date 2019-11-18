@@ -39,7 +39,7 @@ export  function  HttpLoaderFactory(http: HttpClient) {
 // @ts-ignore
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

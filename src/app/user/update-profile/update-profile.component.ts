@@ -90,10 +90,11 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.formData.append('avatar', this.file);
-    console.log(this.updateForm);
     if (this.updateForm.valid) {
+      this.loading = true;
       this.subscription.add(this.userService.updateProfile(this.updateForm.value)
         .pipe(finalize(() => {
+          this.loading = false;
           this.subscription.add(this.userService.getProfile(this.currentUser.id).subscribe(
             currentUser => {
               this.currentUser = currentUser;

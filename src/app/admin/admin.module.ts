@@ -12,6 +12,7 @@ import {UserManagementModule} from './user-management/user-management.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [AdminComponent, DashboardComponent, LoginComponent],
@@ -24,7 +25,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     SharedModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ],
   exports: [AdminComponent, DashboardComponent, LoginComponent]
 })

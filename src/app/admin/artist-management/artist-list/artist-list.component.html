@@ -1,4 +1,4 @@
-<a class="btn btn-primary m-2" [routerLink]="['/admin','artist','upload']">Upload new artist</a>
+<app-create-artist></app-create-artist>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -17,7 +17,7 @@
   <tr [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
     <td>{{ i + 1 }}</td>
     <td><a [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
-    <td>{{artist.birthDate | date}}</td>
+    <td>{{ artist.birthDate | date: 'fullDate' : '' : translate.currentLang }}</td>
     <td><img [src]="artist.avatarUrl" class="img-thumbnail avatar" alt=""></td>
     <td>
       <app-modal [body]="('Are you sure that you want to remove artist' | translate) + ' ' + artist.name" [action]="'delete'">

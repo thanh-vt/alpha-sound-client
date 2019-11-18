@@ -6,6 +6,7 @@ import {ModalComponent} from '../../shared/modal/modal.component';
 import {UserToken} from '../../model/userToken';
 import {User} from '../../model/user';
 import {UserService} from '../../services/user.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin',
@@ -19,7 +20,11 @@ export class AdminComponent implements OnInit {
 
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
 
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
+              private userService: UserService, public translate: TranslateService) {
+    const currentLanguage = this.translate.getBrowserLang();
+    translate.setDefaultLang(currentLanguage);
+    translate.use(currentLanguage);
     this.userService.currentUser.subscribe(
       currentUser => {
         this.currentUser = currentUser;
