@@ -14,6 +14,7 @@ import {PlaylistService} from '../../services/playlist.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+import {CloseDialogueService} from '../../services/close-dialogue.service';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute,
               private router: Router, private authService: AuthService,
-              private songService: SongService, private userService: UserService,
+              private songService: SongService, private userService: UserService, private closeDialogueService: CloseDialogueService,
               // tslint:disable-next-line:max-line-length
               private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {
     this.userService.currentUser.subscribe(
@@ -165,13 +166,14 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   deleteComment(commentId: number) {
-    this.songService.deleteComment(commentId).subscribe(
+    this.subscription.add(this.songService.deleteComment(commentId).subscribe(
       next => {
+        this.closeDialogueService.emitCloseDeleteDialogue(true);
         this.retrieveSongList();
       }, error => {
         this.message = 'Cannot delete comment';
         console.log(error.message);
       }
-    );
+    ));
   }
 }

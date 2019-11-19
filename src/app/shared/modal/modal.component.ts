@@ -10,6 +10,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CloseDialogueService} from '../../services/close-dialogue.service';
 
 @Component({
   selector: 'app-modal',
@@ -17,7 +18,7 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ModalComponent implements OnInit, AfterViewInit, OnChanges {
+export class ModalComponent implements OnInit, OnChanges {
   @Input() isPoppedUp = false;
   @Input() title = '';
   @Input() body: string;
@@ -26,24 +27,17 @@ export class ModalComponent implements OnInit, AfterViewInit, OnChanges {
   closeResult: string;
   @ViewChild('content', {static: false}) content: ElementRef;
 
-  constructor(private modalService: NgbModal) {
-  }
-
-  ngAfterViewInit(): void {
-    if (this.isPoppedUp) {
-      // tslint:disable-next-line:max-line-length
-      this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static', keyboard: false, scrollable: true}).result.then(() => {
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-    }
+  constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService) {
+    this.closeDialogueService.deleteCommentDialogueSubjectValue.subscribe(
+      next => {
+        this.modalService.dismissAll();
+      }
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isPoppedUp) {
       this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true});
-    } else {
-      this.modalService.dismissAll();
     }
   }
 
