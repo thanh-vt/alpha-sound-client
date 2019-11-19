@@ -1,9 +1,8 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
-import {UserToken} from '../../model/userToken';
 import {User} from '../../model/user';
 import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
