@@ -59,6 +59,7 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
   addSongToPlaylist(songId: number, playlistId: number) {
     this.subscription.add(this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
       () => {
+        this.error = false;
         this.message = 'Song added to playlist';
         this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
           result => {
@@ -70,6 +71,7 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
           }
         ));
       }, error => {
+        this.error = true;
         this.message = 'Cannot add song to playlist. Cause: ' + error.message;
       }
     ));
