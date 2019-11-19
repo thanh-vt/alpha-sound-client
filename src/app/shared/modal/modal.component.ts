@@ -28,9 +28,12 @@ export class ModalComponent implements OnInit, OnChanges {
   @ViewChild('content', {static: false}) content: ElementRef;
 
   constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService) {
-    this.closeDialogueService.deleteCommentDialogueSubjectValue.subscribe(
+    this.closeDialogueService.closeDialogueSubjectValue.subscribe(
       next => {
-        this.modalService.dismissAll();
+        const closeAction = setTimeout(() => {
+          this.modalService.dismissAll();
+          clearTimeout(closeAction);
+        }, 1000);
       }
     );
   }

@@ -168,7 +168,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   deleteComment(commentId: number) {
     this.subscription.add(this.songService.deleteComment(commentId).subscribe(
       next => {
-        this.closeDialogueService.emitCloseDeleteDialogue(true);
+        this.closeDialogueService.emitCloseDialogue(true);
         this.retrieveSongList();
       }, error => {
         this.message = 'Cannot delete comment';

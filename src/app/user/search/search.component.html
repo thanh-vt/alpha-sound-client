@@ -1,3 +1,4 @@
+<h5>{{ 'Search result for:' | translate }}{{' \''}}{{searchText}}{{' \''}}</h5>
 <ngb-tabset #searchTab="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'">
   <ngb-tab id="songs">
     <ng-template ngbTabTitle><h5>{{ 'Song' | translate }} <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template>

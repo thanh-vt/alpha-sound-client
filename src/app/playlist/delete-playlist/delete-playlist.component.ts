@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {PlaylistService} from '../../services/playlist.service';
 import {Subscription} from 'rxjs';
+import {CloseDialogueService} from '../../services/close-dialogue.service';
 
 @Component({
   selector: 'app-delete-playlist',
@@ -23,7 +24,7 @@ export class DeletePlaylistComponent implements OnInit, OnDestroy {
   @Output() deletePlaylist = new EventEmitter();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
               private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private playlistService: PlaylistService) {}
+              private playlistService: PlaylistService, private closeDialogueService: CloseDialogueService) {}
 
   ngOnInit(): void {
     this.deleted = false;
@@ -55,6 +56,8 @@ export class DeletePlaylistComponent implements OnInit, OnDestroy {
         this.error = false;
         this.deleted = true;
         this.message = 'Playlist removed successfully.';
+        this.deletePlaylist.emit();
+        this.closeDialogueService.emitCloseDialogue(true);
       },
       error => {
         this.error = true;

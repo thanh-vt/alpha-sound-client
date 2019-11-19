@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
-import {EventEmitter} from 'events';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CloseDialogueService {
 
-  private deleteCommentDialogueSubject = new Subject();
-  public deleteCommentDialogueSubjectValue = this.deleteCommentDialogueSubject.asObservable();
+  private closeDialogueSubject = new Subject();
+  public closeDialogueSubjectValue = this.closeDialogueSubject.asObservable();
 
-  constructor() {
+  constructor() {}
 
-  }
-
-  emitCloseDeleteDialogue(change: any) {
-    this.deleteCommentDialogueSubject.next(change);
+  emitCloseDialogue(change: any) {
+    this.closeDialogueSubject.next(change);
   }
 }

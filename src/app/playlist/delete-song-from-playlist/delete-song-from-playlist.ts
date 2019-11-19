@@ -6,6 +6,7 @@ import {AuthService} from '../../services/auth.service';
 import {PlaylistService} from '../../services/playlist.service';
 import {SongService} from '../../services/song.service';
 import {environment} from '../../../environments/environment';
+import {CloseDialogueService} from '../../services/close-dialogue.service';
 
 @Component({
   selector: 'app-delete-playlist-song',
@@ -23,32 +24,13 @@ export class DeleteSongFromPlaylistComponent implements OnInit {
   message: string;
 
   constructor(private modalService: NgbModal, private fb: FormBuilder,
-              private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private songService: SongService) {
+              private route: ActivatedRoute, private router: Router,
+              private authService: AuthService, private songService: SongService,
+              private closeDialogueService: CloseDialogueService) {
   }
 
   ngOnInit(): void {
     this.deleted = false;
-  }
-
-  open(content, event) {
-    event.stopPropagation();
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-      this.message = '';
-    }, (reason) => {
-      this.deleteSongPlaylist.emit();
-      console.log(this.getDismissReason(reason));
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
   }
 
   onSubmit() {
@@ -57,7 +39,8 @@ export class DeleteSongFromPlaylistComponent implements OnInit {
         this.error = false;
         this.deleted = true;
         this.message = 'Song from playlist removed successfully.';
-        this.router.navigate(['/playlist/detail'], { queryParams: {id: this.playlistId}});
+        this.deleteSongPlaylist.emit();
+        this.closeDialogueService.emitCloseDialogue(true);
       },
       error => {
         this.error = true;
