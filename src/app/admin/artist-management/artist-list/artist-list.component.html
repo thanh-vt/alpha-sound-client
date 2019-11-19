@@ -20,11 +20,11 @@
     <td>{{ artist.birthDate | date: 'fullDate' : '' : translate.currentLang }}</td>
     <td><img [src]="artist.avatarUrl" class="img-thumbnail avatar" alt=""></td>
     <td>
-      <app-modal [body]="('Are you sure that you want to remove artist' | translate) + ' ' + artist.name" [action]="'delete'">
-        <app-artist-delete class="modal-footer" [id]="artist.id" [artistName]="artist.name" (deleteArtist)="deleteArtist($event)"></app-artist-delete>
-      </app-modal>
+      <app-artist-delete [artist]="artist" (deleteArtist)="deleteArtist($event)"></app-artist-delete>
     </td>
-    <td><a [routerLink]="['/admin','artist','update-profile']" [queryParams]="{id: artist.id}">Edit</a></td>
+    <td>
+      <app-artist-edit [artist]="artist"></app-artist-edit>
+    </td>
   </tr>
   </tbody>
 </table>

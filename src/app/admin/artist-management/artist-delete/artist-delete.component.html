@@ -1,9 +1,12 @@
-<div>
-  <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary">
-    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-    Delete
-  </button>
-  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-       [class.alert-success]="!error">{{message}}
+<app-modal [action]="'delete'">
+  <div class="modal-body">
+    <span>{{ 'Are you sure that you want to remove artist' | translate }}{{' '}}{{ artist.name }}</span>
+    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+         [class.alert-success]="!error">{{message}}
+    </div>
   </div>
-</div>
+  <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary modal_footer">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    {{ 'Remove' | translate}}
+  </button>
+</app-modal>

@@ -2,9 +2,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {ArtistService} from '../../../services/artist.service';
 import {Subscription} from 'rxjs';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormBuilder} from '@angular/forms';
-import {AuthService} from '../../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Artist} from '../../../model/artist';
 
 @Component({
   selector: 'app-artist-delete',
@@ -13,8 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ArtistDeleteComponent implements OnInit, OnDestroy {
   deleted: boolean;
-  @Input() artistName: string;
-  @Input() id: number;
+  @Input() artist: Artist;
   loading = false;
   message: string;
   error = false;
@@ -47,10 +45,9 @@ export class ArtistDeleteComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.subscription.add(
-      this.artistService.deleteArtist(this.id).subscribe(
+      this.artistService.deleteArtist(this.artist.id).subscribe(
       result => {
         this.deleteArtist.emit();
-        console.log(this.id);
         this.error = false;
         this.deleted = true;
         this.message = 'Artist deleted successfully!';

@@ -40,7 +40,7 @@
       <ng-container *ngIf="!!currentUser">
         <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add' | translate">
           <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
-          <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal-footer"></app-create-playlist>
+          <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal_footer"></app-create-playlist>
         </app-modal>
       </ng-container>
     </td>

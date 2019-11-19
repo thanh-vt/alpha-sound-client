@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ArtistService} from '../../../services/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../services/auth.service';
@@ -21,8 +21,7 @@ export class ArtistEditComponent implements OnInit {
   file: any;
   subscription: Subscription = new Subscription();
   message: string;
-  artist: Artist;
-  artistId: number;
+  @Input() artist: Artist;
   error = false;
   progress: Progress = {value: 0};
 
@@ -33,26 +32,10 @@ export class ArtistEditComponent implements OnInit {
 
   ngOnInit() {
     this.artistUpdateForm = this.fb.group({
-        name: ['', Validators.required],
-        birthDate: ['', Validators.required],
-        biography: ['', Validators.required]
-      }
-    );
-    this.route.queryParams.subscribe(
-      params => {
-        this.artistId = params.id;
-        this.artistService.getArtistDetail(this.artistId).subscribe(
-          result => {
-            this.artist = result;
-            this.artistUpdateForm = this.fb.group({
-              name: [this.artist.name, Validators.required],
-              birthDate: [this.artist.birthDate, Validators.required],
-              biography: [this.artist.biography, Validators.required]
-            });
-          }
-        );
-      }
-    );
+      name: [this.artist.name, Validators.required],
+      birthDate: [this.artist.birthDate, Validators.required],
+      biography: [this.artist.biography, Validators.required]
+    });
   }
 
   selectFile(event) {

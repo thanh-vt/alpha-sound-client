@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {SongService} from '../../../services/song.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Song} from '../../../model/song';
 
 @Component({
   selector: 'app-song-delete',
@@ -11,7 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class SongDeleteComponent implements OnInit, OnDestroy {
   deleted: boolean;
-  @Input() songTitle: string;
+  @Input() song: Song;
   @Input() id: number;
   loading = false;
   message: string;
@@ -45,7 +46,6 @@ export class SongDeleteComponent implements OnInit, OnDestroy {
       this.songService.deleteSong(this.id).subscribe(
         result => {
           this.deleteSong.emit();
-          console.log(this.id);
           this.error = false;
           this.deleted = true;
           this.message = 'Song deleted successfully!';
