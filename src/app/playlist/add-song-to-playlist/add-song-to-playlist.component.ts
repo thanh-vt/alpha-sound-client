@@ -19,6 +19,7 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
   message: string;
   loading: boolean;
   subscription: Subscription = new Subscription();
+  error: boolean;
 
   constructor(private modalService: NgbModal, private playlistService: PlaylistService, private translate: TranslateService) {}
 
@@ -61,8 +62,10 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
         this.message = 'Song added to playlist';
         this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
           result => {
+            this.error = false;
             this.playlistList = result;
           }, error1 => {
+            this.error = true;
             this.message = 'Cannot retrieve playlist list. Cause: ' + error1.message;
           }
         ));

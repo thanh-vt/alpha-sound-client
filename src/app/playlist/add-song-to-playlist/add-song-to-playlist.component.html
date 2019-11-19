@@ -6,4 +6,4 @@
     <a href="javascript:void(0);" (click)="addSongToPlaylist(songId, playlist.id)" class="list-group-item list-group-item-action">{{ playlist.title }}</a>
   </li>
 </ul>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
+<div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error" [class.alert-success]="error" >{{ message | translate }}</div>
