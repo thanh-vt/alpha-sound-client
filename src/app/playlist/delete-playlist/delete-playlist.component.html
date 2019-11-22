@@ -3,7 +3,7 @@
     <span *ngIf="!deleted">{{ 'Do you want to delete playlist' | translate}} {{ playlistName }}?</span>
     <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error" [class.alert-success]="!error">{{ message | translate }}</div>
   </div>
-  <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary modal_footer">
+  <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary rounded-pill modal_footer">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Remove' | translate }}
   </button>
 </app-modal>

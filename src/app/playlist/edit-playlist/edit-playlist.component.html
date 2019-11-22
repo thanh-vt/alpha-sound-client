@@ -9,7 +9,7 @@
         <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error" [class.alert-success]="!error">{{ message | translate }}</div>
       </div>
   <div class="modal_footer">
-    <button (click)=onSubmit() class="btn btn-primary">
+    <button (click)=onSubmit() class="btn btn-primary rounded-pill">
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Update' | translate }}
     </button>
   </div>

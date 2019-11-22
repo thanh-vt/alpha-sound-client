@@ -30,6 +30,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
   file: any;
   error = false;
   subscription: Subscription = new Subscription();
+  submitted: boolean;
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -142,24 +143,22 @@ export class EditSongComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.subscription.add(this.route.queryParams.subscribe(
-      params => {
-        this.songId = params.id;
-        this.subscription.add(
-          this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], {type: 'application/json'})));
-        this.formData.append('audio', this.file);
-        this.songService.updateSong(this.formData, this.songId).subscribe(
-          (event: HttpEvent<any>) => {
-            if (this.displayProgress(event, this.progress)) {
-              this.message = 'Song updated successfully!';
-            }
-          }, error => {
-            console.log(error.message);
-            this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+    this.submitted = true;
+    if (this.songUpdateForm.valid) {
+      this.subscription.add(
+        this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], {type: 'application/json'})));
+      this.formData.append('audio', this.file);
+      this.songService.updateSong(this.formData, this.songId).subscribe(
+        (event: HttpEvent<any>) => {
+          if (this.displayProgress(event, this.progress)) {
+            this.message = 'Song updated successfully!';
           }
-        );
-      }
-    ));
+        }, error => {
+          console.log(error.message);
+          this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+        }
+      );
+    }
   }
 
   suggestArtist(i) {

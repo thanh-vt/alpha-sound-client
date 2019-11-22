@@ -53,7 +53,7 @@
     <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
     <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
   </div>
-  <button [disabled]="loading" class="btn btn-primary my-2">
+  <button [disabled]="loading" class="btn btn-primary rounded-pill my-2 float-right">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
     <span>{{ 'Update' | translate }}</span>
   </button>

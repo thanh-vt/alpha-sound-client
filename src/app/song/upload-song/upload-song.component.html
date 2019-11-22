@@ -32,8 +32,8 @@
                *ngIf="artists.controls[i].hasError('required') && (artists.controls[i].touched || this.submitted)">
             {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
           </div>
-          <button type="button" class="btn btn-info col-sm-1" (click)="addArtist()">+</button>
-          <button type="button" class="btn btn-danger col-sm-1" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
+          <button type="button" class="btn btn-info rounded-pill col-sm-1" (click)="addArtist()">+</button>
+          <button type="button" class="btn btn-danger rounded-pill col-sm-1" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
           </button>
         </div>
       </div>
