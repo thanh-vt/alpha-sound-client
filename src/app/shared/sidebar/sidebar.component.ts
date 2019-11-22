@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Song} from '../../model/song';
+import {Song} from '../../models/song';
 import {ActivatedRoute} from '@angular/router';
 import {SongService} from '../../services/song.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';

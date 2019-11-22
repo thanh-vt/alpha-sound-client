@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {SongService} from '../../../services/song.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Song} from '../../../model/song';
+import {Song} from '../../../models/song';
 
 @Component({
   selector: 'app-song-delete',

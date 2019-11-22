@@ -4,8 +4,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {Artist} from '../../../model/artist';
-import {Progress} from '../../../model/progress';
+import {Artist} from '../../../models/artist';
+import {Progress} from '../../../models/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 
 @Component({

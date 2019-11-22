@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SearchService} from '../../services/search.service';
-import {Song} from '../../model/song';
-import {Artist} from '../../model/artist';
+import {Song} from '../../models/song';
+import {Artist} from '../../models/artist';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 

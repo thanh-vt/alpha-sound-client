@@ -6,7 +6,7 @@ import {EditAlbumComponent} from './edit-album/edit-album.component';
 import {DeleteAlbumComponent} from './delete-album/delete-album.component';
 import {AlbumComponent} from './album/album.component';
 import {AlbumDetailComponent} from './album-detail/album-detail.component';
-import {AuthGuard} from '../guard/auth.guard';
+import {AuthGuard} from '../guards/auth.guard';
 
 
 const routes: Routes = [

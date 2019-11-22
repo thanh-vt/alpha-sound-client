@@ -22,7 +22,7 @@
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary float-right"><ng-content select=".lambda_card-button"></ng-content></button>
+        <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary rounded-circle float-right"><ng-content select=".lambda_card-button"></ng-content></button>
         <h3 class="card-title text-center">{{ title }}</h3>
         <div class="card-text"><ng-content select=".lambda_card-text_2"></ng-content></div>
         <small class="text-muted"><ng-content select=".lambda_card-text-muted_2"></ng-content></small>

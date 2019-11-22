@@ -1,17 +1,16 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../../model/user';
-import {Artist} from '../../model/artist';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {User} from '../../models/user';
+import {Artist} from '../../models/artist';
+import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {ArtistService} from '../../services/artist.service';
 import {SongService} from '../../services/song.service';
 import {Subscription} from 'rxjs';
-import {Song} from '../../model/song';
-import {Page} from '../../model/page';
+import {Song} from '../../models/song';
 import {PlayingQueueService} from '../../services/playing-queue.service';
 import {PlaylistService} from '../../services/playlist.service';
-import {Playlist} from '../../model/playlist';
+import {Playlist} from '../../models/playlist';
 import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
@@ -54,39 +53,47 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
       params => {
         this.loading1 = true;
         this.artistId = params.id;
-        this.subscription.add(this.artistService.artistDetail(this.artistId)
-          .pipe(finalize(() => {
-            this.loading1 = false;
-          }))
-          .subscribe(
-          result => {
-            window.scroll(0, 0);
-            this.artist = result;
-            this.loading2 = true;
-            this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
-              result1 => {
-                if (result1 != null) {
-                  this.totalPages = result1.totalPages;
-                  // tslint:disable-next-line:prefer-for-of
-                  for (let i = 0; i < result1.content.length; i++) {
-                    this.songList.push(result1.content[i]);
-                  }
-                  for (const song of this.songList) {
-                    this.checkDisabledSong(song);
-                  }
-                }
-              }, error => {
-                this.message = 'An error has occurred.';
-                console.log(error.message);
-              }, () => {
-                this.loading2 = false;
-              }
-            ));
-          }, error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
+        this.getArtistDetail();
+      }
+    ));
+  }
+
+  getArtistDetail() {
+    this.subscription.add(this.artistService.artistDetail(this.artistId)
+      .pipe(finalize(() => {
+        this.loading1 = false;
+      }))
+      .subscribe(
+        result => {
+          window.scroll(0, 0);
+          this.artist = result;
+          this.loading2 = true;
+          this.getSongListOfArtist();
+        }, error => {
+          this.message = 'An error has occurred.';
+          console.log(error.message);
+        }
+      ));
+  }
+
+  getSongListOfArtist() {
+    this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+      result1 => {
+        if (result1 != null) {
+          this.totalPages = result1.totalPages;
+          // tslint:disable-next-line:prefer-for-of
+          for (let i = 0; i < result1.content.length; i++) {
+            this.songList.push(result1.content[i]);
           }
-        ));
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
+        }
+      }, error => {
+        this.message = 'An error has occurred.';
+        console.log(error.message);
+      }, () => {
+        this.loading2 = false;
       }
     ));
   }

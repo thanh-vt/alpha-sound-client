@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SongService} from '../../services/song.service';
-import {Song} from '../../model/song';
+import {Song} from '../../models/song';
 import { PlayingQueueService} from '../../services/playing-queue.service';
-import {Page} from '../../model/page';
+import {Page} from '../../models/page';
 import {PlaylistService} from '../../services/playlist.service';
-import {Playlist} from '../../model/playlist';
+import {Playlist} from '../../models/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
-import {User} from '../../model/user';
+import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';

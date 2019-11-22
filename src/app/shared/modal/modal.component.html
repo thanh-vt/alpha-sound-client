@@ -1,7 +1,7 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" [disabled]="disableClose">
+    <button type="button" class="close" aria-label="Close" (click)="close(); modal.dismiss('Cross click')" [disabled]="disableClose">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -13,7 +13,7 @@
     <ng-content select=".modal_footer"></ng-content>
   </div>
 </ng-template>
-<button (click)="open(content, $event)" *ngIf="action=='delete'" class="btn btn-danger m-2"><i class="fas fa-trash-alt"></i></button>
-<button (click)="open(content, $event)" *ngIf="action=='create'" class="btn btn-primary m-2">{{ title }}</button>
-<button (click)="open(content, $event)" *ngIf="action=='edit'" class="btn btn-secondary m-2"><i class="fas fa-edit"></i></button>
-<button class="btn btn-secondary" (click)="open(content, $event)" *ngIf="action=='addToPlaylist'"><i class="fas fa-plus-square"></i></button>
+<button (click)="open(content, $event)" *ngIf="action=='delete'" class="btn btn-danger m-2 rounded-circle"><i class="fas fa-trash-alt"></i></button>
+<button (click)="open(content, $event)" *ngIf="action=='create'" class="btn btn-primary m-2 rounded-pill">{{ title }}</button>
+<button (click)="open(content, $event)" *ngIf="action=='edit'" class="btn btn-secondary m-2 rounded-circle"><i class="fas fa-edit"></i></button>
+<button class="btn btn-secondary rounded-circle" (click)="open(content, $event)" *ngIf="action=='addToPlaylist'"><i class="fas fa-plus"></i></button>

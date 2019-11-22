@@ -1,11 +1,10 @@
 import {
-  AfterContentInit,
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   Input,
   OnChanges,
-  OnInit, SimpleChanges,
+  OnInit, Output, SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -25,6 +24,7 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() action: string;
   @Input() disableClose = false;
   closeResult: string;
+  @Output() closeAction = new EventEmitter();
   @ViewChild('content', {static: false}) content: ElementRef;
 
   constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService) {
@@ -68,6 +68,10 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  close() {
+    this.closeAction.emit();
   }
 
   private getDismissReason(reason: any): string {

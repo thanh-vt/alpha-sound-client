@@ -9,7 +9,7 @@
         <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"><img [src]="album.coverUrl" alt=""/></a>
       </div>
       <div class="lambda_card-footer_1">
-        <button (click)="addAllToPlaying(album.id)" class="btn btn-info" [disabled]="album.isDisabled"><i class="fas fa-play-circle"></i></button>
+        <button (click)="addAllToPlaying(album.id)" class="btn btn-info rounded-circle" [disabled]="album.isDisabled"><i class="fas fa-play-circle"></i></button>
       </div>
     </app-card>
   </div>

@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {PlaylistService} from '../../services/playlist.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-playlist',
@@ -31,26 +32,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
     );
   }
 
-  open(content, event) {
-    event.stopPropagation();
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-    }, (reason) => {
-      this.editPlaylist.emit();
-      this.message = '';
-      console.log(this.getDismissReason(reason));
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
   onSubmit() {
     this.subscription.add(this.playlistService.editPlaylist(this.playlistEditForm.value, this.id).subscribe(
       () => {
@@ -63,6 +44,11 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
         console.log(error.message);
       }
     ));
+  }
+
+  editAction() {
+    this.message = '';
+    this.editPlaylist.emit();
   }
 
   ngOnDestroy(): void {

@@ -3,7 +3,7 @@ import {ArtistService} from '../../../services/artist.service';
 import {Subscription} from 'rxjs';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Artist} from '../../../model/artist';
+import {Artist} from '../../../models/artist';
 
 @Component({
   selector: 'app-artist-delete',

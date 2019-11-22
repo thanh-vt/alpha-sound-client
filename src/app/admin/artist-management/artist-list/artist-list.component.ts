@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ArtistService} from '../../../services/artist.service';
-import {Artist} from '../../../model/artist';
+import {Artist} from '../../../models/artist';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 

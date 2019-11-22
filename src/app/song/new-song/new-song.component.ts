@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Song} from '../../model/song';
+import {Song} from '../../models/song';
 import {SongService} from '../../services/song.service';
-import {Page} from '../../model/page';
+import {Page} from '../../models/page';
 import {PlayingQueueService} from '../../services/playing-queue.service';
 import {PlaylistService} from '../../services/playlist.service';
-import {Playlist} from '../../model/playlist';
+import {Playlist} from '../../models/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../models/userToken';
 import {AuthService} from '../../services/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
@@ -26,7 +26,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   last: boolean;
   message: string;
   loading: boolean;
-  songList: Song[];
+  songList: Song[] = [];
   imageOrder = 0;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[];

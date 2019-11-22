@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
-import {User} from '../../model/user';
+import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
 

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {SongComponent} from './song/song.component';
 import {SongListComponent} from './song-list/song-list.component';
 import {SongDeleteComponent} from './song-delete/song-delete.component';
-import {AdminAuthGuard} from '../../guard/admin-auth.guard';
+import {AdminAuthGuard} from '../../guards/admin-auth.guard';
+import {SongManagementComponent} from './song-management/song-management.component';
 
 
 const routes: Routes = [
@@ -16,11 +16,15 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: SongComponent,
+    component: SongManagementComponent,
     children: [
       {
         path: 'list',
         component: SongListComponent
+      },
+      {
+        path: 'delete',
+        component: SongDeleteComponent
       },
       {
         path: 'delete',

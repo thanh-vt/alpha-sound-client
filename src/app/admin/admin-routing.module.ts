@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {AdminComponent} from './admin/admin.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {AdminAuthGuard} from '../guard/admin-auth.guard';
+import {AdminAuthGuard} from '../guards/admin-auth.guard';
 
 
 const routes: Routes = [
@@ -32,6 +32,12 @@ const routes: Routes = [
         canActivate: [AdminAuthGuard],
         canActivateChild: [AdminAuthGuard],
         loadChildren: () => import('./song-management/song-management.module').then(mod => mod.SongManagementModule)
+      },
+      {
+        path: 'country-management',
+        canActivate: [AdminAuthGuard],
+        canActivateChild: [AdminAuthGuard],
+        loadChildren: () => import('./country-management/country-management.module').then(mod => mod.CountryManagementModule)
       }
     ]
   }

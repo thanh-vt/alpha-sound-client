@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Page} from '../../model/page';
-import {Song} from '../../model/song';
+import {Page} from '../../models/page';
+import {Song} from '../../models/song';
 import {Subscription} from 'rxjs';
-import {Playlist} from '../../model/playlist';
+import {Playlist} from '../../models/playlist';
 import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {SongService} from '../../services/song.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';

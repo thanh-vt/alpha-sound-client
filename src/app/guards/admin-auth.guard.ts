@@ -10,7 +10,7 @@ import {
   Router
 } from '@angular/router';
 
-import {User} from '../model/user';
+import {User} from '../models/user';
 import {UserService} from '../services/user.service';
 import {AuthService} from '../services/auth.service';
 

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Playlist} from '../../model/playlist';
+import {Playlist} from '../../models/playlist';
 import {PlaylistService} from '../../services/playlist.service';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';

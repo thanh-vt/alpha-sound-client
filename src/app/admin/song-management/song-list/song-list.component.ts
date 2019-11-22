@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Song} from '../../../model/song';
+import {Song} from '../../../models/song';
 import {Subscription} from 'rxjs';
 import {SongService} from '../../../services/song.service';
 import {ActivatedRoute, Router} from '@angular/router';

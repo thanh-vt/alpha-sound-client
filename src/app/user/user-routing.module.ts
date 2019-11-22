@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {RegisterComponent} from './register/register.component';
 import {UserComponent} from './user/user.component';
-import {AuthGuard} from '../guard/auth.guard';
+import {AuthGuard} from '../guards/auth.guard';
 import {UpdateProfileComponent} from './update-profile/update-profile.component';
 import {SearchComponent} from './search/search.component';
 import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';

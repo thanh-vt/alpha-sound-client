@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../models/userToken';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
@@ -43,7 +43,7 @@ export class UserComponent implements OnInit {
         const reEnableVolumeControl = setTimeout(() => {
           this.msaapDisplayVolumeControls = true;
           clearTimeout(reEnableVolumeControl);
-        }, 0);
+        }, 10);
       }
     );
   }

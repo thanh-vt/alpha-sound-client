@@ -7,7 +7,7 @@ import {DeletePlaylistComponent} from '../../playlist/delete-playlist/delete-pla
 import {UserListComponent} from './user-list/user-list.component';
 import {UserManagementComponent} from './user-management/user-management.component';
 import {UserDeleteComponent} from './user-delete/user-delete.component';
-import {AdminAuthGuard} from '../../guard/admin-auth.guard';
+import {AdminAuthGuard} from '../../guards/admin-auth.guard';
 
 
 const routes: Routes = [

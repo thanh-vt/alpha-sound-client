@@ -2,7 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {UserToken} from '../model/userToken';
+import {UserToken} from '../models/userToken';
 import {map} from 'rxjs/operators';
 
 @Injectable({

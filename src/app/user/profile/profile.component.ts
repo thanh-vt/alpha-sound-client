@@ -8,7 +8,7 @@ import {SongService} from '../../services/song.service';
 import {PlaylistService} from '../../services/playlist.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';
 import {UserService} from '../../services/user.service';
-import {User} from '../../model/user';
+import {User} from '../../models/user';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

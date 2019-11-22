@@ -1,0 +1,8 @@
+<ul class="countryList py-2"
+    infiniteScroll
+    [scrollWindow]="false"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll(pageNumber)">
+  <li *ngFor="let country of countryList, i as index">{{ country.name }}<button>Edit</button><button>Delete</button></li>
+</ul>

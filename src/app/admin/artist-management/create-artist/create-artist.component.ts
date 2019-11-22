@@ -3,7 +3,7 @@ import {ArtistService} from '../../../services/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {Progress} from '../../../model/progress';
+import {Progress} from '../../../models/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {finalize} from 'rxjs/operators';
 

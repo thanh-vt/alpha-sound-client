@@ -4,7 +4,7 @@
 <ng-container *ngIf="album">
   <app-card [type]="2" [showEditButton]="false" [title]="'Album Info' | translate" [imgSrc]="album.coverUrl">
       <div class="lambda_card-text_2">
-        <button class="btn btn-primary float-right" [disabled]="album.isDisabled" (click)="addAllToPlaying($event)"><i class="fas fa-play-circle"></i></button>
+        <button class="btn btn-primary rounded-circle float-right" [disabled]="album.isDisabled" (click)="addAllToPlaying($event)"><i class="fas fa-play-circle"></i></button>
         <h6 class="d-inline">{{ 'Title' | translate }}: </h6><span class="text-secondary">{{album.title}}</span><br>
         <h6 class="d-inline">{{ 'Artist(s)' | translate }}: </h6>
         <ul>
@@ -49,18 +49,18 @@
       <td><span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span></td>
       <td>
         <ng-container *ngIf="!!currentUser">
-          <button (click)="likeSong(song, $event)" class="btn btn-outline-danger" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
+          <button (click)="likeSong(song, $event)" class="btn btn-outline-danger rounded-circle" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
             <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
           </button>
-          <button (click)="unlikeSong(song, $event)" class="btn btn-outline-danger" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
+          <button (click)="unlikeSong(song, $event)" class="btn btn-outline-danger rounded-circle" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
             <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
           </button>
         </ng-container>
       </td>
       <td>
-        <button class="btn btn-primary" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
+        <button class="btn btn-primary rounded-circle" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
           <i class="fas fa-play-circle"></i>
         </button>
       </td>

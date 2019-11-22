@@ -20,7 +20,7 @@
     </ul>
     <div class="search_upload">
       <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser" >
-        <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-upload"></i>
         </button>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
@@ -32,15 +32,15 @@
 
       <div class="d-inline-block mr-sm-2">
         <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
-          <input class="form-control" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
-          <button type="submit" class="btn btn-info mx-2"><i class="fas fa-search"></i></button>
+          <input class="form-control rounded-pill" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
+          <button type="submit" class="btn btn-info mx-2 rounded-circle"><i class="fas fa-search"></i></button>
         </form>
       </div>
     </div>
     </div>
   <div>
-    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!currentUser">
-      <button class="btn btn-info" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}</button>
+    <div ngbDropdown class="d-inline-block mr-sm-5" *ngIf="!currentUser">
+      <button class="btn btn-info rounded-pill" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
           <div class="form-group">
@@ -83,7 +83,7 @@
       </div>
     </div>
     <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
-      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
         <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
         <span> {{ currentUser.username }}</span>
@@ -98,8 +98,8 @@
       </div>
     </div>
     <div class="d-inline-block">
-      <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded">{{ 'Language' | translate }}
-        <select class="custom-select mr-sm-2 ml-sm-1" name="" id="language" #language (change)="translatePage()" style="width: 6rem">
+      <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded-pill">{{ 'Language' | translate }}
+        <select class="custom-select mr-sm-2 ml-sm-1 rounded-pill" name="" id="language" #language (change)="translatePage()" style="width: 6rem">
           <option [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
           <option [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
         </select>

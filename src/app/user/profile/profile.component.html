@@ -21,7 +21,7 @@
       <br>
       <h6 class="d-inline">Email: </h6>
       <span *ngIf="user.email" class="text-secondary">{{user.email}}</span>
-      <span *ngIf="!user.email" class="text-secondary">**********</span><br>
+      <span *ngIf="!user.email && user.email !== null" class="text-secondary">**********</span><br>
     </div>
   </app-card>
 </ng-container>
