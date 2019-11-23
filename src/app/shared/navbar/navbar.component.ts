@@ -4,10 +4,11 @@ import {UserService} from '../../services/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserToken} from '../../models/userToken';
-import {Subscription} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {User} from '../../models/user';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+import {ThemeService} from '../../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -31,7 +32,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService,
-              private userService: UserService, private fb: FormBuilder, public translate: TranslateService) {
+              private userService: UserService, private fb: FormBuilder, public translate: TranslateService,
+              private themeService: ThemeService) {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
     translate.use(currentLanguage);
@@ -100,5 +102,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  turnDarkThemeOnOff() {
+    const status = this.themeService.darkThemeSubject.getValue();
+    this.themeService.darkThemeSubject.next(!status);
   }
 }

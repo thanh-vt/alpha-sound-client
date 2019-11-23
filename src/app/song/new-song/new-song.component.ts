@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Song} from '../../models/song';
 import {SongService} from '../../services/song.service';
 import {Page} from '../../models/page';
@@ -12,10 +12,12 @@ import {AuthService} from '../../services/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+
 @Component({
   selector: 'app-new-song',
   templateUrl: './new-song.component.html',
-  styleUrls: ['./new-song.component.scss']
+  styleUrls: ['./new-song.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NewSongComponent implements OnInit, OnDestroy {
   currentUser: UserToken;

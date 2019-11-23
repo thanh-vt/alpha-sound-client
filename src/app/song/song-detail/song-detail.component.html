@@ -2,10 +2,10 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="song">
-  <h4>{{ 'Song Info' | translate }}</h4>
+<!--  <h4>{{ 'Song Info' | translate }}</h4>-->
   <div>
-    <div class="card">
-      <div class="card-body">
+    <app-card [title]="'Song Info' | translate" [type]="3">
+      <div class="lambda_card-body_3">
         <h6 class="d-inline">{{ 'Title' | translate }}: </h6><span>{{song.title}}</span>
         <div class="d-inline-block float-right mx-1">
           <ng-container *ngIf="!!currentUser">
@@ -41,10 +41,10 @@
           </li>
         </ul>
       </div>
-    </div>
+    </app-card>
     <h4>{{ 'Comment' | translate }}</h4>
     <ul class="list-group">
-      <li class="list-group-item row" *ngFor="let comment of commentList; index as i">
+      <li class="list-group-item row mx-0" *ngFor="let comment of commentList; index as i">
         <div class="col-sm-1">
           <img class="avatar border" [src]="comment.user.avatarUrl" alt="">
         </div>

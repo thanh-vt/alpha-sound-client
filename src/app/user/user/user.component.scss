@@ -1,5 +1,8 @@
-.container {
-  margin-bottom: 10rem;
+
+@media screen and (max-width: 1874px) {
+  .container {
+    margin-top: 4rem;
+  }
 }
 
 @media screen and (min-width: 1230px) and (max-width: 1454px) {
@@ -14,20 +17,24 @@
   }
 }
 
+@media screen and (min-width: 770px) and (max-width: 990px) {
+  .container {
+    margin-top: 3rem;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .container {
-    margin-top: 4rem;
+    margin-top: 1rem;
+  }
+
+  app-sidebar {
+    margin-bottom: 10rem;
   }
 }
 
 @media screen and (max-width: 414px) {
   .container {
-    margin-top: 6rem;
-  }
-}
-
-@media screen and (max-width: 354px) {
-  .container {
-    margin-top: 8rem;
+    margin-top: 1rem;
   }
 }

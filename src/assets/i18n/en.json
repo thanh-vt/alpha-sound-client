@@ -58,6 +58,7 @@
   "Comment":"Comment",
   "Leave comment here":"Leave comment here",
   "Search result for:": "Search result for:",
+  "Dark Theme": "Dark Theme",
 
   "Username": "Username",
   "Password": "Password",
@@ -74,7 +75,6 @@
   "Pick": "Pick",
   "Forgot password?": "Forgot password?",
   "Cannot retrieve user information.": "Cannot retrieve user information.",
-
 
   "Playlist saved successfully.": "Playlist created successfully.",
   "Failed to save playlist.": "Failed to create playlist.",

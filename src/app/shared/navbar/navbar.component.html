@@ -4,20 +4,27 @@
   </button>
 
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-5" id="navbarSupportedContent">
-    <ul class="navbar-nav">
-      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded" style="width: 200px">
+    <div class="navbar-nav">
+      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded" style="width: 200px">
         <a class="nav-link p-0" [routerLink]="['/home']"><img style="width: 100%" src="../../../assets/images/b0c4e2d8-1c0a-4954-9134-fe67a7b453be_200x200.png" alt=""></a>
-      </li>
-      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+      </div>
+      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/song']"><h3><i class="fas fa-music"></i> {{ 'Song' | translate }}</h3></a>
-      </li>
-      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+      </div>
+      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/album']"><h3><i class="fas fa-compact-disc"></i> {{ 'Album' | translate }}</h3></a>
-      </li>
-      <li class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+      </div>
+      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> {{ 'Artist' | translate }}</h3></a>
-      </li>
-    </ul>
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <label class="d-inline-block bg-secondary text-white pl-3 py-1 my-1 rounded-pill" for="myRange">{{ 'Dark Theme' | translate }}
+        <input type="range" min="1" max="2" value="1" class="custom-range" id="myRange" (change)="turnDarkThemeOnOff()">
+      </label>
+    </div>
+
     <div class="search_upload">
       <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser" >
         <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

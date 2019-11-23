@@ -1,4 +1,4 @@
-<div *ngIf="type === 1" class="card col-sm-auto mx-2 py-2 text-center">
+<div *ngIf="type === 1" class="card col-sm-auto mx-2 py-2 text-center card_type_1">
   <div class="card-header">
     <ng-content select=".lambda_card-header_1"></ng-content>
     <ng-content select=".lambda_card-title_1"></ng-content>
@@ -15,7 +15,7 @@
     <ng-content select=".lambda_card-footer_1"></ng-content>
   </div>
 </div>
-<div *ngIf="type === 2" class="card mb-3 w-100">
+<div *ngIf="type === 2" class="card mb-3 w-100 card_type_2">
   <div class="row no-gutters">
     <div class="col-md-4">
       <img [src]="imgSrc" class="card-img img-thumbnail" alt="">
@@ -30,7 +30,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="type === 3" class="card w-100">
+<div *ngIf="type === 3" class="card w-100 card_type_3">
   <div class="card-header text-center">
     <h3>{{ title }}</h3>
     <div class="card-subtitle mb-2 text-muted">

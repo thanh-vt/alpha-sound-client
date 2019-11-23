@@ -1,9 +1,6 @@
 <div class="row">
-  <div class="card col-sm-12">
-    <div class="card-header">
-      <h4 class="text-center">{{ 'Upload Album' | translate }}</h4>
-    </div>
-    <div class="card-body">
+  <app-card [type]="3" [title]="'Upload Album' | translate" class="col-sm-12">
+    <div class="Lambda_card-body_3">
       <form [formGroup]="albumForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="albumTitle">{{ 'Title' | translate }}</label>
@@ -65,86 +62,82 @@
         </div>
       </form>
     </div>
-  </div>
+  </app-card>
 </div>
 <div *ngFor="let form of songsForm, index as j" >
   <div class="row" style="margin-bottom: 10rem;">
-    <div class="card col-sm-12" #card1>
-      <div class="card-header">
-        <h4 class="text-center">{{ 'Song' | translate }} #{{ j + 1 }}</h4>
-      </div>
-      <div class="card-body">
-        <button class="btn btn-info float-sm-right rounded-circle" style="margin-bottom: 1rem" (click)="removeForm(j)"><i class="fas fa-times"></i></button>
-        <form [formGroup]="songsForm[j]">
-          <div class="form-group">
-            <label for="songTitle">{{ 'Title' | translate }}</label>
-            <input type="text" class="form-control" id="songTitle" [placeholder]="('Enter' | translate) + ' ' + ('Song title' | translate)" formControlName="title">
-            <div class="alert alert-danger" role="alert"
-                 *ngIf="songsForm[j].get('title').hasError('required') && (songsForm[j].get('title').touched || this.submitted)">
-              {{ 'Title' | translate }}{{' '}}{{ 'must be filled' | translate}}
-            </div>
-          </div>
-          <div class="form-group">
-            <label>{{ 'Artist' | translate }}</label>
-            <div formArrayName="artists" class="form-group"
-                 *ngFor="let artistField of getSongArtists(j).controls; let k = index;">
-              <div [formGroupName]="k">
-                <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
-                  <input (focus)="suggestSongArtist(j, k)" matInput [matAutocomplete]="autoSong" class="form-control" aria-label="Song" type="text" [formControl]="getSongArtists(j).controls[k]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
-                  <mat-autocomplete #autoSong="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngIf="isSongLoading[j][k]" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
-                    <ng-container *ngIf="!isSongLoading[j][k]">
-                      <mat-option *ngFor="let artist of filteredSongArtist[j]" [value]="artist">
-                        <span>{{ artist.name }}</span>
-                        <img style="vertical-align:middle;" aria-hidden [src]="artist.avatarUrl" height="40" alt=""/>
-                      </mat-option>
-                    </ng-container>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <div class="alert alert-danger" role="alert"
-                     *ngIf="getSongArtists(j).controls[k].hasError('required') && (getSongArtists(j).controls[k].touched || this.submitted)">
-                  {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
-                </div>
-                <button type="button" class="btn btn-info rounded-pill col-sm-1" (click)="addSongArtist(j)">+</button>
-                <button type="button" class="btn btn-danger rounded-pill col-sm-1" (click)="removeSongArtist(j, k)" *ngIf="getSongArtists(j).controls.length > 1">-</button>
+    <div class="col-sm-12" #card1>
+      <app-card [type]="3" [title]="('Song' | translate) + ' #' + (j + 1)">
+        <div class="lambda_card-body_3">
+          <button class="btn btn-info float-sm-right rounded-circle" style="margin-bottom: 1rem" (click)="removeForm(j)"><i class="fas fa-times"></i></button>
+          <form [formGroup]="songsForm[j]">
+            <div class="form-group">
+              <label for="songTitle">{{ 'Title' | translate }}</label>
+              <input type="text" class="form-control" id="songTitle" [placeholder]="('Enter' | translate) + ' ' + ('Song title' | translate)" formControlName="title">
+              <div class="alert alert-danger" role="alert"
+                   *ngIf="songsForm[j].get('title').hasError('required') && (songsForm[j].get('title').touched || this.submitted)">
+                {{ 'Title' | translate }}{{' '}}{{ 'must be filled' | translate}}
               </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-            <input type="date" class="form-control" id="releaseDate" [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)" formControlName="releaseDate">
-            <div class="alert alert-danger" role="alert"
-                 *ngIf="songsForm[j].get('releaseDate').hasError('required') && (songsForm[j].get('releaseDate').touched || this.submitted)">
-              {{ 'Release Date' | translate }}{{' '}}{{ 'must be picked' | translate}}
+            <div class="form-group">
+              <label>{{ 'Artist' | translate }}</label>
+              <div formArrayName="artists" class="form-group"
+                   *ngFor="let artistField of getSongArtists(j).controls; let k = index;">
+                <div [formGroupName]="k">
+                  <mat-form-field color="accent" floatLabel="auto" appearance="outline" class="col-sm-10 px-0">
+                    <input (focus)="suggestSongArtist(j, k)" matInput [matAutocomplete]="autoSong" class="form-control" aria-label="Song" type="text" [formControl]="getSongArtists(j).controls[k]" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)">
+                    <mat-autocomplete #autoSong="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngIf="isSongLoading[j][k]" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                      <ng-container *ngIf="!isSongLoading[j][k]">
+                        <mat-option *ngFor="let artist of filteredSongArtist[j]" [value]="artist">
+                          <span>{{ artist.name }}</span>
+                          <img style="vertical-align:middle;" aria-hidden [src]="artist.avatarUrl" height="40" alt=""/>
+                        </mat-option>
+                      </ng-container>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <div class="alert alert-danger" role="alert"
+                       *ngIf="getSongArtists(j).controls[k].hasError('required') && (getSongArtists(j).controls[k].touched || this.submitted)">
+                    {{ 'Artist' | translate }}{{' '}}{{ 'must be picked' | translate}}
+                  </div>
+                  <button type="button" class="btn btn-info rounded-pill col-sm-1" (click)="addSongArtist(j)">+</button>
+                  <button type="button" class="btn btn-danger rounded-pill col-sm-1" (click)="removeSongArtist(j, k)" *ngIf="getSongArtists(j).controls.length > 1">-</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="audio">{{ 'Audio File' | translate }}</label>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="audio" (change)="selectAudio($event, j)">
-              <label class="custom-file-label" *ngIf=!isAudioFileChosen[j]>{{ 'Choose File' | translate }}</label>
-              <label class="custom-file-label" *ngIf=isAudioFileChosen[j]>{{ audioFileNames[j] }}</label>
+            <div class="form-group">
+              <label for="releaseDate">{{ 'Release Date' | translate }}</label>
+              <input type="date" class="form-control" id="releaseDate" [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)" formControlName="releaseDate">
+              <div class="alert alert-danger" role="alert"
+                   *ngIf="songsForm[j].get('releaseDate').hasError('required') && (songsForm[j].get('releaseDate').touched || this.submitted)">
+                {{ 'Release Date' | translate }}{{' '}}{{ 'must be picked' | translate}}
+              </div>
             </div>
-          </div>
-          <div *ngIf="songsMessage[j]" class="alert mt-3 mb-0" [class.alert-danger]="songError[j]"
-               [class.alert-success]="!songError[j]">{{ songsMessage[j] | translate }}
-          </div>
-          <!-- Progress Bar -->
-          <div class="progress form-group" *ngIf="songsProgress[j].value > 0">
-            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="songsProgress[j].value">
+            <div class="form-group">
+              <label for="audio">{{ 'Audio File' | translate }}</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="audio" (change)="selectAudio($event, j)">
+                <label class="custom-file-label" *ngIf=!isAudioFileChosen[j]>{{ 'Choose File' | translate }}</label>
+                <label class="custom-file-label" *ngIf=isAudioFileChosen[j]>{{ audioFileNames[j] }}</label>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
+            <div *ngIf="songsMessage[j]" class="alert mt-3 mb-0" [class.alert-danger]="songError[j]"
+                 [class.alert-success]="!songError[j]">{{ songsMessage[j] | translate }}
+            </div>
+            <!-- Progress Bar -->
+            <div class="progress form-group" *ngIf="songsProgress[j].value > 0">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="songsProgress[j].value">
+              </div>
+            </div>
+          </form>
+        </div>
+      </app-card>
     </div>
   </div>
 </div>
-
-<div class="row">
-  <div class="card col-sm-12" #card2>
-    <div class="card-body d-flex p-2 justify-content-center">
-      <button class="align-self-center btn btn-info rounded-circle" (click)="addForm()"><i class="fas fa-plus fa-4x"></i></button>
-    </div>
+<div class="card col-sm-12 add_song_form" #card2 style="margin-bottom: 10rem">
+  <div class="card-body d-flex p-2 justify-content-center">
+    <button class="align-self-center btn btn-info rounded-circle" (click)="addForm()"><i class="fas fa-plus fa-4x"></i></button>
   </div>
 </div>
 

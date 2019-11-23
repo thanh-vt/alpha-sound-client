@@ -42,7 +42,6 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.isPoppedUp) {
       this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true, backdrop: 'static' });
     } else {
-      console.log('pop');
       this.modalService.dismissAll();
     }
   }

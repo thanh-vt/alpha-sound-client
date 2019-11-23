@@ -1,16 +1,25 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input, OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import {UserToken} from '../../models/userToken';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';
+import {ThemeService} from '../../services/theme.service';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserComponent implements OnInit {
   currentUser: UserToken;
+  @Input() darkTheme: boolean;
 
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
@@ -26,7 +35,8 @@ export class UserComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router, private authService: AuthService, private playingQueueService: PlayingQueueService) {
+  constructor(private router: Router, private authService: AuthService, private playingQueueService: PlayingQueueService,
+              private elementRef: ElementRef, private themeService: ThemeService) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
@@ -44,6 +54,16 @@ export class UserComponent implements OnInit {
           this.msaapDisplayVolumeControls = true;
           clearTimeout(reEnableVolumeControl);
         }, 10);
+      }
+    );
+    this.themeService.darkThemeSubjectValue.subscribe(
+      next => {
+        this.darkTheme = next;
+        if (this.darkTheme) {
+          this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
+        } else {
+          this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';
+        }
       }
     );
   }
