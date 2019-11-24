@@ -5,29 +5,28 @@
 
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-5" id="navbarSupportedContent">
     <div class="navbar-nav">
-      <div class="nav-item pt-1 px-2 mx-1" routerLinkActive="active rounded" style="width: 12.5rem">
+      <div class="nav-item px-2 mx-1" routerLinkActive="active rounded" style="width: 12.5rem">
         <a class="nav-link p-0" [routerLink]="['/home']"><img style="width: 100%" src="../../../assets/images/b0c4e2d8-1c0a-4954-9134-fe67a7b453be_200x200.png" alt=""></a>
       </div>
-      <div class="nav-item pt-1 px-2 mt-1 mx-1" routerLinkActive="active rounded">
+      <div class="nav-item px-2 mt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/song']"><h3><i class="fas fa-music"></i> {{ 'Song' | translate }}</h3></a>
       </div>
-      <div class="nav-item pt-1 px-2 mt-1 mx-1" routerLinkActive="active rounded">
+      <div class="nav-item px-2 mt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/album']"><h3><i class="fas fa-compact-disc"></i> {{ 'Album' | translate }}</h3></a>
       </div>
-      <div class="nav-item pt-1 px-2 mt-1 mx-1" routerLinkActive="active rounded">
+      <div class="nav-item px-2 mt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> {{ 'Artist' | translate }}</h3></a>
       </div>
     </div>
 
-    <div class="slider-container mt-1">
-      <label class="d-inline-block bg-secondary text-white py-1 pl-3 rounded-pill" for="myRange">{{ 'Dark Mode' | translate }}
-        <input type="range" min="1" max="2" value="2" class="custom-range" id="myRange" (change)="turnDarkThemeOnOff()">
-      </label>
+    <div class="slider-container d-inline-block text-white pl-3 rounded-pill" style="background-color: #6c757d!important">
+      <label class="bg-secondary" for="myRange">{{ 'Dark Mode' | translate }}</label>
+      <input type="range" min="1" max="2" value="2" class="custom-range bg-secondary pt-2" id="myRange" (change)="turnDarkThemeOnOff()">
     </div>
 
-    <div class="search_upload mx-1">
-      <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser" >
-        <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="search_upload mr-1">
+      <div ngbDropdown class="d-inline-block mx-1" *ngIf="!!currentUser" >
+        <button ngbDropdownToggle class="dropdown-toggle btn btn-info mx-0 rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-upload"></i>
         </button>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
@@ -37,7 +36,7 @@
         </div>
       </div>
 
-      <div class="d-inline-block mr-1">
+      <div class="d-inline-block mx-1">
         <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
           <input class="form-control rounded-pill" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
           <button type="submit" class="btn btn-info mx-1 rounded-circle"><i class="fas fa-search"></i></button>
@@ -90,8 +89,8 @@
       </div>
     </div>
     <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser">
-      <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
+      <button ngbDropdownToggle class="dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="d-inline-block user-avatar" *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
         <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
         <span> {{ currentUser.username }}</span>
       </button>
