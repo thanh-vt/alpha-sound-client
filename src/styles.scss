@@ -132,15 +132,18 @@ html, body {
       background-color: goldenrod !important;
     }
 
-    ul.pagination {
-      li.page-item, a.page-link {
-        background-color: black !important;
-      };
+  }
 
-      a.page-link.active {
-        background-color: grey !important;
-      }
-    }
+  li.page-item {
+    background-color: black !important;
+  };
+
+  a.page-link {
+    background-color: black !important;
+  }
+
+  a.page-link.active {
+    background-color: grey !important;
   }
 
   mat-advanced-audio-player {
