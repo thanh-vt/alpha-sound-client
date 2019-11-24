@@ -26,7 +26,7 @@
     </div>
 
     <div class="search_upload">
-      <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser" >
+      <div ngbDropdown class="d-inline-block mr-sm-1" *ngIf="!!currentUser" >
         <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-upload"></i>
         </button>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="d-inline-block mr-sm-2">
+      <div class="d-inline-block mr-sm-1">
         <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
           <input class="form-control rounded-pill" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
           <button type="submit" class="btn btn-info mx-2 rounded-circle"><i class="fas fa-search"></i></button>
@@ -46,7 +46,7 @@
     </div>
     </div>
   <div>
-    <div ngbDropdown class="d-inline-block mr-sm-5" *ngIf="!currentUser">
+    <div ngbDropdown class="d-inline-block mr-sm-1" *ngIf="!currentUser">
       <button class="btn btn-info rounded-pill" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">

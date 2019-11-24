@@ -59,6 +59,7 @@ export class SongListComponent implements OnInit, OnDestroy {
           this.songList.forEach((value, index) => {
             this.songList[index].isDisabled = false;
           });
+          console.log(this.songList);
           this.first = result.first;
           this.last = result.last;
           this.pageNumber = result.pageable.pageNumber;

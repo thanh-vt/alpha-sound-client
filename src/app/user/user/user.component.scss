@@ -1,13 +1,37 @@
 
-@media screen and (max-width: 1874px) {
+@media screen and (min-width: 1876px) {
   .container {
     margin-top: 4rem;
+  }
+
+  nav {
+    h3 {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+@media screen and (min-width: 1456px) and (max-width: 1874px) {
+  .container {
+    margin-top: 4rem;
+  }
+
+  nav {
+    h3 {
+      font-size: 1.6rem;
+    };
   }
 }
 
 @media screen and (min-width: 1230px) and (max-width: 1454px) {
   .container {
     margin-top: 4rem;
+  }
+
+  nav {
+    h3 {
+      font-size: 1rem;
+    }
   }
 }
 
