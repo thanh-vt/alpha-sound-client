@@ -5,16 +5,16 @@
 
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-5" id="navbarSupportedContent">
     <div class="navbar-nav">
-      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded" style="width: 200px">
+      <div class="nav-item pt-1 px-2 mx-1" routerLinkActive="active rounded" style="width: 12.5rem">
         <a class="nav-link p-0" [routerLink]="['/home']"><img style="width: 100%" src="../../../assets/images/b0c4e2d8-1c0a-4954-9134-fe67a7b453be_200x200.png" alt=""></a>
       </div>
-      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+      <div class="nav-item pt-1 px-2 mt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/song']"><h3><i class="fas fa-music"></i> {{ 'Song' | translate }}</h3></a>
       </div>
-      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+      <div class="nav-item pt-1 px-2 mt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/album']"><h3><i class="fas fa-compact-disc"></i> {{ 'Album' | translate }}</h3></a>
       </div>
-      <div class="nav-item px-3 mx-1" routerLinkActive="active rounded">
+      <div class="nav-item pt-1 px-2 mt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/artist']"><h3><i class="fas fa-microphone-alt"></i> {{ 'Artist' | translate }}</h3></a>
       </div>
     </div>
@@ -25,8 +25,8 @@
       </label>
     </div>
 
-    <div class="search_upload">
-      <div ngbDropdown class="d-inline-block mr-sm-1" *ngIf="!!currentUser" >
+    <div class="search_upload mx-1">
+      <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser" >
         <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-info rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-upload"></i>
         </button>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="d-inline-block mr-sm-1">
+      <div class="d-inline-block mr-1">
         <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
           <input class="form-control rounded-pill" type="search" [placeholder]="'Search' | translate" aria-label="Search" formControlName="searchText" style="width: 12rem;">
           <button type="submit" class="btn btn-info mx-2 rounded-circle"><i class="fas fa-search"></i></button>
@@ -46,7 +46,7 @@
     </div>
     </div>
   <div>
-    <div ngbDropdown class="d-inline-block mr-sm-1" *ngIf="!currentUser">
+    <div ngbDropdown class="d-inline-block mr-1" *ngIf="!currentUser">
       <button class="btn btn-info rounded-pill" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
@@ -89,7 +89,7 @@
         <button ngbDropdownItem>{{ 'Forgot password?' | translate }}</button>
       </div>
     </div>
-    <div ngbDropdown class="d-inline-block mr-sm-2" *ngIf="!!currentUser">
+    <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser">
       <button ngbDropdownToggle class="nav-link dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
         <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
