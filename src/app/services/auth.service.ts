@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {UserToken} from '../models/userToken';
@@ -22,13 +22,23 @@ export class AuthService {
     return this.currentUserTokenSubject.value;
   }
 
-  login(loginForm) {
-    return this.http.post<UserToken>(`${environment.apiUrl}/login`, loginForm).pipe(map(userToken => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem('userToken', JSON.stringify(userToken));
-      this.currentUserTokenSubject.next(userToken);
-      this.update.emit(['login', userToken.userId]);
-      return userToken;
+  login(username: string, password: string, rememberMe: boolean) {
+    const params = new URLSearchParams();
+    params.append('username', username);
+    params.append('password', password);
+    params.append('grant_type', 'password');
+    const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+         Authorization : 'Basic ' + btoa('fooClientIdPassword:secret')});
+    return this.http.post<UserToken>(`${environment.authUrl}?${params}`, null, {headers})
+      .pipe(map(userToken => {
+        if (rememberMe) {
+          localStorage.setItem('userToken', JSON.stringify(userToken));
+        } else {
+          sessionStorage.setItem('userToken', JSON.stringify(userToken));
+        }
+        this.currentUserTokenSubject.next(userToken);
+        this.update.emit(['login', userToken.id]);
+        return userToken;
     }));
   }
 

@@ -1,13 +1,13 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {UserModule} from './user/user.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {JwtInterceptor} from './helpers/jwt.interceptor';
+import {TokenInterceptor} from './helpers/token.interceptor';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -32,8 +32,8 @@ const JWT_Module_Options: JwtModuleOptions = {
 };
 
 // loader module
-export  function  HttpLoaderFactory(http: HttpClient) {
-  return  new  TranslateHttpLoader(http, './assets/i18n/', '.json');
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 // @ts-ignore
@@ -56,8 +56,8 @@ export  function  HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
-        provide:  TranslateLoader,
-        useFactory:  HttpLoaderFactory,
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
     })
@@ -66,13 +66,14 @@ export  function  HttpLoaderFactory(http: HttpClient) {
   ],
   exports: [TranslateModule],
   providers: [TranslateService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
     JwtHelperService,
     PlayingQueueService
   ],
   bootstrap: [AppComponent]
 })
 
-export class AppRootModule { }
+export class AppRootModule {
+}

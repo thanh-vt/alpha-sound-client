@@ -38,7 +38,7 @@ export class AdminComponent implements OnInit {
       let hasRoleAdmin = false;
       const roleList = this.currentUser.roles;
       for (const role of roleList) {
-        if (role.name === 'ROLE_ADMIN') {
+        if (role.authority === 'ROLE_ADMIN') {
           hasRoleAdmin = true;
           break;
         }

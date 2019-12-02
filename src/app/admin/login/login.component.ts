@@ -7,6 +7,7 @@ import {AuthService} from '../../services/auth.service';
 import {UserService} from '../../services/user.service';
 import {User} from '../../models/user';
 import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/admin';
     this.adminLoginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(2)]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      rememberMe: [false]
     });
   }
 
@@ -50,15 +52,20 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.loading = true;
-    this.subscription.add(this.authService.login(this.adminLoginForm.value).subscribe(
+    // tslint:disable-next-line:max-line-length
+    this.subscription.add(this.authService.login(this.adminLoginForm.get('username').value, this.adminLoginForm.get('password').value, this.adminLoginForm.get('rememberMe').value)
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
       (next) => {
-        this.userId = next.userId;
+        this.userId = next.id;
         this.userService.getProfile(this.userId).subscribe(
           currentUser => {
             let hasRoleAdmin = false;
             const roleList = currentUser.roles;
             for (const role of roleList) {
-              if (role.name === 'ROLE_ADMIN') {
+              if (role.authority === 'ROLE_ADMIN') {
                 hasRoleAdmin = true;
                 break;
               }

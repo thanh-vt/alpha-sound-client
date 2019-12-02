@@ -5,12 +5,12 @@ import {AuthService} from '../services/auth.service';
 import {UserToken} from '../models/userToken';
 
 @Injectable()
-export class JwtInterceptor implements HttpInterceptor {
-  currentUser: UserToken;
+export class TokenInterceptor implements HttpInterceptor {
+  currentUserToken: UserToken;
   constructor(private authService: AuthService) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
-        this.currentUser = currentUser;
+        this.currentUserToken = currentUser;
       }
     );
   }
@@ -18,9 +18,9 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const requestOption: any = {};
     // add authorization header with jwt token if available
-    if (this.currentUser) {
+    if (this.currentUserToken) {
       requestOption.setHeaders = {
-        Authorization: `Bearer ${this.currentUser.accessToken}`
+        Authorization: `Bearer ${this.currentUserToken.access_token}`
       };
     }
     request = request.clone(requestOption);

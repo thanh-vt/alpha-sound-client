@@ -10,6 +10,10 @@
     <input class="form-control" type="password" id="password" placeholder="Password" formControlName="password">
     <div class="alert alert-danger" *ngIf="adminLoginForm.get('password').hasError('required') && (adminLoginForm.touched || submitted)">Password is required</div>
     <div class="alert alert-danger" *ngIf="adminLoginForm.get('password').hasError('minlength') && adminLoginForm.touched">Password must have at least 6 characters</div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="dropdownCheck" formControlName="rememberMe">
+      <label class="form-check-label" for="dropdownCheck">Remember Me</label>
+    </div>
     <div class="alert alert-danger" role="alert" *ngIf="adminLoginForm.invalid && submitted">
       Fields must be filled in!
     </div>

@@ -47,7 +47,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // localStorage.clear();
     this.loginForm = this.fb.group({
       username: ['',  Validators.required],
-      password: ['',  Validators.required]
+      password: ['',  Validators.required],
+      rememberMe: [false]
     });
     this.searchForm = this.fb.group({
       searchText: ['',  Validators.required]
@@ -61,7 +62,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // stop here if form is invalid
     if (this.loginForm.valid) {
       this.loading = true;
-      this.subscription.add(this.authService.login(this.loginForm.value)
+      // tslint:disable-next-line:max-line-length
+      this.subscription.add(this.authService.login(this.loginForm.get('username').value, this.loginForm.get('password').value, this.loginForm.get('rememberMe').value)
         .pipe(finalize(() => {
           this.loading = false;
         }))

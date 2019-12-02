@@ -58,6 +58,7 @@ html, body {
         background-color: grey;
         color: gold;
       }
+
       background-color: grey;
     }
   }
@@ -76,9 +77,11 @@ html, body {
       color: whitesmoke;
       background-color: black !important;
       border-color: white;
+
       h6 {
         color: crimson;
-      };
+      }
+    ;
 
       h3 {
         color: #2daaed;
@@ -87,9 +90,8 @@ html, body {
   }
 
 
-
   nav.navbar {
-    background-color: goldenrod ;
+    background-color: goldenrod;
 
     div.nav-item {
       background-color: goldenrod;
@@ -97,20 +99,24 @@ html, body {
 
     div.nav-item.active {
       background-color: khaki !important;
+
       a > h3 {
         color: brown;
       }
-    };
+    }
+  ;
 
     div.dropdown-menu, div.form-group {
       color: white;
       background-color: black !important;
       border-color: white;
-    };
+    }
+  ;
 
     div.alert.alert-danger {
       background-color: #f8d7da !important;
-    };
+    }
+  ;
 
     button#userProfile {
       background-color: lightgreen;
@@ -136,7 +142,8 @@ html, body {
 
   li.page-item {
     background-color: black !important;
-  };
+  }
+;
 
   a.page-link {
     background-color: black !important;
@@ -148,9 +155,12 @@ html, body {
 
   mat-advanced-audio-player {
     background-color: goldenrod !important;
+
     mat-card, mat-expansion-panel-header, div.mat-expansion-panel-body {
       background-color: goldenrod !important;
-    };
+    }
+  ;
+
     td.mat-cell, th.mat-header-cell, div.mat-paginator-container {
       color: black !important;
       background-color: palegoldenrod !important;
