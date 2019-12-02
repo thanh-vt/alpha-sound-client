@@ -39,7 +39,7 @@ export class AuthService {
           sessionStorage.setItem('userToken', JSON.stringify(userToken));
         }
         this.currentUserTokenSubject.next(userToken);
-        this.update.emit(['login', userToken.id]);
+        this.update.emit(['login', userToken.id, rememberMe]);
         return userToken;
       }));
   }

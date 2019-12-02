@@ -119,7 +119,14 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
                 this.message = 'Failed to upload avatar.';
                 console.log(error);
               }, () => {
-                this.userService.setProfile(this.currentUser.id);
+                let rememberMe = false;
+                if (localStorage.getItem('user')) {
+                  rememberMe = true;
+                }
+                if (sessionStorage.getItem('user')) {
+                  rememberMe = false;
+                }
+                this.userService.setProfile(this.currentUser.id, rememberMe);
               }
             ));
           }

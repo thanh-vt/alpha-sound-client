@@ -2,10 +2,9 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {User} from '../models/user';
 import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
-import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 import {AuthService} from './auth.service';
-import {FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -18,19 +17,28 @@ export class UserService {
     this.authService.update.subscribe(
       (action) => {
         if (action[0] === 'login') {
-          this.setProfile(action[1]);
+          this.setProfile(action[1], action[2]);
         } else {
-          localStorage.removeItem('user');
+          if (localStorage.getItem('user')) {
+            localStorage.removeItem('user');
+          }
+          if (sessionStorage.getItem('user')) {
+            sessionStorage.removeItem('user');
+          }
           this.currentUserSubject.next(null);
         }
       }
     );
   }
 
-  setProfile(userId: number) {
+  setProfile(userId: number, rememberMe: boolean) {
     this.http.get<User>(`${environment.apiUrl}/profile/${userId}`).subscribe(
       user => {
-        localStorage.setItem('user', JSON.stringify(user));
+        if (rememberMe) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('user', JSON.stringify(user));
+        }
         this.currentUserSubject.next(user);
       });
   }
