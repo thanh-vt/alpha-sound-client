@@ -1,9 +1,9 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {UserToken} from '../models/userToken';
-import {map} from 'rxjs/operators';
+import {finalize, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,11 @@ export class AuthService {
   private currentUserTokenSubject: BehaviorSubject<UserToken>;
   public currentUserToken: Observable<UserToken>;
   update = new EventEmitter<any>();
+  subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient) {
-    this.currentUserTokenSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken')));
+    // tslint:disable-next-line:max-line-length
+    this.currentUserTokenSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken') ? localStorage.getItem('userToken') : sessionStorage.getItem('userToken')));
     this.currentUserToken = this.currentUserTokenSubject.asObservable();
   }
 
@@ -23,13 +25,13 @@ export class AuthService {
   }
 
   login(username: string, password: string, rememberMe: boolean) {
-    const params = new URLSearchParams();
-    params.append('username', username);
-    params.append('password', password);
-    params.append('grant_type', 'password');
+    const params = new HttpParams()
+      .set('username', username)
+      .set('password', password)
+      .set('grant_type', 'password');
     const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-         Authorization : 'Basic ' + btoa('fooClientIdPassword:secret')});
-    return this.http.post<UserToken>(`${environment.authUrl}?${params}`, null, {headers})
+      Authorization : 'Basic ' + btoa('fooClientIdPassword:secret')});
+    return this.http.post<UserToken>(`${environment.authUrl}`, params, {headers})
       .pipe(map(userToken => {
         if (rememberMe) {
           localStorage.setItem('userToken', JSON.stringify(userToken));
@@ -39,12 +41,31 @@ export class AuthService {
         this.currentUserTokenSubject.next(userToken);
         this.update.emit(['login', userToken.id]);
         return userToken;
-    }));
+      }));
   }
 
   logout() {
-    // remove user from local storage to suggestSongArtist user out
-    localStorage.removeItem('userToken');
+    if (localStorage.getItem('userToken')) {
+      this.subscription.add(this.http.post(`${environment.authUrl}/token/revoke/${localStorage.getItem('userToken')}`, null)
+        .pipe(finalize(() => {
+          localStorage.removeItem('userToken');
+        }))
+        .subscribe(
+          next => {console.log(next); },
+          error => {console.log(error); },
+          () => {}));
+    }
+    if (sessionStorage.getItem('userToken')) {
+      sessionStorage.removeItem('userToken');
+      this.subscription.add(this.http.post(`${environment.authUrl}/token/revoke/${sessionStorage.getItem('userToken')}`, null)
+        .pipe(finalize(() => {
+          sessionStorage.removeItem('userToken');
+        }))
+        .subscribe(
+          next => {console.log(next); },
+          error => {console.log(error); },
+          () => {}));
+    }
     this.currentUserTokenSubject.next(null);
     this.update.emit('logout');
   }
