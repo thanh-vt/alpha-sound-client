@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {UserToken} from '../models/userToken';
 import {finalize, map} from 'rxjs/operators';
 
@@ -30,25 +30,60 @@ export class AuthService {
       .set('password', password)
       .set('grant_type', 'password');
     const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization : 'Basic ' + btoa('fooClientIdPassword:secret')});
-    return this.http.post<UserToken>(`${environment.authUrl}`, params, {headers})
+      Authorization : 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)});
+    return this.http.post<UserToken>(`${environment.authUrl}/oauth/token`, params, {headers})
       .pipe(map(userToken => {
         if (rememberMe) {
           localStorage.setItem('userToken', JSON.stringify(userToken));
+          localStorage.setItem('rememberMe', userToken.refresh_token);
         } else {
+          localStorage.setItem('sessionToken', JSON.stringify(userToken));
           sessionStorage.setItem('userToken', JSON.stringify(userToken));
         }
         this.currentUserTokenSubject.next(userToken);
-        this.update.emit(['login', userToken.id, rememberMe]);
+        this.update.emit(['login', userToken.id]);
+        return userToken;
+      }));
+  }
+
+  rememberLogin() {
+    const params = new HttpParams()
+      .set('grant_type', 'refresh_token')
+      .set('refresh_token', localStorage.getItem('refreshToken'));
+    const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      Authorization : 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)});
+    return this.http.post<UserToken>(`${environment.authUrl}/oauth/token`, params, {headers})
+      .pipe(map(userToken => {
+        if (localStorage.getItem('rememberMe')) {
+          localStorage.setItem('userToken', JSON.stringify(userToken));
+        } else {
+          localStorage.setItem('sessionToken', JSON.stringify(userToken));
+          sessionStorage.setItem('userToken', JSON.stringify(userToken));
+        }
+        this.currentUserTokenSubject.next(userToken);
+        this.update.emit(['login', userToken.id]);
         return userToken;
       }));
   }
 
   logout() {
     if (localStorage.getItem('userToken')) {
-      this.subscription.add(this.http.post(`${environment.authUrl}/token/revoke/${localStorage.getItem('userToken')}`, null)
+      const token = JSON.parse(localStorage.getItem('userToken')) as UserToken;
+      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
         .pipe(finalize(() => {
           localStorage.removeItem('userToken');
+          localStorage.removeItem('rememberMe');
+        }))
+        .subscribe(
+          next => {console.log(next); },
+          error => {console.log(error); },
+          () => {}));
+    }
+    if (localStorage.getItem('refreshToken')) {
+      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${localStorage.getItem('refreshToken')}`, null)
+        .pipe(finalize(() => {
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('rememberMe');
         }))
         .subscribe(
           next => {console.log(next); },
@@ -56,14 +91,14 @@ export class AuthService {
           () => {}));
     }
     if (sessionStorage.getItem('userToken')) {
-      sessionStorage.removeItem('userToken');
-      this.subscription.add(this.http.post(`${environment.authUrl}/token/revoke/${sessionStorage.getItem('userToken')}`, null)
+      const token = JSON.parse(sessionStorage.getItem('userToken')) as UserToken;
+      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
         .pipe(finalize(() => {
           sessionStorage.removeItem('userToken');
         }))
         .subscribe(
-          next => {console.log(next); },
-          error => {console.log(error); },
+          next => {console.log(JSON.parse(JSON.stringify(next))); },
+          error => {console.log(JSON.parse(JSON.stringify(error))); },
           () => {}));
     }
     this.currentUserTokenSubject.next(null);

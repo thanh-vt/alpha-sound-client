@@ -17,7 +17,7 @@ export class UserService {
     this.authService.update.subscribe(
       (action) => {
         if (action[0] === 'login') {
-          this.setProfile(action[1], action[2]);
+          this.setProfile(action[1]);
         } else {
           if (localStorage.getItem('user')) {
             localStorage.removeItem('user');
@@ -31,10 +31,10 @@ export class UserService {
     );
   }
 
-  setProfile(userId: number, rememberMe: boolean) {
+  setProfile(userId: number) {
     this.http.get<User>(`${environment.apiUrl}/profile/${userId}`).subscribe(
       user => {
-        if (rememberMe) {
+        if (localStorage.getItem('rememberMe')) {
           localStorage.setItem('user', JSON.stringify(user));
         } else {
           sessionStorage.setItem('user', JSON.stringify(user));

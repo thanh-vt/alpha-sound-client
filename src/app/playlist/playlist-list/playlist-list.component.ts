@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Playlist} from '../../models/playlist';
 import {PlaylistService} from '../../services/playlist.service';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {finalize} from 'rxjs/operators';
 @Component({
   selector: 'app-playlist-list',
@@ -15,7 +14,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   message: string;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[] = [];
-  constructor(private playlistService: PlaylistService, private fb: FormBuilder) { }
+  constructor(private playlistService: PlaylistService) { }
 
   ngOnInit() {
     this.refreshPlaylistList();

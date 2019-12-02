@@ -3,9 +3,10 @@
 // The list of audioFiles replacements can be found in `angular.json`.
 
 export const environment = {
-  authUrl: 'http://localhost:8081/lambda-authorization/oauth/token',
+  authUrl: 'http://localhost:8081/lambda-authorization',
   apiUrl: 'http://localhost:8080/climax-sound/api',
-  // apiUrl: 'https://climax-sound.netlify.com/api',
+  clientId: 'fooClientIdPassword',
+  clientSecret: 'secret',
   production: false
 };
 
