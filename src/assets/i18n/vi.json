@@ -73,8 +73,9 @@
   "Wrong username or password": "Sai tên đăng nhập hoặc mật khẩu",
   "Enter": "Điền",
   "Pick": "Chọn",
-  "Forgot password?": "Quên mật khẩu?",
+  "Forgot password?": "Quên mật khẩu",
   "Cannot retrieve user information.": "Không thể lấy thông tin người dùng.",
+  "Remember Me": "Ghi nhớ đăng nhập",
 
   "Playlist saved successfully.": "Danh sách phát được tạo thành công!",
   "Failed to save playlist.": "Tạo danh sách phát thất bại.",

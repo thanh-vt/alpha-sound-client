@@ -74,16 +74,16 @@
           </div>
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="dropdownCheck" formControlName="rememberMe">
-            <label class="form-check-label" for="dropdownCheck">Remember Me</label>
+            <label class="form-check-label" for="dropdownCheck">{{ 'Remember Me' | translate}}</label>
           </div>
-          <button type="submit" class="btn btn-info" [disabled]="loginForm.invalid">
+          <button type="submit" class="btn btn-info mt-2" [disabled]="loginForm.invalid">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             <span>{{ 'Sign In' | translate }}</span>
           </button>
         </form>
         <div class="dropdown-divider"></div>
-        <button ngbDropdownItem><a ngbDropdownItem class="dropdown-item" [routerLink]="['/register']">{{ 'New around here? Sign up' | translate}}</a></button>
-        <button ngbDropdownItem>{{ 'Forgot password?' | translate }}</button>
+        <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/register']">{{ 'New around here? Sign up' | translate}}</a>
+        <a ngbDropdownItem class="dropdown-item text-center">{{ 'Forgot password?' | translate }}</a>
       </div>
     </div>
     <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser">

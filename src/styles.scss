@@ -106,12 +106,22 @@ html, body {
     }
   ;
 
-    div.dropdown-menu, div.form-group {
+    div.dropdown-menu, div.form-group, .dropdown-item {
       color: white;
       background-color: black !important;
       border-color: white;
     }
   ;
+
+    a.dropdown-item:hover {
+      background-color: grey !important;
+      border-color: white;
+    }
+
+    div.form-check {
+      color: white;
+      background-color: black !important;
+    }
 
     div.alert.alert-danger {
       background-color: #f8d7da !important;
@@ -120,10 +130,6 @@ html, body {
 
     button#userProfile {
       background-color: lightgreen;
-    }
-
-    .dropdown-item {
-      color: white;
     }
 
     //img {

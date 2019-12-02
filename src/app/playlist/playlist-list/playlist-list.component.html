@@ -1,3 +1,6 @@
+<ng-container *ngIf="loading">
+  <app-spinner [type]="4"></app-spinner>
+</ng-container>
 <app-create-playlist (createPlaylist)="refreshPlaylistList()" class="modal-body"></app-create-playlist>
 <table class="table table-striped">
   <thead>

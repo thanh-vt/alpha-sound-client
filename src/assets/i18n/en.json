@@ -75,6 +75,7 @@
   "Pick": "Pick",
   "Forgot password?": "Forgot password?",
   "Cannot retrieve user information.": "Cannot retrieve user information.",
+  "Remember Me": "Remember Me",
 
   "Playlist saved successfully.": "Playlist created successfully.",
   "Failed to save playlist.": "Failed to create playlist.",
