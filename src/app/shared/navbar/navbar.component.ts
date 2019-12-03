@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error: string;
+  error: boolean;
   subscription = new Subscription();
 
   @ViewChild('language', {static: false}) language: ElementRef;
@@ -68,13 +68,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.loading = false;
         }))
         .subscribe(
-        () => {
-          this.loading = false;
-          this.router.navigate([this.returnUrl]);
-        }, () => {
-          this.message = 'Wrong username or password';
-        }
-      ));
+          () => {
+            this.loading = false;
+            this.router.navigate([this.returnUrl]);
+            this.error = false;
+            this.message = 'Signed in successfully';
+          }, () => {
+            this.error = true;
+            this.message = 'Wrong username or password';
+          }
+        ));
     }
   }
 
@@ -92,9 +95,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authService.logout();
     const navigation = setTimeout(
       () => {
-      this.router.navigate(['/home']);
-      clearTimeout(navigation);
-    }, 500);
+        this.router.navigate(['/home']);
+        clearTimeout(navigation);
+      }, 500);
   }
 
   translatePage() {

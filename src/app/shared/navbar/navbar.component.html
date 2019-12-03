@@ -69,12 +69,12 @@
               {{ 'Password' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 6 '}}{{ 'characters' | translate }}{{'!'}}
             </div>
           </div>
-          <div class="alert alert-danger" role="alert" *ngIf="message">
-            {{ message }}
-          </div>
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="dropdownCheck" formControlName="rememberMe">
             <label class="form-check-label" for="dropdownCheck">{{ 'Remember Me' | translate}}</label>
+          </div>
+          <div class="alert" [class.alert-danger]="error" [class.alert-success]="!error" role="alert" *ngIf="message">
+            {{ message | translate }}
           </div>
           <button type="submit" class="btn btn-info mt-2" [disabled]="loginForm.invalid">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
