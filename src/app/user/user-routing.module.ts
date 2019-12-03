@@ -4,11 +4,11 @@ import {HomeComponent} from './home/home.component';
 import {RegisterComponent} from './register/register.component';
 import {UserComponent} from './user/user.component';
 import {AuthGuard} from '../guards/auth.guard';
-import {UpdateProfileComponent} from './update-profile/update-profile.component';
 import {SearchComponent} from './search/search.component';
 import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';
 import {FavoritesComponent} from './favorites/favorites.component';
 import {ProfileComponent} from './profile/profile.component';
+import {CompleteRegistrationComponent} from './complete-registration/complete-registration.component';
 
 const routes: Routes = [
   {
@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: '', component: UserComponent, children: [
       { path: 'home', component: HomeComponent},
       { path: 'register', component: RegisterComponent},
+      { path: 'complete-registration', component: CompleteRegistrationComponent},
       { path: 'profile/:id', component: ProfileComponent},
       { path: 'song', loadChildren: () => import('../song/song.module').then(mod => mod.SongModule)},
       { path: 'album', loadChildren: () => import('../album/album.module').then(mod => mod.AlbumModule)},

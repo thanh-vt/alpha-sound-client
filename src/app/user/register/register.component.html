@@ -77,13 +77,13 @@
           {{ 'Not a valid Email' | translate }}
         </div>
       </div>
-      <button [disabled]="loading" class="btn btn-primary rounded-pill float-right">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        <span>{{ 'Sign Up' | translate }}</span>
-      </button>
       <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
            [class.alert-success]="!error">{{ message | translate }}
       </div>
+      <button [disabled]="loading" class="btn btn-primary rounded-pill float-right mt-2">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        <span>{{ 'Sign Up' | translate }}</span>
+      </button>
     </form>
   </div>
 </app-card>

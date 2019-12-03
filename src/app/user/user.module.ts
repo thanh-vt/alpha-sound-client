@@ -17,10 +17,11 @@ import { ProfileComponent } from './profile/profile.component';
 import { UserProfileComponent } from './user-management/user-profile/user-profile.component';
 import {PlaylistModule} from '../playlist/playlist.module';
 import {TranslateModule} from '@ngx-translate/core';
+import { CompleteRegistrationComponent } from './complete-registration/complete-registration.component';
 
 @NgModule({
   declarations: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent,
-      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent],
+      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent, CompleteRegistrationComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
