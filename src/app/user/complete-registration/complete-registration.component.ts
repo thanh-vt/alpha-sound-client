@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-complete-registration',
@@ -9,7 +9,8 @@ import {ActivatedRoute} from '@angular/router';
 export class CompleteRegistrationComponent implements OnInit {
   error: boolean;
   message: string;
-  constructor(private route: ActivatedRoute) { }
+  countdownSec$: number;
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(
@@ -18,6 +19,14 @@ export class CompleteRegistrationComponent implements OnInit {
         if (result === '0') {
           this.message = 'Account activated successfully';
           this.error = false;
+          this.countdownSec$ = 5;
+          const countdown = setInterval(() => {
+            if (this.countdownSec$ === 0) {
+              clearInterval(countdown);
+              this.router.navigate(['/home']);
+            } else {
+              this.countdownSec$ = --this.countdownSec$;
+            }}, 1000);
         } else if (result === '1') {
           this.message = 'Invalid Token';
           this.error = true;
