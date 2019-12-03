@@ -16,7 +16,7 @@ export class CompleteRegistrationComponent implements OnInit {
       next => {
         const result = next.status;
         if (result === '0') {
-          this.message = 'Registered Successfully';
+          this.message = 'Account activated successfully';
           this.error = false;
         } else if (result === '1') {
           this.message = 'Invalid Token';

@@ -85,6 +85,7 @@
   "Failed to remove playlist.": "Loại bỏ danh sách phát thất bại.",
   "User registered successfully. We have sent you an email, please check your it and click on the confirmation link to activate your account.": "Đăng ký thành công. Chúng tôi vừa gửi cho bạn 1 email, kiểm tra hòm thư và click vào đường link để kích hoạt tài khoản.",
   "Click here to return back to the home page": "Click vào đây để quay về trang chủ.",
+  "Account activated successfully": "Tài khoản được kích hoạt thành công",
   "Invalid Token": "Mã token không đúng",
   "Token Expired": "Mã token đã hết hạn",
   "Failed to register.": "Đăng ký thất bại.",
