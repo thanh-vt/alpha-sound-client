@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       phoneNumber: ['', Validators.required],
       gender: [true, Validators.required],
       birthDate: ['', Validators.required],
-      email: ['', Validators.email]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
