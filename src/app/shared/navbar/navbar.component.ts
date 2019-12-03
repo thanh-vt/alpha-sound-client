@@ -66,13 +66,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.subscription.add(this.authService.login(this.loginForm.get('username').value, this.loginForm.get('password').value, this.loginForm.get('rememberMe').value)
         .pipe(finalize(() => {
           this.loading = false;
+          this.clearMessage();
         }))
         .subscribe(
           () => {
             this.loading = false;
-            this.router.navigate([this.returnUrl]);
             this.error = false;
             this.message = 'Signed in successfully';
+            this.router.navigate([this.returnUrl]);
           }, () => {
             this.error = true;
             this.message = 'Wrong username or password';
@@ -98,6 +99,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home']);
         clearTimeout(navigation);
       }, 500);
+  }
+
+  clearMessage() {
+    const clearMessage = setTimeout(() => {
+      this.message = '';
+      clearTimeout(clearMessage);
+    }, 500);
   }
 
   translatePage() {
