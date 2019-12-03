@@ -16,13 +16,13 @@ export class CompleteRegistrationComponent implements OnInit {
       next => {
         const result = next.status;
         if (result === '0') {
-          this.message = 'Registered Successfully!';
+          this.message = 'Registered Successfully';
           this.error = false;
         } else if (result === '1') {
-          this.message = 'Invalid Token!';
+          this.message = 'Invalid Token';
           this.error = true;
         } else if (result === '2') {
-          this.message = 'Token Expired!';
+          this.message = 'Token Expired';
           this.error = true;
         } else {
           this.message = '';

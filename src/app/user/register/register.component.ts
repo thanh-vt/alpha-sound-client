@@ -48,7 +48,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.subscription.add(this.userService.register(this.registerForm.value).subscribe(
         () => {
           this.error = false;
-          this.message = 'User registered successfully.';
+          // tslint:disable-next-line:max-line-length
+          this.message = 'User registered successfully. We have sent you an email, please check your it and click on the confirmation link to activate your account.';
           const navigation = setInterval(() => {
             this.navigate();
             clearTimeout(navigation);
@@ -57,7 +58,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         error => {
           this.error = true;
           this.message = 'Failed to register.';
-          console.log(error.message);
+          console.log(error);
         }
       ));
     }
