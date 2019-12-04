@@ -49,7 +49,7 @@ export class AuthService {
   rememberLogin() {
     const params = new HttpParams()
       .set('grant_type', 'refresh_token')
-      .set('refresh_token', localStorage.getItem('refreshToken'));
+      .set('refresh_token', localStorage.getItem('rememberMe'));
     const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
       Authorization : 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)});
     return this.http.post<UserToken>(`${environment.authUrl}/oauth/token`, params, {headers})
@@ -79,22 +79,25 @@ export class AuthService {
           error => {console.log(error); },
           () => {}));
     }
-    if (localStorage.getItem('refreshToken')) {
-      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${localStorage.getItem('refreshToken')}`, null)
-        .pipe(finalize(() => {
-          localStorage.removeItem('userToken');
-          localStorage.removeItem('rememberMe');
-        }))
-        .subscribe(
-          next => {console.log(next); },
-          error => {console.log(error); },
-          () => {}));
+    if (localStorage.getItem('rememberMe')) {
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('rememberMe');
+      // this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${localStorage.getItem('rememberMe')}`, null)
+      //   .pipe(finalize(() => {
+      //     localStorage.removeItem('userToken');
+      //     localStorage.removeItem('rememberMe');
+      //   }))
+      //   .subscribe(
+      //     next => {console.log(next); },
+      //     error => {console.log(error); },
+      //     () => {}));
     }
     if (sessionStorage.getItem('userToken')) {
       const token = JSON.parse(sessionStorage.getItem('userToken')) as UserToken;
       this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
         .pipe(finalize(() => {
           sessionStorage.removeItem('userToken');
+          localStorage.removeItem('sessionToken');
         }))
         .subscribe(
           next => {console.log(JSON.parse(JSON.stringify(next))); },
