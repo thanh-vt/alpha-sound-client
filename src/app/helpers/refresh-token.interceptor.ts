@@ -26,19 +26,13 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
       return next.handle(this.modifyRequest(request)).pipe(
         catchError(error => {
           if (error instanceof HttpErrorResponse) {
-            if (
-              request.url.includes('/grant_type=refresh_token') ||
-              request.url.includes('/oauth/token')
-            ) {
+            if (request.url.includes('/oauth/token')) {
               // We do another check to see if refresh token failed
               // In this case we want to logout user and to redirect it to login page
-
               if (request.url.includes('/grant_type=refresh_token')) {
                 this.authService.logout();
                 this.router.navigate(['/home']);
               }
-
-              return Observable.throw(error);
             }
             if (error.status === 401) {
               const params = new HttpParams()
@@ -61,7 +55,15 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         })
       );
     } else {
-      return next.handle(request);
+      return next.handle(request).pipe(
+        catchError(error => {
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            this.authService.logout();
+            return Observable.throw(error);
+          }
+        })
+      );
+      // return next.handle(request);
     }
   }
 

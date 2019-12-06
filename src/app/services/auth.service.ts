@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
@@ -16,15 +16,17 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     // tslint:disable-next-line:max-line-length
-    this.currentUserTokenSubject = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('userToken') ? localStorage.getItem('userToken') : sessionStorage.getItem('userToken')));
+    this.currentUserTokenSubject = new BehaviorSubject<UserToken>(JSON.parse(sessionStorage.getItem('userToken') ? sessionStorage.getItem('userToken') : localStorage.getItem('userToken')));
     this.currentUserToken = this.currentUserTokenSubject.asObservable();
   }
+
 
   public get currentUserValue(): UserToken {
     return this.currentUserTokenSubject.value;
   }
 
   login(username: string, password: string, rememberMe: boolean) {
+    console.log(username);
     const params = new HttpParams()
       .set('username', username)
       .set('password', password)
@@ -71,7 +73,7 @@ export class AuthService {
           localStorage.removeItem('sessionToken');
         }))
         .subscribe(
-          next => {console.log(JSON.parse(JSON.stringify(next)));},
+          next => {console.log(JSON.parse(JSON.stringify(next))); },
           error => {console.log(JSON.parse(JSON.stringify(error))); },
           () => {}));
     }

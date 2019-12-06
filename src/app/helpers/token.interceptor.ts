@@ -16,16 +16,10 @@ export class TokenInterceptor implements HttpInterceptor {
         this.currentUserToken = currentUser;
       }
     );
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const requestOption: any = {};
-    // add authorization header with jwt token if available
     if (this.currentUserToken && this.currentUserToken.access_token) {
       requestOption.setHeaders = {
         Authorization: `Bearer ${this.currentUserToken.access_token}`

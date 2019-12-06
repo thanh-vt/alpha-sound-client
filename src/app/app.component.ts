@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {UserToken} from './models/userToken';
 import {finalize} from 'rxjs/operators';
 import {UserService} from './services/user.service';
+import {AuthService} from './services/auth.service';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})
 export class AppComponent implements OnInit, OnDestroy {
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService) {
     // localStorage.clear();
     // sessionStorage.clear();
   }
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
         .pipe(finalize(() => {
           localStorage.removeItem('sessionToken');
+          localStorage.removeItem('sessionUser');
         }))
         .subscribe(
           next => {
@@ -40,6 +42,9 @@ export class AppComponent implements OnInit, OnDestroy {
             },
           error => {console.log(JSON.parse(JSON.stringify(error))); },
           () => {}));
+    } else if (localStorage.getItem('sessionToken') && sessionStorage.getItem('userToken')) {
+      const token = JSON.parse(localStorage.getItem('sessionToken')) as UserToken;
+      this.userService.setProfile(token.id);
     }
     console.log(localStorage);
     console.log(sessionStorage);
