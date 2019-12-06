@@ -6,6 +6,7 @@ import {ModalComponent} from '../../shared/modal/modal.component';
 import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
+import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-admin',
@@ -13,30 +14,29 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  currentUser: User;
+  currentUserToken: UserToken;
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
 
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
 
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private userService: UserService, public translate: TranslateService) {
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, public translate: TranslateService) {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
     translate.use(currentLanguage);
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
+    this.subscription.add(this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUserToken = next;
       }
-    );
+    ));
   }
 
   ngOnInit() {
-    if (!this.currentUser) {
+    if (!this.currentUserToken) {
       this.hasNotLoggedInAsAdmin = true;
     } else {
       let hasRoleAdmin = false;
-      const roleList = this.currentUser.roles;
+      const roleList = this.currentUserToken.roles;
       for (const role of roleList) {
         if (role.authority === 'ROLE_ADMIN') {
           hasRoleAdmin = true;

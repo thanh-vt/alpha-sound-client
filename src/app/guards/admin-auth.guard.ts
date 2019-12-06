@@ -19,13 +19,7 @@ import {AuthService} from '../services/auth.service';
 })
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   currentUser: User;
-  constructor(private router: Router, private userService: UserService, private authService: AuthService) {
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
-  }
+  constructor(private router: Router, private userService: UserService, private authService: AuthService) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let hasRoleAdmin = false;

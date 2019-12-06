@@ -28,13 +28,7 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   albumList: Album[];
   subscription: Subscription = new Subscription();
   constructor(private albumService: AlbumService, private userService: UserService,
-              private songService: SongService, private playingQueueService: PlayingQueueService) {
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
-  }
+              private songService: SongService, private playingQueueService: PlayingQueueService) {}
 
   ngOnInit() {
     this.loading = true;

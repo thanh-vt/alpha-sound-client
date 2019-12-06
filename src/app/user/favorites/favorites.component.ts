@@ -33,12 +33,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private userService: UserService, public translate: TranslateService) {
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
+              private playlistService: PlaylistService, public translate: TranslateService) {
     this.playingQueueService.update.subscribe(
       () => {
         this.goToPage(this.pageNumber);

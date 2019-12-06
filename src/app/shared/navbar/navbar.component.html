@@ -25,7 +25,7 @@
     </div>
 
     <div class="search_upload mr-1">
-      <div ngbDropdown class="d-inline-block mx-1" *ngIf="!!currentUser" >
+      <div ngbDropdown class="d-inline-block mx-1" *ngIf="!!currentUserToken" >
         <button ngbDropdownToggle class="dropdown-toggle btn btn-info mx-0 rounded-pill" id="uploadSelect" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-upload"></i>
         </button>
@@ -45,7 +45,7 @@
     </div>
   </div>
   <div>
-    <div ngbDropdown class="d-inline-block mr-1" *ngIf="!currentUser">
+    <div ngbDropdown class="d-inline-block mr-1" *ngIf="!currentUserToken">
       <button class="btn btn-info rounded-pill" id="dropdownForm1" ngbDropdownToggle><i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3">
@@ -86,14 +86,14 @@
         <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/reset-password']">{{ 'Forgot password?' | translate }}</a>
       </div>
     </div>
-    <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser">
+    <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUserToken">
       <button ngbDropdownToggle class="dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="d-inline-block user-avatar" *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
-        <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" alt="">
-        <span> {{ currentUser.username }}</span>
+        <span class="d-inline-block user-avatar" *ngIf="!currentUserToken.avatarUrl"><i class="fas fa-user-circle"></i></span>
+        <img class="d-inline-block user-avatar" *ngIf="!!currentUserToken.avatarUrl" [src]="currentUserToken.avatarUrl" alt="">
+        <span> {{ currentUserToken.username }}</span>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUser.id]"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUserToken.id]"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"><span><i class="fas fa-headphones-alt"></i> {{ 'Playlist' | translate }}</span></a>
         <div class="dropdown-divider"></div>
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']"><i class="fas fa-upload"></i> {{ 'Uploaded' | translate }}</a>
@@ -102,10 +102,15 @@
       </div>
     </div>
     <div class="d-inline-block">
+<!--      <div class="dropdown-menu" aria-labelledby="dropdown09">-->
+<!--        <a class="dropdown-item" href="#fr"><span class="flag-icon flag-icon-fr"> </span>  French</a>-->
+<!--        <a class="dropdown-item" href="#it"><span class="flag-icon flag-icon-it"> </span>  Italian</a>-->
+<!--        <a class="dropdown-item" href="#ru"><span class="flag-icon flag-icon-ru"> </span>  Russian</a>-->
+<!--      </div>-->
       <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded-pill">{{ 'Language' | translate }}
         <select class="custom-select mx-1 rounded-pill" name="" id="language" #language (change)="translatePage()" style="width: 6rem">
-          <option [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
-          <option [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
+          <option class="us_flag" [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
+          <option class="vi_flag" [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
         </select>
       </label>
     </div>

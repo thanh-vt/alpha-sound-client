@@ -20,13 +20,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   loading: boolean;
   subscription: Subscription = new Subscription();
   artistList: Artist[] = [];
-  constructor(private artistService: ArtistService, public userService: UserService) {
-    userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
-  }
+  constructor(private artistService: ArtistService) {}
 
   ngOnInit() {
     this.loading = true;

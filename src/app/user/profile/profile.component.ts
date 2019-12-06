@@ -28,13 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private artistService: ArtistService,
               private songService: SongService, private playlistService: PlaylistService,
-              private playingQueueService: PlayingQueueService, private userService: UserService, public translate: TranslateService) {
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
-  }
+              private playingQueueService: PlayingQueueService, private userService: UserService, public translate: TranslateService) {}
 
   ngOnInit() {
     this.userId = parseInt(this.route.snapshot.paramMap.get('id'), 10);

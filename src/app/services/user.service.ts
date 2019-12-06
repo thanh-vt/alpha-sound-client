@@ -2,45 +2,15 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {User} from '../models/user';
 import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-  public currentUser = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.authService.update.subscribe(
-      (action) => {
-        if (action[0] === 'login') {
-          this.setProfile(action[1]);
-        } else {
-          if (localStorage.getItem('user')) {
-            localStorage.removeItem('user');
-          }
-          if (sessionStorage.getItem('user')) {
-            sessionStorage.removeItem('user');
-          }
-          this.currentUserSubject.next(null);
-        }
-      }
-    );
-  }
-
-  setProfile(userId: number) {
-    this.http.get<User>(`${environment.apiUrl}/profile/${userId}`).subscribe(
-      user => {
-        if (localStorage.getItem('rememberMe')) {
-          localStorage.setItem('user', JSON.stringify(user));
-        } else {
-          sessionStorage.setItem('user', JSON.stringify(user));
-        }
-        this.currentUserSubject.next(user);
-      });
+  constructor(private http: HttpClient) {
   }
 
   getProfile(userId: number): Observable<User> {

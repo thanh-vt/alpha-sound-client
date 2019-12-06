@@ -26,7 +26,6 @@ export class AuthService {
   }
 
   login(username: string, password: string, rememberMe: boolean) {
-    console.log(username);
     const params = new HttpParams()
       .set('username', username)
       .set('password', password)

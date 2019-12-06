@@ -29,10 +29,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private adminService: AdminService, private authService: AuthService, private userService: UserService) {
-    userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
+    this.authService.currentUserToken.subscribe(
+      next => {this.userService.getProfile(next.id).subscribe(
+        currentUser => {
+          this.currentUser = currentUser;
+        }
+      ); }
     );
   }
 

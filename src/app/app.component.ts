@@ -37,14 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
           localStorage.removeItem('sessionUser');
         }))
         .subscribe(
-          next => {
-            console.log(JSON.parse(JSON.stringify(next)));
-            },
+          next => {console.log(JSON.parse(JSON.stringify(next))); },
           error => {console.log(JSON.parse(JSON.stringify(error))); },
           () => {}));
-    } else if (localStorage.getItem('sessionToken') && sessionStorage.getItem('userToken')) {
-      const token = JSON.parse(localStorage.getItem('sessionToken')) as UserToken;
-      this.userService.setProfile(token.id);
     }
     console.log(localStorage);
     console.log(sessionStorage);

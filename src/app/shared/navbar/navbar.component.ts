@@ -8,6 +8,7 @@ import {User} from '../../models/user';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 import {ThemeService} from '../../services/theme.service';
+import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +17,7 @@ import {ThemeService} from '../../services/theme.service';
 })
 
 export class NavbarComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUserToken: UserToken;
   message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
@@ -36,11 +37,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
     translate.use(currentLanguage);
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
+    this.subscription.add(this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUserToken = next;
       }
-    );
+    ));
   }
 
   ngOnInit() {
@@ -98,14 +99,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
       () => {
         this.router.navigate(['/home']);
         clearTimeout(navigation);
-      }, 500);
+      }, 3000);
   }
 
   clearMessage() {
     const clearMessage = setTimeout(() => {
       this.message = '';
       clearTimeout(clearMessage);
-    }, 500);
+    }, 3000);
   }
 
   translatePage() {

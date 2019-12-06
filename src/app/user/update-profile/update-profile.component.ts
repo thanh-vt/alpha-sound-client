@@ -31,15 +31,14 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-              private authService: AuthService, private userService: UserService) {
-    this.userService.currentUser.subscribe(
+              private authService: AuthService, private userService: UserService) {}
+
+  ngOnInit() {
+    this.subscription.add(this.userService.getProfile(this.currentUser.id).subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }
-    );
-  }
-
-  ngOnInit() {
+    ));
     this.updateForm = this.fb.group({
       username: [this.currentUser.username],
       // tslint:disable-next-line:max-line-length
@@ -118,8 +117,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
                 this.error = true;
                 this.message = 'Failed to upload avatar.';
                 console.log(error);
-              }, () => {
-                this.userService.setProfile(this.currentUser.id);
               }
             ));
           }

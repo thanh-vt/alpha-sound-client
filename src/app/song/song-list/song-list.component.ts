@@ -33,13 +33,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private userService: UserService, public translate: TranslateService) {
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
-  }
+              private playlistService: PlaylistService, private userService: UserService, public translate: TranslateService) {}
 
   ngOnInit() {
     this.loading = true;

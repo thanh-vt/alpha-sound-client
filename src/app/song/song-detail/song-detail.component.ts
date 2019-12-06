@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
@@ -39,13 +39,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
               private router: Router, private authService: AuthService,
               private songService: SongService, private userService: UserService, private closeDialogueService: CloseDialogueService,
               // tslint:disable-next-line:max-line-length
-              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {
-    this.userService.currentUser.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
-      }
-    );
-  }
+              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {}
 
   ngOnInit() {
     this.commentForm = this.fb.group({
