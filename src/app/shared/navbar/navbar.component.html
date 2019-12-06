@@ -109,8 +109,8 @@
 <!--      </div>-->
       <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded-pill">{{ 'Language' | translate }}
         <select class="custom-select mx-1 rounded-pill" name="" id="language" #language (change)="translatePage()" style="width: 6rem">
-          <option class="us_flag" [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
-          <option class="vi_flag" [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
+          <option [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
+          <option[selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
         </select>
       </label>
     </div>
