@@ -1,5 +1,5 @@
 <div class="alert text-center w-100 h-auto py-5" *ngIf="message" [class.alert-success]="!error" [class.alert-danger]="error">
-  {{ message | translate }}<br>
+  <span>{{ message | translate }}</span><br>
   <span *ngIf="!error">{{ 'You will be brought back to the homepage after ' | translate }}{{ countdownSec$ }}s<br></span>
   <span *ngIf="!error">{{ 'Or' | translate }}<br></span>
   <span>[</span><a [routerLink]="['/home']">{{ 'Click here to return back to the home page' | translate }}</a><span>]</span>

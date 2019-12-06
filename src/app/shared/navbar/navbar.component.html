@@ -83,7 +83,7 @@
         </form>
         <div class="dropdown-divider"></div>
         <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/register']">{{ 'New around here? Sign up' | translate}}</a>
-        <a ngbDropdownItem class="dropdown-item text-center">{{ 'Forgot password?' | translate }}</a>
+        <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/reset-password']">{{ 'Forgot password?' | translate }}</a>
       </div>
     </div>
     <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUser">

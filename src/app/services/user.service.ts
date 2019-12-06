@@ -61,6 +61,14 @@ export class UserService {
     return this.http.put<any>(`${environment.apiUrl}/profile`, formGroup);
   }
 
+  getPasswordResetToken(formGroup): Observable<HttpEvent<any>> {
+    return this.http.post<any>(`${environment.apiUrl}/reset-password`, formGroup);
+  }
+
+  resetPasswordSubmission(formGroup, id: number, token: string): Observable<HttpEvent<any>> {
+    return this.http.put<any>(`${environment.apiUrl}/reset-password?id=${id}&token=${token}`, formGroup);
+  }
+
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

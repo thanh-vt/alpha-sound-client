@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {UserToken} from '../models/userToken';
 import {finalize, map} from 'rxjs/operators';
 
@@ -35,27 +35,7 @@ export class AuthService {
       .pipe(map(userToken => {
         if (rememberMe) {
           localStorage.setItem('userToken', JSON.stringify(userToken));
-          localStorage.setItem('rememberMe', userToken.refresh_token);
-        } else {
-          localStorage.setItem('sessionToken', JSON.stringify(userToken));
-          sessionStorage.setItem('userToken', JSON.stringify(userToken));
-        }
-        this.currentUserTokenSubject.next(userToken);
-        this.update.emit(['login', userToken.id]);
-        return userToken;
-      }));
-  }
-
-  rememberLogin() {
-    const params = new HttpParams()
-      .set('grant_type', 'refresh_token')
-      .set('refresh_token', localStorage.getItem('rememberMe'));
-    const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      Authorization : 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)});
-    return this.http.post<UserToken>(`${environment.authUrl}/oauth/token`, params, {headers})
-      .pipe(map(userToken => {
-        if (localStorage.getItem('rememberMe')) {
-          localStorage.setItem('userToken', JSON.stringify(userToken));
+          localStorage.setItem('rememberMe', 'true');
         } else {
           localStorage.setItem('sessionToken', JSON.stringify(userToken));
           sessionStorage.setItem('userToken', JSON.stringify(userToken));
@@ -82,15 +62,6 @@ export class AuthService {
     if (localStorage.getItem('rememberMe')) {
       localStorage.removeItem('userToken');
       localStorage.removeItem('rememberMe');
-      // this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${localStorage.getItem('rememberMe')}`, null)
-      //   .pipe(finalize(() => {
-      //     localStorage.removeItem('userToken');
-      //     localStorage.removeItem('rememberMe');
-      //   }))
-      //   .subscribe(
-      //     next => {console.log(next); },
-      //     error => {console.log(error); },
-      //     () => {}));
     }
     if (sessionStorage.getItem('userToken')) {
       const token = JSON.parse(sessionStorage.getItem('userToken')) as UserToken;
@@ -100,7 +71,7 @@ export class AuthService {
           localStorage.removeItem('sessionToken');
         }))
         .subscribe(
-          next => {console.log(JSON.parse(JSON.stringify(next))); },
+          next => {console.log(JSON.parse(JSON.stringify(next)));},
           error => {console.log(JSON.parse(JSON.stringify(error))); },
           () => {}));
     }

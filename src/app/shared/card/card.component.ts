@@ -11,6 +11,7 @@ export class CardComponent implements OnInit {
   @Input() imgSrc: string;
   @Input() showEditButton: boolean;
   @Output() showEditForm = new EventEmitter();
+  @Input() tileHoverEffect: boolean;
 
   constructor() { }
 

@@ -3,14 +3,22 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {UserToken} from '../models/userToken';
+import {UserService} from '../services/user.service';
+import {User} from '../models/user';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  currentUser: User;
   currentUserToken: UserToken;
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private userService: UserService) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUserToken = currentUser;
+      }
+    );
+    this.userService.currentUser.subscribe(
+      currentUser => {
+        this.currentUser = currentUser;
       }
     );
   }
@@ -18,7 +26,7 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const requestOption: any = {};
     // add authorization header with jwt token if available
-    if (this.currentUserToken) {
+    if (this.currentUserToken && this.currentUserToken.access_token) {
       requestOption.setHeaders = {
         Authorization: `Bearer ${this.currentUserToken.access_token}`
       };

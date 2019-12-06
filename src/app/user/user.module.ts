@@ -18,10 +18,12 @@ import { UserProfileComponent } from './user-management/user-profile/user-profil
 import {PlaylistModule} from '../playlist/playlist.module';
 import {TranslateModule} from '@ngx-translate/core';
 import { CompleteRegistrationComponent } from './complete-registration/complete-registration.component';
+import { ResetPasswordSubmissionComponent } from './reset-password-submission/reset-password-submission.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent,
-      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent, CompleteRegistrationComponent],
+      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent, CompleteRegistrationComponent, ResetPasswordSubmissionComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

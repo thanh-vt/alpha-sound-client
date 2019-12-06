@@ -1,12 +1,13 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Subscription} from 'rxjs';
 import {UserToken} from './models/userToken';
 import {finalize} from 'rxjs/operators';
+import {UserService} from './services/user.service';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   // @HostListener('window:beforeunload', ['$event'])
@@ -21,7 +22,9 @@ export class AppComponent implements OnInit{
   //   }
   // }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserService) {
+    // localStorage.clear();
+    // sessionStorage.clear();
   }
 
   ngOnInit(): void {
@@ -40,5 +43,9 @@ export class AppComponent implements OnInit{
     }
     console.log(localStorage);
     console.log(sessionStorage);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

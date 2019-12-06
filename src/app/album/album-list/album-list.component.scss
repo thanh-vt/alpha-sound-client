@@ -34,11 +34,11 @@ button {
   height: 18rem;
 }
 
-app-card, a {
+div.card, a {
   cursor: pointer;
 }
 
-app-card:nth-child(n):hover {
+div.card.tile:nth-child(n):hover {
   background-color: #c7c7c7;
 }
 
