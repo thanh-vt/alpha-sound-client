@@ -47,7 +47,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
               const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
                 Authorization : 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)});
               return this.injector.get(HttpClient)
-                .post(`${environment.apiUrl}/oauth/token`, params, {headers})
+                .post(`${environment.authUrl}/oauth/token`, params, {headers})
                 .pipe(
                   mergeMap(res => {
                     localStorage.setItem('userToken', JSON.stringify(res));
