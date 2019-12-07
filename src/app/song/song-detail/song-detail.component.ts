@@ -15,6 +15,7 @@ import {PlayingQueueService} from '../../services/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 import {CloseDialogueService} from '../../services/close-dialogue.service';
+import {UserToken} from '../../models/userToken';
 
 
 @Component({
@@ -24,7 +25,7 @@ import {CloseDialogueService} from '../../services/close-dialogue.service';
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
   song: Song;
-  currentUser: User;
+  currentUser: UserToken;
   message: string;
   loading: boolean;
   songId: number;
@@ -35,11 +36,20 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   error = false;
   subscription: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute,
-              private router: Router, private authService: AuthService,
-              private songService: SongService, private userService: UserService, private closeDialogueService: CloseDialogueService,
-              // tslint:disable-next-line:max-line-length
-              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {}
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
+              private authService: AuthService, private songService: SongService,
+              private userService: UserService, private closeDialogueService: CloseDialogueService,
+              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService,
+              public translate: TranslateService) {
+    this.subscription.add(this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUser = next;
+      }, error => {
+        this.message = 'An error has occurred.';
+        console.log(error);
+      }
+    ));
+  }
 
   ngOnInit() {
     this.commentForm = this.fb.group({

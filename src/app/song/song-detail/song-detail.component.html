@@ -51,10 +51,10 @@
         <div class="col-sm-11">
           <img class="avatar border" [src]="comment.user.avatarUrl" alt="">
           <b><a [routerLink]="['/', 'profile', comment.user.id]">{{ comment.user.username }}</a></b><br>
-          <p>{{ comment.content }}</p>
+          <p>{{ comment.content }}</p><span>{{comment.user.id == currentUser.id}}</span>
           <small class="text-secondary">{{ comment.localDateTime | date: 'full' : '' : translate.currentLang }}</small>
         </div>
-        <div class="col-sm-1" *ngIf="currentUser !== null && comment.user.id === currentUser.id">
+        <div class="col-sm-1" *ngIf="currentUser !== null && comment.user.id == currentUser.id">
           <app-modal [action]="'delete'">
             <span class="modal-body">{{ 'Are you sure that you want to delete this comment' | translate }}</span>
             <button class="btn btn-dark rounded-pill modal_footer" (click)="deleteComment(comment.id)">{{ 'Delete' | translate }}</button>
