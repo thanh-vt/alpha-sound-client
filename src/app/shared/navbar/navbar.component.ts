@@ -37,11 +37,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
     translate.use(currentLanguage);
-    this.subscription.add(this.authService.currentUserToken.subscribe(
+    this.authService.currentUserToken.subscribe(
       next => {
         this.currentUserToken = next;
       }
-    ));
+    );
   }
 
   ngOnInit() {
