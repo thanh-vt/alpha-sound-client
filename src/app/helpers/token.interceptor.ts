@@ -38,7 +38,10 @@ export class TokenInterceptor implements HttpInterceptor {
               this.authService.logout();
               if (error.error.error_description.includes('Invalid refresh token')) {
                 this.authService.sessionTimeout.emit();
-                location.reload();
+                const returnToHome = setTimeout(() => {
+                  location.reload();
+                  clearTimeout(returnToHome);
+                }, 3000);
               }
               this.router.navigate(['/home']);
             } else if (error.status === 401) {
