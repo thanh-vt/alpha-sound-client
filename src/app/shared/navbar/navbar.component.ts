@@ -17,7 +17,7 @@ import {UserToken} from '../../models/userToken';
 })
 
 export class NavbarComponent implements OnInit, OnDestroy {
-  currentUserToken: UserToken;
+  currentUser: UserToken;
   message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
@@ -39,13 +39,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     translate.use(currentLanguage);
     this.authService.currentUserToken.subscribe(
       next => {
-        this.currentUserToken = next;
+        this.currentUser = next;
       }
     );
   }
 
   ngOnInit() {
-    // localStorage.clear();
     this.loginForm = this.fb.group({
       username: ['',  Validators.required],
       password: ['',  Validators.required],
@@ -56,6 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.isCollapsed = true;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+    console.log(this.currentUser.avatarUrl);
   }
 
   onSignIn() {
