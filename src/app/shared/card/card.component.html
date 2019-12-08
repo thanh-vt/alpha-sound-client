@@ -18,7 +18,7 @@
 <div *ngIf="type === 2" class="card mb-3 w-100 card_type_2">
   <div class="row no-gutters">
     <div class="col-md-4">
-      <img [src]="imgSrc" class="card-img img-thumbnail" alt="">
+      <img [src]="imgSrc" class="card-img img-thumbnail" alt="" onerror="this.src = '../../../assets/images/avatar.jpg'">
     </div>
     <div class="col-md-8">
       <div class="card-body">

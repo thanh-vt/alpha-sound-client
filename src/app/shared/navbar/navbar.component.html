@@ -89,7 +89,7 @@
     <div ngbDropdown class="d-inline-block mr-1" *ngIf="!!currentUserToken">
       <button ngbDropdownToggle class="dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="d-inline-block user-avatar" *ngIf="!currentUserToken.avatarUrl"><i class="fas fa-user-circle"></i></span>
-        <img class="d-inline-block user-avatar" *ngIf="!!currentUserToken.avatarUrl" [src]="currentUserToken.avatarUrl" alt="">
+        <img class="d-inline-block user-avatar" *ngIf="!!currentUserToken.avatarUrl" [src]="currentUserToken.avatarUrl" onerror="src = '../../../assets/images/avatar.jpg'" alt="">
         <span> {{ currentUserToken.username }}</span>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">

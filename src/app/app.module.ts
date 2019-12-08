@@ -67,7 +67,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   exports: [TranslateModule],
   providers: [TranslateService,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
-    // {provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true},
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
     JwtHelperService,
     PlayingQueueService

@@ -73,6 +73,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
               this.song = result;
               this.artistList = this.song.artists;
               this.commentList = this.song.comments;
+              console.log(this.commentList[0].user.avatarUrl);
               this.checkDisabledSong(this.song);
             }, error => {
               this.message = 'An error has occurred.';

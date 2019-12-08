@@ -2,7 +2,8 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="user">
-  <app-card [type]="2" [imgSrc]="user.avatarUrl? user.avatarUrl : '../../../assets/avatars/default-user-avatar.png'" [title]="'Profile' | translate" [showEditButton]="currentUser && userId==currentUser.id" (showEditForm)="showEditForm=!showEditForm">
+  <app-card [type]="2" [imgSrc]="user.avatarUrl? user.avatarUrl : '../../../assets/avatars/default-user-avatar.png'"
+            [title]="'Profile' | translate" [showEditButton]="currentUser && userId==currentUser.id" (showEditForm)="showEditForm=!showEditForm">
     <span class="lambda_card-button"><i class="fas fa-user-edit"></i></span>
     <div class="lambda_card-text_2">
       <h6 class="d-inline">{{ 'Username' | translate }}: </h6>
