@@ -9,12 +9,14 @@ import {User} from '../../models/user';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.component.html'
 })
 export class UpdateProfileComponent implements OnInit, OnDestroy {
+  currentUserToken: UserToken;
   currentUser: User;
   updateForm: FormGroup;
   loading: boolean;
@@ -29,27 +31,34 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   progress: Progress = {value: 0};
   subscription: Subscription = new Subscription();
 
-  // tslint:disable-next-line:max-line-length
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-              private authService: AuthService, private userService: UserService) {}
+              private authService: AuthService, private userService: UserService) {
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUserToken = next;
+      }
+    );
+  }
 
   ngOnInit() {
-    this.subscription.add(this.userService.getProfile(this.currentUser.id).subscribe(
+    this.subscription.add(this.userService.getProfile(this.currentUserToken.id).subscribe(
       currentUser => {
         this.currentUser = currentUser;
+        this.updateForm = this.fb.group({
+          username: [this.currentUser.username],
+          // tslint:disable-next-line:max-line-length
+          password: [this.currentUser.password],
+          firstName: [this.currentUser.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          lastName: [this.currentUser.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          phoneNumber: [this.currentUser.phoneNumber, Validators.required],
+          gender: [this.currentUser.gender, Validators.required],
+          birthDate: [this.currentUser.birthDate, Validators.required],
+          email: [this.currentUser.email]
+        });
+      }, error => {
+        console.log(error);
       }
     ));
-    this.updateForm = this.fb.group({
-      username: [this.currentUser.username],
-      // tslint:disable-next-line:max-line-length
-      password: [this.currentUser.password],
-      firstName: [this.currentUser.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      lastName: [this.currentUser.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      phoneNumber: [this.currentUser.phoneNumber, Validators.required],
-      gender: [this.currentUser.gender, Validators.required],
-      birthDate: [this.currentUser.birthDate, Validators.required],
-      email: [this.currentUser.email]
-    });
   }
 
   selectFile(event) {

@@ -9,7 +9,7 @@ import {SharedModule} from '../shared/shared.module';
 import {NgxAudioPlayerModule} from 'ngx-audio-player';
 import {UpdateProfileComponent} from './update-profile/update-profile.component';
 import {SongModule} from '../song/song.module';
-import {NgbButtonsModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbButtonsModule, NgbDropdownModule, NgbPaginationModule, NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 import {SearchComponent} from './search/search.component';
 import {UploadedSongListComponent} from './uploaded-song-list/uploaded-song-list.component';
 import {FavoritesComponent} from './favorites/favorites.component';
@@ -36,7 +36,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     FormsModule,
     NgbButtonsModule,
     PlaylistModule,
-    TranslateModule
+    TranslateModule,
+    NgbDropdownModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent, SearchComponent]
 })

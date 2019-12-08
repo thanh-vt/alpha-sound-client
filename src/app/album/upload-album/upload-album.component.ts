@@ -106,7 +106,8 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
       genres: [null],
       tags: [null],
       country: [null],
-      theme: [null]
+      theme: [null],
+      duration: [null]
     });
 
     this.albumMessage = '';
@@ -143,7 +144,8 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
         genres: new FormControl(null),
         tags: new FormControl(null),
         country: new FormControl(null),
-        theme: new FormControl(null)
+        theme: new FormControl(null),
+        duration: new FormControl(null)
       }));
 
       this.songsFormData.splice(this.numbersOfSongForms, 1, new FormData());
@@ -164,6 +166,9 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
       this.audioFiles.splice(i, 1, event.target.files[0]);
       this.isAudioFileChosen.splice(i, 1, true);
       this.audioFileNames.splice(i, 1, event.target.files[0].name.substr(0, 20));
+      new Audio(URL.createObjectURL(this.audioFiles[i])).onloadedmetadata = (e: any) => {
+        this.songsForm[i].get('duration').setValue(e.currentTarget.duration);
+      };
     }
   }
 

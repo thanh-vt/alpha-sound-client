@@ -59,11 +59,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onSignIn() {
     this.submitted = true;
-    // stop here if form is invalid
     if (this.loginForm.valid) {
       this.loading = true;
-      // tslint:disable-next-line:max-line-length
-      this.subscription.add(this.authService.login(this.loginForm.get('username').value, this.loginForm.get('password').value, this.loginForm.get('rememberMe').value)
+      this.subscription.add(this.authService.login(this.loginForm.get('username').value,
+        this.loginForm.get('password').value, this.loginForm.get('rememberMe').value)
         .pipe(finalize(() => {
           this.loading = false;
           this.clearMessage();
@@ -73,7 +72,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.error = false;
             this.message = 'Signed in successfully';
-            this.router.navigate([this.returnUrl]);
+            const redirectToHome = setTimeout(() => {
+              this.router.navigate([this.returnUrl]);
+              clearTimeout(redirectToHome);
+            }, 1500);
           }, () => {
             this.error = true;
             this.message = 'Wrong username or password';

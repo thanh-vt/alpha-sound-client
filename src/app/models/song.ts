@@ -24,4 +24,5 @@ export interface Song {
   comments?: Comment[];
   listeningFrequency?: number;
   loadingLikeButton?: boolean;
+  duration: number;
 }

@@ -13,7 +13,7 @@
     <ng-content select=".modal_footer"></ng-content>
   </div>
 </ng-template>
-<button (click)="open(content, $event)" *ngIf="action=='delete'" class="btn btn-danger m-2 rounded-circle"><i class="fas fa-trash-alt"></i></button>
+<button (click)="open(content, $event)" *ngIf="action=='delete'" class="btn btn-danger btn-sm m-2 rounded-circle"><i class="fas fa-trash-alt"></i></button>
 <button (click)="open(content, $event)" *ngIf="action=='create'" class="btn btn-primary m-2 rounded-pill">{{ title }}</button>
-<button (click)="open(content, $event)" *ngIf="action=='edit'" class="btn btn-secondary m-2 rounded-circle"><i class="fas fa-edit"></i></button>
-<button class="btn btn-secondary rounded-circle" (click)="open(content, $event)" *ngIf="action=='addToPlaylist'"><i class="fas fa-plus"></i></button>
+<button (click)="open(content, $event)" *ngIf="action=='edit'" class="btn btn-secondary m-2 btn-sm rounded-circle"><i class="fas fa-edit"></i></button>
+<button ngbDropdownItem (click)="open(content, $event)" *ngIf="action=='addToPlaylist'" class="btn btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>{{ 'Add to playlist' | translate }}</button>

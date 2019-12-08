@@ -10,6 +10,7 @@ import {PlayingQueueService} from '../../services/playing-queue.service';
 import {UserService} from '../../services/user.service';
 import {User} from '../../models/user';
 import {TranslateService} from '@ngx-translate/core';
+import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,7 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: UserToken;
   message: string;
   loading: boolean;
   showEditForm = false;
@@ -28,7 +29,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private artistService: ArtistService,
               private songService: SongService, private playlistService: PlaylistService,
-              private playingQueueService: PlayingQueueService, private userService: UserService, public translate: TranslateService) {}
+              private playingQueueService: PlayingQueueService, private userService: UserService, public translate: TranslateService) {
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUser = next;
+      }
+    );
+  }
 
   ngOnInit() {
     this.userId = parseInt(this.route.snapshot.paramMap.get('id'), 10);

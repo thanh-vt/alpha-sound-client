@@ -15,7 +15,6 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./uploaded-song-list.component.scss']
 })
 export class UploadedSongListComponent implements OnInit, OnDestroy {
-
   pageNumber: number;
   pageSize: number;
   pages: Page[] = [];
@@ -24,8 +23,9 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   loading: boolean;
   subscription: Subscription = new Subscription();
   @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
+  Math: Math = Math;
 
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, public translate: TranslateService) { }
+  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {}
 
   ngOnInit() {
     this.loading = true;

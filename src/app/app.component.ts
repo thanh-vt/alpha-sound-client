@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log(localStorage);
+    console.log(sessionStorage);
     if (localStorage.getItem('sessionToken') && !sessionStorage.getItem('userToken')) {
       const token = JSON.parse(localStorage.getItem('sessionToken')) as UserToken;
       this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)

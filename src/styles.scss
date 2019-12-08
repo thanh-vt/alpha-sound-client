@@ -7,6 +7,10 @@ html, body {
   "Helvetica Neue", sans-serif
 }
 
+.dropdown-toggle::after {
+  display:none;
+}
+
 .dark-theme {
 
   html {
@@ -52,6 +56,18 @@ html, body {
   }
 
   table {
+
+    a {
+      text-decoration: none;
+    }
+
+    h5 {
+      color: lightcoral;
+    }
+
+    small {
+      color: yellow;
+    }
     tr:nth-child(n) {
       td, th {
         color: whitesmoke;
@@ -190,6 +206,18 @@ html, body {
 
   div.card-header {
     background-color: #2c2c2c;
+  }
+
+  div.dropdown_menu {
+    border-color: white;
+    background-color: black;
+    button {
+      color: white;
+    }
+
+    button:hover {
+      color: black;
+    }
   }
 }
 

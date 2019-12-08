@@ -30,6 +30,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   loading: boolean;
   songList: Song[] = [];
   imageOrder = 0;
+  Math: Math = Math;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[];
 

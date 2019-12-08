@@ -14,6 +14,7 @@ import {Playlist} from '../../models/playlist';
 import {PlaylistService} from '../../services/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-album-detail',
@@ -21,7 +22,7 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./album-detail.component.scss']
 })
 export class AlbumDetailComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: UserToken;
   album: Album;
   albumId: number;
   songList: Song[] = [];
@@ -29,11 +30,18 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   loading: boolean;
   message: string;
   subscription: Subscription = new Subscription();
+  Math: Math = Math;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private albumService: AlbumService,
               private songService: SongService, private playingQueueService: PlayingQueueService,
-              private userService: UserService, private playlistService: PlaylistService, public translate: TranslateService) {}
+              private userService: UserService, private playlistService: PlaylistService, public translate: TranslateService) {
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUser = next;
+      }
+    );
+  }
 
   ngOnInit() {
     this.subscription.add(this.route.queryParams.subscribe(

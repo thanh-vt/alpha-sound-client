@@ -10,6 +10,8 @@ import {PlayingQueueService} from '../../services/playing-queue.service';
 import {PlaylistService} from '../../services/playlist.service';
 import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
+import {AuthService} from '../../services/auth.service';
+import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-favorites',
@@ -17,7 +19,7 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: UserToken;
   first: boolean;
   last: boolean;
   pageNumber = 0;
@@ -30,10 +32,17 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
+  Math: Math = Math;
 
   // tslint:disable-next-line:max-line-length
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, public translate: TranslateService) {
+              private playlistService: PlaylistService, public translate: TranslateService,
+              private authService: AuthService) {
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUser = next;
+      }
+    );
     this.playingQueueService.update.subscribe(
       () => {
         this.goToPage(this.pageNumber);

@@ -68,16 +68,21 @@ export class UploadSongComponent implements OnInit, OnDestroy {
       genres: [null],
       tags: [null],
       country: [null],
-      theme: [null]
+      theme: [null],
+      duration: [null]
     });
     new DatePipe('en').transform(this.songUploadForm.value.releaseDate, 'dd/MM/yyyy');
   }
 
   selectFile(event) {
     if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
+      this.file = event.target.files[0] as File;
       this.isAudioFileChosen = true;
       this.audioFileName = event.target.files[0].name;
+
+      new Audio(URL.createObjectURL(this.file)).onloadedmetadata = (e: any) => {
+        this.songUploadForm.get('duration').setValue(e.currentTarget.duration);
+      };
     }
   }
 

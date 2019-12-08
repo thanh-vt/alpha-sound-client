@@ -34,12 +34,19 @@ export class UserComponent implements OnInit {
       link: ''
     }
   ];
+  sessionTimeoutNotification: boolean;
 
   constructor(private router: Router, private authService: AuthService, private playingQueueService: PlayingQueueService,
               private elementRef: ElementRef, private themeService: ThemeService) {
     this.authService.currentUserToken.subscribe(
       currentUser => {
         this.currentUser = currentUser;
+        this.sessionTimeoutNotification = false;
+      }
+    );
+    this.authService.sessionTimeout.subscribe(
+      next => {
+        this.sessionTimeoutNotification = true;
       }
     );
     this.playingQueueService.currentQueue.subscribe(

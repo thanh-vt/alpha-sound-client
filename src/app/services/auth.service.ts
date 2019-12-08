@@ -11,6 +11,7 @@ import {finalize, map} from 'rxjs/operators';
 export class AuthService {
   private currentUserTokenSubject: BehaviorSubject<UserToken>;
   public currentUserToken: Observable<UserToken>;
+  sessionTimeout = new EventEmitter();
   subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient) {

@@ -42,7 +42,7 @@
         </ul>
       </div>
     </app-card>
-    <h4>{{ 'Comment' | translate }}</h4>
+    <h4 class="my-4">{{ 'Comment' | translate }}</h4>
     <ul class="list-group">
       <li class="list-group-item row mx-0" *ngFor="let comment of commentList; index as i">
         <img class="avatar mr-2" [src]="comment.user.avatarUrl?comment.user.avatarUrl:'../../../assets/images/avatar.jpg'" onerror="src = '../../../assets/images/avatar.jpg'" alt="">

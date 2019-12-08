@@ -8,9 +8,10 @@ import {Playlist} from '../../models/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {User} from '../../models/user';
-import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+import {UserToken} from '../../models/userToken';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-song-list',
@@ -18,7 +19,7 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: UserToken;
   first: boolean;
   last: boolean;
   pageNumber = 0;
@@ -28,12 +29,20 @@ export class SongListComponent implements OnInit, OnDestroy {
   songList: Song[] = [];
   playlistList: Playlist[] = [];
   loading: boolean;
+  Math: Math = Math;
   subscription: Subscription = new Subscription();
 
   @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private userService: UserService, public translate: TranslateService) {}
+              private playlistService: PlaylistService, public translate: TranslateService,
+              private authService: AuthService) {
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUser = next;
+      }
+    );
+  }
 
   ngOnInit() {
     this.loading = true;
@@ -46,36 +55,36 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.loading = false;
       }))
       .subscribe(
-      result => {
-        if (result != null) {
-          if (scrollUp) {window.scroll(0, 0); }
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          this.first = result.first;
-          this.last = result.last;
-          this.pageNumber = result.pageable.pageNumber;
-          this.pageSize = result.pageable.pageSize;
-          this.pages = new Array(result.totalPages);
-          for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = {pageNumber: j};
+        result => {
+          if (result != null) {
+            if (scrollUp) {window.scroll(0, 0); }
+            this.songList = result.content;
+            this.songList.forEach((value, index) => {
+              this.songList[index].isDisabled = false;
+            });
+            this.first = result.first;
+            this.last = result.last;
+            this.pageNumber = result.pageable.pageNumber;
+            this.pageSize = result.pageable.pageSize;
+            this.pages = new Array(result.totalPages);
+            for (let j = 0; j < this.pages.length; j++) {
+              this.pages[j] = {pageNumber: j};
+            }
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
+            }
           }
-          for (const song of this.songList) {
-            this.checkDisabledSong(song);
-          }
-        }
-      }, error => {
+        }, error => {
           this.message = 'An error has occurred.';
           console.log(error.message);
-      }, () => {
-        for (const song of this.songList) {
-          if (song.loadingLikeButton) {
-            song.loadingLikeButton = false;
+        }, () => {
+          for (const song of this.songList) {
+            if (song.loadingLikeButton) {
+              song.loadingLikeButton = false;
+            }
           }
         }
-      }
-    ));
+      ));
   }
 
   addToPlaying(song: Song, event) {

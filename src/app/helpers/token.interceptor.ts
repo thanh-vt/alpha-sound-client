@@ -1,9 +1,7 @@
-import {Injectable, Injector} from '@angular/core';
+import {EventEmitter, Injectable, Injector} from '@angular/core';
 
 import {AuthService} from '../services/auth.service';
 import {UserToken} from '../models/userToken';
-import {UserService} from '../services/user.service';
-import {User} from '../models/user';
 import {catchError, mergeMap} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {
@@ -16,8 +14,9 @@ import {
   HttpParams,
   HttpRequest
 } from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Observable, Subscription, throwError} from 'rxjs';
 import {Router} from '@angular/router';
+import {isNull} from 'util';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -35,15 +34,19 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(this.modifyRequest(request)).pipe(
         catchError(error => {
           if (error instanceof HttpErrorResponse) {
-            if (error.status === 401 && request.url.includes('/oauth/token')) {
+            if (error.status === 400 && request.url.includes('/oauth/token')) {
               this.authService.logout();
+              if (error.error.error_description.includes('Invalid refresh token')) {
+                this.authService.sessionTimeout.emit();
+                location.reload();
+              }
               this.router.navigate(['/home']);
-            } else if (error.status === 401 && !request.url.includes('/oauth/token')) {
+            } else if (error.status === 401) {
               let refreshToken: string;
               if (localStorage.getItem('userToken')) {
                 refreshToken = ( JSON.parse(localStorage.getItem('userToken')) as UserToken).refresh_token;
               }
-              if (sessionStorage.getItem('sessionToken')) {
+              if (sessionStorage.getItem('userToken')) {
                 refreshToken = ( JSON.parse(sessionStorage.getItem('userToken')) as UserToken).refresh_token;
               }
               const params = new HttpParams()
@@ -52,9 +55,9 @@ export class TokenInterceptor implements HttpInterceptor {
               const headers = new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
                 Authorization : 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)});
               return this.injector.get(HttpClient)
-                .post(`${environment.authUrl}/oauth/token`, params, {headers})
-                .pipe(
-                  mergeMap(res => {
+                .post(`${environment.authUrl}/oauth/token`, params.toString(), {headers})
+                .pipe(mergeMap(
+                  res => {
                     if (localStorage.getItem('rememberMe')) {
                       localStorage.setItem('userToken', JSON.stringify(res));
                     } else {
@@ -62,8 +65,8 @@ export class TokenInterceptor implements HttpInterceptor {
                       sessionStorage.setItem('userToken', JSON.stringify(res));
                     }
                     return next.handle(this.modifyRequest(request));
-                  })
-                );
+                  }
+                ));
             }
           } else {
             return throwError(new Error(error.message));
@@ -75,14 +78,18 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  private modifyRequest(req) {
-    let accessToken;
-    if (localStorage.getItem('userToken')) {
-      accessToken = (JSON.parse(localStorage.getItem('userToken')) as UserToken).access_token;
+  private modifyRequest(req: HttpRequest<any>) {
+    if (isNull(req.body) || !req.serializeBody().toString().includes('refresh_token')) {
+      let accessToken;
+      if (localStorage.getItem('userToken')) {
+        accessToken = (JSON.parse(localStorage.getItem('userToken')) as UserToken).access_token;
+      }
+      if (sessionStorage.getItem('userToken')) {
+        accessToken = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).access_token;
+      }
+      return req.clone({setHeaders: {authorization: `Bearer ${accessToken}`}});
+    } else {
+      return req.clone();
     }
-    if (sessionStorage.getItem('userToken')) {
-      accessToken = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).access_token;
-    }
-    return req.clone({setHeaders: {authorization: `Bearer ${accessToken}`}});
   }
 }
