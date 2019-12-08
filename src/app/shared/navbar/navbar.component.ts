@@ -55,7 +55,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.isCollapsed = true;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-    console.log(this.currentUser.avatarUrl);
   }
 
   onSignIn() {

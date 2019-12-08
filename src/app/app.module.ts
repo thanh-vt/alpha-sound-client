@@ -14,7 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {PlayingQueueService} from './services/playing-queue.service';
 import {JWT_OPTIONS, JwtHelperService, JwtModule, JwtModuleOptions} from '@auth0/angular-jwt';
 import {AdminModule} from './admin/admin.module';
-import {RefreshTokenInterceptor} from './helpers/refresh-token.interceptor';
+import {ErrorInterceptor} from './helpers/error.interceptor';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import localeVi from '@angular/common/locales/vi';
@@ -67,7 +67,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   exports: [TranslateModule],
   providers: [TranslateService,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true},
+    // {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
     JwtHelperService,
     PlayingQueueService

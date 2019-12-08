@@ -11,7 +11,6 @@ import {finalize, map} from 'rxjs/operators';
 export class AuthService {
   private currentUserTokenSubject: BehaviorSubject<UserToken>;
   public currentUserToken: Observable<UserToken>;
-  update = new EventEmitter<any>();
   subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient) {
@@ -42,41 +41,29 @@ export class AuthService {
           sessionStorage.setItem('userToken', JSON.stringify(userToken));
         }
         this.currentUserTokenSubject.next(userToken);
-        this.update.emit(['login', userToken.id]);
         return userToken;
       }));
   }
 
   logout() {
+    let token: string;
     if (localStorage.getItem('userToken')) {
-      const token = JSON.parse(localStorage.getItem('userToken')) as UserToken;
-      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
-        .pipe(finalize(() => {
-          localStorage.removeItem('userToken');
-          localStorage.removeItem('rememberMe');
-        }))
-        .subscribe(
-          next => {console.log(next); },
-          error => {console.log(error); },
-          () => {}));
-    }
-    if (localStorage.getItem('rememberMe')) {
-      localStorage.removeItem('userToken');
-      localStorage.removeItem('rememberMe');
+      token = (JSON.parse(localStorage.getItem('userToken')) as UserToken).access_token;
     }
     if (sessionStorage.getItem('userToken')) {
-      const token = JSON.parse(sessionStorage.getItem('userToken')) as UserToken;
-      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
-        .pipe(finalize(() => {
-          sessionStorage.removeItem('userToken');
-          localStorage.removeItem('sessionToken');
-        }))
-        .subscribe(
-          next => {console.log(JSON.parse(JSON.stringify(next))); },
-          error => {console.log(JSON.parse(JSON.stringify(error))); },
-          () => {}));
+      token = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).access_token;
     }
+    this.http.post<Observable<string>>(`${environment.authUrl}/tokens/revoke/${token}`, null)
+      .pipe(finalize(() => {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('rememberMe');
+        localStorage.removeItem('sessionToken');
+        sessionStorage.removeItem('userToken');
+      }))
+      .subscribe(
+        () => {},
+        error => {console.log(error); },
+        () => {});
     this.currentUserTokenSubject.next(null);
-    this.update.emit('logout');
   }
 }

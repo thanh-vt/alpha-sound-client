@@ -29,20 +29,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(localStorage);
     if (localStorage.getItem('sessionToken') && !sessionStorage.getItem('userToken')) {
       const token = JSON.parse(localStorage.getItem('sessionToken')) as UserToken;
       this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
         .pipe(finalize(() => {
           localStorage.removeItem('sessionToken');
-          localStorage.removeItem('sessionUser');
         }))
         .subscribe(
-          next => {console.log(JSON.parse(JSON.stringify(next))); },
+          () => {},
           error => {console.log(JSON.parse(JSON.stringify(error))); },
           () => {}));
     }
-    console.log(localStorage);
-    console.log(sessionStorage);
   }
 
   ngOnDestroy(): void {
