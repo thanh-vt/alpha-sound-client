@@ -9,7 +9,7 @@
         <h6 class="d-inline">{{ 'Title' | translate }}: </h6><span>{{song.title}}</span>
         <div class="d-inline-block float-right mx-1">
           <ng-container *ngIf="!!currentUser">
-            <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add'">
+            <app-modal [action]="'addToPlaylist_roundedBtn'" [title]="'Select a playlist to add'">
               <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
               <app-create-playlist (createPlaylist)="refreshPlaylistList(song)" class="modal_footer"></app-create-playlist>
             </app-modal>
