@@ -17,4 +17,4 @@
 <button (click)="open(content, $event)" *ngIf="action=='create'" class="btn btn-primary m-2 rounded-pill">{{ title }}</button>
 <button (click)="open(content, $event)" *ngIf="action=='edit'" class="btn btn-secondary m-2 btn-sm rounded-circle"><i class="fas fa-edit"></i></button>
 <button ngbDropdownItem (click)="open(content, $event)" *ngIf="action=='addToPlaylist'" class="btn btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}</button>
-<button ngbDropdownItem (click)="open(content, $event)" *ngIf="action=='addToPlaylist_roundedBtn'" class="btn btn-secondary btn-sm"><i class="fas fa-plus mr-1"></i></button>
+<button (click)="open(content, $event)" *ngIf="action=='addToPlaylist_roundedBtn'" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-plus"></i></button>
