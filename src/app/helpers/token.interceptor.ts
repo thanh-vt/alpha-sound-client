@@ -82,7 +82,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private modifyRequest(req: HttpRequest<any>) {
-    if (isNull(req.body) || !req.serializeBody().toString().includes('refresh_token')) {
+    if (!req.serializeBody().toString().includes('refresh_token')) {
       let accessToken;
       if (localStorage.getItem('userToken')) {
         accessToken = (JSON.parse(localStorage.getItem('userToken')) as UserToken).access_token;
