@@ -1,15 +1,16 @@
 <ng-template #content let-modal>
-  <div class="modal-header">
+  <div class="modal-header" [class.dark_modal]="darkThemeOn">
     <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="close(); modal.dismiss('Cross click')" [disabled]="disableClose">
+    <button type="button" class="close" aria-label="Close" (click)="close(); modal.dismiss('Cross click')"
+            [disabled]="disableClose">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" [class.dark_modal]="darkThemeOn">
     <ng-content select=".modal-body"></ng-content>
     <span *ngIf="body">{{ body }}</span>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer" [class.dark_modal]="darkThemeOn">
     <ng-content select=".modal_footer"></ng-content>
   </div>
 </ng-template>

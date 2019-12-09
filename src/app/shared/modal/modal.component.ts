@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CloseDialogueService} from '../../services/close-dialogue.service';
+import {ThemeService} from '../../services/theme.service';
 
 @Component({
   selector: 'app-modal',
@@ -23,11 +24,12 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() body: string;
   @Input() action: string;
   @Input() disableClose = false;
+  @Input() darkThemeOn: boolean;
   closeResult: string;
   @Output() closeAction = new EventEmitter();
   @ViewChild('content', {static: false}) content: ElementRef;
 
-  constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService) {
+  constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService, private themeService: ThemeService) {
     this.closeDialogueService.closeDialogueSubjectValue.subscribe(
       next => {
         const closeAction = setTimeout(() => {
@@ -36,6 +38,11 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
         }, 1500);
       }
     );
+    this.themeService.darkThemeSubjectValue.subscribe(
+      next => {
+        this.darkThemeOn = next;
+      }
+    )
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,7 +70,7 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
 
   open(content, event) {
     event.stopPropagation();
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true}).result.then(() => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true }).result.then(() => {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });

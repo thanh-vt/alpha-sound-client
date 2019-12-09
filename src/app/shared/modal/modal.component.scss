@@ -1,1 +1,14 @@
+.dark_modal {
+  color: white;
+  background: black;
 
+  .list-group-item {
+    color: white;
+    background: black;
+    border: 0.1rem solid white;
+  }
+}
+
+.modal-content {
+  border: 0.1rem solid white;
+}
