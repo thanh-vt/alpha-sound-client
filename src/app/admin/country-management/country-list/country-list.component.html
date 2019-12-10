@@ -1,8 +1,25 @@
-<ul class="countryList py-2"
-    infiniteScroll
-    [scrollWindow]="false"
-    [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
-    (scrolled)="onScroll(pageNumber)">
-  <li *ngFor="let country of countryList, i as index">{{ country.name }}<button>Edit</button><button>Delete</button></li>
-</ul>
+<app-create-country></app-create-country>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" id="name">{{ 'Country Name' | translate }}</th>
+    <th scope="col" id="flag">{{ 'Country Flag' | translate }}</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngIf="loading">
+    <app-spinner></app-spinner>
+  </ng-container>
+  <tr *ngFor="let country of countryList; index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{ country.name }}</td>
+    <td><img [src]="country.flagUrl" alt=""></td>
+    <td>
+      <app-delete-country [country]="country" (deleteCountry)="deleteCountry($event, country.id)"></app-delete-country>
+      <app-edit-country [country]="country"></app-edit-country>
+    </td>
+  </tr>
+  </tbody>
+</table>

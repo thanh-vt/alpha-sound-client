@@ -2,3 +2,11 @@
   height: 15rem;
   overflow-y: scroll;
 }
+
+tr, a {
+  cursor: pointer;
+}
+
+tr:nth-child(n):hover {
+  background-color: #c7c7c7;
+}

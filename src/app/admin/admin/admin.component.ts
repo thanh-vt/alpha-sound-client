@@ -1,17 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
-import {User} from '../../models/user';
-import {UserService} from '../../services/user.service';
 import {TranslateService} from '@ngx-translate/core';
 import {UserToken} from '../../models/userToken';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class AdminComponent implements OnInit {
   currentUserToken: UserToken;

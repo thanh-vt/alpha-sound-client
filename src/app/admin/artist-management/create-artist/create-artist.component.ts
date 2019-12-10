@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ArtistService} from '../../../services/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Progress} from '../../../models/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
@@ -14,7 +13,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class CreateArtistComponent implements OnInit, OnDestroy {
 
-  constructor(private artistService: ArtistService, private fb: FormBuilder, private router: Router) {
+  constructor(private artistService: ArtistService, private fb: FormBuilder) {
   }
 
   submitted = false;

@@ -1,1 +1,12 @@
-<p>delete-country works!</p>
+<app-modal [action]="'delete'" [darkThemeOn]="false">
+  <div class="modal-body">
+    <span>{{ 'Are you sure that you want to remove country' | translate }}{{' '}}{{ country.name }}{{'?'}}</span>
+    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+         [class.alert-success]="!error">{{message}}
+    </div>
+  </div>
+  <button (click)=onSubmit() [disabled]="loading || deleted" class="btn btn-primary modal_footer">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    {{ 'Remove' | translate}}
+  </button>
+</app-modal>

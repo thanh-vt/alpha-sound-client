@@ -3,6 +3,7 @@ import {Country} from '../../../models/country';
 import {CountryService} from '../../../services/country.service';
 import {Subscription} from 'rxjs';
 import {finalize} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-country-list',
@@ -16,7 +17,7 @@ export class CountryListComponent implements OnInit {
   pageNumber: number;
   subscription: Subscription = new Subscription();
 
-  constructor(private countryService: CountryService) { }
+  constructor(private countryService: CountryService, private translate: TranslateService) { }
 
   ngOnInit() {
     this.countryList = [];
@@ -40,5 +41,20 @@ export class CountryListComponent implements OnInit {
           console.log(error.message);
         }
       ));
+  }
+
+  deleteCountry(id: number, event) {
+    event.stopPropagation();
+    this.subscription = this.countryService.deleteCountry(id).subscribe(
+      result => {
+        if (result != null) {
+          this.countryService = result.content;
+        } else {
+          this.countryService = null;
+        }
+      }, error => {
+        this.message = 'Cannot retrieve artist list. Cause: ' + error.message;
+      }
+    );
   }
 }

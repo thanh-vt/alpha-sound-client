@@ -8,6 +8,9 @@ import { CreateCountryComponent } from './create-country/create-country.componen
 import { EditCountryComponent } from './edit-country/edit-country.component';
 import { DeleteCountryComponent } from './delete-country/delete-country.component';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {TranslateModule} from '@ngx-translate/core';
+import {SharedModule} from '../../shared/shared.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
   imports: [
     CommonModule,
     CountryManagementRoutingModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    TranslateModule,
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class CountryManagementModule { }

@@ -36,7 +36,7 @@ export class ArtistService {
     );
   }
 
-  uploadArtist(formData): Observable<HttpEvent<any>> {
+  uploadArtist(formData: FormData): Observable<HttpEvent<any>> {
     return this.http.post<any>(`${environment.apiUrl}/artist/create`, formData, {
       reportProgress: true,
       observe: 'events'
@@ -51,7 +51,7 @@ export class ArtistService {
     return this.http.get<Artist>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
 
-  updateArtist(formGroup, id: number): Observable<HttpEvent<any>> {
+  updateArtist(formGroup: FormData, id: number): Observable<HttpEvent<any>> {
     return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup);
   }
 }

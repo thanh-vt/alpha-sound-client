@@ -1,1 +1,31 @@
-<p>edit-country works!</p>
+<app-modal [action]="'edit'" [title]="'Edit country info' | translate" [darkThemeOn]="false">
+  <form *ngIf="country" [formGroup]="countryUpdateForm" (ngSubmit)="onSubmit()" class="modal-body">
+    <div class="form-group">
+      <label for="countryName">{{ 'Country Name' | translate }}</label>
+      <input type="text" class="form-control" id="countryName" [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)" formControlName="name">
+      <div class="alert alert-danger" role="alert"
+           *ngIf="countryUpdateForm.get('name').hasError('required') && (countryUpdateForm.get('name').touched || submitted)">
+        {{ 'Country Name' | translate }}{{' '}}{{ 'must be filled' | translate }}
+      </div>
+    </div>
+
+    <label for="avatar">{{ 'Flag' | translate }}</label>
+    <div class="form-group custom-file">
+
+      <label class="custom-file-label" *ngIf=!isImageFileChoosen>{{ 'Choose file' | translate }}</label>
+      <label class="custom-file-label" *ngIf=isImageFileChoosen>{{ imageFileName }}</label>
+      <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
+    </div>
+    <div class="progress form-group" *ngIf="progress.value > 0">
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
+      </div>
+    </div>
+    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
+         [class.alert-success]="!error">{{message}}
+    </div>
+    <!-- Progress Bar -->
+  </form>
+  <div class="modal_footer">
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">{{ 'Submit' | translate }}</button>
+  </div>
+</app-modal>

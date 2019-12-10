@@ -1,4 +1,4 @@
-<app-modal [action]="'edit'" [title]="'Edit artist info' | translate">
+<app-modal [action]="'edit'" [title]="'Edit artist info' | translate" [darkThemeOn]="false">
   <form *ngIf="artist" [formGroup]="artistUpdateForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="artistName">{{ 'Artist Name' | translate }}</label>
@@ -28,9 +28,6 @@
       <label for="biography"></label>
       <textarea class="form-control" id="biography" formControlName="biography"></textarea>
     </div>
-    <div class="mt-sm-3">
-      <button type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
-    </div>
     <div class="progress form-group" *ngIf="progress.value > 0">
       <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
       </div>
@@ -40,4 +37,7 @@
     </div>
     <!-- Progress Bar -->
   </form>
+  <div class="modal_footer">
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">{{ 'Submit' | translate }}</button>
+  </div>
 </app-modal>

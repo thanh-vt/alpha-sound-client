@@ -1,12 +1,12 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px;">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">LAMBDA</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" />
+  <input class="form-control form-control-dark w-100" type="text" [placeholder]="'Search' | translate" aria-label="Search" />
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <button class="btn btn-light" (click)="popLoginFormUp($event)" *ngIf="hasNotLoggedInAsAdmin">Sign in as Administrator</button>
     </li>
     <li class="nav-item text-nowrap">
-      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">Sign out</button>
+      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">{{ 'Sign Out' | translate }}</button>
     </li>
   </ul>
 </nav>
@@ -45,6 +45,12 @@
             <a class="nav-link" [routerLink]="['/admin/artist-management']" >
               <i class="fas fa-bars"></i>
               Artist Management
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/admin/country-management']" >
+              <i class="fas fa-bars"></i>
+              Country Management
             </a>
           </li>
           <li class="nav-item">

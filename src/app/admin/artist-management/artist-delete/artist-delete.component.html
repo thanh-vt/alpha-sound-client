@@ -1,4 +1,4 @@
-<app-modal [action]="'delete'">
+<app-modal [action]="'delete'" [darkThemeOn]="false">
   <div class="modal-body">
     <span>{{ 'Are you sure that you want to remove artist' | translate }}{{' '}}{{ artist.name }}</span>
     <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"

@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ArtistService} from '../../../services/artist.service';
 import {Subscription} from 'rxjs';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ActivatedRoute, Router} from '@angular/router';
 import {Artist} from '../../../models/artist';
 
 @Component({
@@ -19,44 +17,28 @@ export class ArtistDeleteComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   @Output() deleteArtist = new EventEmitter();
 
-  constructor(private artistService: ArtistService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) {
+  constructor(private artistService: ArtistService) {
   }
-
 
   ngOnInit() {
     this.deleted = false;
-  }
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-    }, (reason) => {
-      this.message = '';
-      console.log(this.getDismissReason(reason));
-    });
-  }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
   }
 
   onSubmit() {
     this.subscription.add(
       this.artistService.deleteArtist(this.artist.id).subscribe(
-      result => {
-        this.deleteArtist.emit();
-        this.error = false;
-        this.deleted = true;
-        this.message = 'Artist deleted successfully!';
-      },
-      error => {
-        this.error = true;
-        this.message = 'Failed to delete artist. Cause: ' + error.message;
-      }
-    ));
+        () => {
+          this.deleteArtist.emit();
+          this.error = false;
+          this.deleted = true;
+          this.message = 'Artist deleted successfully!';
+        },
+        error => {
+          this.error = true;
+          this.message = 'Failed to delete artist. An error has occurred.';
+          console.log(error.message);
+        }
+      ));
   }
 
   ngOnDestroy(): void {

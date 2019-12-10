@@ -13,13 +13,20 @@ import {
 import {User} from '../models/user';
 import {UserService} from '../services/user.service';
 import {AuthService} from '../services/auth.service';
+import {UserToken} from '../models/userToken';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  currentUser: User;
-  constructor(private router: Router, private userService: UserService, private authService: AuthService) {}
+  currentUser: UserToken;
+  constructor(private router: Router, private userService: UserService, private authService: AuthService) {
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUser = next;
+      }
+    );
+  }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let hasRoleAdmin = false;

@@ -26,8 +26,7 @@ export class ArtistEditComponent implements OnInit {
   progress: Progress = {value: 0};
 
 
-  constructor(private artistService: ArtistService, private fb: FormBuilder, private authService: AuthService,
-              private route: ActivatedRoute, private router: Router) {
+  constructor(private artistService: ArtistService, private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -73,55 +72,25 @@ export class ArtistEditComponent implements OnInit {
   }
 
   onSubmit() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    console.log(this.artistUpdateForm.value);
-    // this.userService.updateProfile(this.updateForm.value, id).subscribe(
-    //   result => {
-    //     this.message = 'Song created successfully!';
-    //     this.formData.append('id', String(result));
-    //     this.formData.append('avatar', this.file);
-    //     this.userService.uploadAvatar(this.formData).subscribe(
-    //       (event: HttpEvent<any>) => {
-    //         switch (event.type) {
-    //           case HttpEventType.Sent:
-    //             console.log('Request has been made!');
-    //             break;
-    //           case HttpEventType.ResponseHeader:
-    //             console.log('Response header has been received!');
-    //             break;
-    //
-    //           case HttpEventType.Response:
-    //             console.log('User successfully updated!', event.body);
-    //         }
-    //         this.message = 'Avatar uploaded successfully!';
-    //       },
-    //       error1 => {
-    //         this.message = 'Failed to upload avatar. Cause: ' + error1.message;
-    //       }
-    //     );
-    //   }, error => {
-    //     this.message = 'Failed to update user. Cause: ' + error.message;
-    //   }
-    // );
+    // const id = +this.route.snapshot.paramMap.get('id');
     this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], {type: 'application/json'}));
     this.formData.append('avatar', this.file);
-    console.log(this.formData);
-    this.artistService.updateArtist(this.formData, id).subscribe(
+    this.artistService.updateArtist(this.formData, this.artist.id).subscribe(
       (event: HttpEvent<any>) => {
         if (this.displayProgress(event, this.progress)) {
           this.error = false;
-          this.message = 'Update artist success';
+          this.message = 'Update artist successfully.';
         }
       },
       error => {
-        console.log(error.message);
         this.error = true;
-        this.message = 'Failed update artist';
+        this.message = 'Failed to update artist';
+        console.log(error.message);
       }
     );
   }
 
   navigate() {
-    location.replace('/admin/artist');
+    location.replace('/admin/artist-management');
   }
 }

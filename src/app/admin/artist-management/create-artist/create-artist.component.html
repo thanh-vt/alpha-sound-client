@@ -1,4 +1,4 @@
-<app-modal [action]="'create'" [title]="'Create new artist' | translate">
+<app-modal [action]="'create'" [title]="'Create new artist' | translate" [darkThemeOn]="false">
   <form [formGroup]="artistUploadForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="artistName">{{ 'Artist Name' | translate }}</label>
