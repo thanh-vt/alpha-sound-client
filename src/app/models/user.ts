@@ -1,4 +1,5 @@
 import {Role} from './role';
+import {Setting} from './setting';
 
 export interface User {
   isDisabled: boolean;
@@ -13,4 +14,5 @@ export interface User {
   email?: string;
   avatarUrl: string;
   roles?: [Role];
+  setting: Setting;
 }

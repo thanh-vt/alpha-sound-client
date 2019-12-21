@@ -1,4 +1,5 @@
 import {Role} from './role';
+import {Setting} from './setting';
 
 export interface UserToken {
   access_token: string;
@@ -10,4 +11,5 @@ export interface UserToken {
   roles: [Role];
   username: string;
   avatarUrl: string;
+  setting: Setting;
 }

@@ -120,6 +120,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   turnDarkThemeOnOff() {
     const status = this.themeService.darkThemeSubject.getValue();
-    this.themeService.darkThemeSubject.next(!status);
+    this.themeService.turnOnDarkMode(!status);
   }
 }
