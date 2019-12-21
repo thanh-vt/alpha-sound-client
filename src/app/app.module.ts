@@ -51,7 +51,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxAudioPlayerModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    AdminModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {

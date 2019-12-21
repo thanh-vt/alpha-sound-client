@@ -6,6 +6,7 @@ import {UserToken} from './models/userToken';
 import {finalize} from 'rxjs/operators';
 import {UserService} from './services/user.service';
 import {AuthService} from './services/auth.service';
+import {LocationStrategy} from '@angular/common';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})
 export class AppComponent implements OnInit, OnDestroy {
@@ -23,9 +24,13 @@ export class AppComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  constructor(private http: HttpClient, private userService: UserService, private authService: AuthService) {
+  constructor(private http: HttpClient, private userService: UserService,
+              private authService: AuthService, private location: LocationStrategy) {
     // localStorage.clear();
     // sessionStorage.clear();
+    location.onPopState(() => {
+      window.location.reload();
+    });
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
@@ -10,7 +10,6 @@ import {UserToken} from '../../models/userToken';
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
 })
 export class AdminComponent implements OnInit {
   currentUserToken: UserToken;
@@ -19,7 +18,8 @@ export class AdminComponent implements OnInit {
 
   @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
 
-  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, public translate: TranslateService) {
+  constructor(private route: ActivatedRoute, private router: Router,
+              private authService: AuthService, public translate: TranslateService) {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
     translate.use(currentLanguage);
