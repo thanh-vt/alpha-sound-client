@@ -45,18 +45,16 @@ export class ThemeService {
     this.setting.darkMode = value;
     this.darkThemeSubject.next(this.setting);
     if (localStorage.getItem('userToken')) {
-      // this.currentUserToken = JSON.parse(localStorage.getItem('userToken')) as UserToken;
       this.currentUserToken.setting.darkMode = this.setting.darkMode;
       localStorage.setItem('userToken', JSON.stringify(this.currentUserToken));
-      this.http.post(`${environment.apiUrl}/setting`, this.setting).subscribe(
+      this.http.post(`${environment.apiUrl}/setting`, this.currentUserToken.setting).subscribe(
         () => {console.log('Setting applied successfully.'); },
         () => {console.log('Failed to apply setting.'); }
       );
     } else if (sessionStorage.getItem('userToken')) {
-      // this.setting = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).setting;
       this.currentUserToken.setting.darkMode = this.setting.darkMode;
       sessionStorage.setItem('userToken', JSON.stringify(this.currentUserToken));
-      this.http.post(`${environment.apiUrl}/setting`, this.setting).subscribe(
+      this.http.post(`${environment.apiUrl}/setting`, this.currentUserToken.setting).subscribe(
         () => {console.log('Setting applied successfully.'); },
         () => {console.log('Failed to apply setting.'); }
       );
