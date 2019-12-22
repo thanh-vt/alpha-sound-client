@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';
 import {ThemeService} from '../../services/theme.service';
+import {Setting} from '../../models/setting';
 
 @Component({
   selector: 'app-user',
@@ -19,7 +20,7 @@ import {ThemeService} from '../../services/theme.service';
 })
 export class UserComponent implements OnInit {
   currentUser: UserToken;
-  @Input() darkTheme: boolean;
+  @Input() setting: Setting;
 
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
@@ -63,10 +64,10 @@ export class UserComponent implements OnInit {
         }, 10);
       }
     );
-    this.themeService.darkThemeSubjectValue.subscribe(
+    this.themeService.darkThemeSubject.subscribe(
       next => {
-        this.darkTheme = next;
-        if (this.darkTheme) {
+        this.setting = next;
+        if (this.setting.darkMode) {
           this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
         } else {
           this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';

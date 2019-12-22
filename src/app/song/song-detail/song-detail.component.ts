@@ -14,8 +14,8 @@ import {PlaylistService} from '../../services/playlist.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {CloseDialogueService} from '../../services/close-dialogue.service';
 import {UserToken} from '../../models/userToken';
+import {CloseDialogueService} from '../../services/close-dialogue.service';
 
 
 @Component({
@@ -37,10 +37,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-              private authService: AuthService, private songService: SongService,
-              private userService: UserService, private closeDialogueService: CloseDialogueService,
-              private playlistService: PlaylistService, private playingQueueService: PlayingQueueService,
-              public translate: TranslateService) {
+              private authService: AuthService, private songService: SongService, private closeDialogueService: CloseDialogueService,
+              private userService: UserService, private playlistService: PlaylistService,
+              private playingQueueService: PlayingQueueService, public translate: TranslateService) {
     this.subscription.add(this.authService.currentUserToken.subscribe(
       next => {
         this.currentUser = next;
@@ -171,9 +170,12 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   deleteComment(commentId: number) {
     this.subscription.add(this.songService.deleteComment(commentId).subscribe(
-      next => {
-        this.closeDialogueService.emitCloseDialogue(true);
-        this.retrieveSongList();
+      () => {
+        const deleteAction = setTimeout(() => {
+          this.retrieveSongList();
+          this.closeDialogueService.emitCloseDialogue(true);
+          clearTimeout(deleteAction);
+        }, 1500);
       }, error => {
         this.message = 'Cannot delete comment';
         console.log(error.message);

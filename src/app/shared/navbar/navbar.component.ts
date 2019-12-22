@@ -4,11 +4,11 @@ import {UserService} from '../../services/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {User} from '../../models/user';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 import {ThemeService} from '../../services/theme.service';
 import {UserToken} from '../../models/userToken';
+import {Setting} from '../../models/setting';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +18,7 @@ import {UserToken} from '../../models/userToken';
 
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: UserToken;
+  setting: Setting;
   message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
@@ -40,6 +41,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authService.currentUserToken.subscribe(
       next => {
         this.currentUser = next;
+      }
+    );
+    this.themeService.darkThemeSubject.subscribe(
+      next => {
+        this.setting = next;
+      }, error => {
+        console.log(error);
       }
     );
   }
@@ -119,7 +127,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   turnDarkThemeOnOff() {
-    const status = this.themeService.darkThemeSubject.getValue();
+    const status = this.themeService.darkThemeSubject.getValue().darkMode;
+    console.log(status);
     this.themeService.turnOnDarkMode(!status);
   }
 }

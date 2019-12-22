@@ -31,18 +31,15 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService, private themeService: ThemeService) {
     this.closeDialogueService.closeDialogueSubjectValue.subscribe(
-      next => {
-        const closeAction = setTimeout(() => {
-          this.modalService.dismissAll();
-          clearTimeout(closeAction);
-        }, 1500);
+      () => {
+        this.modalService.dismissAll();
       }
     );
-    this.themeService.darkThemeSubjectValue.subscribe(
+    this.themeService.darkThemeSubject.subscribe(
       next => {
-        this.darkThemeOn = next;
+        this.darkThemeOn = next.darkMode;
       }
-    )
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {

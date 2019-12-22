@@ -23,7 +23,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
 @NgModule({
   declarations: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent,
-      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent, CompleteRegistrationComponent, ResetPasswordSubmissionComponent, ResetPasswordComponent],
+      SearchComponent, UploadedSongListComponent, FavoritesComponent, ProfileComponent, UserProfileComponent,
+    CompleteRegistrationComponent, ResetPasswordSubmissionComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

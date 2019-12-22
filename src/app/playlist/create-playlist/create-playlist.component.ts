@@ -43,7 +43,11 @@ export class CreatePlaylistComponent implements OnInit {
         this.error = false;
         this.message = 'Playlist saved successfully.';
         this.createPlaylistForm.reset({name});
-        this.createPlaylist.emit();
+        const create = setTimeout(() => {
+          this.createPlaylist.emit();
+          clearTimeout(create);
+          }, 2000
+        );
       }, error => {
         this.error = true;
         this.message = 'Failed to save playlist.';

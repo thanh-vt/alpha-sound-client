@@ -1,8 +1,8 @@
 <ng-container *ngIf="loading">
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
-<h4 class="text-center">{{ playList.title }}</h4>
-<table class="table table-striped">
+<h4 class="text-center" *ngIf="playList">{{ playList.title }}</h4>
+<table class="table table-striped" *ngIf="playList">
   <thead>
   <tr>
     <th scope="col">#</th>

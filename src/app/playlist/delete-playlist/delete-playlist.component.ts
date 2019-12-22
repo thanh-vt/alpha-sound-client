@@ -56,8 +56,11 @@ export class DeletePlaylistComponent implements OnInit, OnDestroy {
         this.error = false;
         this.deleted = true;
         this.message = 'Playlist removed successfully.';
-        this.deletePlaylist.emit();
-        this.closeDialogueService.emitCloseDialogue(true);
+        const deleteAction = setTimeout(() => {
+          this.deletePlaylist.emit();
+          this.closeDialogueService.emitCloseDialogue(true);
+          clearTimeout(deleteAction);
+        }, 1500);
       },
       error => {
         this.error = true;

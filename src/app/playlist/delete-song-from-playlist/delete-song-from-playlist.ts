@@ -35,12 +35,15 @@ export class DeleteSongFromPlaylistComponent implements OnInit {
 
   onSubmit() {
     this.songService.deleteSongFromPlaylist(this.songId, this.playlistId).subscribe(
-      result => {
+      () => {
         this.error = false;
         this.deleted = true;
         this.message = 'Song from playlist removed successfully.';
-        this.deleteSongPlaylist.emit();
-        this.closeDialogueService.emitCloseDialogue(true);
+        const deleteAction = setTimeout(() => {
+          this.deleteSongPlaylist.emit();
+          this.closeDialogueService.emitCloseDialogue(true);
+          clearTimeout(deleteAction);
+        }, 1500);
       },
       error => {
         this.error = true;

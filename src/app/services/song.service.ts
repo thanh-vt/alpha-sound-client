@@ -53,8 +53,8 @@ export class SongService {
   }
 
   deleteSongFromPlaylist(songId: number, playlistId: number): Observable<HttpEvent<any>> {
-    return this.http.put<any>
-    (`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {responseType: 'text'});
+    // tslint:disable-next-line:max-line-length
+    return this.http.put<any>(`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {responseType: 'text'});
   }
 
   listenToSong(songId: number) {

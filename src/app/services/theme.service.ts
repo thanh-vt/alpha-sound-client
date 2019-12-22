@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {AuthService} from './auth.service';
 import {UserToken} from '../models/userToken';
 import {Setting} from '../models/setting';
@@ -10,38 +10,58 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class ThemeService {
-  setting: Setting = {
-    darkMode: true
-  };
+  setting: Setting;
   currentUserToken: UserToken;
-  public darkThemeSubject = new BehaviorSubject(this.setting.darkMode);
-  public darkThemeSubjectValue = this.darkThemeSubject.asObservable();
+  public darkThemeSubject: BehaviorSubject<Setting>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.setting = new Setting(true);
+    this.darkThemeSubject = new BehaviorSubject(this.setting);
+    if (!localStorage.getItem('tempSetting')) {
+      localStorage.setItem('tempSetting', JSON.stringify({
+        darkMode: true
+      }));
+    }
+    this.authService.currentUserToken.subscribe(
+      next => {
+        this.currentUserToken = next;
+      }, error => {
+        console.log(error);
+      }
+    );
     if (localStorage.getItem('userToken')) {
       this.setting = (JSON.parse(localStorage.getItem('userToken')) as UserToken).setting;
-    }
-    if (sessionStorage.getItem('userToken')) {
+    } else if (sessionStorage.getItem('userToken')) {
       this.setting = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).setting;
+    } else if (localStorage.getItem('tempSetting')) {
+      this.setting = JSON.parse(localStorage.getItem('tempSetting')) as Setting;
+    } else {
+      this.setting = new Setting(true);
     }
+    this.darkThemeSubject.next(this.setting);
   }
 
   turnOnDarkMode(value: boolean) {
     this.setting.darkMode = value;
-    this.darkThemeSubject.next(this.setting.darkMode);
+    this.darkThemeSubject.next(this.setting);
     if (localStorage.getItem('userToken')) {
-      this.currentUserToken = JSON.parse(localStorage.getItem('userToken')) as UserToken;
-      this.currentUserToken.setting = this.setting;
+      // this.currentUserToken = JSON.parse(localStorage.getItem('userToken')) as UserToken;
+      this.currentUserToken.setting.darkMode = this.setting.darkMode;
       localStorage.setItem('userToken', JSON.stringify(this.currentUserToken));
-    }
-    if (sessionStorage.getItem('userToken')) {
-      this.setting = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).setting;
-      this.currentUserToken.setting = this.setting;
+      this.http.post(`${environment.apiUrl}/setting`, this.setting).subscribe(
+        () => {console.log('Setting applied successfully.'); },
+        () => {console.log('Failed to apply setting.'); }
+      );
+    } else if (sessionStorage.getItem('userToken')) {
+      // this.setting = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).setting;
+      this.currentUserToken.setting.darkMode = this.setting.darkMode;
       sessionStorage.setItem('userToken', JSON.stringify(this.currentUserToken));
+      this.http.post(`${environment.apiUrl}/setting`, this.setting).subscribe(
+        () => {console.log('Setting applied successfully.'); },
+        () => {console.log('Failed to apply setting.'); }
+      );
+    } else {
+      localStorage.setItem('tempSetting', JSON.stringify(this.setting));
     }
-    this.http.post(`${environment.apiUrl}/setting`, this.setting).subscribe(
-      value1 => {console.log(value1); },
-      error1 => {console.log(error1); }
-    );
   }
 }
