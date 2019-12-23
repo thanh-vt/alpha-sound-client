@@ -43,7 +43,8 @@ export class TokenInterceptor implements HttpInterceptor {
                   clearTimeout(returnToHome);
                 }, 3000);
               }
-              this.router.navigate(['/home']);
+              this.router.navigate(['/home'])
+                .finally(() => {location.reload(); });
             } else if (error.status === 401) {
               let refreshToken: string;
               if (localStorage.getItem('userToken')) {
