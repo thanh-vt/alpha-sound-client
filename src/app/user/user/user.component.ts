@@ -46,7 +46,7 @@ export class UserComponent implements OnInit {
       }
     );
     this.authService.sessionTimeout.subscribe(
-      next => {
+      () => {
         this.sessionTimeoutNotification = true;
       }
     );

@@ -88,11 +88,11 @@ export class TokenInterceptor implements HttpInterceptor {
       let accessToken;
       if (localStorage.getItem('userToken')) {
         accessToken = (JSON.parse(localStorage.getItem('userToken')) as UserToken).access_token;
-      }
-      if (sessionStorage.getItem('userToken')) {
+        return req.clone({setHeaders: {authorization: `Bearer ${accessToken}`}});
+      } else if (sessionStorage.getItem('userToken')) {
         accessToken = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).access_token;
-      }
-      return req.clone({setHeaders: {authorization: `Bearer ${accessToken}`}});
+        return req.clone({setHeaders: {authorization: `Bearer ${accessToken}`}});
+      } else { return req.clone(); }
     } else {
       return req.clone();
     }
