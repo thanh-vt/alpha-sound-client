@@ -9,6 +9,9 @@ import {Subscription} from 'rxjs';
 import {Progress} from '../../models/progress';
 import {DatePipe} from '@angular/common';
 import {ViewEncapsulation} from '@angular/core';
+import {CountryService} from '../../services/country.service';
+import {Country} from '../../models/country';
+import {TagService} from '../../services/tag.service';
 
 @Component({
   selector: 'app-upload-song',
@@ -17,6 +20,15 @@ import {ViewEncapsulation} from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class UploadSongComponent implements OnInit, OnDestroy {
+
+  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService,
+              private countryService: CountryService, private fb: FormBuilder,
+              private tagService: TagService) {
+  }
+
+  get artists(): FormArray {
+    return this.songUploadForm.get('artists') as FormArray;
+  }
 
   submitted: boolean;
 
@@ -30,19 +42,18 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   file: any;
   isLoading = false;
   filteredArtists: Artist[];
+  countryList: Country[];
   error = false;
 
   subscription: Subscription = new Subscription();
-
-  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService, private fb: FormBuilder) {
-  }
 
   static createArtist(): FormControl {
     return new FormControl('', Validators.compose([Validators.required]));
   }
 
-  get artists(): FormArray {
-    return this.songUploadForm.get('artists') as FormArray;
+  static navigate() {
+    // this.router.navigate(['/uploaded/list']);
+    location.replace('/uploaded/list');
   }
 
   addArtist(): void {
@@ -72,6 +83,15 @@ export class UploadSongComponent implements OnInit, OnDestroy {
       duration: [null]
     });
     new DatePipe('en').transform(this.songUploadForm.value.releaseDate, 'dd/MM/yyyy');
+    this.subscription.add(this.countryService.getCountryList(0)
+      .subscribe(
+        next => {
+          this.countryList = next.content;
+        }, error => {
+          console.log(error);
+        }
+      ));
+
   }
 
   selectFile(event) {
@@ -103,7 +123,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
         const complete = setTimeout(() => {
           progress.value = 0;
           const navigation = setInterval(() => {
-            this.navigate();
+            UploadSongComponent.navigate();
             clearTimeout(navigation);
             clearTimeout(complete);
           }, 2000);
@@ -115,6 +135,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     this.formData.append('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
     this.formData.append('audio', this.file);
     this.submitted = true;
+    console.log(this.songUploadForm);
     if (this.songUploadForm.valid) {
       this.subscription.add(this.audioUploadService.uploadSong(this.formData).subscribe(
         (event: HttpEvent<any>) => {
@@ -147,10 +168,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
       ).subscribe(artists => this.filteredArtists = artists));
   }
 
-  navigate() {
-    // this.router.navigate(['/uploaded/list']);
-    location.replace('/uploaded/list');
-  }
+
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

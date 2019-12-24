@@ -82,8 +82,10 @@ export class TokenInterceptor implements HttpInterceptor {
                       localStorage.setItem('sessionToken', JSON.stringify(res));
                       sessionStorage.setItem('userToken', JSON.stringify(res));
                     }
-                    return next.handle(TokenInterceptor.modifyRequest(request)).pipe(catchError(() => {
-                      location.reload();
+                    return next.handle(TokenInterceptor.modifyRequest(request)).pipe(catchError((err) => {
+                      if (err.status === 500) {
+                        location.reload();
+                      }
                       return next.handle(TokenInterceptor.modifyRequest(request));
                     }));
                   }
