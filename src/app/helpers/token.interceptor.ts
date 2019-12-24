@@ -83,7 +83,7 @@ export class TokenInterceptor implements HttpInterceptor {
                       sessionStorage.setItem('userToken', JSON.stringify(res));
                     }
                     return next.handle(TokenInterceptor.modifyRequest(request)).pipe(catchError((err) => {
-                      if (err.status === 500) {
+                      if (err.status === 500 && request.url.includes('/oauth/token')) {
                         location.reload();
                       }
                       return next.handle(TokenInterceptor.modifyRequest(request));
