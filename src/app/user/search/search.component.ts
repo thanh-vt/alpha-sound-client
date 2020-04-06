@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit {
   numberOfSongs: number;
   numberOfArtists: number;
 
-  @ViewChild('searchTab', {static: false}) searchTab: NgbTabset;
+  @ViewChild('searchTab') searchTab: NgbTabset;
 
   constructor(private route: ActivatedRoute, private searchService: SearchService, public translate: TranslateService) {
     this.searchText = this.route.snapshot.paramMap.get('name');

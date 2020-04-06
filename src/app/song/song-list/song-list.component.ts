@@ -32,7 +32,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   Math: Math = Math;
   subscription: Subscription = new Subscription();
 
-  @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
+  @ViewChild(UserComponent) userComponent: UserComponent;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
               private playlistService: PlaylistService, public translate: TranslateService,

@@ -31,7 +31,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   loading: boolean;
   subscription: Subscription = new Subscription();
 
-  @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
+  @ViewChild(UserComponent) userComponent: UserComponent;
   Math: Math = Math;
 
   // tslint:disable-next-line:max-line-length

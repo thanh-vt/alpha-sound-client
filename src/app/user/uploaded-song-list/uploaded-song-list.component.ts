@@ -20,7 +20,7 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   songList: Song[];
   loading: boolean;
   subscription: Subscription = new Subscription();
-  @ViewChild(AddSongToPlaylistComponent, {static: false}) child: AddSongToPlaylistComponent;
+  @ViewChild(AddSongToPlaylistComponent) child: AddSongToPlaylistComponent;
   Math: Math = Math;
 
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {}

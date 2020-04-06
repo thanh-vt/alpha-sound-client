@@ -27,7 +27,7 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() darkThemeOn: boolean;
   closeResult: string;
   @Output() closeAction = new EventEmitter();
-  @ViewChild('content', {static: false}) content: ElementRef;
+  @ViewChild('content') content: ElementRef;
 
   constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService, private themeService: ThemeService) {
     this.closeDialogueService.closeDialogueSubjectValue.subscribe(

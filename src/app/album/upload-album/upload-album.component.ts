@@ -14,8 +14,8 @@ import {Progress} from '../../models/progress';
   styleUrls: ['./upload-album.component.scss']
 })
 export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked {
-  @ViewChild('card1', {static: false}) card1;
-  @ViewChild('card2', {static: false}) card2;
+  @ViewChild('card1') card1;
+  @ViewChild('card2') card2;
 
   submitted: boolean;
   numbersOfSongForms = 0;

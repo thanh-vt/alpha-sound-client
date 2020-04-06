@@ -40,7 +40,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   unpauseOnArrow = false;
   pauseOnIndicator = false;
   pauseOnHover = true;
-  @ViewChild(UserComponent, {static: false}) userComponent: UserComponent;
+  @ViewChild(UserComponent) userComponent: UserComponent;
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 
   // tslint:disable-next-line:max-line-length

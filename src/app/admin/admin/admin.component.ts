@@ -16,7 +16,7 @@ export class AdminComponent implements OnInit {
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
 
-  @ViewChild(ModalComponent, {static: false}) loginModal: ModalComponent;
+  @ViewChild(ModalComponent) loginModal: ModalComponent;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private authService: AuthService, public translate: TranslateService) {

@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   error: boolean;
   subscription = new Subscription();
 
-  @ViewChild('language', {static: false}) language: ElementRef;
+  @ViewChild('language') language: ElementRef;
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService,
