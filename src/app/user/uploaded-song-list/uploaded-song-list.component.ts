@@ -2,11 +2,9 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Page} from '../../models/page';
 import {Song} from '../../models/song';
 import {Subscription} from 'rxjs';
-import {Playlist} from '../../models/playlist';
 import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import {SongService} from '../../services/song.service';
 import {PlayingQueueService} from '../../services/playing-queue.service';
-import {PlaylistService} from '../../services/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

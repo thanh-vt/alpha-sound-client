@@ -26,7 +26,7 @@ export class SongService {
         requestUrl = requestUrl + `sort=${sort}`;
       }
     }
-    return this.http.get<any>(requestUrl);
+    return this.http.get<any>(requestUrl, {withCredentials: true});
   }
 
   getTop10SongsByFrequency() {

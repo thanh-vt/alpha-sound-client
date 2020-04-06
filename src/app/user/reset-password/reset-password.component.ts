@@ -12,7 +12,7 @@ import {finalize} from 'rxjs/operators';
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
 
-  getPasswordResetToken: FormGroup;
+  getPasswordResetTokenForm: FormGroup;
   submitted: boolean;
   subscription: Subscription = new Subscription();
   message: string;
@@ -22,16 +22,16 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.getPasswordResetToken = this.fb.group({
+    this.getPasswordResetTokenForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
     });
   }
 
   onSubmit() {
     this.submitted = true;
-    if (this.getPasswordResetToken.valid) {
+    if (this.getPasswordResetTokenForm.valid) {
       this.loading = true;
-      this.subscription.add(this.userService.getPasswordResetToken(this.getPasswordResetToken.value)
+      this.subscription.add(this.userService.getPasswordResetToken(this.getPasswordResetTokenForm.value)
         .pipe(finalize(() => {
           this.loading = false;
         }))

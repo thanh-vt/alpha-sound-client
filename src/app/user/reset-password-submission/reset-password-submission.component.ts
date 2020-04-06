@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {UserService} from '../../services/user.service';
 import {finalize} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-reset-password-submission',
@@ -21,7 +21,7 @@ export class ResetPasswordSubmissionComponent implements OnInit, OnDestroy {
   id: number;
   passwordResetToken: string;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private fb: FormBuilder, private userService: UserService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(
@@ -61,7 +61,7 @@ export class ResetPasswordSubmissionComponent implements OnInit, OnDestroy {
           this.loading = false;
         }))
         .subscribe(
-          next => {
+          () => {
             this.error = false;
             this.message = 'Password reset successfully.';
           }, error => {
@@ -71,12 +71,6 @@ export class ResetPasswordSubmissionComponent implements OnInit, OnDestroy {
           }
         ));
     }
-  }
-
-  passwordMatcher(control: FormControl): { [s: string]: boolean } {
-    if (this.resetPasswordForm && (control.value !== this.resetPasswordForm.controls.repeatedPassword.value)) {
-      return { passwordNotMatch: true };
-    } else { return null; }
   }
 
   ngOnDestroy(): void {
