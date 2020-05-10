@@ -37,7 +37,9 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
     );
     this.themeService.darkThemeSubject.subscribe(
       next => {
-        this.darkThemeOn = next.darkMode;
+        if (next) {
+          this.darkThemeOn = next.darkMode;
+        }
       }
     );
   }

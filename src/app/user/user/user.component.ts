@@ -20,7 +20,7 @@ import {Setting} from '../../models/setting';
 })
 export class UserComponent implements OnInit {
   currentUser: UserToken;
-  @Input() setting: Setting;
+  @Input() setting: Setting = new Setting(true);
 
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
@@ -66,11 +66,14 @@ export class UserComponent implements OnInit {
     );
     this.themeService.darkThemeSubject.subscribe(
       next => {
-        this.setting = next;
-        if (this.setting.darkMode) {
-          this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
-        } else {
-          this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';
+        console.log(next);
+        if (next) {
+          this.setting = next;
+          if (this.setting.darkMode) {
+            this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
+          } else {
+            this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';
+          }
         }
       }
     );

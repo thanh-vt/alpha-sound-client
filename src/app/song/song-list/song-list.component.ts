@@ -7,7 +7,6 @@ import {PlaylistService} from '../../services/playlist.service';
 import {Playlist} from '../../models/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
-import {User} from '../../models/user';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 import {UserToken} from '../../models/userToken';

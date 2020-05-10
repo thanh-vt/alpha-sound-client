@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerModule } from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -19,6 +19,7 @@ import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate
 import localeVi from '@angular/common/locales/vi';
 import localeEn from '@angular/common/locales/en';
 import {registerLocaleData} from '@angular/common';
+import { GestureConfig } from "../gesture-config";
 
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
@@ -58,7 +59,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    HammerModule
     // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     // JwtModule.forRoot(JWT_Module_Options)
   ],
@@ -67,7 +69,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
     JwtHelperService,
-    PlayingQueueService
+    PlayingQueueService,
+    { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig }
   ],
   bootstrap: [AppComponent]
 })

@@ -18,7 +18,7 @@ import {Setting} from '../../models/setting';
 
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: UserToken;
-  setting: Setting;
+  setting: Setting = new Setting(true);
   message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
@@ -45,7 +45,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     );
     this.themeService.darkThemeSubject.subscribe(
       next => {
-        this.setting = next;
+        if (next) {
+          this.setting = next;
+        }
       }, error => {
         console.log(error);
       }
