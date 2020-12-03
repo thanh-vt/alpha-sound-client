@@ -1,9 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SearchService} from '../../services/search.service';
 import {Song} from '../../models/song';
 import {Artist} from '../../models/artist';
-import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -19,7 +18,7 @@ export class SearchComponent implements OnInit {
   numberOfSongs: number;
   numberOfArtists: number;
 
-  @ViewChild('searchTab') searchTab: NgbTabset;
+  // @ViewChild('searchTab') searchTab: NgbNav;
 
   constructor(private route: ActivatedRoute, private searchService: SearchService, public translate: TranslateService) {
     this.searchText = this.route.snapshot.paramMap.get('name');
@@ -36,7 +35,7 @@ export class SearchComponent implements OnInit {
             this.numberOfSongs = this.songList.length;
             this.numberOfArtists = this.artistList.length;
             if (this.numberOfSongs === 0 && this.numberOfArtists > 0) {
-              this.searchTab.select('artists');
+              // this.searchTab.select('artists');
             }
           },
           error => {

@@ -7,9 +7,8 @@
  * Read more in the dedicated guide: https://git.io/ng-material-v9-hammer-migration
  */
 
-import {Injectable, Inject, Optional, Type} from '@angular/core';
+import {Injectable, Type} from '@angular/core';
 import {HammerGestureConfig} from '@angular/platform-browser';
-import {MAT_HAMMER_OPTIONS} from '@angular/material/core';
 
 /**
  * Noop hammer instance that is used when an instance is requested, but
@@ -36,7 +35,7 @@ export class GestureConfig extends HammerGestureConfig {
     'slideleft'
   ];
 
-  constructor(@Optional() @Inject(MAT_HAMMER_OPTIONS) private hammerOptions?: any) {
+  constructor() {
     super();
   }
 
@@ -58,7 +57,7 @@ export class GestureConfig extends HammerGestureConfig {
       return noopHammerInstance;
     }
 
-    const mc = new hammer(element, this.hammerOptions || undefined);
+    const mc = new hammer(element);
 
     // Default Hammer Recognizers.
     const pan = new hammer.Pan();

@@ -1,8 +1,9 @@
 <h5>{{ 'Search result for:' | translate }}{{' \''}}{{searchText}}{{'\''}}</h5>
-<ngb-tabset #searchTab="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'">
-  <ngb-tab id="songs">
-    <ng-template ngbTabTitle><h5>{{ 'Song' | translate }} <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template>
-    <ng-template ngbTabContent>
+<!--<div ngbNav #searchTab="ngbTabset" type="pills" [orientation]="'horizontal'" [justify]="'justified'">-->
+<div ngbNav [orientation]="'horizontal'">
+  <div id="songs">
+    <ng-template ngbNav><h5>{{ 'Song' | translate }} <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template>
+    <ng-template ngbNavContent>
       <table *ngIf="songList.length > 0" class="table table-striped">
         <thead>
         <tr>
@@ -22,10 +23,10 @@
         </tbody>
       </table>
     </ng-template>
-  </ngb-tab>
-  <ngb-tab id="artists">
-    <ng-template ngbTabTitle><h5>{{ 'Artist' | translate }} <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template>
-    <ng-template ngbTabContent>
+  </div>
+  <div id="artists">
+    <ng-template ngbNav><h5>{{ 'Artist' | translate }} <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template>
+    <ng-template ngbNavContent>
       <table *ngIf="artistList.length > 0" class="table table-striped">
         <thead>
         <tr>
@@ -45,5 +46,5 @@
         </tbody>
       </table>
     </ng-template>
-  </ngb-tab>
-</ngb-tabset>
+  </div>
+</div>

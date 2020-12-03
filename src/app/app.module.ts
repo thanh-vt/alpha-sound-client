@@ -19,12 +19,12 @@ import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate
 import localeVi from '@angular/common/locales/vi';
 import localeEn from '@angular/common/locales/en';
 import {registerLocaleData} from '@angular/common';
-import { GestureConfig } from "../gesture-config";
+import { GestureConfig } from '../gesture-config';
 
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
 
-const JWT_Module_Options: JwtModuleOptions = {
+const jwtModuleOptions: JwtModuleOptions = {
   config: {
     // tokenGetter: yourTokenGetter,
     // whitelistedDomains: yourWhitelistedDomains
