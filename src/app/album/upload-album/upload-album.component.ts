@@ -1,12 +1,12 @@
 import {AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AudioUploadService} from '../../services/audio-upload.service';
+import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Artist} from '../../models/artist';
+import {Artist} from '../../model/artist';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
-import {ArtistService} from '../../services/artist.service';
+import {ArtistService} from '../../service/artist.service';
 import {Subscription} from 'rxjs';
-import {Progress} from '../../models/progress';
+import {Progress} from '../../model/progress';
 
 @Component({
   selector: 'app-upload-album',

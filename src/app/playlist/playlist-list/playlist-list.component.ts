@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Playlist} from '../../models/playlist';
-import {PlaylistService} from '../../services/playlist.service';
+import {Playlist} from '../../model/playlist';
+import {PlaylistService} from '../../service/playlist.service';
 import {Subscription} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 @Component({

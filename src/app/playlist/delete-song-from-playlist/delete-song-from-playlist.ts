@@ -2,11 +2,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {PlaylistService} from '../../services/playlist.service';
-import {SongService} from '../../services/song.service';
+import {AuthService} from '../../service/auth.service';
+import {PlaylistService} from '../../service/playlist.service';
+import {SongService} from '../../service/song.service';
 import {environment} from '../../../environments/environment';
-import {CloseDialogueService} from '../../services/close-dialogue.service';
+import {CloseDialogueService} from '../../service/close-dialogue.service';
 
 @Component({
   selector: 'app-delete-playlist-song',

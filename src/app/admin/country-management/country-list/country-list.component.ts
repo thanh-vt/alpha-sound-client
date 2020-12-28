@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Country} from '../../../models/country';
-import {CountryService} from '../../../services/country.service';
+import {Country} from '../../../model/country';
+import {CountryService} from '../../../service/country.service';
 import {Subscription} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';

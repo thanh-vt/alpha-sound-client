@@ -1,21 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {SongService} from '../../services/song.service';
-import {Artist} from '../../models/artist';
-import {Song} from '../../models/song';
-import {Comment} from '../../models/comment';
+import {AuthService} from '../../service/auth.service';
+import {SongService} from '../../service/song.service';
+import {Artist} from '../../model/artist';
+import {Song} from '../../model/song';
+import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
-import {User} from '../../models/user';
-import {UserService} from '../../services/user.service';
-import {Playlist} from '../../models/playlist';
-import {PlaylistService} from '../../services/playlist.service';
-import {PlayingQueueService} from '../../services/playing-queue.service';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
+import {Playlist} from '../../model/playlist';
+import {PlaylistService} from '../../service/playlist.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../models/userToken';
-import {CloseDialogueService} from '../../services/close-dialogue.service';
+import {UserToken} from '../../model/userToken';
+import {CloseDialogueService} from '../../service/close-dialogue.service';
 
 
 @Component({

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AdminAuthGuard} from '../../guards/admin-auth.guard';
+import {AdminAuthGuard} from '../../guard/admin-auth.guard';
 import {CountryManagementComponent} from './country-management/country-management.component';
 import {CountryListComponent} from './country-list/country-list.component';
 import {DeleteCountryComponent} from './delete-country/delete-country.component';

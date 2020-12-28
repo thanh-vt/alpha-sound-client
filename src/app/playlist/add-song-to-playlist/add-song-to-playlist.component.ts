@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {PlaylistService} from '../../services/playlist.service';
-import {Playlist} from '../../models/playlist';
+import {PlaylistService} from '../../service/playlist.service';
+import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';

@@ -1,17 +1,17 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Song} from '../../models/song';
-import {User} from '../../models/user';
-import {Page} from '../../models/page';
+import {Song} from '../../model/song';
+import {User} from '../../model/user';
+import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
-import {Playlist} from '../../models/playlist';
+import {Playlist} from '../../model/playlist';
 import {UserComponent} from '../user/user.component';
-import {SongService} from '../../services/song.service';
-import {PlayingQueueService} from '../../services/playing-queue.service';
-import {PlaylistService} from '../../services/playlist.service';
-import {UserService} from '../../services/user.service';
+import {SongService} from '../../service/song.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
+import {PlaylistService} from '../../service/playlist.service';
+import {UserService} from '../../service/user.service';
 import {TranslateService} from '@ngx-translate/core';
-import {AuthService} from '../../services/auth.service';
-import {UserToken} from '../../models/userToken';
+import {AuthService} from '../../service/auth.service';
+import {UserToken} from '../../model/userToken';
 
 @Component({
   selector: 'app-favorites',

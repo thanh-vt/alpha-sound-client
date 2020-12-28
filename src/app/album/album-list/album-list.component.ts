@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AlbumService} from '../../services/album.service';
-import {Album} from '../../models/album';
-import {UserToken} from '../../models/userToken';
-import {Page} from '../../models/page';
+import {AlbumService} from '../../service/album.service';
+import {Album} from '../../model/album';
+import {UserToken} from '../../model/userToken';
+import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
-import {User} from '../../models/user';
-import {UserService} from '../../services/user.service';
-import {SongService} from '../../services/song.service';
-import {PlayingQueueService} from '../../services/playing-queue.service';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user.service';
+import {SongService} from '../../service/song.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 import {finalize} from 'rxjs/operators';
 
 @Component({

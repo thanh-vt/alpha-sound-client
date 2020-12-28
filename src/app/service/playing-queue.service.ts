@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
-import {Song} from '../models/song';
+import {Song} from '../model/song';
 import {HttpClient} from '@angular/common/http';
 import {Track} from 'ngx-audio-player';
 import {SongService} from './song.service';

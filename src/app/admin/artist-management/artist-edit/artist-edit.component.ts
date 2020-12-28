@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ArtistService} from '../../../services/artist.service';
+import {ArtistService} from '../../../service/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../services/auth.service';
+import {AuthService} from '../../../service/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {Artist} from '../../../models/artist';
-import {Progress} from '../../../models/progress';
+import {Artist} from '../../../model/artist';
+import {Progress} from '../../../model/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 
 @Component({

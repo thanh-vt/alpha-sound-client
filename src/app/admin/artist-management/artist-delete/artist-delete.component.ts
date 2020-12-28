@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ArtistService} from '../../../services/artist.service';
+import {ArtistService} from '../../../service/artist.service';
 import {Subscription} from 'rxjs';
-import {Artist} from '../../../models/artist';
+import {Artist} from '../../../model/artist';
 
 @Component({
   selector: 'app-artist-delete',

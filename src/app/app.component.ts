@@ -2,10 +2,10 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Subscription} from 'rxjs';
-import {UserToken} from './models/userToken';
+import {UserToken} from './model/userToken';
 import {finalize} from 'rxjs/operators';
-import {UserService} from './services/user.service';
-import {AuthService} from './services/auth.service';
+import {UserService} from './service/user.service';
+import {AuthService} from './service/auth.service';
 import {LocationStrategy} from '@angular/common';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})

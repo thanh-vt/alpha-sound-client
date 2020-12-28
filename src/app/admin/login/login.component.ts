@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AdminService} from '../../services/admin.service';
+import {AdminService} from '../../service/admin.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {UserService} from '../../services/user.service';
-import {User} from '../../models/user';
+import {AuthService} from '../../service/auth.service';
+import {UserService} from '../../service/user.service';
+import {User} from '../../model/user';
 import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
 import {finalize} from 'rxjs/operators';
 

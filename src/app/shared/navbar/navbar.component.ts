@@ -1,14 +1,14 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {UserService} from '../../services/user.service';
+import {AuthService} from '../../service/auth.service';
+import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {ThemeService} from '../../services/theme.service';
-import {UserToken} from '../../models/userToken';
-import {Setting} from '../../models/setting';
+import {ThemeService} from '../../service/theme.service';
+import {UserToken} from '../../model/userToken';
+import {Setting} from '../../model/setting';
 
 @Component({
   selector: 'app-navbar',

@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ArtistService} from '../../../services/artist.service';
+import {ArtistService} from '../../../service/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {Progress} from '../../../models/progress';
+import {Progress} from '../../../model/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {finalize} from 'rxjs/operators';
 

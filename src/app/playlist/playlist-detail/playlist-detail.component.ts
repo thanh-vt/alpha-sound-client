@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PlaylistService} from '../../services/playlist.service';
-import {SongService} from '../../services/song.service';
+import {PlaylistService} from '../../service/playlist.service';
+import {SongService} from '../../service/song.service';
 import {ActivatedRoute} from '@angular/router';
-import {PlayingQueueService} from '../../services/playing-queue.service';
-import {Song} from '../../models/song';
-import {Playlist} from '../../models/playlist';
+import {PlayingQueueService} from '../../service/playing-queue.service';
+import {Song} from '../../model/song';
+import {Playlist} from '../../model/playlist';
 import {Observable, of, Subscription} from 'rxjs';
 import {Validators} from '@angular/forms';
 import {Track} from 'ngx-audio-player';

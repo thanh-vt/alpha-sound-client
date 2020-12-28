@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Song} from '../../models/song';
+import {Song} from '../../model/song';
 import {ActivatedRoute} from '@angular/router';
-import {SongService} from '../../services/song.service';
-import {PlayingQueueService} from '../../services/playing-queue.service';
+import {SongService} from '../../service/song.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
 import {Subscription} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 

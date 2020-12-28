@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {UserService} from '../../services/user.service';
+import {AuthService} from '../../service/auth.service';
+import {UserService} from '../../service/user.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Progress} from '../../models/progress';
-import {User} from '../../models/user';
+import {Progress} from '../../model/progress';
+import {User} from '../../model/user';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../models/userToken';
+import {UserToken} from '../../model/userToken';
 
 @Component({
   selector: 'app-update-profile',

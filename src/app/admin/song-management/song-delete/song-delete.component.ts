@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {SongService} from '../../../services/song.service';
+import {SongService} from '../../../service/song.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Song} from '../../../models/song';
+import {Song} from '../../../model/song';
 
 @Component({
   selector: 'app-song-delete',

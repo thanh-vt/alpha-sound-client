@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FormBuilder} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {PlaylistService} from '../../services/playlist.service';
+import {AuthService} from '../../service/auth.service';
+import {PlaylistService} from '../../service/playlist.service';
 import {Subscription} from 'rxjs';
-import {CloseDialogueService} from '../../services/close-dialogue.service';
+import {CloseDialogueService} from '../../service/close-dialogue.service';
 
 @Component({
   selector: 'app-delete-playlist',

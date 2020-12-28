@@ -1,17 +1,17 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AudioUploadService} from '../../services/audio-upload.service';
+import {AudioUploadService} from '../../service/audio-upload.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Artist} from '../../models/artist';
-import {ArtistService} from '../../services/artist.service';
+import {Artist} from '../../model/artist';
+import {ArtistService} from '../../service/artist.service';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {Progress} from '../../models/progress';
+import {Progress} from '../../model/progress';
 import {DatePipe} from '@angular/common';
 import {ViewEncapsulation} from '@angular/core';
-import {CountryService} from '../../services/country.service';
-import {Country} from '../../models/country';
-import {TagService} from '../../services/tag.service';
+import {CountryService} from '../../service/country.service';
+import {Country} from '../../model/country';
+import {TagService} from '../../service/tag.service';
 
 @Component({
   selector: 'app-upload-song',

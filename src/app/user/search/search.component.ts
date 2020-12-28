@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {SearchService} from '../../services/search.service';
-import {Song} from '../../models/song';
-import {Artist} from '../../models/artist';
+import {SearchService} from '../../service/search.service';
+import {Song} from '../../model/song';
+import {Artist} from '../../model/artist';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

@@ -9,8 +9,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CloseDialogueService} from '../../services/close-dialogue.service';
-import {ThemeService} from '../../services/theme.service';
+import {CloseDialogueService} from '../../service/close-dialogue.service';
+import {ThemeService} from '../../service/theme.service';
 
 @Component({
   selector: 'app-modal',

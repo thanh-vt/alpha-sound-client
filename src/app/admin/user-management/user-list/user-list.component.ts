@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../../models/user';
-import {UserService} from '../../../services/user.service';
-import {AdminService} from '../../../services/admin.service';
+import {User} from '../../../model/user';
+import {UserService} from '../../../service/user.service';
+import {AdminService} from '../../../service/admin.service';
 import {Subscription} from 'rxjs';
 
 @Component({

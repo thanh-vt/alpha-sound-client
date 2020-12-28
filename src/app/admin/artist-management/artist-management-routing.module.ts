@@ -5,7 +5,7 @@ import {ArtistListComponent} from './artist-list/artist-list.component';
 import {ArtistEditComponent} from './artist-edit/artist-edit.component';
 import {ArtistDeleteComponent} from './artist-delete/artist-delete.component';
 import {ArtistDetailComponent} from './artist-detail/artist-detail.component';
-import {AdminAuthGuard} from '../../guards/admin-auth.guard';
+import {AdminAuthGuard} from '../../guard/admin-auth.guard';
 import {CreateArtistComponent} from './create-artist/create-artist.component';
 
 

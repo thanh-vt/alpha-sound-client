@@ -1,16 +1,16 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SongService} from '../../services/song.service';
-import {Song} from '../../models/song';
-import { PlayingQueueService} from '../../services/playing-queue.service';
-import {Page} from '../../models/page';
-import {PlaylistService} from '../../services/playlist.service';
-import {Playlist} from '../../models/playlist';
+import {SongService} from '../../service/song.service';
+import {Song} from '../../model/song';
+import { PlayingQueueService} from '../../service/playing-queue.service';
+import {Page} from '../../model/page';
+import {PlaylistService} from '../../service/playlist.service';
+import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../models/userToken';
-import {AuthService} from '../../services/auth.service';
+import {UserToken} from '../../model/userToken';
+import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-song-list',

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {AdminComponent} from './admin/admin.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {AdminAuthGuard} from '../guards/admin-auth.guard';
+import {AdminAuthGuard} from '../guard/admin-auth.guard';
 
 
 const routes: Routes = [

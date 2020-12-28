@@ -4,13 +4,13 @@ import {
   Input, OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import {UserToken} from '../../models/userToken';
+import {UserToken} from '../../model/userToken';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {PlayingQueueService} from '../../services/playing-queue.service';
-import {ThemeService} from '../../services/theme.service';
-import {Setting} from '../../models/setting';
+import {AuthService} from '../../service/auth.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
+import {ThemeService} from '../../service/theme.service';
+import {Setting} from '../../model/setting';
 
 @Component({
   selector: 'app-user',

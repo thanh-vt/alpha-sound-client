@@ -1,14 +1,14 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Song} from '../../models/song';
+import {Song} from '../../model/song';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {SongService} from '../../services/song.service';
+import {SongService} from '../../service/song.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Artist} from '../../models/artist';
+import {Artist} from '../../model/artist';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
-import {ArtistService} from '../../services/artist.service';
+import {ArtistService} from '../../service/artist.service';
 import {Subscription} from 'rxjs';
-import {Progress} from '../../models/progress';
+import {Progress} from '../../model/progress';
 import {DatePipe} from '@angular/common';
 
 @Component({

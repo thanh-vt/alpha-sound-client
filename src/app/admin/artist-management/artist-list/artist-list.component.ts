@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ArtistService} from '../../../services/artist.service';
-import {Artist} from '../../../models/artist';
+import {ArtistService} from '../../../service/artist.service';
+import {Artist} from '../../../model/artist';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {LocationStrategy} from '@angular/common';

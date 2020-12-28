@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {Artist} from '../../../models/artist';
-import {Progress} from '../../../models/progress';
+import {Artist} from '../../../model/artist';
+import {Progress} from '../../../model/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {CountryService} from '../../../services/country.service';
-import {Country} from '../../../models/country';
+import {CountryService} from '../../../service/country.service';
+import {Country} from '../../../model/country';
 
 @Component({
   selector: 'app-edit-country',

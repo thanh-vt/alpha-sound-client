@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Country} from '../../../models/country';
-import {CountryService} from '../../../services/country.service';
+import {Country} from '../../../model/country';
+import {CountryService} from '../../../service/country.service';
 
 @Component({
   selector: 'app-delete-country',

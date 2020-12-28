@@ -2,19 +2,19 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {SongService} from '../../services/song.service';
-import {PlayingQueueService} from '../../services/playing-queue.service';
-import {Album} from '../../models/album';
-import {AlbumService} from '../../services/album.service';
-import {Song} from '../../models/song';
-import {UserService} from '../../services/user.service';
-import {User} from '../../models/user';
-import {Playlist} from '../../models/playlist';
-import {PlaylistService} from '../../services/playlist.service';
+import {AuthService} from '../../service/auth.service';
+import {SongService} from '../../service/song.service';
+import {PlayingQueueService} from '../../service/playing-queue.service';
+import {Album} from '../../model/album';
+import {AlbumService} from '../../service/album.service';
+import {Song} from '../../model/song';
+import {UserService} from '../../service/user.service';
+import {User} from '../../model/user';
+import {Playlist} from '../../model/playlist';
+import {PlaylistService} from '../../service/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../models/userToken';
+import {UserToken} from '../../model/userToken';
 
 @Component({
   selector: 'app-album-detail',

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {SongListComponent} from './song-list/song-list.component';
 import {SongDeleteComponent} from './song-delete/song-delete.component';
-import {AdminAuthGuard} from '../../guards/admin-auth.guard';
+import {AdminAuthGuard} from '../../guard/admin-auth.guard';
 import {SongManagementComponent} from './song-management/song-management.component';
 
 
