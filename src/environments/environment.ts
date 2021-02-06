@@ -3,8 +3,8 @@
 // The list of audioFiles replacements can be found in `angular.json`.
 
 export const environment = {
-  authUrl: 'http://localhost:8081/lambda-authorization',
-  apiUrl: 'http://localhost:8080/climax-sound/api',
+  authUrl: 'http://localhost:8081/lambda-auth',
+  apiUrl: 'http://localhost:8080/alpha-sound/api',
   clientId: 'fooClientIdPassword',
   clientSecret: 'secret',
   production: false

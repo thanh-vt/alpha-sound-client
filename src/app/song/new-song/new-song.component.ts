@@ -35,7 +35,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   playlistList: Playlist[];
 
   images = [1, 2, 3].map(() => `../../../assets/slides/slide_number_${this.roll()}.jpg`);
-  description: string[] = ['Bring you the climax music', 'Hundreds of songs and albums', 'Customize your own playlist'];
+  description: string[] = ['Bring you the greatest music', 'Hundreds of songs and albums', 'Customize your own playlist'];
   paused = false;
   unpauseOnArrow = false;
   pauseOnIndicator = false;

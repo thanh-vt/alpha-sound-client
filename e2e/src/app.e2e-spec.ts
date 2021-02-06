@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome songsMessage', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('angular-climax-sound app is running!');
+    expect(page.getTitleText()).toEqual('angular-alpha-sound app is running!');
   });
 
   afterEach(async () => {
