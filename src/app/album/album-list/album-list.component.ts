@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlbumService} from '../../service/album.service';
 import {Album} from '../../model/album';
-import {UserToken} from '../../model/userToken';
 import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
 import {User} from '../../model/user';

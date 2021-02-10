@@ -38,7 +38,8 @@
   </div>
   <div class="form-group">
     <label for="birthDate"><i class="fas fa-table"></i> {{ 'BirthDate' | translate }}</label>
-    <input [value]="currentUser.birthDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" formControlName="birthDate">
+    <input [value]="currentUser?.userProfile?.dateOfBirth | date: 'yyyy-MM-dd'"
+           type="date" class="form-control" id="birthDate" formControlName="birthDate">
     <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('birthDate').hasError('required') && (updateForm.get('birthDate').touched || this.submitted)">
       {{'BirthDate' | translate }}{{' '}}{{ 'must be picked' | translate }}{{'!'}}
     </div>

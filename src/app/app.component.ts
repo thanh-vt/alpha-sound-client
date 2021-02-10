@@ -2,7 +2,7 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Subscription} from 'rxjs';
-import {UserToken} from './model/userToken';
+import {UserToken} from './model/user-token';
 import {finalize} from 'rxjs/operators';
 import {UserService} from './service/user.service';
 import {AuthService} from './service/auth.service';
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // beforeunloadHandler(event) {
   //   if (sessionStorage.getItem('userToken')) {
   //     const token = JSON.parse(sessionStorage.getItem('userToken')) as UserToken;
-  //     this.subscription.add(this.http.post(`${environment.authUrl}/token/revoke/${token.access_token}`, null)
+  //     this.subscription.add(this.http.post(`${environment.authUrl}/oauth/revoke/${token.access_token}`, null)
   //       .subscribe(
   //         next => {console.log(JSON.parse(JSON.stringify(next))); },
   //         error => {console.log(JSON.parse(JSON.stringify(error))); },
@@ -34,11 +34,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(localStorage);
-    console.log(sessionStorage);
     if (localStorage.getItem('sessionToken') && !sessionStorage.getItem('userToken')) {
       const token = JSON.parse(localStorage.getItem('sessionToken')) as UserToken;
-      this.subscription.add(this.http.post(`${environment.authUrl}/tokens/revoke/${token.access_token}`, null)
+      this.subscription.add(this.http.delete(`${environment.authUrl}/oauth/revoke/${token.access_token}`)
         .pipe(finalize(() => {
           localStorage.removeItem('sessionToken');
         }))

@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 import {AuthService} from '../../service/auth.service';
 
 @Component({

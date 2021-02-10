@@ -2,7 +2,7 @@ import {EventEmitter, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {UserToken} from '../model/userToken';
+import {UserToken} from '../model/user-token';
 import {finalize, map} from 'rxjs/operators';
 
 @Injectable({
@@ -46,7 +46,7 @@ export class AuthService {
       }));
   }
 
-  logout() {
+  logout(): void {
     let token: string;
     if (localStorage.getItem('userToken')) {
       token = (JSON.parse(localStorage.getItem('userToken')) as UserToken).access_token;
@@ -54,7 +54,7 @@ export class AuthService {
     if (sessionStorage.getItem('userToken')) {
       token = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).access_token;
     }
-    this.http.post<Observable<string>>(`${environment.authUrl}/tokens/revoke/${token}`, null)
+    this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/revoke/${token}`)
       .pipe(finalize(() => {
         localStorage.removeItem('userToken');
         localStorage.removeItem('rememberMe');

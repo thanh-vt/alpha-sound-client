@@ -5,8 +5,8 @@
 export const environment = {
   authUrl: 'http://localhost:8081/lambda-auth',
   apiUrl: 'http://localhost:8080/alpha-sound/api',
-  clientId: 'fooClientIdPassword',
-  clientSecret: 'secret',
+  clientId: 'alpha_sound',
+  clientSecret: '@lph@123',
   production: false
 };
 

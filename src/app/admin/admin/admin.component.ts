@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {ModalComponent} from '../../shared/modal/modal.component';
 import {TranslateService} from '@ngx-translate/core';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 
 @Component({
   selector: 'app-admin',
@@ -35,9 +35,9 @@ export class AdminComponent implements OnInit {
       this.hasNotLoggedInAsAdmin = true;
     } else {
       let hasRoleAdmin = false;
-      const roleList = this.currentUserToken.roles;
-      for (const role of roleList) {
-        if (role.authority === 'ROLE_ADMIN') {
+      const authorities = this.currentUserToken.authorities;
+      for (const authority of authorities) {
+        if (authority === 'ROLE_ADMIN') {
           hasRoleAdmin = true;
           break;
         }

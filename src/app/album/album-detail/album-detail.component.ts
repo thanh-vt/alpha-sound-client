@@ -9,12 +9,11 @@ import {Album} from '../../model/album';
 import {AlbumService} from '../../service/album.service';
 import {Song} from '../../model/song';
 import {UserService} from '../../service/user.service';
-import {User} from '../../model/user';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 
 @Component({
   selector: 'app-album-detail',

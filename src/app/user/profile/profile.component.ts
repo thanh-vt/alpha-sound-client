@@ -10,7 +10,7 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
 import {UserService} from '../../service/user.service';
 import {User} from '../../model/user';
 import {TranslateService} from '@ngx-translate/core';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 
 @Component({
   selector: 'app-profile',
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userId = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.userService.getProfile(this.userId).subscribe(
+    this.userService.getUserDetail(this.userId).subscribe(
       next => {
         this.user = next;
       }, error => {

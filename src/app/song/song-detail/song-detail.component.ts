@@ -7,14 +7,13 @@ import {Artist} from '../../model/artist';
 import {Song} from '../../model/song';
 import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
-import {User} from '../../model/user';
 import {UserService} from '../../service/user.service';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 import {CloseDialogueService} from '../../service/close-dialogue.service';
 
 

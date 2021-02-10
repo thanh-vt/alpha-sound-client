@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 
 import {AuthService} from '../service/auth.service';
-import {UserToken} from '../model/userToken';
+import {UserToken} from '../model/user-token';
 import {catchError, mergeMap} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {

@@ -4,7 +4,7 @@ import {
   Input, OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';

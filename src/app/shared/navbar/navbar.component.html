@@ -87,9 +87,11 @@
     </div>
     <div ngbDropdown class="d-inline-block ml-auto mr-1" *ngIf="!!currentUser" placement="bottom" display="dynamic">
       <button ngbDropdownToggle class="dropdown-toggle btn btn-warning rounded-pill" id="userProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="d-inline-block user-avatar" *ngIf="!currentUser.avatarUrl"><i class="fas fa-user-circle"></i></span>
-        <img class="d-inline-block user-avatar" *ngIf="!!currentUser.avatarUrl" [src]="currentUser.avatarUrl" onerror="src = '../../../assets/images/avatar.jpg'" alt="">
-        <span> {{ currentUser.username }}</span>
+        <span class="d-inline-block user-avatar" *ngIf="!currentUser?.profile?.avatarUrl">
+          <i class="fas fa-user-circle"></i></span>
+        <img class="d-inline-block user-avatar" *ngIf="!!currentUser?.profile?.avatarUrl"
+             [src]="currentUser?.profile?.avatarUrl" onerror="src = '../../../assets/images/avatar.jpg'" alt="">
+        <span> {{ currentUser.user_name }}</span>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
         <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUser.id]"><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a>

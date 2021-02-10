@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../../../model/user';
-import {UserService} from '../../../service/user.service';
 import {AdminService} from '../../../service/admin.service';
 import {Subscription} from 'rxjs';
 
@@ -13,7 +12,6 @@ export class UserListComponent implements OnInit {
 
   pageNumber: number;
   pageSize: number;
-  totalItems: number;
   message: string;
   userList: User[];
   subscription: Subscription = new Subscription();
@@ -28,7 +26,7 @@ export class UserListComponent implements OnInit {
         if (result != null) {
           this.userList = result.content;
           this.userList.forEach((value, index) => {
-            this.userList[index].isDisabled = false;
+            this.userList[index].enabled = false;
           });
           this.pageNumber = result.pageable.pageNumber;
           this.pageSize = result.pageable.pageSize;

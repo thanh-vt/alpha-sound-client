@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Song} from '../../model/song';
-import {User} from '../../model/user';
 import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
 import {Playlist} from '../../model/playlist';
@@ -8,10 +7,9 @@ import {UserComponent} from '../user/user.component';
 import {SongService} from '../../service/song.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {PlaylistService} from '../../service/playlist.service';
-import {UserService} from '../../service/user.service';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../../service/auth.service';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 
 @Component({
   selector: 'app-favorites',

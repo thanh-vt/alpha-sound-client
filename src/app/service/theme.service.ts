@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AuthService} from './auth.service';
-import {UserToken} from '../model/userToken';
+import {UserToken} from '../model/user-token';
 import {Setting} from '../model/setting';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';

@@ -1,18 +1,15 @@
-import {Role} from './role';
 import {Setting} from './setting';
+import {UserProfile} from './user-profile';
 
 export interface User {
-  isDisabled: boolean;
-  id?: number;
-  username?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-  gender?: boolean;
-  birthDate?: number;
-  phoneNumber?: number;
-  email?: string;
-  avatarUrl: string;
-  roles?: [Role];
+  id: number;
+  username: string;
+  password: string;
+  enabled: boolean;
+  accountNonExpired: boolean;
+  accountNonLocked: boolean;
+  credentialsNonExpired: boolean;
+  authorities: string[];
   setting: Setting;
+  userProfile: UserProfile;
 }

@@ -7,7 +7,7 @@ import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 import {AuthService} from '../../service/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';

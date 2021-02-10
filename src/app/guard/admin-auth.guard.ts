@@ -10,10 +10,9 @@ import {
   Router
 } from '@angular/router';
 
-import {User} from '../model/user';
 import {UserService} from '../service/user.service';
 import {AuthService} from '../service/auth.service';
-import {UserToken} from '../model/userToken';
+import {UserToken} from '../model/user-token';
 
 @Injectable({
   providedIn: 'root'
@@ -31,9 +30,9 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let hasRoleAdmin = false;
     if (!!this.currentUser) {
-      const roleList = this.currentUser.roles;
-      for (const role of roleList) {
-        if (role.authority === 'ROLE_ADMIN') {
+      const authorities = this.currentUser.authorities;
+      for (const authority of authorities) {
+        if (authority === 'ROLE_ADMIN') {
           hasRoleAdmin = true;
           break;
         }
@@ -53,10 +52,10 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
   canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!!this.currentUser) {
-      const roleList = this.currentUser.roles;
+      const authorities = this.currentUser.authorities;
       let hasRoleAdmin = false;
-      for (const role of roleList) {
-        if (role.authority === 'ROLE_ADMIN') {
+      for (const authority of authorities) {
+        if (authority === 'ROLE_ADMIN') {
           hasRoleAdmin = true;
           break;
         }

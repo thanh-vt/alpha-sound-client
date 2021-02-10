@@ -13,8 +13,12 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getProfile(userId: number): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/profile/${userId}`);
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/profile`);
+  }
+
+  getUserDetail(userId: number): Observable<User> {
+    return this.http.get<User>(`${environment.authUrl}/api/user/${userId}`);
   }
 
   register(formGroup): Observable<HttpEvent<any>> {

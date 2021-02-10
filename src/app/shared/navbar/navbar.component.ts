@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 import {ThemeService} from '../../service/theme.service';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 import {Setting} from '../../model/setting';
 
 @Component({

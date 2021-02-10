@@ -6,7 +6,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {UserService} from '../../service/user.service';
 import {User} from '../../model/user';
-import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
 import {finalize} from 'rxjs/operators';
 
 @Component({
@@ -23,14 +22,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   message: string;
   error = false;
   returnUrl: string;
-  userId: number;
   subscription: Subscription = new Subscription();
 
   // tslint:disable-next-line:max-line-length
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private adminService: AdminService, private authService: AuthService, private userService: UserService) {
     this.authService.currentUserToken.subscribe(
-      next => {this.userService.getProfile(next.id).subscribe(
+      () => {this.userService.getCurrentUser().subscribe(
         currentUser => {
           this.currentUser = currentUser;
         }
@@ -60,14 +58,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loading = false;
       }))
       .subscribe(
-      (next) => {
-        this.userId = next.id;
-        this.userService.getProfile(this.userId).subscribe(
+      () => {
+        this.userService.getCurrentUser().subscribe(
           currentUser => {
             let hasRoleAdmin = false;
-            const roleList = currentUser.roles;
-            for (const role of roleList) {
-              if (role.authority === 'ROLE_ADMIN') {
+            const authorities = currentUser.authorities;
+            for (const authority of authorities) {
+              if (authority === 'ROLE_ADMIN') {
                 hasRoleAdmin = true;
                 break;
               }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
@@ -7,9 +7,9 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Progress} from '../../model/progress';
 import {User} from '../../model/user';
 import {Subscription} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
+import {UserProfile} from '../../model/user-profile';
 
 @Component({
   selector: 'app-update-profile',
@@ -21,7 +21,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   updateForm: FormGroup;
   loading: boolean;
   submitted = false;
-  returnUrl: string;
   error: boolean;
   file: any;
   formData = new FormData();
@@ -41,19 +40,20 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription.add(this.userService.getProfile(this.currentUserToken.id).subscribe(
+    this.subscription.add(this.userService.getCurrentUser().subscribe(
       currentUser => {
         this.currentUser = currentUser;
+        const userProfile: UserProfile = this.currentUser.userProfile;
         this.updateForm = this.fb.group({
           username: [this.currentUser.username],
           // tslint:disable-next-line:max-line-length
           password: [this.currentUser.password],
-          firstName: [this.currentUser.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-          lastName: [this.currentUser.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-          phoneNumber: [this.currentUser.phoneNumber, Validators.required],
-          gender: [this.currentUser.gender, Validators.required],
-          birthDate: [this.currentUser.birthDate, Validators.required],
-          email: [this.currentUser.email]
+          firstName: [userProfile.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          lastName: [userProfile.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          phoneNumber: [userProfile.phoneNumber, Validators.required],
+          gender: [userProfile.gender, Validators.required],
+          birthDate: [userProfile.dateOfBirth, Validators.required],
+          email: [userProfile.email]
         });
       }, error => {
         console.log(error);
@@ -103,7 +103,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       this.subscription.add(this.userService.updateProfile(this.updateForm.value)
         .pipe(finalize(() => {
           this.loading = false;
-          this.subscription.add(this.userService.getProfile(this.currentUser.id).subscribe(
+          this.subscription.add(this.userService.getCurrentUser().subscribe(
             currentUser => {
               this.currentUser = currentUser;
             }

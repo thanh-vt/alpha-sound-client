@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../../model/user';
 import {Artist} from '../../model/artist';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,10 +10,9 @@ import {Song} from '../../model/song';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
-import {UserService} from '../../service/user.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/userToken';
+import {UserToken} from '../../model/user-token';
 
 @Component({
   selector: 'app-artist-detail',

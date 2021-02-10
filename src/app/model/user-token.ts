@@ -1,5 +1,5 @@
-import {Role} from './role';
 import {Setting} from './setting';
+import {UserProfile} from './user-profile';
 
 export interface UserToken {
   access_token: string;
@@ -8,8 +8,8 @@ export interface UserToken {
   expires_in: number;
   scope: string;
   id: number;
-  roles: [Role];
-  username: string;
-  avatarUrl: string;
+  authorities: [string];
+  user_name: string;
+  profile: UserProfile;
   setting: Setting;
 }
