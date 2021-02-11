@@ -35,7 +35,8 @@ export class ThemeService {
       this.setting = (JSON.parse(sessionStorage.getItem('userToken')) as UserToken).setting;
     } else if (localStorage.getItem('tempSetting')) {
       this.setting = JSON.parse(localStorage.getItem('tempSetting')) as Setting;
-    } else {
+    }
+    if (!this.setting) {
       this.setting = new Setting(true);
     }
     this.darkThemeSubject.next(this.setting);

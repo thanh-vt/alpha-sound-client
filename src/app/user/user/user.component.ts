@@ -69,11 +69,11 @@ export class UserComponent implements OnInit {
         console.log(next);
         if (next) {
           this.setting = next;
-          if (this.setting.darkMode) {
-            this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
-          } else {
-            this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';
-          }
+        }
+        if (this.setting?.darkMode) {
+          this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';
+        } else {
+          this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';
         }
       }
     );

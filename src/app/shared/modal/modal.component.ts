@@ -19,15 +19,6 @@ import {ThemeService} from '../../service/theme.service';
   encapsulation: ViewEncapsulation.None
 })
 export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() isPoppedUp = false;
-  @Input() title = '';
-  @Input() body: string;
-  @Input() action: string;
-  @Input() disableClose = false;
-  @Input() darkThemeOn: boolean;
-  closeResult: string;
-  @Output() closeAction = new EventEmitter();
-  @ViewChild('content') content: ElementRef;
 
   constructor(private modalService: NgbModal, private closeDialogueService: CloseDialogueService, private themeService: ThemeService) {
     this.closeDialogueService.closeDialogueSubjectValue.subscribe(
@@ -43,6 +34,25 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
       }
     );
   }
+  @Input() isPoppedUp = false;
+  @Input() title = '';
+  @Input() body: string;
+  @Input() action: string;
+  @Input() disableClose = false;
+  @Input() darkThemeOn: boolean;
+  closeResult: string;
+  @Output() closeAction = new EventEmitter();
+  @ViewChild('content') content: ElementRef;
+
+  private static getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isPoppedUp) {
@@ -56,36 +66,27 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.isPoppedUp) {
-      // tslint:disable-next-line:max-line-length
-      this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true, backdrop: 'static' } ).result.then(() => {
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-    } else {
-      this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true, backdrop: 'static' } ).close();
-    }
+    // if (this.isPoppedUp) {
+    //   // tslint:disable-next-line:max-line-length
+    //   this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true, backdrop: 'static' } ).result.then(() => {
+    //   }, (reason) => {
+    //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    //   });
+    // } else {
+    //   this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title', scrollable: true, backdrop: 'static' } ).close();
+    // }
   }
 
   open(content, event) {
     event.stopPropagation();
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', scrollable: true }).result.then(() => {
+    this.modalService.open(content,
+      {ariaLabelledBy: 'modal-basic-title', scrollable: true }).result.then(() => {
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed ${ModalComponent.getDismissReason(reason)}`;
     });
   }
 
   close() {
     this.closeAction.emit();
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
   }
 }
