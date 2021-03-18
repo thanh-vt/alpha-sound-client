@@ -3,8 +3,8 @@
 // The list of audioFiles replacements can be found in `angular.json`.
 
 export const environment = {
-  authUrl: 'http://localhost:8081/lambda-auth',
-  apiUrl: 'http://localhost:8080/alpha-sound/api',
+  authUrl: `https://${window.location.hostname}:8082/lambda-auth`,
+  apiUrl: `https://${window.location.hostname}:8086/alpha-sound/api`,
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
   production: false
