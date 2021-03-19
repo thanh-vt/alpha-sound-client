@@ -20,6 +20,7 @@ import localeVi from '@angular/common/locales/vi';
 import localeEn from '@angular/common/locales/en';
 import {registerLocaleData} from '@angular/common';
 import { GestureConfig } from '../gesture-config';
+import {RouterModule} from '@angular/router';
 
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
