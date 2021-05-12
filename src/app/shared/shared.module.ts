@@ -6,14 +6,17 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from '@angular/router';
 import {FooterComponent} from './footer/footer.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
-import { ModalComponent } from './modal/modal.component';
-import { CardComponent } from './card/card.component';
-import { SpinnerComponent } from './spinner/spinner.component';
+import {AddSongToPlaylistComponent} from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
+import {ModalComponent} from './modal/modal.component';
+import {CardComponent} from './card/card.component';
+import {SpinnerComponent} from './spinner/spinner.component';
 import {TranslateModule} from '@ngx-translate/core';
+import {EnvPipe} from './pipe/env.pipe';
 
 @NgModule({
-  declarations: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent],
+  declarations: [NavbarComponent, SidebarComponent, FooterComponent,
+    AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent,
+    EnvPipe],
   imports: [
     CommonModule,
     NgbModule,
@@ -21,7 +24,9 @@ import {TranslateModule} from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule,
   ],
-  exports: [NavbarComponent, SidebarComponent, FooterComponent, AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent]
+  exports: [NavbarComponent, SidebarComponent, FooterComponent,
+    AddSongToPlaylistComponent, ModalComponent, CardComponent, SpinnerComponent,
+    EnvPipe]
 })
 export class SharedModule {
 }

@@ -21,6 +21,7 @@ import localeEn from '@angular/common/locales/en';
 import {registerLocaleData} from '@angular/common';
 import { GestureConfig } from '../gesture-config';
 import {RouterModule} from '@angular/router';
+import {environment} from '../environments/environment';
 
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
@@ -34,7 +35,7 @@ const jwtModuleOptions: JwtModuleOptions = {
 
 // loader module
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, `${environment.baseHref}/assets/i18n/`, '.json');
 }
 
 // @ts-ignore

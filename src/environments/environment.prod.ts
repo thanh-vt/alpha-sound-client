@@ -3,5 +3,6 @@ export const environment = {
   apiUrl: 'https://alpha-sound-service.herokuapp.com/alpha-sound/api',
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
-  production: true
+  production: true,
+  baseHref: ''
 };

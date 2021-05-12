@@ -7,7 +7,8 @@ export const environment = {
   apiUrl: `https://${window.location.hostname}:8086/alpha-sound/api`,
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
-  production: false
+  production: false,
+  baseHref: ''
 };
 
 /*

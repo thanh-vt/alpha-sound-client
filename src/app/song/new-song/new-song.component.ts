@@ -12,6 +12,7 @@ import {AuthService} from '../../service/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-new-song',
@@ -34,7 +35,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   playlistList: Playlist[];
 
-  images = [1, 2, 3].map(() => `../../../assets/slides/slide_number_${this.roll()}.jpg`);
+  images = [1, 2, 3].map(() => `${environment.baseHref}/assets/slides/slide_number_${this.roll()}.jpg`);
   description: string[] = ['Bring you the greatest music', 'Hundreds of songs and albums', 'Customize your own playlist'];
   paused = false;
   unpauseOnArrow = false;

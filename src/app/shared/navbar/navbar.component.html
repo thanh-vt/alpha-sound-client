@@ -6,7 +6,8 @@
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-3" id="navbarSupportedContent">
     <div class="navbar-nav">
       <div class="nav-item px-2 mx-1" routerLinkActive="active rounded" style="width: 12.5rem">
-        <a class="nav-link p-0" [routerLink]="['/home']"><img style="width: 100%" src="../../../assets/images/b0c4e2d8-1c0a-4954-9134-fe67a7b453be_200x200.png" alt=""></a>
+        <a class="nav-link p-0" [routerLink]="['/home']">
+          <img style="width: 100%" [src]="('baseHref' | env) + '/assets/images/b0c4e2d8-1c0a-4954-9134-fe67a7b453be_200x200.png'" alt=""></a>
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/song']"><h3><i class="fas fa-music"></i> {{ 'Song' | translate }}</h3></a>
