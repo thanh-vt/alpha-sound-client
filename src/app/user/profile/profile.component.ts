@@ -7,10 +7,9 @@ import {ArtistService} from '../../service/artist.service';
 import {SongService} from '../../service/song.service';
 import {PlaylistService} from '../../service/playlist.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
-import {UserService} from '../../service/user.service';
-import {User} from '../../model/user';
+import {UserProfileService} from '../../service/user-profile.service';
 import {TranslateService} from '@ngx-translate/core';
-import {UserToken} from '../../model/user-token';
+import {UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-profile',
@@ -18,19 +17,20 @@ import {UserToken} from '../../model/user-token';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
+  currentUser: UserProfile;
   message: string;
   loading: boolean;
   showEditForm = false;
-  userId: number;
-  user: User;
+  username: string;
+  user: UserProfile;
   subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private artistService: ArtistService,
               private songService: SongService, private playlistService: PlaylistService,
-              private playingQueueService: PlayingQueueService, private userService: UserService, public translate: TranslateService) {
-    this.authService.currentUserToken.subscribe(
+              private playingQueueService: PlayingQueueService,
+              private userService: UserProfileService, public translate: TranslateService) {
+    this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
       }
@@ -38,8 +38,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userId = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.userService.getUserDetail(this.userId).subscribe(
+    this.username = this.route.snapshot.paramMap.get('id');
+    this.userService.getUserDetail(this.username).subscribe(
       next => {
         this.user = next;
       }, error => {

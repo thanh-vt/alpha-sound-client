@@ -7,7 +7,7 @@ import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
-import {UserToken} from '../../model/user-token';
+import {UserProfile} from '../../model/token-response';
 import {AuthService} from '../../service/auth.service';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
@@ -21,7 +21,8 @@ import {environment} from '../../../environments/environment';
   encapsulation: ViewEncapsulation.None
 })
 export class NewSongComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
+
+  currentUser: UserProfile;
   pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
@@ -42,12 +43,12 @@ export class NewSongComponent implements OnInit, OnDestroy {
   pauseOnIndicator = false;
   pauseOnHover = true;
   @ViewChild(UserComponent) userComponent: UserComponent;
-  @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
+  @ViewChild('carousel', {static: true}) carousel: NgbCarousel;
 
   // tslint:disable-next-line:max-line-length
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
               private playlistService: PlaylistService, private authService: AuthService, public translate: TranslateService) {
-    this.authService.currentUserToken.subscribe(
+    this.authService.currentUser$.subscribe(
       currentUser => {
         this.currentUser = currentUser;
       }
@@ -77,36 +78,38 @@ export class NewSongComponent implements OnInit, OnDestroy {
         this.loading = false;
       }))
       .subscribe(
-      result => {
-        if (result != null) {
-          if (scrollUp) {window.scroll(0, 0); }
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          this.first = result.first;
-          this.last = result.last;
-          this.pageNumber = result.pageable.pageNumber;
-          this.pageSize = result.pageable.pageSize;
-          this.pages = new Array(result.totalPages);
-          for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = {pageNumber: j};
+        result => {
+          if (result != null) {
+            if (scrollUp) {
+              window.scroll(0, 0);
+            }
+            this.songList = result.content;
+            this.songList.forEach((value, index) => {
+              this.songList[index].isDisabled = false;
+            });
+            this.first = result.first;
+            this.last = result.last;
+            this.pageNumber = result.pageable.pageNumber;
+            this.pageSize = result.pageable.pageSize;
+            this.pages = new Array(result.totalPages);
+            for (let j = 0; j < this.pages.length; j++) {
+              this.pages[j] = {pageNumber: j};
+            }
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
+            }
           }
+        }, error => {
+          this.message = 'An error has occurred.';
+          console.log(error.message);
+        }, () => {
           for (const song of this.songList) {
-            this.checkDisabledSong(song);
+            if (song.loadingLikeButton) {
+              song.loadingLikeButton = false;
+            }
           }
         }
-      }, error => {
-        this.message = 'An error has occurred.';
-        console.log(error.message);
-      }, () => {
-        for (const song of this.songList) {
-          if (song.loadingLikeButton) {
-            song.loadingLikeButton = false;
-          }
-        }
-      }
-    ));
+      ));
   }
 
   refreshPlaylistList(songId) {

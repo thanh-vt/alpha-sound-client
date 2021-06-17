@@ -7,15 +7,14 @@ import {Artist} from '../../model/artist';
 import {Song} from '../../model/song';
 import {Comment} from '../../model/comment';
 import {Subscription} from 'rxjs';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/user-token';
+import {UserProfile} from '../../model/token-response';
 import {CloseDialogueService} from '../../service/close-dialogue.service';
-
 
 @Component({
   selector: 'app-song-detail',
@@ -24,7 +23,7 @@ import {CloseDialogueService} from '../../service/close-dialogue.service';
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
   song: Song;
-  currentUser: UserToken;
+  currentUser: UserProfile;
   message: string;
   loading: boolean;
   songId: number;
@@ -37,9 +36,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private songService: SongService, private closeDialogueService: CloseDialogueService,
-              private userService: UserService, private playlistService: PlaylistService,
+              private userService: UserProfileService, private playlistService: PlaylistService,
               private playingQueueService: PlayingQueueService, public translate: TranslateService) {
-    this.subscription.add(this.authService.currentUserToken.subscribe(
+    this.subscription.add(this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
       }, error => {

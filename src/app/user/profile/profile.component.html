@@ -2,29 +2,29 @@
   <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="user">
-  <app-card [type]="2" [imgSrc]="user?.userProfile?.avatarUrl || '../../../assets/avatars/default-user-avatar.png'"
-            [title]="'Profile' | translate" [showEditButton]="currentUser && userId==currentUser.id"
+  <app-card [type]="2" [imgSrc]="user?.avatar_url || '../../../assets/avatars/default-user-avatar.png'"
+            [title]="'Profile' | translate" [showEditButton]="currentUser && username==currentUser.user_name"
             (showEditForm)="showEditForm=!showEditForm">
     <span class="lambda_card-button"><i class="fas fa-user-edit"></i></span>
     <div class="lambda_card-text_2">
       <h6 class="d-inline">{{ 'Username' | translate }}: </h6>
-      <span *ngIf="user.username" class="text-secondary">{{user.username}}</span>
-      <span *ngIf="!user.username" class="text-secondary">**********</span>
+      <span *ngIf="user?.user_name" class="text-secondary">{{user?.user_name}}</span>
+      <span *ngIf="!user?.user_name" class="text-secondary">**********</span>
       <br>
-      <h6 class="d-inline">{{ 'First Name' | translate }}: </h6><span class="text-secondary">{{user?.userProfile?.firstName}}</span><br>
-      <h6 class="d-inline">{{ 'Last Name' | translate }}: </h6><span class="text-secondary">{{user?.userProfile?.lastName}}</span><br>
+      <h6 class="d-inline">{{ 'First Name' | translate }}: </h6><span class="text-secondary">{{user?.first_name}}</span><br>
+      <h6 class="d-inline">{{ 'Last Name' | translate }}: </h6><span class="text-secondary">{{user?.last_name}}</span><br>
       <h6 class="d-inline">{{ 'BirthDate' | translate }}: </h6>
-      <span *ngIf="user?.userProfile?.dateOfBirth" class="text-secondary">
-        {{user?.userProfile?.dateOfBirth   | date: 'fullDate' : '' : translate.currentLang}}</span>
-      <span *ngIf="!user?.userProfile?.dateOfBirth" class="text-secondary">**********</span>
+      <span *ngIf="user?.date_of_birth" class="text-secondary">
+        {{user?.date_of_birth   | date: 'fullDate' : '' : translate.currentLang}}</span>
+      <span *ngIf="!user?.date_of_birth" class="text-secondary">**********</span>
       <br>
       <h6 class="d-inline">{{ 'Gender' | translate }}: </h6>
-      <span *ngIf="user?.userProfile?.gender"><i class="fas fa-mars text-primary fa-1x"></i></span>
-      <span *ngIf="!user?.userProfile?.gender"><i class="fas fa-venus fa-1x" style="color: hotpink"></i></span>
+      <span *ngIf="user?.gender"><i class="fas fa-mars text-primary fa-1x"></i></span>
+      <span *ngIf="!user?.gender"><i class="fas fa-venus fa-1x" style="color: hotpink"></i></span>
       <br>
       <h6 class="d-inline">Email: </h6>
-      <span *ngIf="user?.userProfile?.email" class="text-secondary">{{user?.userProfile?.email}}</span>
-      <span *ngIf="!user?.userProfile?.email && user?.userProfile?.email !== null" class="text-secondary">**********</span><br>
+      <span *ngIf="user?.email" class="text-secondary">{{user?.email}}</span>
+      <span *ngIf="!user?.email && user?.email !== null" class="text-secondary">**********</span><br>
     </div>
   </app-card>
 </ng-container>

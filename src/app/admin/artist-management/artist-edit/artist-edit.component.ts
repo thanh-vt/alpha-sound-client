@@ -1,12 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ArtistService} from '../../../service/artist.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../service/auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Artist} from '../../../model/artist';
 import {Progress} from '../../../model/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-artist-edit',
@@ -14,19 +13,20 @@ import {HttpEvent, HttpEventType} from '@angular/common/http';
   styleUrls: ['./artist-edit.component.scss']
 })
 export class ArtistEditComponent implements OnInit {
+
+  @Input() artist: Artist;
   artistUpdateForm: FormGroup;
-  isImageFileChoosen = false;
+  isImageFileChosen = false;
   imageFileName = '';
   formData = new FormData();
   file: any;
   subscription: Subscription = new Subscription();
   message: string;
-  @Input() artist: Artist;
   error = false;
   progress: Progress = {value: 0};
 
-
-  constructor(private artistService: ArtistService, private fb: FormBuilder) {
+  constructor(private artistService: ArtistService, private fb: FormBuilder,
+              private ngbActiveModal: NgbActiveModal) {
   }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class ArtistEditComponent implements OnInit {
   selectFile(event) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
-      this.isImageFileChoosen = true;
+      this.isImageFileChosen = true;
       this.imageFileName = event.target.files[0].name;
     }
   }
@@ -92,5 +92,9 @@ export class ArtistEditComponent implements OnInit {
 
   navigate() {
     location.replace('/admin/artist-management');
+  }
+
+  close() {
+    this.ngbActiveModal.dismiss();
   }
 }

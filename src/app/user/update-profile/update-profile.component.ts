@@ -2,22 +2,20 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {Progress} from '../../model/progress';
-import {User} from '../../model/user';
 import {Subscription} from 'rxjs';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/user-token';
-import {UserProfile} from '../../model/user-profile';
+import {UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.component.html'
 })
 export class UpdateProfileComponent implements OnInit, OnDestroy {
-  currentUserToken: UserToken;
-  currentUser: User;
+  currentUserToken: UserProfile;
+  currentUser: UserProfile;
   updateForm: FormGroup;
   loading: boolean;
   submitted = false;
@@ -31,8 +29,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-              private authService: AuthService, private userService: UserService) {
-    this.authService.currentUserToken.subscribe(
+              private authService: AuthService, private userService: UserProfileService) {
+    this.authService.currentUser$.subscribe(
       next => {
         this.currentUserToken = next;
       }
@@ -40,20 +38,21 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription.add(this.userService.getCurrentUser().subscribe(
+    this.subscription.add(this.userService.getCurrentUserProfile().subscribe(
       currentUser => {
         this.currentUser = currentUser;
-        const userProfile: UserProfile = this.currentUser.userProfile;
         this.updateForm = this.fb.group({
-          username: [this.currentUser.username],
+          username: [this.currentUser.user_name],
           // tslint:disable-next-line:max-line-length
           password: [this.currentUser.password],
-          firstName: [userProfile.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-          lastName: [userProfile.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-          phoneNumber: [userProfile.phoneNumber, Validators.required],
-          gender: [userProfile.gender, Validators.required],
-          birthDate: [userProfile.dateOfBirth, Validators.required],
-          email: [userProfile.email]
+          firstName: [this.currentUser.first_name, [Validators.required,
+            Validators.minLength(2), Validators.maxLength(20)]],
+          lastName: [this.currentUser.last_name, [Validators.required,
+            Validators.minLength(2), Validators.maxLength(20)]],
+          phoneNumber: [this.currentUser.phone_number, Validators.required],
+          gender: [this.currentUser.gender, Validators.required],
+          birthDate: [this.currentUser.date_of_birth, Validators.required],
+          email: [this.currentUser.email]
         });
       }, error => {
         console.log(error);
@@ -103,39 +102,39 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       this.subscription.add(this.userService.updateProfile(this.updateForm.value)
         .pipe(finalize(() => {
           this.loading = false;
-          this.subscription.add(this.userService.getCurrentUser().subscribe(
+          this.subscription.add(this.userService.getCurrentUserProfile().subscribe(
             currentUser => {
               this.currentUser = currentUser;
             }
           ));
         }))
         .subscribe(
-        () => {
-          this.error = false;
-          this.message = 'Profile updated successfully.';
-          if (this.isImageFileChosen) {
-            this.subscription.add(this.userService.uploadAvatar(this.formData).subscribe(
-              (event: HttpEvent<any>) => {
-                console.log(event);
-                if (this.displayProgress(event, this.progress)) {
-                  this.error = false;
-                  this.message = 'Avatar uploaded successfully.';
+          () => {
+            this.error = false;
+            this.message = 'Profile updated successfully.';
+            if (this.isImageFileChosen) {
+              this.subscription.add(this.userService.uploadAvatar(this.formData).subscribe(
+                (event: HttpEvent<any>) => {
+                  console.log(event);
+                  if (this.displayProgress(event, this.progress)) {
+                    this.error = false;
+                    this.message = 'Avatar uploaded successfully.';
+                  }
+                },
+                error => {
+                  this.error = true;
+                  this.message = 'Failed to upload avatar.';
+                  console.log(error);
                 }
-              },
-              error => {
-                this.error = true;
-                this.message = 'Failed to upload avatar.';
-                console.log(error);
-              }
-            ));
+              ));
+            }
+          },
+          error => {
+            this.error = true;
+            this.message = 'Failed to update profile.';
+            console.log(error);
           }
-        },
-        error => {
-          this.error = true;
-          this.message = 'Failed to update profile.';
-          console.log(error);
-        }
-      ));
+        ));
     }
   }
 

@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Artist} from '../../model/artist';
 import {ArtistService} from '../../service/artist.service';
-import {User} from '../../model/user';
 import {finalize} from 'rxjs/operators';
+import {UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-artist-list',
@@ -11,7 +11,7 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./artist-list.component.scss']
 })
 export class ArtistListComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: UserProfile;
   message: string;
   loading: boolean;
   subscription: Subscription = new Subscription();

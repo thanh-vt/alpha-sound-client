@@ -1,26 +1,20 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {AdminComponent} from './admin/admin.component';
+import {RouterModule, Routes} from '@angular/router';
+import {AdminContainerComponent} from './admin-container/admin-container.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {AdminAuthGuard} from '../guard/admin-auth.guard';
 
 
 const routes: Routes = [
   {
-    path: 'admin',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: '', component: AdminComponent, children: [
-      {path: 'dashboard', component: DashboardComponent},
-      // tslint:disable-next-line:max-line-length
+    path: '',
+    component: AdminContainerComponent,
+    children: [
       {
-        path: 'user-management',
-        canActivate: [AdminAuthGuard],
-        canActivateChild: [AdminAuthGuard],
-        loadChildren: () => import('./user-management/user-management.module').then(mod => mod.UserManagementModule)
+        path: 'dashboard',
+        component: DashboardComponent
       },
+      // tslint:disable-next-line:max-line-length
       {
         path: 'artist-management',
         canActivate: [AdminAuthGuard],
@@ -40,7 +34,12 @@ const routes: Routes = [
         loadChildren: () => import('./country-management/country-management.module').then(mod => mod.CountryManagementModule)
       }
     ]
-  }
+  },
+  {
+    path: '**',
+    redirectTo: 'dashboard',
+    pathMatch: 'prefix'
+  },
 
 
 ];

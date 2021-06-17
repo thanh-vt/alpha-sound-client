@@ -3,11 +3,11 @@ import {AlbumService} from '../../service/album.service';
 import {Album} from '../../model/album';
 import {Page} from '../../model/page';
 import {Subscription} from 'rxjs';
-import {User} from '../../model/user';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {SongService} from '../../service/song.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
 import {finalize} from 'rxjs/operators';
+import {UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-album-list',
@@ -15,7 +15,7 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./album-list.component.scss']
 })
 export class AlbumListComponent implements OnInit, OnDestroy {
-  currentUser: User;
+  currentUser: UserProfile;
   first: boolean;
   last: boolean;
   pageNumber = 0;
@@ -26,7 +26,7 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   disabled: boolean;
   albumList: Album[];
   subscription: Subscription = new Subscription();
-  constructor(private albumService: AlbumService, private userService: UserService,
+  constructor(private albumService: AlbumService, private userService: UserProfileService,
               private songService: SongService, private playingQueueService: PlayingQueueService) {}
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   }
 
   goToPage(i) {
-    this.subscription.add(this.albumService.albumList(i, undefined)
+    this.subscription.add(this.albumService.albumList(i)
       .pipe(finalize(() => {
         this.loading = false;
       }))

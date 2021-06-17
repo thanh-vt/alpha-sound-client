@@ -1,4 +1,5 @@
-<app-create-country></app-create-country>
+<button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">
+  {{ 'common.button.add' | translate }}</button>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -9,16 +10,15 @@
   </tr>
   </thead>
   <tbody>
-  <ng-container *ngIf="loading">
-    <app-spinner></app-spinner>
-  </ng-container>
   <tr *ngFor="let country of countryList; index as i">
     <td>{{ i + 1 }}</td>
     <td>{{ country.name }}</td>
     <td><img [src]="country.flagUrl" alt=""></td>
     <td>
-      <app-delete-country [country]="country" (deleteCountry)="deleteCountry($event, country.id)"></app-delete-country>
-      <app-edit-country [country]="country"></app-edit-country>
+      <button (click)="openDeleteDialog(country, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
+        <i class="fas fa-trash-alt"></i></button>
+      <button (click)="openEditDialog(country, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
+        <i class="fas fa-edit"></i></button>
     </td>
   </tr>
   </tbody>

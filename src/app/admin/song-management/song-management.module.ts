@@ -8,11 +8,10 @@ import {SharedModule} from '../../shared/shared.module';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
-import { SongManagementComponent } from './song-management/song-management.component';
 
 
 @NgModule({
-  declarations: [SongListComponent, SongDeleteComponent, SongManagementComponent],
+  declarations: [SongListComponent, SongDeleteComponent],
   imports: [
     CommonModule,
     SongManagementRoutingModule,

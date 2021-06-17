@@ -1,0 +1,51 @@
+<!--<div class="vt-toast d-flex"-->
+<!--     [ngStyle]="{'background-color': conf.type.bgColor,-->
+<!--     'width': conf.size.width, 'height': conf.size.height,-->
+<!--     'color': conf.type ? conf.type.textColor : conf.type.textColor,-->
+<!--     'border-bottom-left-radius': conf.duration ? '0' : '3px',-->
+<!--     'border-bottom-right-radius': conf.duration ? '0' : '3px'}"-->
+<!--     [ngClass]="conf.class"-->
+<!--     [@fadeAnimation]="{value: animationState, params:-->
+<!--        { fadeIn: conf.animation.fadeIn, fadeOut: conf.animation.fadeOut }}"-->
+<!--     (@fadeAnimation.done)="onFadeFinished($event)"-->
+<!--     (click)="close()">-->
+<!--  <i *ngIf="conf.type.iconClass" [ngClass]="conf.type.iconClass"></i>-->
+<!--  <ng-container *ngIf="data.text; else templateReference">-->
+<!--    <div>{{ data.text }}</div>-->
+<!--  </ng-container>-->
+<!--</div>-->
+<!--<div class="vt-progress-bar" *ngIf="conf.duration"-->
+<!--     [ngStyle]="{'width': (progress * 100 / conf.duration) + '%',-->
+<!--     'background-color': conf.type ? conf.type.bgColor : conf.type.bgColor,-->
+<!--     'filter': 'brightness(50%)'}">-->
+<!--</div>-->
+<!--<ng-template #templateReference>-->
+<!--  <ng-container *ngTemplateOutlet="data.template; context: data.templateContext">-->
+<!--  </ng-container>-->
+<!--</ng-template>-->
+<div class="vh-100 vw-100 d-flex align-items-center justify-content-center" style="background:rgba(0,0,0,0.5);">
+  <div class="spinner-grow text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-warning" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-light" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-dark" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>

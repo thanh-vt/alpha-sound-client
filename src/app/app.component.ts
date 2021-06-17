@@ -1,53 +1,37 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
+import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Subscription} from 'rxjs';
-import {UserToken} from './model/user-token';
-import {finalize} from 'rxjs/operators';
-import {UserService} from './service/user.service';
+import {UserProfileService} from './service/user-profile.service';
 import {AuthService} from './service/auth.service';
 import {LocationStrategy} from '@angular/common';
+import {ToastService} from './shared/service/toast.service';
+import {LoadingService} from './shared/service/loading.service';
 
 @Component({selector: 'app-root', templateUrl: 'app.component.html'})
-export class AppComponent implements OnInit, OnDestroy {
-  subscription: Subscription = new Subscription();
+export class AppComponent {
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // beforeunloadHandler(event) {
-  //   if (sessionStorage.getItem('userToken')) {
-  //     const token = JSON.parse(sessionStorage.getItem('userToken')) as UserToken;
-  //     this.subscription.add(this.http.post(`${environment.authUrl}/oauth/revoke/${token.access_token}`, null)
-  //       .subscribe(
-  //         next => {console.log(JSON.parse(JSON.stringify(next))); },
-  //         error => {console.log(JSON.parse(JSON.stringify(error))); },
-  //         () => {}));
-  //   }
-  // }
-
-  constructor(private http: HttpClient, private userService: UserService,
-              private authService: AuthService, private location: LocationStrategy) {
+  constructor(private loadingService: LoadingService, private userService: UserProfileService,
+              private authService: AuthService, private location: LocationStrategy,
+              private toastService: ToastService) {
+    // this.loadingService.show({text: 'loading'});
+    // setTimeout(() => {
+    //   this.loadingService.hide();
+    // }, 3000);
+    // setTimeout(() => {
+    //   this.toastService.success('Test', 'toast info');
+    //   setTimeout(() => {
+    //     this.toastService.error('Test', 'toast info');
+    //     setTimeout(() => {
+    //       this.toastService.warning('Test', 'toast info');
+    //       setTimeout(() => {
+    //         this.toastService.info('Test', 'toast info');
+    //       }, 1000);
+    //     }, 1000);
+    //   }, 1000);
+    // }, 1000);
     // localStorage.clear();
     // sessionStorage.clear();
-    location.onPopState(() => {
-      window.location.reload();
-    });
-  }
-
-  ngOnInit(): void {
-    if (localStorage.getItem('sessionToken') && !sessionStorage.getItem('userToken')) {
-      const token = JSON.parse(localStorage.getItem('sessionToken')) as UserToken;
-      this.subscription.add(this.http.delete(`${environment.authUrl}/oauth/revoke/${token.access_token}`)
-        .pipe(finalize(() => {
-          localStorage.removeItem('sessionToken');
-        }))
-        .subscribe(
-          () => {},
-          error => {console.log(JSON.parse(JSON.stringify(error))); },
-          () => {}));
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // location.onPopState(() => {
+    //   window.location.reload();
+    // });
   }
 }

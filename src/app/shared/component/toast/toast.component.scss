@@ -1,0 +1,28 @@
+:host {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  margin: 0.5em;
+  z-index: 1200;
+  //background-color: springgreen;
+}
+
+:host ::ng-deep ngb-toast {
+  width: 20rem;
+}
+
+:host ::ng-deep .toast {
+  //background-color: darkgreen;
+}
+
+:host ::ng-deep .toast-header {
+  color: inherit;
+  background-color: inherit;
+  filter: brightness(0.9);
+}
+
+//:host ::ng-deep .toast-body {
+//  background-color: darken(, 10%);
+//}
+
+

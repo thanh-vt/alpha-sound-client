@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Country} from '../../../model/country';
 import {CountryService} from '../../../service/country.service';
 import {Subscription} from 'rxjs';
-import {finalize} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
+import {LoadingService} from '../../../shared/service/loading.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CreateCountryComponent} from '../create-country/create-country.component';
+import {ConfirmationModalComponent} from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import {ArtistEditComponent} from '../../artist-management/artist-edit/artist-edit.component';
 
 @Component({
   selector: 'app-country-list',
@@ -13,48 +17,82 @@ import {TranslateService} from '@ngx-translate/core';
 export class CountryListComponent implements OnInit {
   countryList: Country[];
   message: string;
-  loading: boolean;
   pageNumber: number;
   subscription: Subscription = new Subscription();
 
-  constructor(private countryService: CountryService, private translate: TranslateService) { }
+  constructor(private countryService: CountryService, private translate: TranslateService,
+              private loadingService: LoadingService, private ngbModal: NgbModal) {
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.countryList = [];
     this.pageNumber = 0;
-    this.onScroll(this.pageNumber);
+    this.onScroll(this.pageNumber).finally();
   }
 
-  onScroll(page: number) {
-    this.loading = true;
-    this.subscription.add(this.countryService.getCountryList(page)
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
-      .subscribe(
-        next => {
-          for (const country of next.content) {
-            this.countryList.push(country);
-          }
-        }, error => {
-          this.message = 'Failed to retrieve country list';
-          console.log(error.message);
-        }
-      ));
+  async onScroll(page: number): Promise<void> {
+    try {
+      this.loadingService.show();
+      this.countryList = (await this.countryService.getCountryList(page).toPromise()).content;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loadingService.hide();
+    }
   }
 
-  deleteCountry(id: number, event) {
+  async openCreateDialog(event: Event): Promise<void> {
     event.stopPropagation();
-    this.subscription = this.countryService.deleteCountry(id).subscribe(
-      result => {
-        if (result != null) {
-          this.countryService = result.content;
-        } else {
-          this.countryService = null;
-        }
-      }, error => {
-        this.message = 'Cannot retrieve artist list. Cause: ' + error.message;
+    const ref = this.ngbModal.open(CreateCountryComponent, {
+      animation: true,
+      backdrop: 'static',
+      centered: true,
+      scrollable: true,
+      size: 'md',
+    });
+    await ref.result;
+    await this.onScroll(this.pageNumber);
+  }
+
+
+  async openEditDialog(country: Country, event: Event): Promise<void> {
+    event.stopPropagation();
+    const ref = this.ngbModal.open(ArtistEditComponent, {
+      animation: true,
+      backdrop: 'static',
+      centered: true,
+      scrollable: true,
+      size: 'md',
+    });
+    ref.componentInstance.country = country;
+    await ref.result;
+    await this.onScroll(this.pageNumber);
+  }
+
+  async openDeleteDialog(country: Country, event: Event): Promise<void> {
+    event.stopPropagation();
+    const ref = this.ngbModal.open(ConfirmationModalComponent, {
+        animation: true,
+        backdrop: 'static',
+        centered: true,
+        scrollable: true,
+        size: 'md',
       }
     );
+    ref.componentInstance.subject = this.translate.instant('common.entity.country');
+    ref.componentInstance.name = country.name;
+    try {
+      const result = await ref.result;
+      if (result) {
+        this.loadingService.show();
+        await this.countryService.deleteCountry(country.id).toPromise();
+        await this.onScroll(this.pageNumber).finally();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loadingService.hide();
+    }
   }
+
 }

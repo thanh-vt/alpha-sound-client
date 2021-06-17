@@ -1,16 +1,18 @@
 import {Artist} from './artist';
 import {Comment} from './comment';
-import {User} from './user';
 import {Genre} from './genre';
 import {Tag} from './tag';
 import {Theme} from './theme';
 import {Country} from './country';
+import {UserProfile} from './token-response';
+import {ResourceInfo} from './resource-info';
 
 export interface Song {
   id: number;
   title: string;
   releaseDate: number;
-  url: string;
+  url?: string;
+  audioResource?: ResourceInfo;
   rating?: [];
   displayRating?: any;
   artists?: Artist[];
@@ -20,7 +22,7 @@ export interface Song {
   country?: Country;
   isDisabled?: boolean;
   liked?: boolean;
-  uploader?: User;
+  uploader?: UserProfile;
   comments?: Comment[];
   listeningFrequency?: number;
   loadingLikeButton?: boolean;

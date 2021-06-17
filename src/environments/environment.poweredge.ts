@@ -4,5 +4,6 @@ export const environment = {
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
   production: true,
-  baseHref: '/client/alpha-sound'
+  baseHref: '/client/alpha-sound',
+  credMode: 'cookie' // cookie only available in https, otherwise set to header
 };

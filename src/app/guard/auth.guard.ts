@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild} from '@angular/router';
 import {AuthService} from '../service/auth.service';
-import {UserToken} from '../model/user-token';
+import {UserProfile} from '../model/token-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  currentUserToken: UserToken;
+  currentUser: UserProfile;
   constructor(
     private router: Router,
     private authService: AuthService
   ) {
-    this.authService.currentUserToken.subscribe(
+    this.authService.currentUser$.subscribe(
       currentUser => {
-        this.currentUserToken = currentUser;
+        this.currentUser = currentUser;
       }
     );
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!!this.currentUserToken) {
+    if (!!this.currentUser) {
       // logged in so return true
       return true;
     } else {
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!!this.currentUserToken) {
+    if (!!this.currentUser) {
       // logged in so return true
       return true;
     } else {

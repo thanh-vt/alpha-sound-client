@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs';
 import {UserComponent} from '../../user/user/user.component';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/user-token';
+import {TokenResponse, UserProfile} from '../../model/token-response';
 import {AuthService} from '../../service/auth.service';
 
 @Component({
@@ -18,7 +18,7 @@ import {AuthService} from '../../service/auth.service';
   styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
+  currentUser: UserProfile;
   first: boolean;
   last: boolean;
   pageNumber = 0;
@@ -36,7 +36,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
               private playlistService: PlaylistService, public translate: TranslateService,
               private authService: AuthService) {
-    this.authService.currentUserToken.subscribe(
+    this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
       }

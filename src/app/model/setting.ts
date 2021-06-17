@@ -1,8 +1,3 @@
-export class Setting {
-  id?: number;
+export interface Setting {
   darkMode?: boolean;
-
-  constructor(darkMode: boolean) {
-    this.darkMode = darkMode;
-  }
 }

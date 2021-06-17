@@ -9,7 +9,7 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
 import {PlaylistService} from '../../service/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../../service/auth.service';
-import {UserToken} from '../../model/user-token';
+import {TokenResponse, UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-favorites',
@@ -17,7 +17,7 @@ import {UserToken} from '../../model/user-token';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
+  currentUser: UserProfile;
   first: boolean;
   last: boolean;
   pageNumber = 0;
@@ -36,7 +36,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
               private playlistService: PlaylistService, public translate: TranslateService,
               private authService: AuthService) {
-    this.authService.currentUserToken.subscribe(
+    this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
       }

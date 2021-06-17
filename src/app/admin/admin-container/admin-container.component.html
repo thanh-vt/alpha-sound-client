@@ -1,0 +1,67 @@
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px;">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Alpha Sound Admin</a>
+  <input class="form-control form-control-dark w-100" type="text" [placeholder]="'Search' | translate" aria-label="Search" />
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <button class="btn btn-light" (click)="popLoginFormUp($event)" *ngIf="hasNotLoggedInAsAdmin">Sign in as Administrator</button>
+    </li>
+    <li class="nav-item text-nowrap">
+      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">{{ 'Sign Out' | translate }}</button>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid" [class.dark-theme]="false">
+  <div class="row mt-2">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar" >
+      <div class="sidebar-sticky">
+        <ul ngbNav #nav="ngbNav" class="nav-pills" [(activeId)]="active" [orientation]="'vertical'">
+          <li ngbNavItem="home">
+            <a ngbNavLink href="#">
+              <i class="fas fa-home"></i>
+              Dashboard <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li ngbNavItem="table_data">
+            <a ngbNavLink href="#">
+              <i class="fas fa-border-all"></i>
+              Table & Data
+            </a>
+
+          </li>
+          <li ngbNavItem="user_management">
+            <a ngbNavLink [routerLink]="['/admin/user-management']">
+              <i class="fas fa-users"></i>
+              User Management
+            </a>
+          </li>
+          <li ngbNavItem="song_management">
+            <a ngbNavLink [routerLink]="['/admin/song-management']">
+              <i class="fas fa-music"></i>
+              Song Management
+            </a>
+          </li>
+          <li ngbNavItem="artist_management">
+            <a ngbNavLink [routerLink]="['/admin/artist-management']" >
+              <i class="fas fa-bars"></i>
+              Artist Management
+            </a>
+          </li>
+          <li ngbNavItem="country_management">
+            <a ngbNavLink [routerLink]="['/admin/country-management']" >
+              <i class="fas fa-bars"></i>
+              Country Management
+            </a>
+          </li>
+          <li ngbNavItem="upload_request">
+            <a ngbNavLink href="#">
+              <i class="fas fa-bell"></i>
+              Uploads Request
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="col-md-8"><router-outlet></router-outlet></div>
+  </div>
+</div>

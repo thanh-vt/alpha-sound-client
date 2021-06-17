@@ -2,7 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Song} from '../../../model/song';
 import {Subscription} from 'rxjs';
 import {SongService} from '../../../service/song.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ConfirmationModalComponent} from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from '@ngx-translate/core';
+import {LoadingService} from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-song-list',
@@ -14,37 +17,49 @@ export class SongListComponent implements OnInit {
   subscription: Subscription = new Subscription();
   message: string;
 
-  constructor(private songService: SongService, private route: ActivatedRoute, router: Router) {
+  constructor(private songService: SongService, private ngbModal: NgbModal,
+              private translate: TranslateService, private loadingService: LoadingService) {
   }
 
-  ngOnInit() {
-    this.subscription = this.songService.getSongList().subscribe(
-      result => {
-        if (result != null) {
-          this.songList = result.content;
-        } else {
-          this.songList = null;
-        }
-      }, error1 => {
-        this.message = 'Cannot retrieve songlist. Cause: ' + error1.message;
+  ngOnInit(): void {
+    this.getSongList().finally();
+  }
+
+  async getSongList(): Promise<void> {
+    try {
+      this.loadingService.show();
+      this.songList = (await this.songService.getSongList().toPromise()).content;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loadingService.hide();
+    }
+
+  }
+
+  async openDeleteDialog(song: Song, event: Event): Promise<void> {
+    event.stopPropagation();
+    const ref = this.ngbModal.open(ConfirmationModalComponent, {
+        animation: true,
+        backdrop: 'static',
+        centered: true,
+        scrollable: true,
+        size: 'md',
       }
     );
-  }
-
-  deleteSong() {
-    // this.subscription.unsubscribe();
-    this.subscription = this.songService.getSongList().subscribe(
-      result => {
-        if (result != null) {
-          this.songList = result.content;
-
-        } else {
-          this.songList = null;
-        }
-      }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.message;
+    ref.componentInstance.subject = this.translate.instant('common.entity.artist');
+    ref.componentInstance.name = song.title;
+    try {
+      const result = await ref.result;
+      if (result) {
+        this.loadingService.show();
+        await this.songService.deleteSong(song?.id).toPromise();
+        await this.getSongList();
       }
-    );
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loadingService.hide();
+    }
   }
-
 }

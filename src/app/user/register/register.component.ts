@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private userService: UserService) {
+              private userService: UserProfileService) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(5)]],
       // tslint:disable-next-line:max-line-length

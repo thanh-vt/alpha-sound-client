@@ -12,7 +12,7 @@ import {PlaylistService} from '../../service/playlist.service';
 import {Playlist} from '../../model/playlist';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/user-token';
+import {UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-artist-detail',
@@ -20,7 +20,7 @@ import {UserToken} from '../../model/user-token';
   styleUrls: ['./artist-detail.component.scss']
 })
 export class ArtistDetailComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
+  currentUser: UserProfile;
   artist: Artist;
   artistId: number;
   message: string;
@@ -41,7 +41,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
               private authService: AuthService, private artistService: ArtistService,
               private songService: SongService, private playlistService: PlaylistService,
               private playingQueueService: PlayingQueueService, public translate: TranslateService) {
-    this.authService.currentUserToken.subscribe(
+    this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
       }

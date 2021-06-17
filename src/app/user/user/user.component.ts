@@ -1,16 +1,11 @@
-import {
-  Component,
-  ElementRef,
-  Input, OnInit,
-  ViewEncapsulation
-} from '@angular/core';
-import {UserToken} from '../../model/user-token';
+import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {UserProfile} from '../../model/token-response';
 import {Track} from 'ngx-audio-player';
 import {Router} from '@angular/router';
 import {AuthService} from '../../service/auth.service';
 import {PlayingQueueService} from '../../service/playing-queue.service';
-import {ThemeService} from '../../service/theme.service';
 import {Setting} from '../../model/setting';
+import {SettingService} from '../../service/setting.service';
 
 @Component({
   selector: 'app-user',
@@ -19,8 +14,8 @@ import {Setting} from '../../model/setting';
   encapsulation: ViewEncapsulation.None
 })
 export class UserComponent implements OnInit {
-  currentUser: UserToken;
-  @Input() setting: Setting = new Setting(true);
+  currentUser: UserProfile;
+  @Input() setting: Setting;
 
   @Input() msaapDisplayTitle = true;
   @Input() msaapDisplayPlayList = true;
@@ -35,19 +30,13 @@ export class UserComponent implements OnInit {
       link: ''
     }
   ];
-  sessionTimeoutNotification: boolean;
 
-  constructor(private router: Router, private authService: AuthService, private playingQueueService: PlayingQueueService,
-              private elementRef: ElementRef, private themeService: ThemeService) {
-    this.authService.currentUserToken.subscribe(
+  constructor(private router: Router, private authService: AuthService,
+              private playingQueueService: PlayingQueueService,
+              private elementRef: ElementRef, private settingService: SettingService) {
+    this.authService.currentUser$.subscribe(
       currentUser => {
         this.currentUser = currentUser;
-        this.sessionTimeoutNotification = false;
-      }
-    );
-    this.authService.sessionTimeout.subscribe(
-      () => {
-        this.sessionTimeoutNotification = true;
       }
     );
     this.playingQueueService.currentQueue.subscribe(
@@ -64,7 +53,7 @@ export class UserComponent implements OnInit {
         }, 10);
       }
     );
-    this.themeService.darkThemeSubject.subscribe(
+    this.settingService.setting$.subscribe(
       next => {
         console.log(next);
         if (next) {

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {filter, map, tap} from 'rxjs/operators';
 import {Artist} from '../model/artist';
+import {PagingInfo} from '../model/paging-info';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class ArtistService {
   constructor(private http: HttpClient) {
   }
 
-  artistList() {
-    return this.http.get<any>(`${environment.apiUrl}/artist/list`);
+  artistList(): Observable<PagingInfo<Artist>> {
+    return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/list`);
   }
 
-  artistDetail(id: number) {
-    return this.http.get<any>(`${environment.apiUrl}/artist/detail?id=${id}`);
+  artistDetail(id: number): Observable<Artist> {
+    return this.http.get<Artist>(`${environment.apiUrl}/artist/detail?id=${id}`);
   }
 
   getSongListOfArtist(id: number, page: number) {

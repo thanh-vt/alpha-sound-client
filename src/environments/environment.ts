@@ -8,7 +8,8 @@ export const environment = {
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
   production: false,
-  baseHref: ''
+  baseHref: '',
+  credMode: 'cookie' // cookie only available in https, otherwise set to header
 };
 
 /*

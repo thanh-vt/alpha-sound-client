@@ -3,6 +3,7 @@ import {HttpClient, HttpEvent} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Song} from '../model/song';
+import {PagingInfo} from '../model/paging-info';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class SongService {
   constructor(private http: HttpClient) {
   }
 
-  getSongList(page?: number, sort?: string) {
+  getSongList(page?: number, sort?: string): Observable<PagingInfo<Song>> {
     let requestUrl = `${environment.apiUrl}/song/list`;
     if (page || sort) {
       requestUrl = requestUrl + `?`;
@@ -26,11 +27,11 @@ export class SongService {
         requestUrl = requestUrl + `sort=${sort}`;
       }
     }
-    return this.http.get<any>(requestUrl, {withCredentials: true});
+    return this.http.get<PagingInfo<Song>>(requestUrl, {withCredentials: true});
   }
 
-  getTop10SongsByFrequency() {
-    return this.http.get<any>(`${environment.apiUrl}/song/list-top?sort=listeningFrequency`);
+  getTop10SongsByFrequency(): Observable<PagingInfo<Song>> {
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list-top?sort=listeningFrequency`);
   }
 
   updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {

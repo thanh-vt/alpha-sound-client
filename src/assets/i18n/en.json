@@ -110,7 +110,23 @@
   "Song from playlist removed successfully.": "Song from playlist removed successfully.",
   "Failed to remove song playlist.": "Failed to remove song playlist.",
   "Are you sure that you want to remove from playlist song": "Are you sure that you want to remove from playlist song",
-  "Are you sure that you want to remove artist": "Are you sure that you want to remove from artist",
+  "common": {
+    "entity": {
+      "song": "Song",
+      "album": "Album",
+      "artist": "Artist",
+      "country": "Country"
+    },
+    "message": {
+      "confirm_delete": "Are you sure that you want to remove {{subject}} {{name}}"
+    },
+    "button": {
+      "add": "Add",
+      "save": "Save",
+      "cancel": "Cancel",
+      "accept": "Accept"
+    }
+  },
   "An error has occurred.": "An error has occurred.",
   "Signed in successfully": "Signed in successfully",
   "Password reset successfully.": "Password reset successfully",

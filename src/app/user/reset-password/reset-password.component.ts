@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {ActivatedRoute} from '@angular/router';
 import {finalize} from 'rxjs/operators';
 
@@ -19,7 +19,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   error: boolean;
   loading: boolean;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private userService: UserProfileService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.getPasswordResetTokenForm = this.fb.group({

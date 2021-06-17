@@ -1,0 +1,17 @@
+<app-modal [action]="'delete'">
+  <div class="modal-body">
+    <span>{{ 'common.message.confirm_delete' | translate: {subject: subject, name: name} }}</span>
+  </div>
+  <div class="modal_footer">
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-center">
+        <button class="btn btn-primary mr-2" (click)="accept()">
+          {{ 'common.button.accept' | translate}}
+        </button>
+        <button class="btn btn-primary" ngbAutofocus (click)="close()">
+          {{ 'common.button.cancel' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</app-modal>

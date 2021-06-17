@@ -8,12 +8,12 @@ import {PlayingQueueService} from '../../service/playing-queue.service';
 import {Album} from '../../model/album';
 import {AlbumService} from '../../service/album.service';
 import {Song} from '../../model/song';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {Playlist} from '../../model/playlist';
 import {PlaylistService} from '../../service/playlist.service';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
-import {UserToken} from '../../model/user-token';
+import {UserProfile} from '../../model/token-response';
 
 @Component({
   selector: 'app-album-detail',
@@ -21,7 +21,7 @@ import {UserToken} from '../../model/user-token';
   styleUrls: ['./album-detail.component.scss']
 })
 export class AlbumDetailComponent implements OnInit, OnDestroy {
-  currentUser: UserToken;
+  currentUser: UserProfile;
   album: Album;
   albumId: number;
   songList: Song[] = [];
@@ -34,8 +34,8 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
               private authService: AuthService, private albumService: AlbumService,
               private songService: SongService, private playingQueueService: PlayingQueueService,
-              private userService: UserService, private playlistService: PlaylistService, public translate: TranslateService) {
-    this.authService.currentUserToken.subscribe(
+              private userService: UserProfileService, private playlistService: PlaylistService, public translate: TranslateService) {
+    this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
       }

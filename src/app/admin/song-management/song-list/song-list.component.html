@@ -10,10 +10,11 @@
   <tbody>
   <tr *ngFor="let song of songList; index as i">
     <td>{{ i + 1 }}</td>
-    <td>{{ song.uploader.username }}</td>
+    <td>{{ song?.uploader?.user_name }}</td>
     <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
     <td>
-      <app-song-delete [id]="song.id" [song]="song" (deleteSong)="deleteSong()"></app-song-delete>
+      <button (click)="openDeleteDialog(song, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
+        <i class="fas fa-trash-alt"></i></button>
     </td>
   </tr>
   </tbody>

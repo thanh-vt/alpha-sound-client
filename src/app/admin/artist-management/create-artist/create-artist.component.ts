@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {Progress} from '../../../model/progress';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {finalize} from 'rxjs/operators';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-create-artist',
@@ -13,7 +14,8 @@ import {finalize} from 'rxjs/operators';
 })
 export class CreateArtistComponent implements OnInit, OnDestroy {
 
-  constructor(private artistService: ArtistService, private fb: FormBuilder) {
+  constructor(private artistService: ArtistService, private fb: FormBuilder,
+              private ngbActiveModal: NgbActiveModal) {
   }
 
   submitted = false;
@@ -101,5 +103,9 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
 
   navigate() {
     location.replace('/admin/artist-management');
+  }
+
+  cancel() {
+    this.ngbActiveModal.dismiss();
   }
 }

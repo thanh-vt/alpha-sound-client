@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {UserService} from '../../service/user.service';
+import {UserProfileService} from '../../service/user-profile.service';
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 
@@ -21,7 +21,7 @@ export class ResetPasswordSubmissionComponent implements OnInit, OnDestroy {
   id: number;
   passwordResetToken: string;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private userService: UserProfileService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(

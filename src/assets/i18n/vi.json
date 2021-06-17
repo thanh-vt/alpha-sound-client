@@ -111,6 +111,23 @@
   "Failed to remove song playlist.": "Xóa bài hát khỏi album thất bại.",
   "Are you sure that you want to remove from playlist song": "Bạn có muốn loại bỏ khỏi playlist bài hát",
   "Are you sure that you want to remove artist": "Bạn có muốn loại bỏ nghệ sĩ",
+  "common": {
+    "entity": {
+      "song": "Bài hát",
+      "album": "Album",
+      "artist": "Nghệ sĩ",
+      "country": "Quốc gia"
+    },
+    "message": {
+      "confirm_delete": "Are you sure that you want to remove {{subject}} {{name}}"
+    },
+    "button": {
+      "add": "Thêm",
+      "save": "Lưu",
+      "cancel": "Hủy bỏ",
+      "accept": "Đồng ý"
+    }
+  },
   "An error has occurred.": "Có lỗi xảy ra.",
   "Signed in successfully": "Đăng nhập thành công",
   "Password reset successfully.": "Đặt lại mật khẩu thành công",
