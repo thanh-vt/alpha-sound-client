@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent} from '@angular/common/http';
+import {HttpClient, HttpEvent, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Song} from '../model/song';
@@ -31,7 +31,12 @@ export class SongService {
   }
 
   getTop10SongsByFrequency(): Observable<PagingInfo<Song>> {
-    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list-top?sort=listeningFrequency`);
+    const params: HttpParams = new HttpParams({
+      fromObject: {
+        sort: 'listeningFrequency,desc'
+      }
+    });
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, {params});
   }
 
   updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {
@@ -63,11 +68,19 @@ export class SongService {
   }
 
   likeSong(songId: number) {
-    return this.http.post<any>(`${environment.apiUrl}/song?like&song-id=${songId}`, {});
+    const params = {
+      songId,
+      isLiked: true
+    };
+    return this.http.patch<any>(`${environment.apiUrl}/song/like`, params);
   }
 
   unlikeSong(songId: number) {
-    return this.http.post<any>(`${environment.apiUrl}/song?unlike&song-id=${songId}`, {});
+    const params = {
+      songId,
+      isLiked: false
+    };
+    return this.http.patch<any>(`${environment.apiUrl}/song/like`, params);
   }
 
   getUserSongList() {

@@ -97,6 +97,7 @@ export class TokenInterceptor implements HttpInterceptor {
   attachTokenToRequest(req: HttpRequest<any>): HttpRequest<any> {
     if (req.serializeBody() == null || !req.serializeBody().toString().includes('refresh_token')) {
       const tokenInfo = this.tokenStorageService.accessToken;
+      console.log(tokenInfo);
       if (tokenInfo) {
         switch (tokenInfo.mode) {
           case 'cookie':

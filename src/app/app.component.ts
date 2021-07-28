@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {UserProfileService} from './service/user-profile.service';
 import {AuthService} from './service/auth.service';
 import {LocationStrategy} from '@angular/common';

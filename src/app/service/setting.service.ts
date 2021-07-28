@@ -27,6 +27,7 @@ export class SettingService {
     this.subscriptions.add(this.authService.currentUser$.subscribe(
       next => {
         this.currentUser = next;
+        console.log(this.currentUser);
         if (this.currentUser) {
           this.getSetting().subscribe(next1 => {
             this.setting = {...this.setting, ...next1};
