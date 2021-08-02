@@ -7,8 +7,8 @@
  * Read more in the dedicated guide: https://git.io/ng-material-v9-hammer-migration
  */
 
-import {Injectable, Type} from '@angular/core';
-import {HammerGestureConfig} from '@angular/platform-browser';
+import { Injectable, Type } from '@angular/core';
+import { HammerGestureConfig } from '@angular/platform-browser';
 
 /**
  * Noop hammer instance that is used when an instance is requested, but
@@ -16,7 +16,7 @@ import {HammerGestureConfig} from '@angular/platform-browser';
  */
 const noopHammerInstance = {
   on: () => {},
-  off: () => {},
+  off: () => {}
 };
 
 /**
@@ -26,14 +26,7 @@ const noopHammerInstance = {
 @Injectable()
 export class GestureConfig extends HammerGestureConfig {
   /** List of event names to add to the Hammer gesture plugin list */
-  events = [
-    'longpress',
-    'slide',
-    'slidestart',
-    'slideend',
-    'slideright',
-    'slideleft'
-  ];
+  events = ['longpress', 'slide', 'slidestart', 'slideend', 'slideright', 'slideleft'];
 
   constructor() {
     super();
@@ -66,8 +59,8 @@ export class GestureConfig extends HammerGestureConfig {
 
     // Notice that a HammerJS recognizer can only depend on one other recognizer once.
     // Otherwise the previous `recognizeWith` will be dropped.
-    const slide = this._createRecognizer(pan, {event: 'slide', threshold: 0}, swipe);
-    const longpress = this._createRecognizer(press, {event: 'longpress', time: 500});
+    const slide = this._createRecognizer(pan, { event: 'slide', threshold: 0 }, swipe);
+    const longpress = this._createRecognizer(press, { event: 'longpress', time: 500 });
 
     // Overwrite the default `pan` event to use the swipe event.
     pan.recognizeWith(swipe);

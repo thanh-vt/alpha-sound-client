@@ -5,12 +5,12 @@ import { ArtistRoutingModule } from './artist-routing.module';
 import { ArtistComponent } from './artist/artist.component';
 import { ArtistListComponent } from './artist-list/artist-list.component';
 import { ArtistDetailComponent } from './artist-detail/artist-detail.component';
-import {ReactiveFormsModule} from '@angular/forms';
-import {SharedModule} from '../shared/shared.module';
-import {PlaylistModule} from '../playlist/playlist.module';
-import {InfiniteScrollModule} from 'ngx-infinite-scroll';
-import {TranslateModule} from '@ngx-translate/core';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
+import { PlaylistModule } from '../playlist/playlist.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ArtistComponent, ArtistListComponent, ArtistDetailComponent],
@@ -25,4 +25,4 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     NgbDropdownModule
   ]
 })
-export class ArtistModule { }
+export class ArtistModule {}

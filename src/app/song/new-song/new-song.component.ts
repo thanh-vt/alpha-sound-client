@@ -1,18 +1,19 @@
-import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {Song} from '../../model/song';
-import {SongService} from '../../service/song.service';
-import {Page} from '../../model/page';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {PlaylistService} from '../../service/playlist.service';
-import {Playlist} from '../../model/playlist';
-import {Subscription} from 'rxjs';
-import {UserComponent} from '../../user/user/user.component';
-import {UserProfile} from '../../model/token-response';
-import {AuthService} from '../../service/auth.service';
-import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
-import {finalize} from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Song } from '../../model/song';
+import { SongService } from '../../service/song.service';
+import { Page } from '../../model/page';
+import { PlayingQueueService } from '../../service/playing-queue.service';
+import { PlaylistService } from '../../service/playlist.service';
+import { Subscription } from 'rxjs';
+import { UserComponent } from '../../user/user/user.component';
+import { UserProfile } from '../../model/token-response';
+import { AuthService } from '../../service/auth.service';
+import { NgbCarousel, NgbModal, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
+import { ToastService } from '../../shared/service/toast.service';
 
 @Component({
   selector: 'app-new-song',
@@ -21,20 +22,17 @@ import {environment} from '../../../environments/environment';
   encapsulation: ViewEncapsulation.None
 })
 export class NewSongComponent implements OnInit, OnDestroy {
-
   currentUser: UserProfile;
   pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
   first: boolean;
   last: boolean;
-  message: string;
   loading: boolean;
   songList: Song[] = [];
   imageOrder = 0;
   Math: Math = Math;
   subscription: Subscription = new Subscription();
-  playlistList: Playlist[];
 
   images = [1, 2, 3].map(() => `${environment.baseHref}/assets/slides/slide_number_${this.roll()}.jpg`);
   description: string[] = ['Bring you the greatest music', 'Hundreds of songs and albums', 'Customize your own playlist'];
@@ -43,16 +41,23 @@ export class NewSongComponent implements OnInit, OnDestroy {
   pauseOnIndicator = false;
   pauseOnHover = true;
   @ViewChild(UserComponent) userComponent: UserComponent;
-  @ViewChild('carousel', {static: true}) carousel: NgbCarousel;
+  @ViewChild('carousel', { static: true }) carousel: NgbCarousel;
 
-  // tslint:disable-next-line:max-line-length
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, private authService: AuthService, public translate: TranslateService) {
-    this.authService.currentUser$.subscribe(
-      currentUser => {
-        this.currentUser = currentUser;
+  constructor(
+    private songService: SongService,
+    private playingQueueService: PlayingQueueService,
+    private playlistService: PlaylistService,
+    private authService: AuthService,
+    public translate: TranslateService,
+    private toastService: ToastService,
+    private modalService: NgbModal
+  ) {
+    this.authService.currentUser$.subscribe(currentUser => {
+      this.currentUser = currentUser;
+      if (this.currentUser) {
+        this.songService.patchLikes(this.songList);
       }
-    );
+    });
   }
 
   ngOnInit() {
@@ -73,77 +78,55 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   goToPage(i: number, scrollUp?: boolean) {
-    this.subscription.add(this.songService.getSongList(i, 'releaseDate')
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
-      .subscribe(
-        result => {
-          if (result != null) {
-            if (scrollUp) {
-              window.scroll(0, 0);
+    this.subscription.add(
+      this.songService
+        .getSongList(i, 'releaseDate')
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(
+          result => {
+            if (result != null) {
+              if (scrollUp) {
+                window.scroll(0, 0);
+              }
+              this.songList = result.content;
+              this.songList.forEach((value, index) => {
+                this.songList[index].isDisabled = false;
+              });
+              this.first = result.first;
+              this.last = result.last;
+              this.pageNumber = result.pageable.pageNumber;
+              this.pageSize = result.pageable.pageSize;
+              this.pages = new Array(result.totalPages);
+              for (let j = 0; j < this.pages.length; j++) {
+                this.pages[j] = { pageNumber: j };
+              }
+              for (const song of this.songList) {
+                this.checkDisabledSong(song);
+              }
             }
-            this.songList = result.content;
-            this.songList.forEach((value, index) => {
-              this.songList[index].isDisabled = false;
-            });
-            this.first = result.first;
-            this.last = result.last;
-            this.pageNumber = result.pageable.pageNumber;
-            this.pageSize = result.pageable.pageSize;
-            this.pages = new Array(result.totalPages);
-            for (let j = 0; j < this.pages.length; j++) {
-              this.pages[j] = {pageNumber: j};
-            }
+          },
+          error => {
+            console.log(error.message);
+            this.toastService.error('Error', 'An error has occurred');
+          },
+          () => {
             for (const song of this.songList) {
-              this.checkDisabledSong(song);
+              if (song.loadingLikeButton) {
+                song.loadingLikeButton = false;
+              }
             }
           }
-        }, error => {
-          this.message = 'An error has occurred.';
-          console.log(error.message);
-        }, () => {
-          for (const song of this.songList) {
-            if (song.loadingLikeButton) {
-              song.loadingLikeButton = false;
-            }
-          }
-        }
-      ));
+        )
+    );
   }
 
-  refreshPlaylistList(songId) {
-    this.subscription.add(this.playlistService.getPlaylistListToAdd(songId).subscribe(
-      result => {
-        this.playlistList = result;
-      }, error => {
-        console.log(error);
-      }
-    ));
-  }
-
-  likeSong(song: Song, event) {
+  likeSong(song: Song, event, isLiked: boolean) {
     event.stopPropagation();
-    song.loadingLikeButton = true;
-    this.subscription.add(this.songService.likeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.goToPage(this.pageNumber));
-      }, error => {
-        console.log(error);
-      }
-    ));
-  }
-
-  unlikeSong(song: Song, event) {
-    event.stopPropagation();
-    song.loadingLikeButton = true;
-    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.goToPage(this.pageNumber));
-      }, error => {
-        console.log(error);
-      }
-    ));
+    this.songService.likeSong(song, isLiked);
   }
 
   checkDisabledSong(song: Song) {
@@ -167,8 +150,11 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   onSlide(slideEvent: NgbSlideEvent) {
-    if (this.unpauseOnArrow && slideEvent.paused &&
-      (slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)) {
+    if (
+      this.unpauseOnArrow &&
+      slideEvent.paused &&
+      (slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)
+    ) {
       this.togglePaused();
     }
     if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
@@ -178,5 +164,11 @@ export class NewSongComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  openPlaylistDialog(songId: number, event: Event) {
+    event.stopPropagation();
+    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    ref.componentInstance.songId = songId;
   }
 }

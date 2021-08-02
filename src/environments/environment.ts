@@ -9,7 +9,7 @@ export const environment = {
   clientSecret: '@lph@123',
   production: false,
   baseHref: '',
-  credMode: 'cookie' // cookie only available in https, otherwise set to header
+  credMode: 'header' // cookie only available in https, otherwise set to header
 };
 
 /*
@@ -19,4 +19,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

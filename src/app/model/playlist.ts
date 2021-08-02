@@ -1,4 +1,4 @@
-import {Song} from './song';
+import { Song } from './song';
 
 export interface Playlist {
   isDisabled?: boolean;
@@ -6,5 +6,3 @@ export interface Playlist {
   title?: string;
   songs?: Song[];
 }
-
-

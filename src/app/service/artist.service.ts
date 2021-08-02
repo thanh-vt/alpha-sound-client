@@ -1,18 +1,16 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {filter, map, tap} from 'rxjs/operators';
-import {Artist} from '../model/artist';
-import {PagingInfo} from '../model/paging-info';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { filter, map, tap } from 'rxjs/operators';
+import { Artist } from '../model/artist';
+import { PagingInfo } from '../model/paging-info';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArtistService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   artistList(): Observable<PagingInfo<Artist>> {
     return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/list`);
@@ -30,8 +28,7 @@ export class ArtistService {
     return this.http.get<any>(`${environment.apiUrl}/artist/search?name=${name}`).pipe(
       tap((response: any) => {
         if (response) {
-          response
-            .map(artist => artist.name);
+          response.map(artist => artist.name);
         }
       })
     );

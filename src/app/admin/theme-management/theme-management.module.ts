@@ -3,12 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ThemeManagementRoutingModule } from './theme-management-routing.module';
 
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    ThemeManagementRoutingModule
-  ]
+  imports: [CommonModule, ThemeManagementRoutingModule]
 })
-export class ThemeManagementModule { }
+export class ThemeManagementModule {}

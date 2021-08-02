@@ -1,36 +1,29 @@
-import {Injectable, Injector} from '@angular/core';
-import {Overlay, PositionStrategy} from '@angular/cdk/overlay';
-import {LoadingData, TOAST_DATA} from '../layout/loading/loading-data';
-import {ComponentPortal} from '@angular/cdk/portal';
-import {LoadingRef, TOAST_REF} from '../layout/loading/loading-ref';
-import {LoadingComponent} from '../layout/loading/loading.component';
+import { Injectable, Injector } from '@angular/core';
+import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
+import { LoadingData, TOAST_DATA } from '../layout/loading/loading-data';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { LoadingRef, TOAST_REF } from '../layout/loading/loading-ref';
+import { LoadingComponent } from '../layout/loading/loading.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingService {
-
-  private positionStrategy: PositionStrategy = this.overlay.position()
-    .global()
-    .top('0')
-    .left('0')
-    .centerVertically()
-    .centerHorizontally();
+  private positionStrategy: PositionStrategy = this.overlay.position().global().top('0').left('0').centerVertically().centerHorizontally();
   private lastToast: LoadingRef;
 
-  constructor(private overlay: Overlay, private parentInjector: Injector) {
-  }
+  constructor(private overlay: Overlay, private parentInjector: Injector) {}
 
   private static getInjector(data: LoadingData, toastRef: LoadingRef, parentInjector: Injector): Injector {
     const providers = [
-      {provide: TOAST_DATA, useValue: data},
-      {provide: TOAST_REF, useValue: toastRef}
+      { provide: TOAST_DATA, useValue: data },
+      { provide: TOAST_REF, useValue: toastRef }
     ];
-    return Injector.create({providers, parent: parentInjector});
+    return Injector.create({ providers, parent: parentInjector });
   }
 
   show(data?: LoadingData): LoadingRef {
-    const overlayRef = this.overlay.create({positionStrategy: this.positionStrategy});
+    const overlayRef = this.overlay.create({ positionStrategy: this.positionStrategy });
 
     const toastRef = new LoadingRef(overlayRef);
     this.lastToast = toastRef;

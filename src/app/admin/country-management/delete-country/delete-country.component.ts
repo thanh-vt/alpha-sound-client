@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {Country} from '../../../model/country';
-import {CountryService} from '../../../service/country.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Country } from '../../../model/country';
+import { CountryService } from '../../../service/country.service';
 
 @Component({
   selector: 'app-delete-country',
@@ -17,7 +17,7 @@ export class DeleteCountryComponent implements OnInit, OnDestroy {
   @Output() deleteCountry = new EventEmitter();
   private subscription: Subscription = new Subscription();
 
-  constructor(private countryService: CountryService) { }
+  constructor(private countryService: CountryService) {}
 
   ngOnInit() {
     this.deleted = false;
@@ -37,7 +37,8 @@ export class DeleteCountryComponent implements OnInit, OnDestroy {
           this.message = 'Failed to delete country. An error has occurred.';
           console.log(error.message);
         }
-      ));
+      )
+    );
   }
 
   ngOnDestroy(): void {

@@ -1,17 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpParams} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
-import {Song} from '../model/song';
-import {PagingInfo} from '../model/paging-info';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { Song } from '../model/song';
+import { PagingInfo } from '../model/paging-info';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SongService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getSongList(page?: number, sort?: string): Observable<PagingInfo<Song>> {
     let requestUrl = `${environment.apiUrl}/song/list`;
@@ -27,7 +25,7 @@ export class SongService {
         requestUrl = requestUrl + `sort=${sort}`;
       }
     }
-    return this.http.get<PagingInfo<Song>>(requestUrl, {withCredentials: true});
+    return this.http.get<PagingInfo<Song>>(requestUrl, { withCredentials: true });
   }
 
   getTop10SongsByFrequency(): Observable<PagingInfo<Song>> {
@@ -36,7 +34,7 @@ export class SongService {
         sort: 'listeningFrequency,desc'
       }
     });
-    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, {params});
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, { params });
   }
 
   updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {
@@ -59,28 +57,45 @@ export class SongService {
   }
 
   deleteSongFromPlaylist(songId: number, playlistId: number): Observable<HttpEvent<any>> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.put<any>(`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {responseType: 'text'});
+    // eslint-disable-next-line max-len
+    return this.http.put<any>(`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {
+      responseType: 'text'
+    });
   }
 
   listenToSong(songId: number) {
     return this.http.post<any>(`${environment.apiUrl}/song?listen&song-id=${songId}`, {});
   }
 
-  likeSong(songId: number) {
+  likeSong(song: Song, isLiked: boolean) {
     const params = {
-      songId,
-      isLiked: true
+      songId: song.id,
+      isLiked
     };
-    return this.http.patch<any>(`${environment.apiUrl}/song/like`, params);
+    song.loadingLikeButton = true;
+    this.http.patch<any>(`${environment.apiUrl}/song/like`, params).subscribe(
+      _ => {
+        song.liked = isLiked;
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        song.loadingLikeButton = false;
+      }
+    );
   }
 
-  unlikeSong(songId: number) {
-    const params = {
-      songId,
-      isLiked: false
-    };
-    return this.http.patch<any>(`${environment.apiUrl}/song/like`, params);
+  patchLikes(songs: Song[]) {
+    const userSongLikeMap = {};
+    songs.forEach(e => {
+      userSongLikeMap[e.id] = e.liked;
+    });
+    this.http.patch<{ id: number; isLiked: boolean }>(`${environment.apiUrl}/song/like-map`, userSongLikeMap).subscribe(next => {
+      songs.forEach(song => {
+        song.liked = next[song.id];
+      });
+    });
   }
 
   getUserSongList() {

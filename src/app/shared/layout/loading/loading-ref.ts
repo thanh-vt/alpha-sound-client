@@ -5,17 +5,17 @@ import { LoadingData } from './loading-data';
 export const TOAST_REF = new InjectionToken<LoadingData>('TOAST_REF');
 
 export class LoadingRef {
-    constructor(readonly overlay: OverlayRef) { }
+  constructor(readonly overlay: OverlayRef) {}
 
-    close(): void {
-        this.overlay.dispose();
-    }
+  close(): void {
+    this.overlay.dispose();
+  }
 
-    isVisible(): HTMLElement {
-        return (this.overlay && this.overlay.overlayElement);
-    }
+  isVisible(): HTMLElement {
+    return this.overlay && this.overlay.overlayElement;
+  }
 
-    getPosition(): DOMRect {
-        return this.overlay.overlayElement.getBoundingClientRect();
-    }
+  getPosition(): DOMRect {
+    return this.overlay.overlayElement.getBoundingClientRect();
+  }
 }

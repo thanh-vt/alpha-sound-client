@@ -1,25 +1,23 @@
-import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {UserProfile} from '../model/token-response';
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { UserProfile } from '../model/token-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getCurrentUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${environment.apiUrl}/profile`);
   }
 
   getUserDetail(username: string): Observable<UserProfile> {
-    const params = {username};
-    return this.http.get<UserProfile>(`${environment.authUrl}/api/user`, {params});
+    const params = { username };
+    return this.http.get<UserProfile>(`${environment.authUrl}/api/user`, { params });
   }
 
   register(formGroup): Observable<HttpEvent<any>> {
@@ -27,9 +25,9 @@ export class UserProfileService {
   }
 
   uploadAvatar(formData: FormData): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/upload-avatar`, formData, {reportProgress: true, observe: 'events'}).pipe(
-      catchError(this.errorMgmt)
-    );
+    return this.http
+      .post<any>(`${environment.apiUrl}/upload-avatar`, formData, { reportProgress: true, observe: 'events' })
+      .pipe(catchError(this.errorMgmt));
   }
 
   updateProfile(formGroup): Observable<HttpEvent<any>> {

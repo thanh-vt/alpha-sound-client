@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ArtistComponent} from './artist/artist.component';
-import {ArtistListComponent} from './artist-list/artist-list.component';
-import {ArtistDetailComponent} from './artist-detail/artist-detail.component';
-
+import { ArtistComponent } from './artist/artist.component';
+import { ArtistListComponent } from './artist-list/artist-list.component';
+import { ArtistDetailComponent } from './artist-detail/artist-detail.component';
 
 const routes: Routes = [
   {
@@ -12,16 +11,16 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path:  '',
-    component:  ArtistComponent,
+    path: '',
+    component: ArtistComponent,
     children: [
       {
-        path:  'list',
-        component:  ArtistListComponent
+        path: 'list',
+        component: ArtistListComponent
       },
       {
-        path:  'detail',
-        component:  ArtistDetailComponent
+        path: 'detail',
+        component: ArtistDetailComponent
       }
     ]
   }
@@ -31,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ArtistRoutingModule { }
+export class ArtistRoutingModule {}

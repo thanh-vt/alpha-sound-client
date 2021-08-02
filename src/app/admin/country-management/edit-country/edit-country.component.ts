@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {Artist} from '../../../model/artist';
-import {Progress} from '../../../model/progress';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {CountryService} from '../../../service/country.service';
-import {Country} from '../../../model/country';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Artist } from '../../../model/artist';
+import { Progress } from '../../../model/progress';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { CountryService } from '../../../service/country.service';
+import { Country } from '../../../model/country';
 
 @Component({
   selector: 'app-edit-country',
@@ -23,13 +23,13 @@ export class EditCountryComponent implements OnInit {
   @Input() country: Country;
   error = false;
   submitted: boolean;
-  progress: Progress = {value: 0};
+  progress: Progress = { value: 0 };
 
-  constructor(private countryService: CountryService, private fb: FormBuilder) { }
+  constructor(private countryService: CountryService, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.countryUpdateForm = this.fb.group({
-      name: [this.country.name, Validators.required],
+      name: [this.country.name, Validators.required]
     });
   }
 
@@ -50,7 +50,7 @@ export class EditCountryComponent implements OnInit {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress.value = Math.round(event.loaded / event.total * 100);
+        progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
@@ -88,5 +88,4 @@ export class EditCountryComponent implements OnInit {
   navigate() {
     location.replace('/admin/country-management');
   }
-
 }

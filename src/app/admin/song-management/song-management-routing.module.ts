@@ -1,8 +1,7 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {SongListComponent} from './song-list/song-list.component';
-import {AdminAuthGuard} from '../../guard/admin-auth.guard';
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { SongListComponent } from './song-list/song-list.component';
+import { AdminAuthGuard } from '../../guard/admin-auth.guard';
 
 const routes: Routes = [
   {
@@ -23,5 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SongManagementRoutingModule {
-}
+export class SongManagementRoutingModule {}

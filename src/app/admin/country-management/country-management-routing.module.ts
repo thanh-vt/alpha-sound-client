@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AdminAuthGuard} from '../../guard/admin-auth.guard';
-import {CountryListComponent} from './country-list/country-list.component';
+import { AdminAuthGuard } from '../../guard/admin-auth.guard';
+import { CountryListComponent } from './country-list/country-list.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'prefix',
-    redirectTo: 'list',
+    redirectTo: 'list'
   }
 ];
 
@@ -22,4 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CountryManagementRoutingModule { }
+export class CountryManagementRoutingModule {}

@@ -1,16 +1,17 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SongService} from '../../service/song.service';
-import {Song} from '../../model/song';
-import { PlayingQueueService} from '../../service/playing-queue.service';
-import {Page} from '../../model/page';
-import {PlaylistService} from '../../service/playlist.service';
-import {Playlist} from '../../model/playlist';
-import {Subscription} from 'rxjs';
-import {UserComponent} from '../../user/user/user.component';
-import {TranslateService} from '@ngx-translate/core';
-import {finalize} from 'rxjs/operators';
-import {TokenResponse, UserProfile} from '../../model/token-response';
-import {AuthService} from '../../service/auth.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { SongService } from '../../service/song.service';
+import { Song } from '../../model/song';
+import { PlayingQueueService } from '../../service/playing-queue.service';
+import { Page } from '../../model/page';
+import { PlaylistService } from '../../service/playlist.service';
+import { Subscription } from 'rxjs';
+import { UserComponent } from '../../user/user/user.component';
+import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
+import { UserProfile } from '../../model/token-response';
+import { AuthService } from '../../service/auth.service';
+import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-song-list',
@@ -26,21 +27,23 @@ export class SongListComponent implements OnInit, OnDestroy {
   pages: Page[] = [];
   message: string;
   songList: Song[] = [];
-  playlistList: Playlist[] = [];
   loading: boolean;
   Math: Math = Math;
   subscription: Subscription = new Subscription();
 
   @ViewChild(UserComponent) userComponent: UserComponent;
 
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService,
-              private playlistService: PlaylistService, public translate: TranslateService,
-              private authService: AuthService) {
-    this.authService.currentUser$.subscribe(
-      next => {
-        this.currentUser = next;
-      }
-    );
+  constructor(
+    private songService: SongService,
+    private playingQueueService: PlayingQueueService,
+    private playlistService: PlaylistService,
+    public translate: TranslateService,
+    private authService: AuthService,
+    private modalService: NgbModal
+  ) {
+    this.authService.currentUser$.subscribe(next => {
+      this.currentUser = next;
+    });
   }
 
   ngOnInit() {
@@ -49,41 +52,50 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   goToPage(i: number, scrollUp?: boolean) {
-    this.subscription.add(this.songService.getSongList(i, undefined)
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
-      .subscribe(
-        result => {
-          if (result != null) {
-            if (scrollUp) {window.scroll(0, 0); }
-            this.songList = result.content;
-            this.songList.forEach((value, index) => {
-              this.songList[index].isDisabled = false;
-            });
-            this.first = result.first;
-            this.last = result.last;
-            this.pageNumber = result.pageable.pageNumber;
-            this.pageSize = result.pageable.pageSize;
-            this.pages = new Array(result.totalPages);
-            for (let j = 0; j < this.pages.length; j++) {
-              this.pages[j] = {pageNumber: j};
+    this.subscription.add(
+      this.songService
+        .getSongList(i, undefined)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(
+          result => {
+            if (result != null) {
+              if (scrollUp) {
+                window.scroll(0, 0);
+              }
+              this.songList = result.content;
+              this.songList.forEach((value, index) => {
+                this.songList[index].isDisabled = false;
+              });
+              this.first = result.first;
+              this.last = result.last;
+              this.pageNumber = result.pageable.pageNumber;
+              this.pageSize = result.pageable.pageSize;
+              this.pages = new Array(result.totalPages);
+              for (let j = 0; j < this.pages.length; j++) {
+                this.pages[j] = { pageNumber: j };
+              }
+              for (const song of this.songList) {
+                this.checkDisabledSong(song);
+              }
             }
+          },
+          error => {
+            this.message = 'An error has occurred.';
+            console.log(error.message);
+          },
+          () => {
             for (const song of this.songList) {
-              this.checkDisabledSong(song);
+              if (song.loadingLikeButton) {
+                song.loadingLikeButton = false;
+              }
             }
           }
-        }, error => {
-          this.message = 'An error has occurred.';
-          console.log(error.message);
-        }, () => {
-          for (const song of this.songList) {
-            if (song.loadingLikeButton) {
-              song.loadingLikeButton = false;
-            }
-          }
-        }
-      ));
+        )
+    );
   }
 
   addToPlaying(song: Song, event) {
@@ -91,38 +103,9 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.playingQueueService.addToQueue(song);
   }
 
-  refreshPlaylistList(songId) {
-    this.subscription.add(this.playlistService.getPlaylistListToAdd(songId).subscribe(
-      result => {
-        this.playlistList = result;
-      }, error => {
-        console.log(error);
-      }
-    ));
-  }
-
-  likeSong(song: Song, event) {
+  likeSong(song: Song, event, isLiked: boolean) {
     event.stopPropagation();
-    song.loadingLikeButton = true;
-    this.subscription.add(this.songService.likeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.goToPage(this.pageNumber));
-      }, error => {
-        console.log(error);
-      }
-    ));
-  }
-
-  unlikeSong(song: Song, event) {
-    event.stopPropagation();
-    song.loadingLikeButton = true;
-    this.subscription.add(this.songService.unlikeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.goToPage(this.pageNumber));
-      }, error => {
-        console.log(error);
-      }
-    ));
+    this.songService.likeSong(song, isLiked);
   }
 
   checkDisabledSong(song: Song) {
@@ -134,6 +117,12 @@ export class SongListComponent implements OnInit, OnDestroy {
       }
     }
     song.isDisabled = isDisabled;
+  }
+
+  openPlaylistDialog(songId: number, event: Event) {
+    event.stopPropagation();
+    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    ref.componentInstance.songId = songId;
   }
 
   ngOnDestroy(): void {

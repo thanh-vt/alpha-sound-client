@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AudioUploadService} from '../../service/audio-upload.service';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Artist} from '../../model/artist';
-import {ArtistService} from '../../service/artist.service';
-import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
-import {Progress} from '../../model/progress';
-import {DatePipe} from '@angular/common';
-import {CountryService} from '../../service/country.service';
-import {Country} from '../../model/country';
-import {TagService} from '../../service/tag.service';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AudioUploadService } from '../../service/audio-upload.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Artist } from '../../model/artist';
+import { ArtistService } from '../../service/artist.service';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { Progress } from '../../model/progress';
+import { DatePipe } from '@angular/common';
+import { CountryService } from '../../service/country.service';
+import { Country } from '../../model/country';
+import { TagService } from '../../service/tag.service';
 
 @Component({
   selector: 'app-upload-song',
@@ -19,11 +19,13 @@ import {TagService} from '../../service/tag.service';
   encapsulation: ViewEncapsulation.None
 })
 export class UploadSongComponent implements OnInit, OnDestroy {
-
-  constructor(private audioUploadService: AudioUploadService, private artistService: ArtistService,
-              private countryService: CountryService, private fb: FormBuilder,
-              private tagService: TagService) {
-  }
+  constructor(
+    private audioUploadService: AudioUploadService,
+    private artistService: ArtistService,
+    private countryService: CountryService,
+    private fb: FormBuilder,
+    private tagService: TagService
+  ) {}
 
   get artists(): FormArray {
     return this.songUploadForm.get('artists') as FormArray;
@@ -33,7 +35,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
 
   isAudioFileChosen = false;
   audioFileName = '';
-  progress: Progress = {value: 0};
+  progress: Progress = { value: 0 };
   message: string;
   songUploadForm: FormGroup;
 
@@ -82,15 +84,16 @@ export class UploadSongComponent implements OnInit, OnDestroy {
       duration: [null]
     });
     new DatePipe('en').transform(this.songUploadForm.value.releaseDate, 'dd/MM/yyyy');
-    this.subscription.add(this.countryService.getCountryList(0)
-      .subscribe(
+    this.subscription.add(
+      this.countryService.getCountryList(0).subscribe(
         next => {
           this.countryList = next.content;
-        }, error => {
+        },
+        error => {
           console.log(error);
         }
-      ));
-
+      )
+    );
   }
 
   selectFile(event) {
@@ -114,7 +117,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress.value = Math.round(event.loaded / event.total * 100);
+        progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
@@ -132,7 +135,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   upload() {
-    this.formData.set('song', new Blob([JSON.stringify(this.songUploadForm.value)], {type: 'application/json'}));
+    this.formData.set('song', new Blob([JSON.stringify(this.songUploadForm.value)], { type: 'application/json' }));
     this.formData.set('audio', this.file);
     this.submitted = true;
     console.log(this.songUploadForm);
@@ -144,7 +147,8 @@ export class UploadSongComponent implements OnInit, OnDestroy {
         if (this.displayProgress(event, this.progress)) {
           this.message = 'Song uploaded successfully.';
         }
-      }, error => {
+      },
+      error => {
         this.progress.value = 0;
         if (error.status === 400) {
           this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
@@ -157,18 +161,18 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   suggestArtist(i) {
-    this.subscription.add(this.artists.controls[i].valueChanges
-      .pipe(
-        debounceTime(300),
-        tap(() => this.isLoading = true),
-        switchMap(value => this.artistService.searchArtist((typeof value === 'string') ? value : '')
-          .pipe(
-            finalize(() => this.isLoading = false),
+    this.subscription.add(
+      this.artists.controls[i].valueChanges
+        .pipe(
+          debounceTime(300),
+          tap(() => (this.isLoading = true)),
+          switchMap(value =>
+            this.artistService.searchArtist(typeof value === 'string' ? value : '').pipe(finalize(() => (this.isLoading = false)))
           )
         )
-      ).subscribe(artists => this.filteredArtists = artists));
+        .subscribe(artists => (this.filteredArtists = artists))
+    );
   }
-
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {Progress} from '../../../model/progress';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {finalize} from 'rxjs/operators';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ArtistService } from '../../../service/artist.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Progress } from '../../../model/progress';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-create-artist',
@@ -13,10 +13,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./create-artist.component.scss']
 })
 export class CreateArtistComponent implements OnInit, OnDestroy {
-
-  constructor(private artistService: ArtistService, private fb: FormBuilder,
-              private ngbActiveModal: NgbActiveModal) {
-  }
+  constructor(private artistService: ArtistService, private fb: FormBuilder, private ngbActiveModal: NgbActiveModal) {}
 
   submitted = false;
   isImageFileChosen = false;
@@ -27,7 +24,7 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
   file: any;
   subscription: Subscription = new Subscription();
   error = false;
-  progress: Progress = {value: 0};
+  progress: Progress = { value: 0 };
   loading: boolean;
 
   ngOnInit() {
@@ -55,7 +52,7 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress.value = Math.round(event.loaded / event.total * 100);
+        progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
@@ -75,25 +72,31 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     if (this.artistUploadForm.valid) {
-      this.formData.append('artist', new Blob([JSON.stringify(this.artistUploadForm.value)], {type: 'application/json'}));
+      this.formData.append('artist', new Blob([JSON.stringify(this.artistUploadForm.value)], { type: 'application/json' }));
       this.formData.append('avatar', this.file);
       this.loading = true;
-      this.subscription.add(this.artistService.uploadArtist(this.formData)
-        .pipe(finalize(() => {
-          this.loading = false;
-        }))
-        .subscribe(
-        (event: HttpEvent<any>) => {
-          if (this.displayProgress(event, this.progress)) {
-            this.error = false;
-            this.message = 'Artist added successfully!';
-          }
-        }, error => {
-          this.error = true;
-          this.message = 'Failed to add artist.';
-          console.log(error.message);
-        }
-      ));
+      this.subscription.add(
+        this.artistService
+          .uploadArtist(this.formData)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+            })
+          )
+          .subscribe(
+            (event: HttpEvent<any>) => {
+              if (this.displayProgress(event, this.progress)) {
+                this.error = false;
+                this.message = 'Artist added successfully!';
+              }
+            },
+            error => {
+              this.error = true;
+              this.message = 'Failed to add artist.';
+              console.log(error.message);
+            }
+          )
+      );
     }
   }
 

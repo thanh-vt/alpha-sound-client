@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {TokenResponse, UserProfile} from '../model/token-response';
-import {finalize, map} from 'rxjs/operators';
-import {TokenStorageService} from './token-storage.service';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { TokenResponse, UserProfile } from '../model/token-response';
+import { finalize, map } from 'rxjs/operators';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,20 +28,18 @@ export class AuthService {
   }
 
   login(username: string, password: string, rememberMe: boolean): Observable<UserProfile> {
-    const params = new HttpParams()
-      .set('username', username)
-      .set('password', password)
-      .set('grant_type', 'password');
+    const params = new HttpParams().set('username', username).set('password', password).set('grant_type', 'password');
     const headers = new HttpHeaders({
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
       Authorization: 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)
     });
-    return this.http.post<TokenResponse>(`${environment.authUrl}/oauth/token`, params, {headers})
-      .pipe(map(userToken => {
+    return this.http.post<TokenResponse>(`${environment.authUrl}/oauth/token`, params, { headers }).pipe(
+      map(userToken => {
         const userInfo: UserProfile = this.tokenStorageService.storeAccessToken(userToken, rememberMe);
         this.currentUserSubject.next(userInfo);
         return userInfo;
-      }));
+      })
+    );
   }
 
   logout(): void {
@@ -50,18 +48,13 @@ export class AuthService {
     if (!tokenInfo) {
       return;
     }
-    this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`)
-      .pipe(finalize(() => {
-        this.tokenStorageService.clearToken();
-      }))
-      .subscribe(
-        () => {
-        },
-        error => {
-          console.log(error);
-        },
-        () => {
-        });
-
+    this.tokenStorageService.clearToken();
+    this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe(
+      () => {},
+      error => {
+        console.log(error);
+      },
+      () => {}
+    );
   }
 }

@@ -3,12 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { GenreManagementRoutingModule } from './genre-management-routing.module';
 
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    GenreManagementRoutingModule
-  ]
+  imports: [CommonModule, GenreManagementRoutingModule]
 })
-export class GenreManagementModule { }
+export class GenreManagementModule {}

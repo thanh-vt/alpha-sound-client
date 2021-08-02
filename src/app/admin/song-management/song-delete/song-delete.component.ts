@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {SongService} from '../../../service/song.service';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Song} from '../../../model/song';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SongService } from '../../../service/song.service';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Song } from '../../../model/song';
 
 @Component({
   selector: 'app-song-delete',
@@ -19,15 +19,16 @@ export class SongDeleteComponent implements OnInit, OnDestroy {
   error = false;
   subscription: Subscription = new Subscription();
   @Output() deleteSong = new EventEmitter();
-  constructor(private songService: SongService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
-
+  constructor(private songService: SongService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) {}
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-    }, (reason) => {
-      this.message = '';
-      console.log(this.getDismissReason(reason));
-    });
+    this.modalService.open(content, { animation: true }).result.then(
+      () => {},
+      reason => {
+        this.message = '';
+        console.log(this.getDismissReason(reason));
+      }
+    );
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -35,7 +36,7 @@ export class SongDeleteComponent implements OnInit, OnDestroy {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
   ngOnInit() {
@@ -54,11 +55,11 @@ export class SongDeleteComponent implements OnInit, OnDestroy {
           this.error = true;
           this.message = 'Failed to delete song. Cause: ' + error.message;
         }
-      ));
+      )
+    );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

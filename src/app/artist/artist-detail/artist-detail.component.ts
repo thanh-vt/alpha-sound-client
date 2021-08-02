@@ -1,18 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Artist} from '../../model/artist';
-import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {ArtistService} from '../../service/artist.service';
-import {SongService} from '../../service/song.service';
-import {Subscription} from 'rxjs';
-import {Song} from '../../model/song';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {PlaylistService} from '../../service/playlist.service';
-import {Playlist} from '../../model/playlist';
-import {TranslateService} from '@ngx-translate/core';
-import {finalize} from 'rxjs/operators';
-import {UserProfile} from '../../model/token-response';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Artist } from '../../model/artist';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
+import { ArtistService } from '../../service/artist.service';
+import { SongService } from '../../service/song.service';
+import { Subscription } from 'rxjs';
+import { Song } from '../../model/song';
+import { PlayingQueueService } from '../../service/playing-queue.service';
+import { PlaylistService } from '../../service/playlist.service';
+import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
+import { UserProfile } from '../../model/token-response';
+import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-artist-detail',
@@ -33,100 +34,119 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   loading3: boolean;
   totalPages: number;
   songList: Song[] = [];
-  playlistList: Playlist[] = [];
   subscription: Subscription = new Subscription();
   Math: Math = Math;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-              private authService: AuthService, private artistService: ArtistService,
-              private songService: SongService, private playlistService: PlaylistService,
-              private playingQueueService: PlayingQueueService, public translate: TranslateService) {
-    this.authService.currentUser$.subscribe(
-      next => {
-        this.currentUser = next;
-      }
-    );
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+    private artistService: ArtistService,
+    private songService: SongService,
+    private playlistService: PlaylistService,
+    private playingQueueService: PlayingQueueService,
+    public translate: TranslateService,
+    private modalService: NgbModal
+  ) {
+    this.authService.currentUser$.subscribe(next => {
+      this.currentUser = next;
+    });
   }
 
   ngOnInit() {
-    this.subscription.add(this.route.queryParams.subscribe(
-      params => {
+    this.subscription.add(
+      this.route.queryParams.subscribe(params => {
         this.loading1 = true;
         this.artistId = params.id;
         this.getArtistDetail();
-      }
-    ));
+      })
+    );
   }
 
   getArtistDetail() {
-    this.subscription.add(this.artistService.artistDetail(this.artistId)
-      .pipe(finalize(() => {
-        this.loading1 = false;
-      }))
-      .subscribe(
-        result => {
-          window.scroll(0, 0);
-          this.artist = result;
-          this.loading2 = true;
-          this.getSongListOfArtist();
-        }, error => {
-          this.message = 'An error has occurred.';
-          console.log(error.message);
-        }
-      ));
+    this.subscription.add(
+      this.artistService
+        .artistDetail(this.artistId)
+        .pipe(
+          finalize(() => {
+            this.loading1 = false;
+          })
+        )
+        .subscribe(
+          result => {
+            window.scroll(0, 0);
+            this.artist = result;
+            this.loading2 = true;
+            this.getSongListOfArtist();
+          },
+          error => {
+            this.message = 'An error has occurred.';
+            console.log(error.message);
+          }
+        )
+    );
   }
 
   getSongListOfArtist() {
-    this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
-      result1 => {
-        if (result1 != null) {
-          this.totalPages = result1.totalPages;
-          // tslint:disable-next-line:prefer-for-of
-          for (let i = 0; i < result1.content.length; i++) {
-            this.songList.push(result1.content[i]);
+    this.subscription.add(
+      this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+        result1 => {
+          if (result1 != null) {
+            this.totalPages = result1.totalPages;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < result1.content.length; i++) {
+              this.songList.push(result1.content[i]);
+            }
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
+            }
           }
-          for (const song of this.songList) {
-            this.checkDisabledSong(song);
-          }
+        },
+        error => {
+          this.message = 'An error has occurred.';
+          console.log(error.message);
+        },
+        () => {
+          this.loading2 = false;
         }
-      }, error => {
-        this.message = 'An error has occurred.';
-        console.log(error.message);
-      }, () => {
-        this.loading2 = false;
-      }
-    ));
+      )
+    );
   }
 
   onScroll() {
     this.pageNumber = ++this.pageNumber;
     if (this.pageNumber < this.totalPages) {
       this.loading3 = true;
-      this.subscription.add(this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
-        result => {
-          if (result != null) {
-            this.totalPages = result.totalPages;
-            // tslint:disable-next-line:prefer-for-of
-            for (let i = 0; i < result.content.length; i++) {
-              this.songList.push(result.content[i]);
+      this.subscription.add(
+        this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
+          result => {
+            if (result != null) {
+              this.totalPages = result.totalPages;
+              // eslint-disable-next-line @typescript-eslint/prefer-for-of
+              for (let i = 0; i < result.content.length; i++) {
+                this.songList.push(result.content[i]);
+              }
+              this.songList.forEach((value, index) => {
+                this.songList[index].isDisabled = false;
+              });
+              for (const song of this.songList) {
+                this.checkDisabledSong(song);
+              }
+              this.first = result.first;
+              this.last = result.last;
+              this.pageNumber = result.pageable.pageNumber;
+              this.pageSize = result.pageable.pageSize;
             }
-            this.songList.forEach((value, index) => {
-              this.songList[index].isDisabled = false;
-            });
-            for (const song of this.songList) {
-              this.checkDisabledSong(song);
-            }
-            this.first = result.first;
-            this.last = result.last;
-            this.pageNumber = result.pageable.pageNumber;
-            this.pageSize = result.pageable.pageSize;
+          },
+          error => {
+            this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+          },
+          () => {
+            this.loading3 = false;
           }
-        }, error => {
-          this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-        }, () => {
-          this.loading3 = false;
-        }
-      ));
+        )
+      );
     } else {
       this.pageNumber = --this.pageNumber;
     }
@@ -137,49 +157,26 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     this.playingQueueService.addToQueue(song);
   }
 
-  refreshPlaylistList(songId: number) {
-    this.subscription.add(this.playlistService.getPlaylistListToAdd(songId).subscribe(
-      result => {
-        this.playlistList = result;
-      }, error => {
-        console.log(error);
-      }
-    ));
-  }
-
   refreshSong(song: Song, index: number) {
     song.loadingLikeButton = true;
-    this.subscription.add(this.songService.songDetail(song.id).subscribe(
-      result => {
-        this.songList[index] = result;
-      }, error => {
-        console.log(error);
-      }, () => {
-        song.loadingLikeButton = false;
-      }
-    ));
-  }
-
-  likeSong(song: Song, index: number, event) {
-    event.stopPropagation();
-    this.subscription.add(this.songService.likeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.refreshSong(song, index));
-      }, error => {
-        console.log(error);
-      }
-    ));
-  }
-
-  unlikeSong(song: Song, index: number, event) {
-    event.stopPropagation();
-    this.songService.unlikeSong(song.id).subscribe(
-      () => {
-        this.subscription.add(this.refreshSong(song, index));
-      }, error => {
-        console.log(error);
-      }
+    this.subscription.add(
+      this.songService.songDetail(song.id).subscribe(
+        result => {
+          this.songList[index] = result;
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          song.loadingLikeButton = false;
+        }
+      )
     );
+  }
+
+  likeSong(song: Song, index: number, event, isLiked: boolean) {
+    event.stopPropagation();
+    this.songService.likeSong(song, isLiked);
   }
 
   checkDisabledSong(song: Song) {
@@ -193,8 +190,13 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
     song.isDisabled = isDisabled;
   }
 
+  openPlaylistDialog(songId: number, event: Event) {
+    event.stopPropagation();
+    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    ref.componentInstance.songId = songId;
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

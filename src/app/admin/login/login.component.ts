@@ -1,12 +1,12 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AdminService} from '../../service/admin.service';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AuthService} from '../../service/auth.service';
-import {UserProfileService} from '../../service/user-profile.service';
-import {finalize} from 'rxjs/operators';
-import {UserProfile} from '../../model/token-response';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AdminService } from '../../service/admin.service';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
+import { UserProfileService } from '../../service/user-profile.service';
+import { finalize } from 'rxjs/operators';
+import { UserProfile } from '../../model/token-response';
 
 @Component({
   selector: 'app-login',
@@ -24,18 +24,19 @@ export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
   subscription: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-              private adminService: AdminService, private authService: AuthService,
-              private userService: UserProfileService) {
-    this.authService.currentUser$.subscribe(
-      () => {
-        this.userService.getCurrentUserProfile().subscribe(
-          currentUser => {
-            this.currentUser = currentUser;
-          }
-        );
-      }
-    );
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private adminService: AdminService,
+    private authService: AuthService,
+    private userService: UserProfileService
+  ) {
+    this.authService.currentUser$.subscribe(() => {
+      this.userService.getCurrentUserProfile().subscribe(currentUser => {
+        this.currentUser = currentUser;
+      });
+    });
   }
 
   ngOnInit() {
@@ -54,11 +55,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.loading = true;
-    const {username, password, rememberMe} = this.adminLoginForm.value;
-    this.authService.login(username, password, rememberMe)
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
+    const { username, password, rememberMe } = this.adminLoginForm.value;
+    this.authService
+      .login(username, password, rememberMe)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
       .subscribe(
         () => {},
         error => {
@@ -69,7 +73,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           } else {
             this.message = 'Oop!!! An error has occurred';
           }
-        }, () => {
+        },
+        () => {
           this.loading = false;
           console.log(localStorage);
         }
@@ -79,5 +84,4 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

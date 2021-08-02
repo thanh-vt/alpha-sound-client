@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {Country} from '../../../model/country';
-import {CountryService} from '../../../service/country.service';
-import {Subscription} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
-import {LoadingService} from '../../../shared/service/loading.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CreateCountryComponent} from '../create-country/create-country.component';
-import {ConfirmationModalComponent} from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
-import {ArtistEditComponent} from '../../artist-management/artist-edit/artist-edit.component';
+import { Component, OnInit } from '@angular/core';
+import { Country } from '../../../model/country';
+import { CountryService } from '../../../service/country.service';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { LoadingService } from '../../../shared/service/loading.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateCountryComponent } from '../create-country/create-country.component';
+import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import { ArtistEditComponent } from '../../artist-management/artist-edit/artist-edit.component';
 
 @Component({
   selector: 'app-country-list',
@@ -20,9 +20,12 @@ export class CountryListComponent implements OnInit {
   pageNumber: number;
   subscription: Subscription = new Subscription();
 
-  constructor(private countryService: CountryService, private translate: TranslateService,
-              private loadingService: LoadingService, private ngbModal: NgbModal) {
-  }
+  constructor(
+    private countryService: CountryService,
+    private translate: TranslateService,
+    private loadingService: LoadingService,
+    private ngbModal: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.countryList = [];
@@ -48,12 +51,11 @@ export class CountryListComponent implements OnInit {
       backdrop: 'static',
       centered: true,
       scrollable: true,
-      size: 'md',
+      size: 'md'
     });
     await ref.result;
     await this.onScroll(this.pageNumber);
   }
-
 
   async openEditDialog(country: Country, event: Event): Promise<void> {
     event.stopPropagation();
@@ -62,7 +64,7 @@ export class CountryListComponent implements OnInit {
       backdrop: 'static',
       centered: true,
       scrollable: true,
-      size: 'md',
+      size: 'md'
     });
     ref.componentInstance.country = country;
     await ref.result;
@@ -72,13 +74,12 @@ export class CountryListComponent implements OnInit {
   async openDeleteDialog(country: Country, event: Event): Promise<void> {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
-        animation: true,
-        backdrop: 'static',
-        centered: true,
-        scrollable: true,
-        size: 'md',
-      }
-    );
+      animation: true,
+      backdrop: 'static',
+      centered: true,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.subject = this.translate.instant('common.entity.country');
     ref.componentInstance.name = country.name;
     try {
@@ -94,5 +95,4 @@ export class CountryListComponent implements OnInit {
       this.loadingService.hide();
     }
   }
-
 }

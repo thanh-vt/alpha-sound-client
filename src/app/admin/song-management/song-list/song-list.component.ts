@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Song} from '../../../model/song';
-import {Subscription} from 'rxjs';
-import {SongService} from '../../../service/song.service';
-import {ConfirmationModalComponent} from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
-import {LoadingService} from '../../../shared/service/loading.service';
+import { Component, OnInit } from '@angular/core';
+import { Song } from '../../../model/song';
+import { Subscription } from 'rxjs';
+import { SongService } from '../../../service/song.service';
+import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-song-list',
@@ -17,9 +17,12 @@ export class SongListComponent implements OnInit {
   subscription: Subscription = new Subscription();
   message: string;
 
-  constructor(private songService: SongService, private ngbModal: NgbModal,
-              private translate: TranslateService, private loadingService: LoadingService) {
-  }
+  constructor(
+    private songService: SongService,
+    private ngbModal: NgbModal,
+    private translate: TranslateService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.getSongList().finally();
@@ -34,19 +37,17 @@ export class SongListComponent implements OnInit {
     } finally {
       this.loadingService.hide();
     }
-
   }
 
   async openDeleteDialog(song: Song, event: Event): Promise<void> {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
-        animation: true,
-        backdrop: 'static',
-        centered: true,
-        scrollable: true,
-        size: 'md',
-      }
-    );
+      animation: true,
+      backdrop: 'static',
+      centered: true,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.subject = this.translate.instant('common.entity.artist');
     ref.componentInstance.name = song.title;
     try {

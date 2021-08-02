@@ -1,9 +1,8 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {AdminContainerComponent} from './admin-container/admin-container.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
-import {AdminAuthGuard} from '../guard/admin-auth.guard';
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdminContainerComponent } from './admin-container/admin-container.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminAuthGuard } from '../guard/admin-auth.guard';
 
 const routes: Routes = [
   {
@@ -14,7 +13,7 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent
       },
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       {
         path: 'artist-management',
         canActivate: [AdminAuthGuard],
@@ -39,14 +38,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'dashboard',
     pathMatch: 'prefix'
-  },
-
-
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminRoutingModule {
-}
+export class AdminRoutingModule {}

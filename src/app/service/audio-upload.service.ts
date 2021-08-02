@@ -1,19 +1,18 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {HttpClient, HttpEvent} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Album} from '../model/album';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpEvent } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Album } from '../model/album';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AudioUploadService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   uploadSong(formData: FormData, album?: Album): Observable<HttpEvent<any>> {
     if (album) {
-      const params: any = {['album-id']: album.id};
+      const params: any = { ['album-id']: album.id };
       return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {
         reportProgress: true,
         observe: 'events',
@@ -30,5 +29,4 @@ export class AudioUploadService {
   uploadAlbum(formData): Observable<Album> {
     return this.http.post<Album>(`${environment.apiUrl}/album/upload`, formData);
   }
-
 }

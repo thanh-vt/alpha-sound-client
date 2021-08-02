@@ -1,5 +1,5 @@
 export enum StorageType {
-  LOCAL= 'LOCAL',
+  LOCAL = 'LOCAL',
   CLOUDINARY = 'CLOUDINARY',
   FIREBASE = 'FIREBASE'
 }

@@ -52,11 +52,11 @@
       <td><span class="float-right"><small><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</small></span></td>
       <td>
         <ng-container *ngIf="!!currentUser">
-          <button (click)="likeSong(song, $event)" class="btn btn-outline-danger btn-sm border-0" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
+          <button (click)="likeSong(song, $event, true)" class="btn btn-outline-danger btn-sm border-0" *ngIf="!song.liked" [disabled]="song.loadingLikeButton">
             <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
           </button>
-          <button (click)="unlikeSong(song, $event)" class="btn btn-outline-danger btn-sm border-0" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
+          <button (click)="likeSong(song, $event, false)" class="btn btn-outline-danger btn-sm border-0" *ngIf="song.liked" [disabled]="song.loadingLikeButton">
             <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
           </button>
@@ -68,10 +68,8 @@
               <i class="fas fa-play-circle mr-1"></i><span>{{ 'Add to Queue' | translate }}</span>
             </button>
             <ng-container *ngIf="!!currentUser">
-              <app-modal [action]="'addToPlaylist'" [title]="'Select a playlist to add' | translate">
-                <app-add-song-to-playlist class="modal-body" [songId]="song.id" [playlistList]="playlistList"></app-add-song-to-playlist>
-                <app-create-playlist (createPlaylist)="refreshPlaylistList(song.id)" class="modal_footer"></app-create-playlist>
-              </app-modal>
+              <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}</button>
             </ng-container>
           </div>
         </div>

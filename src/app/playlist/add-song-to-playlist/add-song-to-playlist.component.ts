@@ -1,10 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {PlaylistService} from '../../service/playlist.service';
-import {Playlist} from '../../model/playlist';
-import {Subscription} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
-import {finalize} from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PlaylistService } from '../../service/playlist.service';
+import { Playlist } from '../../model/playlist';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { CreatePlaylistComponent } from '../create-playlist/create-playlist.component';
+import { ToastService } from '../../shared/service/toast.service';
 
 @Component({
   selector: 'app-add-song-to-playlist',
@@ -12,69 +13,68 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./add-song-to-playlist.component.scss']
 })
 export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
-
   @Input() songId: number;
-  @Input() playlistList: Playlist[] = [];
-  closeResult: string;
-  message: string;
+  playlistList: Playlist[] = [];
   loading: boolean;
   subscription: Subscription = new Subscription();
-  error: boolean;
 
-  constructor(private modalService: NgbModal, private playlistService: PlaylistService, private translate: TranslateService) {}
+  constructor(
+    private modalService: NgbModal,
+    private playlistService: PlaylistService,
+    private ngbActiveModal: NgbActiveModal,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
-    this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId)
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
+    this.playlistService
+      .getPlaylistListToAdd(this.songId)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
       .subscribe(
-      result => {
-        this.playlistList = result;
-      }, error => {
-        this.message = 'An error has occurred.';
-        console.log(error.message);
-      }
-    ));
-  }
-
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
+        result => {
+          this.playlistList = result;
+        },
+        error => {
+          console.log(error.message);
+          this.toastService.error('Error', 'An error has occurred.');
+        }
+      );
   }
 
   addSongToPlaylist(songId: number, playlistId: number) {
-    this.subscription.add(this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
-      () => {
-        this.error = false;
-        this.message = 'Song added to playlist';
-        this.subscription.add(this.playlistService.getPlaylistListToAdd(this.songId).subscribe(
-          result => {
-            this.error = false;
-            this.playlistList = result;
-          }, error1 => {
-            this.error = true;
-            this.message = 'Cannot retrieve playlist list. Cause: ' + error1.message;
-          }
-        ));
-      }, error => {
-        this.error = true;
-        this.message = 'Cannot add song to playlist. Cause: ' + error.message;
-      }
-    ));
+    this.subscription.add(
+      this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
+        _ => {
+          this.toastService.success('Success', 'Song added to playlist');
+          const songToDeleteIndex: number = this.playlistList.findIndex(e => e.id === songId);
+          this.playlistList.splice(songToDeleteIndex, 1);
+        },
+        error => {
+          this.toastService.error('Error', 'Cannot add song to playlist. Cause: ' + error.message);
+        }
+      )
+    );
+  }
+
+  openCreatePlaylistDialog() {
+    const sub: Subscription = this.modalService
+      .open(CreatePlaylistComponent, {
+        animation: true
+      })
+      .closed.subscribe(next => {
+        if (next) {
+          this.playlistList = [...this.playlistList, next];
+        }
+        sub.unsubscribe();
+      });
+  }
+
+  close() {
+    this.ngbActiveModal.close();
   }
 
   ngOnDestroy(): void {

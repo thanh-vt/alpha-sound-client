@@ -8,9 +8,8 @@ describe('DeleteSongComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeleteSongComponent ]
-    })
-    .compileComponents();
+      declarations: [DeleteSongComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

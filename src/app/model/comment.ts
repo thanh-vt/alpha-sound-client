@@ -1,4 +1,4 @@
-import {UserInfo} from './user-info';
+import { UserInfo } from './user-info';
 
 export interface Comment {
   isDisabled?: boolean;

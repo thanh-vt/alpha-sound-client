@@ -1,15 +1,15 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Song} from '../../model/song';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {SongService} from '../../service/song.service';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Artist} from '../../model/artist';
-import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
-import {ArtistService} from '../../service/artist.service';
-import {Subscription} from 'rxjs';
-import {Progress} from '../../model/progress';
-import {DatePipe} from '@angular/common';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Song } from '../../model/song';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SongService } from '../../service/song.service';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Artist } from '../../model/artist';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { ArtistService } from '../../service/artist.service';
+import { Subscription } from 'rxjs';
+import { Progress } from '../../model/progress';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-song',
@@ -26,7 +26,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
   isLoading = false;
   isAudioFileChosen = false;
   audioFileName = '';
-  progress: Progress = {value: 0};
+  progress: Progress = { value: 0 };
   file: any;
   error = false;
   subscription: Subscription = new Subscription();
@@ -54,10 +54,13 @@ export class EditSongComponent implements OnInit, OnDestroy {
     }
   }
 
-  // tslint:disable-next-line:max-line-length
-  constructor(private route: ActivatedRoute, private songService: SongService,
-              private fb: FormBuilder, private artistService: ArtistService) {
-  }
+  // eslint-disable-next-line max-len
+  constructor(
+    private route: ActivatedRoute,
+    private songService: SongService,
+    private fb: FormBuilder,
+    private artistService: ArtistService
+  ) {}
 
   ngOnInit() {
     this.songUpdateForm = this.fb.group({
@@ -70,8 +73,8 @@ export class EditSongComponent implements OnInit, OnDestroy {
       country: [null],
       theme: [null]
     });
-    this.subscription.add(this.route.queryParams.subscribe(
-      params => {
+    this.subscription.add(
+      this.route.queryParams.subscribe(params => {
         this.songId = params.id;
         this.songService.songDetail(this.songId).subscribe(
           result => {
@@ -91,21 +94,19 @@ export class EditSongComponent implements OnInit, OnDestroy {
               this.artists.controls[i].valueChanges
                 .pipe(
                   debounceTime(300),
-                  tap(() => this.isLoading = true),
-                  switchMap(value => this.artistService.searchArtist(value)
-                    .pipe(
-                      finalize(() => this.isLoading = false),
-                    )
-                  )
-                ).subscribe(artists => this.filteredArtists = artists);
+                  tap(() => (this.isLoading = true)),
+                  switchMap(value => this.artistService.searchArtist(value).pipe(finalize(() => (this.isLoading = false))))
+                )
+                .subscribe(artists => (this.filteredArtists = artists));
             }
-          }, error => {
+          },
+          error => {
             this.message = 'An error has occurred.';
             console.log(error.message);
           }
         );
-      }
-    ));
+      })
+    );
   }
 
   selectFile(event) {
@@ -125,7 +126,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress.value = Math.round(event.loaded / event.total * 100);
+        progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
@@ -146,14 +147,16 @@ export class EditSongComponent implements OnInit, OnDestroy {
     this.submitted = true;
     if (this.songUpdateForm.valid) {
       this.subscription.add(
-        this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], {type: 'application/json'})));
+        this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], { type: 'application/json' }))
+      );
       this.formData.append('audio', this.file);
       this.songService.updateSong(this.formData, this.songId).subscribe(
         (event: HttpEvent<any>) => {
           if (this.displayProgress(event, this.progress)) {
             this.message = 'Song updated successfully!';
           }
-        }, error => {
+        },
+        error => {
           console.log(error.message);
           this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
         }
@@ -162,16 +165,17 @@ export class EditSongComponent implements OnInit, OnDestroy {
   }
 
   suggestArtist(i) {
-    this.subscription.add(this.artists.controls[i].valueChanges
-      .pipe(
-        debounceTime(300),
-        tap(() => this.isLoading = true),
-        switchMap(value => this.artistService.searchArtist((typeof value === 'string') ? value : '')
-          .pipe(
-            finalize(() => this.isLoading = false),
+    this.subscription.add(
+      this.artists.controls[i].valueChanges
+        .pipe(
+          debounceTime(300),
+          tap(() => (this.isLoading = true)),
+          switchMap(value =>
+            this.artistService.searchArtist(typeof value === 'string' ? value : '').pipe(finalize(() => (this.isLoading = false)))
           )
         )
-      ).subscribe(artists => this.filteredArtists = artists));
+        .subscribe(artists => (this.filteredArtists = artists))
+    );
   }
 
   ngOnDestroy(): void {

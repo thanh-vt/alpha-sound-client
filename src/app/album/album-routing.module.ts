@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AlbumListComponent} from './album-list/album-list.component';
-import {UploadAlbumComponent} from './upload-album/upload-album.component';
-import {EditAlbumComponent} from './edit-album/edit-album.component';
-import {DeleteAlbumComponent} from './delete-album/delete-album.component';
-import {AlbumComponent} from './album/album.component';
-import {AlbumDetailComponent} from './album-detail/album-detail.component';
-import {AuthGuard} from '../guard/auth.guard';
-
+import { AlbumListComponent } from './album-list/album-list.component';
+import { UploadAlbumComponent } from './upload-album/upload-album.component';
+import { EditAlbumComponent } from './edit-album/edit-album.component';
+import { DeleteAlbumComponent } from './delete-album/delete-album.component';
+import { AlbumComponent } from './album/album.component';
+import { AlbumDetailComponent } from './album-detail/album-detail.component';
+import { AuthGuard } from '../guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -16,31 +15,31 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path:  '',
+    path: '',
     component: AlbumComponent,
     children: [
       {
-        path:  'list',
-        component:  AlbumListComponent
+        path: 'list',
+        component: AlbumListComponent
       },
       {
-        path:  'detail',
-        component:  AlbumDetailComponent
+        path: 'detail',
+        component: AlbumDetailComponent
       },
       {
-        path:  'upload',
+        path: 'upload',
         canActivate: [AuthGuard],
-        component:  UploadAlbumComponent
+        component: UploadAlbumComponent
       },
       {
-        path:  'edit',
+        path: 'edit',
         canActivate: [AuthGuard],
-        component:  EditAlbumComponent
+        component: EditAlbumComponent
       },
       {
-        path:  'delete',
+        path: 'delete',
         canActivate: [AuthGuard],
-        component:  DeleteAlbumComponent
+        component: DeleteAlbumComponent
       }
     ]
   }
@@ -50,4 +49,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AlbumRoutingModule { }
+export class AlbumRoutingModule {}

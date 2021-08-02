@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Page} from '../../model/page';
-import {Song} from '../../model/song';
-import {Subscription} from 'rxjs';
-import {AddSongToPlaylistComponent} from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
-import {SongService} from '../../service/song.service';
-import {PlayingQueueService} from '../../service/playing-queue.service';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Page } from '../../model/page';
+import { Song } from '../../model/song';
+import { Subscription } from 'rxjs';
+import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
+import { SongService } from '../../service/song.service';
+import { PlayingQueueService } from '../../service/playing-queue.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-uploaded-song-list',
@@ -27,23 +27,27 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.subscription.add(this.songService.getUserSongList().subscribe(
-      result => {
-        if (result != null) {
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          for (const song of this.songList) {
-            this.checkDisabledSong(song);
+    this.subscription.add(
+      this.songService.getUserSongList().subscribe(
+        result => {
+          if (result != null) {
+            this.songList = result.content;
+            this.songList.forEach((value, index) => {
+              this.songList[index].isDisabled = false;
+            });
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
+            }
           }
+        },
+        error => {
+          this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
+        },
+        () => {
+          this.loading = false;
         }
-      }, error => {
-        this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-      }, () => {
-        this.loading = false;
-      }
-    ));
+      )
+    );
   }
 
   addToPlaying(song: Song, event) {
@@ -66,5 +70,4 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

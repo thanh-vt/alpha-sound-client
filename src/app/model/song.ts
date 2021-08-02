@@ -1,11 +1,11 @@
-import {Artist} from './artist';
-import {Comment} from './comment';
-import {Genre} from './genre';
-import {Tag} from './tag';
-import {Theme} from './theme';
-import {Country} from './country';
-import {UserProfile} from './token-response';
-import {ResourceInfo} from './resource-info';
+import { Artist } from './artist';
+import { Comment } from './comment';
+import { Genre } from './genre';
+import { Tag } from './tag';
+import { Theme } from './theme';
+import { Country } from './country';
+import { UserProfile } from './token-response';
+import { ResourceInfo } from './resource-info';
 
 export interface Song {
   id: number;

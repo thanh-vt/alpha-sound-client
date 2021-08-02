@@ -1,17 +1,17 @@
-import {AfterViewChecked, Component, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AudioUploadService} from '../../service/audio-upload.service';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {Artist} from '../../model/artist';
-import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
-import {ArtistService} from '../../service/artist.service';
-import {Subscription} from 'rxjs';
-import {Progress} from '../../model/progress';
+import { AfterViewChecked, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AudioUploadService } from '../../service/audio-upload.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Artist } from '../../model/artist';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { ArtistService } from '../../service/artist.service';
+import { Subscription } from 'rxjs';
+import { Progress } from '../../model/progress';
 
 @Component({
   selector: 'app-upload-album',
   templateUrl: './upload-album.component.html',
-  styleUrls: ['./upload-album.component.scss'],
+  styleUrls: ['./upload-album.component.scss']
 })
 export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('card1') card1;
@@ -44,10 +44,14 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
 
   subscription: Subscription = new Subscription();
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   keyword = 'name';
-  constructor(private formBuilder: FormBuilder, private audioUploadService: AudioUploadService, private renderer: Renderer2, private artistService: ArtistService) {
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private audioUploadService: AudioUploadService,
+    private renderer: Renderer2,
+    private artistService: ArtistService
+  ) {}
 
   static createArtist(): FormControl {
     return new FormControl();
@@ -115,14 +119,14 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
     });
 
     this.albumMessage = '';
-    this.albumProgress = {value: 0};
+    this.albumProgress = { value: 0 };
     this.albumFormData = new FormData();
     this.isImageFileChosen = false;
     this.imageFileName = '';
 
     this.songsMessage[0] = '';
     this.songError[0] = false;
-    this.songsProgress[0] = {value: 0};
+    this.songsProgress[0] = { value: 0 };
     this.songsFormData[0] = new FormData();
     this.audioFiles[0] = null;
     this.isAudioFileChosen[0] = false;
@@ -140,29 +144,32 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
 
   addForm() {
     if (this.numbersOfSongForms < 20) {
-      this.songsForm.splice(this.numbersOfSongForms, 1, new FormGroup({
-        title: new FormControl('', Validators.compose([Validators.required])),
-        artists: this.formBuilder.array([this.formBuilder.control(null, Validators.compose([Validators.required]))]),
-        releaseDate: new FormControl('', Validators.compose([Validators.required])),
-        album: new FormControl(''),
-        genres: new FormControl(null),
-        tags: new FormControl(null),
-        country: new FormControl(null),
-        theme: new FormControl(null),
-        duration: new FormControl(null)
-      }));
+      this.songsForm.splice(
+        this.numbersOfSongForms,
+        1,
+        new FormGroup({
+          title: new FormControl('', Validators.compose([Validators.required])),
+          artists: this.formBuilder.array([this.formBuilder.control(null, Validators.compose([Validators.required]))]),
+          releaseDate: new FormControl('', Validators.compose([Validators.required])),
+          album: new FormControl(''),
+          genres: new FormControl(null),
+          tags: new FormControl(null),
+          country: new FormControl(null),
+          theme: new FormControl(null),
+          duration: new FormControl(null)
+        })
+      );
 
       this.songsFormData.splice(this.numbersOfSongForms, 1, new FormData());
       this.audioFiles.splice(this.numbersOfSongForms, 1, null);
       this.songsMessage.splice(this.numbersOfSongForms, 1, '');
       this.songError.push(false);
-      this.songsProgress.splice(this.numbersOfSongForms, 1, {value: 0});
+      this.songsProgress.splice(this.numbersOfSongForms, 1, { value: 0 });
       this.isAudioFileChosen.push(false);
       this.audioFileNames.push('');
       this.isSongLoading.push([false]);
       this.numbersOfSongForms++;
     }
-
   }
 
   selectAudio(event, i) {
@@ -199,7 +206,7 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress = Math.round(event.loaded / event.total * 100);
+        progress = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress}%`);
         break;
       case HttpEventType.Response:
@@ -211,8 +218,7 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   onSubmit() {
-    this.albumFormData.append('album',
-      new Blob([JSON.stringify(this.albumForm.value)], {type: 'application/json'}));
+    this.albumFormData.append('album', new Blob([JSON.stringify(this.albumForm.value)], { type: 'application/json' }));
     this.albumFormData.append('cover', this.imageFile);
     this.submitted = true;
     let isSongFormsValid = true;
@@ -228,22 +234,23 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
           this.albumError = false;
           this.albumMessage = 'Album created successfully.';
           for (let i = 0; i < this.numbersOfSongForms; i++) {
-            this.songsFormData[i].append('song',
-              new Blob([JSON.stringify(this.songsForm[i].value)], {type: 'application/json'}));
+            this.songsFormData[i].append('song', new Blob([JSON.stringify(this.songsForm[i].value)], { type: 'application/json' }));
             this.songsFormData[i].append('audio', this.audioFiles[i]);
             this.audioUploadService.uploadSong(this.songsFormData[i], createAlbumResult).subscribe(
               (uploadSongEvent: HttpEvent<any>) => {
                 this.displayProgress(uploadSongEvent, this.songsProgress[i]);
                 this.songError[i] = false;
                 this.songsMessage[i] = 'Song uploaded successfully.';
-              }, uploadSongError => {
+              },
+              uploadSongError => {
                 this.songError[i] = true;
                 this.songsMessage[i] = 'Failed to upload song.';
                 console.log(uploadSongError.message);
               }
             );
           }
-        }, createAlbumError => {
+        },
+        createAlbumError => {
           this.albumMessage = 'Failed to create album.';
           console.log(createAlbumError.message);
         }
@@ -252,35 +259,36 @@ export class UploadAlbumComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   suggestAlbumArtist(i) {
-    this.subscription.add(this.subscription = this.getAlbumArtists().controls[i].valueChanges
-      .pipe(
-        debounceTime(300),
-        tap(() => this.isAlbumLoading = true),
-        switchMap(value => this.artistService.searchArtist((typeof value === 'string') ? value : '')
-          .pipe(
-            finalize(() => this.isAlbumLoading = false),
+    this.subscription.add(
+      (this.subscription = this.getAlbumArtists()
+        .controls[i].valueChanges.pipe(
+          debounceTime(300),
+          tap(() => (this.isAlbumLoading = true)),
+          switchMap(value =>
+            this.artistService.searchArtist(typeof value === 'string' ? value : '').pipe(finalize(() => (this.isAlbumLoading = false)))
           )
         )
-      ).subscribe(artists => this.filteredAlbumArtists = artists));
+        .subscribe(artists => (this.filteredAlbumArtists = artists)))
+    );
   }
 
   suggestSongArtist(j, k) {
-    this.subscription.add(this.getSongArtists(j).controls[k].valueChanges
-      .pipe(
-        debounceTime(300),
-        tap(() => {
-          this.isSongLoading[j][k] = true;
-        }),
-        switchMap(value => this.artistService.searchArtist((typeof value === 'string') ? value : '')
-          .pipe(
-            finalize(() => this.isSongLoading[j][k] = false),
+    this.subscription.add(
+      this.getSongArtists(j)
+        .controls[k].valueChanges.pipe(
+          debounceTime(300),
+          tap(() => {
+            this.isSongLoading[j][k] = true;
+          }),
+          switchMap(value =>
+            this.artistService.searchArtist(typeof value === 'string' ? value : '').pipe(finalize(() => (this.isSongLoading[j][k] = false)))
           )
         )
-      ).subscribe(artists => this.filteredSongArtist[j] = artists));
+        .subscribe(artists => (this.filteredSongArtist[j] = artists))
+    );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

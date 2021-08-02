@@ -1,5 +1,5 @@
-import {Song} from './song';
-import {ResourceInfo} from './resource-info';
+import { Song } from './song';
+import { ResourceInfo } from './resource-info';
 
 export interface Artist {
   isDisabled?: boolean;

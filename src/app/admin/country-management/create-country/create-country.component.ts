@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {Progress} from '../../../model/progress';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {finalize} from 'rxjs/operators';
-import {CountryService} from '../../../service/country.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Progress } from '../../../model/progress';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
+import { CountryService } from '../../../service/country.service';
 
 @Component({
   selector: 'app-create-country',
@@ -12,9 +12,7 @@ import {CountryService} from '../../../service/country.service';
   styleUrls: ['./create-country.component.scss']
 })
 export class CreateCountryComponent implements OnInit, OnDestroy {
-
-  constructor(private countryService: CountryService, private fb: FormBuilder) {
-  }
+  constructor(private countryService: CountryService, private fb: FormBuilder) {}
 
   submitted = false;
   isImageFileChosen = false;
@@ -25,12 +23,12 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
   file: any;
   subscription: Subscription = new Subscription();
   error = false;
-  progress: Progress = {value: 0};
+  progress: Progress = { value: 0 };
   loading: boolean;
 
   ngOnInit() {
     this.countryCreateForm = this.fb.group({
-      name: ['', [Validators.required, Validators.min(4)]],
+      name: ['', [Validators.required, Validators.min(4)]]
     });
   }
 
@@ -51,7 +49,7 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress.value = Math.round(event.loaded / event.total * 100);
+        progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
@@ -73,22 +71,28 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
     if (this.countryCreateForm.valid) {
       this.formData.append('flag', this.file);
       this.loading = true;
-      this.subscription.add(this.countryService.createCountry(this.formData)
-        .pipe(finalize(() => {
-          this.loading = false;
-        }))
-        .subscribe(
-          (event: HttpEvent<any>) => {
-            if (this.displayProgress(event, this.progress)) {
-              this.error = false;
-              this.message = 'Artist added successfully!';
+      this.subscription.add(
+        this.countryService
+          .createCountry(this.formData)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+            })
+          )
+          .subscribe(
+            (event: HttpEvent<any>) => {
+              if (this.displayProgress(event, this.progress)) {
+                this.error = false;
+                this.message = 'Artist added successfully!';
+              }
+            },
+            error => {
+              this.error = true;
+              this.message = 'Failed to add artist.';
+              console.log(error.message);
             }
-          }, error => {
-            this.error = true;
-            this.message = 'Failed to add artist.';
-            console.log(error.message);
-          }
-        ));
+          )
+      );
     }
   }
 
@@ -99,5 +103,4 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
   navigate() {
     location.replace('/admin/country-management');
   }
-
 }

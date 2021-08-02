@@ -1,18 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {SettingService} from '../../../service/setting.service';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SettingService } from '../../../service/setting.service';
 
 @Component({
   selector: 'app-modal',
@@ -20,17 +8,13 @@ import {SettingService} from '../../../service/setting.service';
   styleUrls: ['./modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
-
-  constructor(private ngbActiveModal: NgbActiveModal, private ngbModal: NgbModal,
-              private settingService: SettingService) {
-    this.settingService.setting$.subscribe(
-      next => {
-        if (next) {
-          this.darkThemeOn = next.darkMode;
-        }
+export class ModalComponent {
+  constructor(private ngbActiveModal: NgbActiveModal, private ngbModal: NgbModal, private settingService: SettingService) {
+    this.settingService.setting$.subscribe(next => {
+      if (next) {
+        this.darkThemeOn = next.darkMode;
       }
-    );
+    });
   }
 
   @Input() isPoppedUp = false;
@@ -41,15 +25,6 @@ export class ModalComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() darkThemeOn: boolean;
   @Output() closeAction = new EventEmitter();
   @ViewChild('content') content: ElementRef;
-
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-
-  ngOnInit() {
-  }
-
-  ngAfterViewInit(): void {
-  }
 
   close() {
     this.ngbActiveModal.close();

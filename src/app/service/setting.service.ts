@@ -1,13 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {Setting} from '../model/setting';
-import {environment} from '../../environments/environment';
-import {UserProfile} from '../model/token-response';
-import {AuthService} from './auth.service';
-import {CookieService} from 'ngx-cookie-service';
-import {ACCESS_TOKEN_KEY} from './token-storage.service';
-import set = Reflect.set;
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Setting } from '../model/setting';
+import { environment } from '../../environments/environment';
+import { UserProfile } from '../model/token-response';
+import { AuthService } from './auth.service';
+import { CookieService } from 'ngx-cookie-service';
+import { ACCESS_TOKEN_KEY } from './token-storage.service';
 
 export const SETTING_KEY = 'setting';
 
@@ -15,22 +14,20 @@ export const SETTING_KEY = 'setting';
   providedIn: 'root'
 })
 export class SettingService {
-
-  setting: Setting = {darkMode: true};
+  setting: Setting = { darkMode: true };
   currentUser: UserProfile;
   private settingSubject: BehaviorSubject<Setting> = new BehaviorSubject(this.setting);
   public setting$: Observable<Setting> = this.settingSubject.asObservable();
   subscriptions: Subscription = new Subscription();
 
-  constructor(private http: HttpClient, private authService: AuthService,
-              private cookieService: CookieService) {
-    this.subscriptions.add(this.authService.currentUser$.subscribe(
-      next => {
+  constructor(private http: HttpClient, private authService: AuthService, private cookieService: CookieService) {
+    this.subscriptions.add(
+      this.authService.currentUser$.subscribe(next => {
         this.currentUser = next;
         console.log(this.currentUser);
         if (this.currentUser) {
           this.getSetting().subscribe(next1 => {
-            this.setting = {...this.setting, ...next1};
+            this.setting = { ...this.setting, ...next1 };
             this.settingSubject.next(this.setting);
             if (this.cookieService.check(ACCESS_TOKEN_KEY)) {
               localStorage.setItem(SETTING_KEY, JSON.stringify(this.setting));
@@ -39,8 +36,8 @@ export class SettingService {
             }
           });
         }
-      }
-    ));
+      })
+    );
     setTimeout(() => {
       document.body.classList.add(`animate-colors-transition`);
     }, 500);

@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {SongComponent} from './song/song.component';
-import {SongListComponent} from './song-list/song-list.component';
-import {UploadSongComponent} from './upload-song/upload-song.component';
-import {EditSongComponent} from './edit-song/edit-song.component';
-import {DeleteSongComponent} from './delete-song/delete-song.component';
-import {SongDetailComponent} from './song-detail/song-detail.component';
-import {AuthGuard} from '../guard/auth.guard';
-
+import { SongComponent } from './song/song.component';
+import { SongListComponent } from './song-list/song-list.component';
+import { UploadSongComponent } from './upload-song/upload-song.component';
+import { EditSongComponent } from './edit-song/edit-song.component';
+import { DeleteSongComponent } from './delete-song/delete-song.component';
+import { SongDetailComponent } from './song-detail/song-detail.component';
+import { AuthGuard } from '../guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -16,31 +15,31 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path:  '',
-    component:  SongComponent,
+    path: '',
+    component: SongComponent,
     children: [
       {
-        path:  'list',
-        component:  SongListComponent
+        path: 'list',
+        component: SongListComponent
       },
       {
-        path:  'upload',
+        path: 'upload',
         canActivate: [AuthGuard],
-        component:  UploadSongComponent
+        component: UploadSongComponent
       },
       {
-        path:  'edit',
+        path: 'edit',
         canActivate: [AuthGuard],
-        component:  EditSongComponent
+        component: EditSongComponent
       },
       {
-        path:  'delete',
+        path: 'delete',
         canActivate: [AuthGuard],
-        component:  DeleteSongComponent
+        component: DeleteSongComponent
       },
       {
-        path:  'detail',
-        component:  SongDetailComponent
+        path: 'detail',
+        component: SongDetailComponent
       }
     ]
   }
@@ -50,4 +49,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SongRoutingModule { }
+export class SongRoutingModule {}

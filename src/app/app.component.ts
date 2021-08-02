@@ -1,16 +1,21 @@
-import {Component} from '@angular/core';
-import {UserProfileService} from './service/user-profile.service';
-import {AuthService} from './service/auth.service';
-import {LocationStrategy} from '@angular/common';
-import {ToastService} from './shared/service/toast.service';
-import {LoadingService} from './shared/service/loading.service';
+import { Component } from '@angular/core';
+import { UserProfileService } from './service/user-profile.service';
+import { AuthService } from './service/auth.service';
+import { LocationStrategy } from '@angular/common';
+import { LoadingService } from './shared/service/loading.service';
+import { VgToastData } from 'ngx-vengeance-lib/src/lib/toast/vg-toast-data';
+import { VgToastService } from 'ngx-vengeance-lib/src/lib/toast/vg-toast.service';
+import { TOAST_TYPE } from 'ngx-vengeance-lib/src/lib/toast/vg-toast.config';
 
-@Component({selector: 'app-root', templateUrl: 'app.component.html'})
+@Component({ selector: 'app-root', templateUrl: 'app.component.html' })
 export class AppComponent {
-
-  constructor(private loadingService: LoadingService, private userService: UserProfileService,
-              private authService: AuthService, private location: LocationStrategy,
-              private toastService: ToastService) {
+  constructor(
+    private loadingService: LoadingService,
+    private userService: UserProfileService,
+    private authService: AuthService,
+    private location: LocationStrategy,
+    private toastService: VgToastService
+  ) {
     // this.loadingService.show({text: 'loading'});
     // setTimeout(() => {
     //   this.loadingService.hide();
@@ -32,5 +37,18 @@ export class AppComponent {
     // location.onPopState(() => {
     //   window.location.reload();
     // });
+
+    let count = 0;
+    const loop = setInterval(() => {
+      if (count === 5) {
+        clearInterval(loop);
+        return;
+      }
+      const data = new VgToastData();
+      data.title = 'Test title';
+      data.text = 'test vcl vcl vcl vclv vcvcvlcv vclvc dsd daljd fdj asdias dasijd asdkjnha asd vlcv cvlcv cvl ' + count;
+      this.toastService.show(data, { type: TOAST_TYPE.INFO, duration: 5000 });
+      count++;
+    }, 1000);
   }
 }

@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {UserProfileService} from '../../service/user-profile.service';
-import {finalize} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { UserProfileService } from '../../service/user-profile.service';
+import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password-submission',
@@ -21,7 +21,7 @@ export class ResetPasswordSubmissionComponent implements OnInit, OnDestroy {
   id: number;
   passwordResetToken: string;
 
-  constructor(private fb: FormBuilder, private userService: UserProfileService, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private userService: UserProfileService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(
@@ -40,36 +40,46 @@ export class ResetPasswordSubmissionComponent implements OnInit, OnDestroy {
         } else {
           this.message = '';
         }
-      }, error => {
+      },
+      error => {
         console.log(error);
         this.error = true;
       }
     );
-    this.resetPasswordForm = this.fb.group({
-      oldPassword: [null],
-      newPassword: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      repeatedNewPassword: ['', Validators.compose([Validators.required])]
-    }, {validator: MustMatch('newPassword', 'repeatedNewPassword')});
+    this.resetPasswordForm = this.fb.group(
+      {
+        oldPassword: [null],
+        newPassword: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+        repeatedNewPassword: ['', Validators.compose([Validators.required])]
+      },
+      { validator: MustMatch('newPassword', 'repeatedNewPassword') }
+    );
   }
 
   onSubmit() {
     this.submitted = true;
     if (this.resetPasswordForm.valid && this.passwordResetToken) {
       this.loading = true;
-      this.subscription.add(this.userService.resetPasswordSubmission(this.resetPasswordForm.value, this.id, this.passwordResetToken)
-        .pipe(finalize(() => {
-          this.loading = false;
-        }))
-        .subscribe(
-          () => {
-            this.error = false;
-            this.message = 'Password reset successfully.';
-          }, error => {
-            this.error = true;
-            this.message = 'Failed to reset password.';
-            console.log(error);
-          }
-        ));
+      this.subscription.add(
+        this.userService
+          .resetPasswordSubmission(this.resetPasswordForm.value, this.id, this.passwordResetToken)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+            })
+          )
+          .subscribe(
+            () => {
+              this.error = false;
+              this.message = 'Password reset successfully.';
+            },
+            error => {
+              this.error = true;
+              this.message = 'Failed to reset password.';
+              console.log(error);
+            }
+          )
+      );
     }
   }
 

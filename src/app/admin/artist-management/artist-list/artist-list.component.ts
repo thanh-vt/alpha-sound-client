@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
-import {Artist} from '../../../model/artist';
-import {Subscription} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ConfirmationModalComponent} from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
-import {ArtistEditComponent} from '../artist-edit/artist-edit.component';
-import {CreateArtistComponent} from '../create-artist/create-artist.component';
-import {LoadingService} from '../../../shared/service/loading.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ArtistService } from '../../../service/artist.service';
+import { Artist } from '../../../model/artist';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import { ArtistEditComponent } from '../artist-edit/artist-edit.component';
+import { CreateArtistComponent } from '../create-artist/create-artist.component';
+import { LoadingService } from '../../../shared/service/loading.service';
 
 @Component({
   selector: 'app-artist-list',
@@ -20,9 +20,12 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   loading: boolean;
 
-  constructor(private artistService: ArtistService, public translate: TranslateService,
-              private ngbModal: NgbModal, private loadingService: LoadingService) {
-  }
+  constructor(
+    private artistService: ArtistService,
+    public translate: TranslateService,
+    private ngbModal: NgbModal,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     this.getArtistList().finally();
@@ -46,7 +49,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       backdrop: 'static',
       centered: true,
       scrollable: true,
-      size: 'md',
+      size: 'md'
     });
     await ref.result;
     await this.getArtistList();
@@ -59,7 +62,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       backdrop: 'static',
       centered: true,
       scrollable: true,
-      size: 'md',
+      size: 'md'
     });
     ref.componentInstance.artist = artist;
     await ref.result;
@@ -69,13 +72,12 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   async openDeleteDialog(artist: Artist, event: Event): Promise<void> {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
-        animation: true,
-        backdrop: 'static',
-        centered: true,
-        scrollable: true,
-        size: 'md',
-      }
-    );
+      animation: true,
+      backdrop: 'static',
+      centered: true,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.subject = this.translate.instant('common.entity.artist');
     ref.componentInstance.name = artist.name;
     try {

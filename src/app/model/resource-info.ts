@@ -1,6 +1,6 @@
-import {StorageType} from '../constant/storage-type';
-import {MediaType} from '../constant/media-type';
-import {Status} from '../constant/status';
+import { StorageType } from '../constant/storage-type';
+import { MediaType } from '../constant/media-type';
+import { Status } from '../constant/status';
 
 export interface ResourceInfo {
   id: number;

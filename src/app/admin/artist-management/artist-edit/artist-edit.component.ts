@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ArtistService} from '../../../service/artist.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {Artist} from '../../../model/artist';
-import {Progress} from '../../../model/progress';
-import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
+import { ArtistService } from '../../../service/artist.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Artist } from '../../../model/artist';
+import { Progress } from '../../../model/progress';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-artist-edit',
@@ -13,7 +13,6 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./artist-edit.component.scss']
 })
 export class ArtistEditComponent implements OnInit {
-
   @Input() artist: Artist;
   artistUpdateForm: FormGroup;
   isImageFileChosen = false;
@@ -23,11 +22,9 @@ export class ArtistEditComponent implements OnInit {
   subscription: Subscription = new Subscription();
   message: string;
   error = false;
-  progress: Progress = {value: 0};
+  progress: Progress = { value: 0 };
 
-  constructor(private artistService: ArtistService, private fb: FormBuilder,
-              private ngbActiveModal: NgbActiveModal) {
-  }
+  constructor(private artistService: ArtistService, private fb: FormBuilder, private ngbActiveModal: NgbActiveModal) {}
 
   ngOnInit() {
     this.artistUpdateForm = this.fb.group({
@@ -54,7 +51,7 @@ export class ArtistEditComponent implements OnInit {
         console.log('Response header has been received!');
         break;
       case HttpEventType.UploadProgress:
-        progress.value = Math.round(event.loaded / event.total * 100);
+        progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
       case HttpEventType.Response:
@@ -73,7 +70,7 @@ export class ArtistEditComponent implements OnInit {
 
   onSubmit() {
     // const id = +this.route.snapshot.paramMap.get('id');
-    this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], {type: 'application/json'}));
+    this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], { type: 'application/json' }));
     this.formData.append('avatar', this.file);
     this.artistService.updateArtist(this.formData, this.artist.id).subscribe(
       (event: HttpEvent<any>) => {

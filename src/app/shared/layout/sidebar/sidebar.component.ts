@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Song} from '../../../model/song';
-import {ActivatedRoute} from '@angular/router';
-import {SongService} from '../../../service/song.service';
-import {PlayingQueueService} from '../../../service/playing-queue.service';
-import {Subscription} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Song } from '../../../model/song';
+import { ActivatedRoute } from '@angular/router';
+import { SongService } from '../../../service/song.service';
+import { PlayingQueueService } from '../../../service/playing-queue.service';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,8 +17,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   songList: Song[];
   subscription: Subscription = new Subscription();
 
-  constructor(private route: ActivatedRoute, private songService: SongService, private playingQueueService: PlayingQueueService) {
-  }
+  constructor(private route: ActivatedRoute, private songService: SongService, private playingQueueService: PlayingQueueService) {}
 
   ngOnInit() {
     this.goToPage();
@@ -31,10 +30,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   goToPage() {
     this.loading = true;
-    this.songService.getTop10SongsByFrequency()
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
+    this.songService
+      .getTop10SongsByFrequency()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
       .subscribe(
         result => {
           if (result != null) {
@@ -44,7 +46,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
               this.songList[index].isDisabled = false;
             });
           }
-        }, error => {
+        },
+        error => {
           this.message = 'An error has occurred.';
           console.log(error.message);
         }

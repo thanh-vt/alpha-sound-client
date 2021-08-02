@@ -7,25 +7,34 @@ import { PlaylistDetailComponent } from './playlist-detail/playlist-detail.compo
 import { CreatePlaylistComponent } from './create-playlist/create-playlist.component';
 import { DeletePlaylistComponent } from './delete-playlist/delete-playlist.component';
 import { PlaylistComponent } from './playlist/playlist.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ReactiveFormsModule} from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
 import { DeleteSongFromPlaylistComponent } from './delete-song-from-playlist/delete-song-from-playlist';
-import {SharedModule} from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { EditPlaylistComponent } from './edit-playlist/edit-playlist.component';
-import {TranslateModule} from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { VgControlModule } from 'ngx-vengeance-lib';
 
 @NgModule({
-  // tslint:disable-next-line:max-line-length
-  declarations: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, DeleteSongFromPlaylistComponent, EditPlaylistComponent],
-  imports: [
-    CommonModule,
-    PlaylistRoutingModule,
-    NgbModule,
-    ReactiveFormsModule,
-    SharedModule,
-    TranslateModule
+  // eslint-disable-next-line max-len
+  declarations: [
+    PlaylistListComponent,
+    PlaylistDetailComponent,
+    CreatePlaylistComponent,
+    DeletePlaylistComponent,
+    PlaylistComponent,
+    DeleteSongFromPlaylistComponent,
+    EditPlaylistComponent
   ],
-  // tslint:disable-next-line:max-line-length
-  exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, DeletePlaylistComponent, PlaylistComponent, DeleteSongFromPlaylistComponent],
+  imports: [CommonModule, PlaylistRoutingModule, NgbModule, ReactiveFormsModule, SharedModule, TranslateModule, VgControlModule],
+  // eslint-disable-next-line max-len
+  exports: [
+    PlaylistListComponent,
+    PlaylistDetailComponent,
+    CreatePlaylistComponent,
+    DeletePlaylistComponent,
+    PlaylistComponent,
+    DeleteSongFromPlaylistComponent
+  ]
 })
-export class PlaylistModule { }
+export class PlaylistModule {}

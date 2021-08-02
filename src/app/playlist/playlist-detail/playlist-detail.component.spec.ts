@@ -8,9 +8,8 @@ describe('PlaylistDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlaylistDetailComponent ]
-    })
-    .compileComponents();
+      declarations: [PlaylistDetailComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

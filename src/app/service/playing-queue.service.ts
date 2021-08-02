@@ -1,9 +1,9 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
-import {Song} from '../model/song';
-import {HttpClient} from '@angular/common/http';
-import {Track} from 'ngx-audio-player';
-import {SongService} from './song.service';
+import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { Song } from '../model/song';
+import { HttpClient } from '@angular/common/http';
+import { Track } from 'ngx-audio-player';
+import { SongService } from './song.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,12 @@ export class PlayingQueueService {
   subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient, private songService: SongService) {
-    this.queue = [{
+    this.queue = [
+      {
         title: '',
         link: ''
-      }];
+      }
+    ];
     this.currentQueueSubject = new BehaviorSubject<Track[]>(this.queue);
     this.currentQueue = this.currentQueueSubject.asObservable();
   }
@@ -38,10 +40,14 @@ export class PlayingQueueService {
       this.queue[0] = track;
       this.currentQueueSubject.next(this.queue);
       this.update.emit();
-      this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-        () => { },
-        error => { console.log(error); },
-      ));
+      this.subscription.add(
+        this.songService.listenToSong(song.id).subscribe(
+          () => {},
+          error => {
+            console.log(error);
+          }
+        )
+      );
     } else {
       let isExistence = false;
       for (const trackInQueue of this.queue) {
@@ -54,10 +60,14 @@ export class PlayingQueueService {
         this.queue.push(track);
         this.currentQueueSubject.next(this.queue);
         this.update.emit();
-        this.subscription.add(this.songService.listenToSong(song.id).subscribe(
-          () => { },
-          error => { console.log(error); },
-        ));
+        this.subscription.add(
+          this.songService.listenToSong(song.id).subscribe(
+            () => {},
+            error => {
+              console.log(error);
+            }
+          )
+        );
       }
     }
   }
