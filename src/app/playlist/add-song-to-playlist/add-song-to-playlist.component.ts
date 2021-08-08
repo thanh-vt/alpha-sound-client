@@ -63,7 +63,11 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
   openCreatePlaylistDialog() {
     const sub: Subscription = this.modalService
       .open(CreatePlaylistComponent, {
-        animation: true
+        animation: true,
+        backdrop: false,
+        centered: false,
+        scrollable: true,
+        size: 'md'
       })
       .closed.subscribe(next => {
         if (next) {

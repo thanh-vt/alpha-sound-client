@@ -2,12 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { ModalComponent } from '../../shared/component/modal/modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { UserProfile } from '../../model/token-response';
 import { AuthUtil } from '../../util/auth.util';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AdminLoginComponent } from '../admin-login/admin-login.component';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-admin',
@@ -18,8 +17,6 @@ export class AdminContainerComponent implements OnInit {
   currentUser: UserProfile;
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
-
-  @ViewChild(ModalComponent) loginModal: ModalComponent;
   active: 'top';
 
   constructor(
@@ -58,13 +55,12 @@ export class AdminContainerComponent implements OnInit {
   }
 
   popLoginFormUp(event) {
-    const ref = this.ngbModal.open(AdminLoginComponent, {
+    const ref = this.ngbModal.open(LoginComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
-    // this.loginModal.open(this.loginModal.content, event);
   }
 }

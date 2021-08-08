@@ -22,8 +22,8 @@ export class PlaylistService {
     return this.http.get<any>(`${environment.apiUrl}/playlist/list-to-add?song-id=${songId}`);
   }
 
-  editPlaylist(formGroup, playlistId: number) {
-    return this.http.put<any>(`${environment.apiUrl}/playlist/edit?id=${playlistId}`, formGroup);
+  editPlaylist(formGroup, playlistId: number): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/playlist/edit?id=${playlistId}`, formGroup);
   }
 
   deletePlaylist(id: number): Observable<HttpEvent<any>> {

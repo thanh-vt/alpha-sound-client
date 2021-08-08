@@ -1,51 +1,48 @@
-<app-modal [action]="'create'" [title]="'Create new artist' | translate" [darkThemeOn]="false">
-  <form [formGroup]="artistUploadForm" (ngSubmit)="onSubmit()" class="modal-body">
-    <div class="form-group">
-      <label for="artistName">{{ 'Artist Name' | translate }}</label>
-      <input type="text" class="form-control" id="artistName" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)" formControlName="name">
-      <div class="alert alert-danger" role="alert" *ngIf="artistUploadForm.get('name').hasError('required') && (artistUploadForm.get('name').touched || submitted)">
-        {{'Artist Name' | translate}}{{' '}}{{'must be filled' | translate}}
-      </div>
-      <div class="alert alert-danger" role="alert" *ngIf="artistUploadForm.get('name').hasError('minlength') && (artistUploadForm.get('name').touched || submitted)">
-        {{'Artist Name' | translate}}{{' '}}{{'must have at least' | translate}}{{' 4 '}}{{'characters' | translate}}
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="birthDate">{{ 'BirthDate' | translate }}</label>
-      <input type="date" class="form-control" id="birthDate" placeholder="yyyy-mm-dd" formControlName="birthDate">
-      <div class="alert alert-danger" role="alert"
-           *ngIf="artistUploadForm.get('birthDate').hasError('required') && (artistUploadForm.get('birthDate').touched || submitted)">
-        {{ 'BirthDate' | translate }}{{' '}}{{'must be picked' | translate}}
-      </div>
-    </div>
-    <label for="avatar">{{ 'Avatar' | translate }}</label>
-    <div class="form-group custom-file">
-      <label class="custom-file-label" *ngIf=!isImageFileChosen>{{ 'Choose File' | translate }}</label>
-      <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
-      <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
-    </div>
-    <div class="form-group my-2">
-      <label for="biography">{{ 'Biography' | translate }}</label>
-      <textarea class="form-control" id="biography" formControlName="biography"></textarea>
-    </div>
-    <div class="progress form-group" *ngIf="progress.value > 0">
-      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
-      </div>
-    </div>
-    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-         [class.alert-success]="!error">{{message}}
-    </div>
-  </form>
-  <div class="modal_footer">
-    <div class="row">
-      <div class="col-md-12 d-flex justify-content-center">
+<app-modal-wrapper [title]="'Create new artist' | translate" (closeAction)="close()">
+    <form modalBody [formGroup]="artistUploadForm" (ngSubmit)="onSubmit()" class="modal-body">
+        <div class="form-group">
+            <label for="artistName">{{ 'Artist Name' | translate }}</label>
+            <input type="text" class="form-control" id="artistName"
+                   [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)" formControlName="name">
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="artistUploadForm.get('name').hasError('required') && (artistUploadForm.get('name').touched || submitted)">
+                {{'Artist Name' | translate}}{{' '}}{{'must be filled' | translate}}
+            </div>
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="artistUploadForm.get('name').hasError('minlength') && (artistUploadForm.get('name').touched || submitted)">
+                {{'Artist Name' | translate}}{{' '}}{{'must have at least' | translate}}{{' 4 '}}{{'characters' | translate}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="birthDate">{{ 'BirthDate' | translate }}</label>
+            <input type="date" class="form-control" id="birthDate" placeholder="yyyy-mm-dd" formControlName="birthDate">
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="artistUploadForm.get('birthDate').hasError('required') && (artistUploadForm.get('birthDate').touched || submitted)">
+                {{ 'BirthDate' | translate }}{{' '}}{{'must be picked' | translate}}
+            </div>
+        </div>
+        <label for="avatar">{{ 'Avatar' | translate }}</label>
+        <div class="form-group custom-file">
+            <label class="custom-file-label" *ngIf=!isImageFileChosen>{{ 'Choose File' | translate }}</label>
+            <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
+            <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
+        </div>
+        <div class="form-group my-2">
+            <label for="biography">{{ 'Biography' | translate }}</label>
+            <textarea class="form-control" id="biography" formControlName="biography"></textarea>
+        </div>
+        <div class="progress form-group" *ngIf="progress.value > 0">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                 [style.width.%]="progress.value">
+            </div>
+        </div>
+    </form>
+    <ng-container modalFooter>
         <button type="submit" (click)="onSubmit()" ngbAutofocus class="btn btn-primary mr-2">
-          <span>{{ 'common.button.save' | translate }}</span>
+            <span>{{ 'common.button.save' | translate }}</span>
         </button>
         <button type="button" (click)="cancel()" class="btn btn-secondary">
-          <span>{{ 'common.button.cancel' | translate }}</span>
+            <span>{{ 'common.button.cancel' | translate }}</span>
         </button>
-      </div>
-    </div>
-  </div>
-</app-modal>
+    </ng-container>
+</app-modal-wrapper>

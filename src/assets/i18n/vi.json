@@ -116,7 +116,8 @@
       "song": "Bài hát",
       "album": "Album",
       "artist": "Nghệ sĩ",
-      "country": "Quốc gia"
+      "country": "Quốc gia",
+      "comment": "Bình luận"
     },
     "message": {
       "confirm_delete": "Are you sure that you want to remove {{subject}} {{name}}"

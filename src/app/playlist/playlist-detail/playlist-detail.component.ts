@@ -5,11 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { PlayingQueueService } from '../../service/playing-queue.service';
 import { Song } from '../../model/song';
 import { Playlist } from '../../model/playlist';
-import { Observable, of, Subscription } from 'rxjs';
-import { Validators } from '@angular/forms';
-import { Track } from 'ngx-audio-player';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -17,7 +18,6 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./playlist-detail.component.scss']
 })
 export class PlaylistDetailComponent implements OnInit, OnDestroy {
-  message: string;
   songList: Song[];
   playList: Playlist;
   subscription: Subscription = new Subscription();
@@ -29,6 +29,8 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     private songService: SongService,
     private route: ActivatedRoute,
     private playingQueueService: PlayingQueueService,
+    private modalService: NgbModal,
+    private toastService: VgToastService,
     public translate: TranslateService
   ) {}
 
@@ -68,7 +70,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
             }
           },
           error => {
-            this.message = 'An error has occurred.';
+            this.toastService.show({ text: 'An error has occurred' }, { type: TOAST_TYPE.ERROR });
             console.log(error.message);
           }
         )
@@ -84,6 +86,42 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       }
     }
     song.isDisabled = isDisabled;
+  }
+
+  openDeleteDialog(playlist: Playlist, song: Song) {
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: true,
+      size: 'md'
+    });
+    const comp: ConfirmationModalComponent = modalRef.componentInstance;
+    comp.subject = this.translate.instant('Do you want to delete playlist');
+    comp.name = playlist?.title;
+    comp.data = { playlist, song };
+    const sub: Subscription = modalRef.closed.subscribe((result: { song: Song; playlist: Playlist }) => {
+      if (result) {
+        this.loading = true;
+        this.songService
+          .deleteSongFromPlaylist(result.song?.id, result.playlist?.id)
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+            })
+          )
+          .subscribe(
+            () => {
+              this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
+            },
+            error => {
+              this.toastService.show({ text: 'Failed to remove song playlist' }, { type: TOAST_TYPE.ERROR });
+              console.log(error.message);
+            }
+          );
+      }
+      sub.unsubscribe();
+    });
   }
 
   ngOnDestroy(): void {

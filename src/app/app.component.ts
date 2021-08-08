@@ -3,9 +3,7 @@ import { UserProfileService } from './service/user-profile.service';
 import { AuthService } from './service/auth.service';
 import { LocationStrategy } from '@angular/common';
 import { LoadingService } from './shared/service/loading.service';
-import { VgToastData } from 'ngx-vengeance-lib/src/lib/toast/vg-toast-data';
-import { VgToastService } from 'ngx-vengeance-lib/src/lib/toast/vg-toast.service';
-import { TOAST_TYPE } from 'ngx-vengeance-lib/src/lib/toast/vg-toast.config';
+import { VgToastData, VgToastService, TOAST_TYPE } from 'ngx-vengeance-lib';
 
 @Component({ selector: 'app-root', templateUrl: 'app.component.html' })
 export class AppComponent {
@@ -37,18 +35,20 @@ export class AppComponent {
     // location.onPopState(() => {
     //   window.location.reload();
     // });
-
-    let count = 0;
-    const loop = setInterval(() => {
-      if (count === 5) {
-        clearInterval(loop);
-        return;
-      }
-      const data = new VgToastData();
-      data.title = 'Test title';
-      data.text = 'test vcl vcl vcl vclv vcvcvlcv vclvc dsd daljd fdj asdias dasijd asdkjnha asd vlcv cvlcv cvl ' + count;
-      this.toastService.show(data, { type: TOAST_TYPE.INFO, duration: 5000 });
-      count++;
-    }, 1000);
+    // let count = 0;
+    // const loop = setInterval(() => {
+    //   if (count === 5) {
+    //     clearInterval(loop);
+    //     return;
+    //   }
+    //   const data = new VgToastData();
+    //   data.title = 'Test title';
+    //   data.text = 'test vcl vcl vcl vclv vcvcvlcv vclvc dsd daljd fdj asdias dasijd asdkjnha asd vlcv cvlcv cvl ' + count;
+    //   this.toastService.show(data, {
+    //     type: TOAST_TYPE.ERROR,
+    //     duration: 5000
+    //   });
+    //   count++;
+    // }, 1000);
   }
 }

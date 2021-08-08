@@ -6,6 +6,7 @@ import { ConfirmationModalComponent } from '../../../shared/component/modal/conf
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { LoadingService } from '../../../shared/service/loading.service';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-song-list',
@@ -21,7 +22,8 @@ export class SongListComponent implements OnInit {
     private songService: SongService,
     private ngbModal: NgbModal,
     private translate: TranslateService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private toastService: VgToastService
   ) {}
 
   ngOnInit(): void {
@@ -43,21 +45,23 @@ export class SongListComponent implements OnInit {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
-    ref.componentInstance.subject = this.translate.instant('common.entity.artist');
+    ref.componentInstance.subject = this.translate.instant('common.entity.song');
     ref.componentInstance.name = song.title;
     try {
       const result = await ref.result;
       if (result) {
         this.loadingService.show();
         await this.songService.deleteSong(song?.id).toPromise();
+        this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
         await this.getSongList();
       }
     } catch (e) {
+      this.toastService.show({ text: 'Failed to delete song. An error has occurred' }, { type: TOAST_TYPE.ERROR });
       console.error(e);
     } finally {
       this.loadingService.hide();

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { PlaylistService } from '../../service/playlist.service';
+import { Playlist } from '../../model/playlist';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -12,52 +13,53 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './edit-playlist.component.html',
   styleUrls: ['./edit-playlist.component.scss']
 })
-export class EditPlaylistComponent implements OnInit, OnDestroy {
-  @Input() id: number;
-  @Input() playlistName: string;
+export class EditPlaylistComponent implements OnInit {
+  @Input() playlist: Playlist;
   playlistEditForm: FormGroup;
   loading = false;
-  error = false;
-  message: string;
-  @Output() editPlaylist = new EventEmitter();
-  subscription: Subscription = new Subscription();
+
   constructor(
+    private ngbActiveModal: NgbActiveModal,
     private modalService: NgbModal,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private toastService: VgToastService
   ) {}
 
   ngOnInit(): void {
     this.playlistEditForm = this.fb.group({
-      title: [this.playlistName, Validators.required]
+      title: [this.playlist?.title, Validators.required]
     });
   }
 
   onSubmit() {
-    this.subscription.add(
-      this.playlistService.editPlaylist(this.playlistEditForm.value, this.id).subscribe(
+    this.loading = true;
+    this.playlistService
+      .editPlaylist(this.playlistEditForm.value, this.playlist?.id)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
         () => {
-          this.error = false;
-          this.message = 'Playlist updated successfully.';
+          this.toastService.show({ text: 'Playlist updated successfully' }, { type: TOAST_TYPE.SUCCESS });
+          this.ngbActiveModal.close({
+            ...this.playlist,
+            title: this.playlistEditForm.value.title
+          });
         },
         error => {
-          this.error = true;
-          this.message = 'Failed to update playlist.';
+          this.toastService.show({ text: 'Failed to update playlist' }, { type: TOAST_TYPE.ERROR });
           console.log(error.message);
         }
-      )
-    );
+      );
   }
 
-  editAction() {
-    this.message = '';
-    this.editPlaylist.emit();
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  close() {
+    this.ngbActiveModal.close();
   }
 }

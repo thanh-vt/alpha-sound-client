@@ -1,4 +1,4 @@
-<app-modal [action]="'create'" [title]="'Create new country' | translate" [darkThemeOn]="false">
+<app-modal-wrapper [title]="'Create new country' | translate" (closeAction)="close()">
   <form [formGroup]="countryCreateForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="countryName">{{ 'Country Name' | translate }}</label>
@@ -20,12 +20,11 @@
       <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
       </div>
     </div>
-    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-         [class.alert-success]="!error">{{message}}
-    </div>
   </form>
-  <button type="submit" [disabled]="loading" (click)="onSubmit()" class="btn btn-primary modal_footer">
-    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-    <span>{{ 'Submit' | translate }}</span>
-  </button>
-</app-modal>
+  <ng-container modalFooter>
+    <button type="submit" [disabled]="loading" (click)="onSubmit()" class="btn btn-primary">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      <span>{{ 'Submit' | translate }}</span>
+    </button>
+  </ng-container>
+</app-modal-wrapper>

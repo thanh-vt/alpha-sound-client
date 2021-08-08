@@ -13,9 +13,9 @@ import { PlayingQueueService } from '../../service/playing-queue.service';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../model/token-response';
-import { CloseDialogueService } from '../../service/close-dialogue.service';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-song-detail',
@@ -40,7 +40,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private songService: SongService,
-    private closeDialogueService: CloseDialogueService,
     private userService: UserProfileService,
     private playlistService: PlaylistService,
     private playingQueueService: PlayingQueueService,
@@ -141,26 +140,47 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   openPlaylistDialog(songId: number, event: Event) {
     event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    const ref = this.modalService.open(AddSongToPlaylistComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.songId = songId;
   }
 
-  deleteComment(commentId: number) {
-    this.subscription.add(
-      this.songService.deleteComment(commentId).subscribe(
-        () => {
-          const deleteAction = setTimeout(() => {
-            this.retrieveSongList();
-            this.closeDialogueService.emitCloseDialogue(true);
-            clearTimeout(deleteAction);
-          }, 1500);
-        },
-        error => {
-          this.message = 'Cannot delete comment';
-          console.log(error.message);
-        }
-      )
-    );
+  openDeleteCommentDialog(commentId: number) {
+    const dialogRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: true,
+      size: 'md'
+    });
+    const comp: ConfirmationModalComponent = dialogRef.componentInstance;
+    comp.subject = this.translate.instant('common.entity.comment');
+    comp.data = commentId;
+    const sub: Subscription = dialogRef.closed.subscribe(result => {
+      if (result) {
+        this.songService
+          .deleteComment(commentId)
+          .pipe(
+            finalize(() => {
+              sub.unsubscribe();
+            })
+          )
+          .subscribe(
+            () => {
+              this.retrieveSongList();
+            },
+            error => {
+              this.message = 'Cannot delete comment';
+              console.log(error.message);
+            }
+          );
+      }
+    });
   }
 
   ngOnDestroy(): void {

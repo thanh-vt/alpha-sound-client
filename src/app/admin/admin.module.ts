@@ -11,10 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 @NgModule({
-  declarations: [AdminContainerComponent, DashboardComponent, LoginComponent, AdminLoginComponent],
+  declarations: [AdminContainerComponent, DashboardComponent, LoginComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

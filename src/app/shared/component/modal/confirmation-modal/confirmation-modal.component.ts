@@ -6,19 +6,18 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss']
 })
-export class ConfirmationModalComponent implements OnInit {
+export class ConfirmationModalComponent {
   subject: string;
   name: string;
+  data: any;
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 
-  ngOnInit(): void {}
-
   accept(): void {
-    this.ngbActiveModal.close(true);
+    this.ngbActiveModal.close(this.data);
   }
 
   close(): void {
-    this.ngbActiveModal.close(false);
+    this.ngbActiveModal.close(null);
   }
 }

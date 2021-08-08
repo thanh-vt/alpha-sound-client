@@ -61,7 +61,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   goToPage(i: number, scroll?: boolean) {
     this.loading = true;
     this.subscription.add(
-      this.songService.getUserFavoriteSongList(i, undefined).subscribe(
+      this.songService.getUserFavoriteSongList({ page: i }).subscribe(
         result => {
           if (result != null) {
             if (scroll) {
@@ -114,7 +114,13 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   openPlaylistDialog(songId: number, event: Event) {
     event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    const ref = this.modalService.open(AddSongToPlaylistComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.songId = songId;
   }
 

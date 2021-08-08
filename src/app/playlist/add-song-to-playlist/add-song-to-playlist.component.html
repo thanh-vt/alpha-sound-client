@@ -1,20 +1,17 @@
-<div class="modal-header">
-  <h5 class="modal-title" id="modal-basic-title">{{ 'Select a playlist to add' | translate }}</h5>
-  <button type="button" class="close" aria-label="Close" (click)="close()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <ng-container *ngIf="loading">
-    <app-spinner [type]="4"></app-spinner>
-  </ng-container>
-  <ul class="list-group">
-    <li *ngFor="let playlist of playlistList">
-      <a href="javascript:void(0);" (click)="addSongToPlaylist(songId, playlist.id)"
-         class="list-group-item list-group-item-action">{{ playlist.title }}</a>
-    </li>
-  </ul>
-</div>
-<div class="modal-footer">
-  <button (click)="openCreatePlaylistDialog()" class="btn btn-primary m-2 rounded-pill">{{ 'Create playlist' | translate }}</button>
-</div>
+<app-modal-wrapper [title]="'Select a playlist to add' | translate" (closeAction)="close()">
+    <div modalBody>
+        <ng-container *ngIf="loading">
+            <app-spinner [type]="4"></app-spinner>
+        </ng-container>
+        <ul class="list-group">
+            <li *ngFor="let playlist of playlistList">
+                <a href="javascript:void(0);" (click)="addSongToPlaylist(songId, playlist.id)"
+                   class="list-group-item list-group-item-action">{{ playlist.title }}</a>
+            </li>
+        </ul>
+    </div>
+    <ng-container modalFooter>
+        <button (click)="openCreatePlaylistDialog()"
+                class="btn btn-primary m-2 rounded-pill">{{ 'Create playlist' | translate }}</button>
+    </ng-container>
+</app-modal-wrapper>

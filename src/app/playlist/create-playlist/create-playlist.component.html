@@ -1,22 +1,18 @@
-<div class="modal-header">
-  <h5 class="modal-title" id="modal-basic-title">{{ 'Create playlist' | translate }}</h5>
-  <button type="button" class="close" aria-label="Close" (click)="close()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<form class="modal-body" [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
-  <div >
-    <div class="form-group">
-      <label for="playlist">{{ 'Title' | translate }}</label>
-      <div class="input-group">
-        <input id="playlist" class="form-control" [placeholder]="'Enter playlist title' | translate" formControlName="title">
+<app-modal-wrapper [title]="'Create playlist' | translate" (closeAction)="close()">
+  <form modalBody [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
+    <div >
+      <div class="form-group">
+        <label for="playlist">{{ 'Title' | translate }}</label>
+        <div class="input-group">
+          <input id="playlist" class="form-control" [placeholder]="'Enter playlist title' | translate" formControlName="title">
+        </div>
       </div>
     </div>
-  </div>
-</form>
-<div class="modal_footer d-flex justify-content-end">
-  <button (click)="onSubmit()" [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')"
-          class="btn btn-primary rounded-pill m-2">
-    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Save' | translate }}
-  </button>
-</div>
+  </form>
+  <ng-container modalFooter>
+    <button (click)="onSubmit()" [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')"
+            class="btn btn-primary rounded-pill mx-1">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Save' | translate }}
+    </button>
+  </ng-container>
+</app-modal-wrapper>

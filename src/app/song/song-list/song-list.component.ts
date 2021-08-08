@@ -54,7 +54,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   goToPage(i: number, scrollUp?: boolean) {
     this.subscription.add(
       this.songService
-        .getSongList(i, undefined)
+        .getSongList({ page: i })
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -121,7 +121,13 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   openPlaylistDialog(songId: number, event: Event) {
     event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    const ref = this.modalService.open(AddSongToPlaylistComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.songId = songId;
   }
 

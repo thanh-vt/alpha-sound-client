@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   goToPage() {
     this.loading = true;
     this.songService
-      .getTop10SongsByFrequency()
+      .getSongList({ page: 0, size: 10, sort: ['listening_frequency'] })
       .pipe(
         finalize(() => {
           this.loading = false;

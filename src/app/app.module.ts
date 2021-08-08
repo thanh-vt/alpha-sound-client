@@ -22,6 +22,7 @@ import { registerLocaleData } from '@angular/common';
 import { GestureConfig } from '../gesture-config';
 import { environment } from '../environments/environment';
 import { NotificationInterceptor } from './helper/notification-interceptor';
+import { VgToastModule } from 'ngx-vengeance-lib';
 
 registerLocaleData(localeVi);
 registerLocaleData(localeEn);
@@ -60,7 +61,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    HammerModule
+    HammerModule,
+    VgToastModule
     // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
     // JwtModule.forRoot(JWT_Module_Options)
   ],

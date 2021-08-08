@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Song } from '../model/song';
 import { PagingInfo } from '../model/paging-info';
+import { HttpUtil } from '../util/http.util';
 
 @Injectable({
   providedIn: 'root'
@@ -11,30 +12,9 @@ import { PagingInfo } from '../model/paging-info';
 export class SongService {
   constructor(private http: HttpClient) {}
 
-  getSongList(page?: number, sort?: string): Observable<PagingInfo<Song>> {
-    let requestUrl = `${environment.apiUrl}/song/list`;
-    if (page || sort) {
-      requestUrl = requestUrl + `?`;
-      if (page) {
-        requestUrl = requestUrl + `page=${page}`;
-        if (sort) {
-          requestUrl = requestUrl + `&`;
-        }
-      }
-      if (sort) {
-        requestUrl = requestUrl + `sort=${sort}`;
-      }
-    }
-    return this.http.get<PagingInfo<Song>>(requestUrl, { withCredentials: true });
-  }
-
-  getTop10SongsByFrequency(): Observable<PagingInfo<Song>> {
-    const params: HttpParams = new HttpParams({
-      fromObject: {
-        sort: 'listeningFrequency,desc'
-      }
-    });
-    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, { params });
+  getSongList(option?: { page?: number; size?: number; sort?: string[] }): Observable<PagingInfo<Song>> {
+    const requestUrl = `${environment.apiUrl}/song/list`;
+    return this.http.get<PagingInfo<Song>>(requestUrl, { params: HttpUtil.buildParams(option), withCredentials: true });
   }
 
   updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {
@@ -57,7 +37,6 @@ export class SongService {
   }
 
   deleteSongFromPlaylist(songId: number, playlistId: number): Observable<HttpEvent<any>> {
-    // eslint-disable-next-line max-len
     return this.http.put<any>(`${environment.apiUrl}/playlist/remove-song?song-id=${songId}&playlist-id=${playlistId}`, {
       responseType: 'text'
     });
@@ -102,25 +81,13 @@ export class SongService {
     return this.http.get<any>(`${environment.apiUrl}/song/uploaded/list`);
   }
 
-  getUserFavoriteSongList(page?: number, sort?: string) {
-    let requestUrl = `${environment.apiUrl}/song/my-song`;
-    if (page || sort) {
-      requestUrl = requestUrl + `?`;
-      if (page) {
-        requestUrl = requestUrl + `page=${page}`;
-        if (sort) {
-          requestUrl = requestUrl + `&`;
-        }
-      }
-      if (sort) {
-        requestUrl = requestUrl + `sort=${sort}`;
-      }
-    }
-    return this.http.get<any>(requestUrl);
+  getUserFavoriteSongList(option?: { page?: number; size?: number; sort?: string[] }) {
+    const requestUrl = `${environment.apiUrl}/song/my-song`;
+    return this.http.get<PagingInfo<Song>>(requestUrl, { params: HttpUtil.buildParams(option) });
   }
 
-  deleteSong(id: number) {
-    return this.http.delete<any>(`${environment.apiUrl}/song/delete?id=${id}`);
+  deleteSong(id: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/song/delete?id=${id}`);
   }
 
   commentSong(songId: number, comment: Comment) {

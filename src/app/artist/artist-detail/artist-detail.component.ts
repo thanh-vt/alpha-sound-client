@@ -192,7 +192,13 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
 
   openPlaylistDialog(songId: number, event: Event) {
     event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, { animation: true });
+    const ref = this.modalService.open(AddSongToPlaylistComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: true,
+      size: 'md'
+    });
     ref.componentInstance.songId = songId;
   }
 

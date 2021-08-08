@@ -5,6 +5,7 @@ import { Progress } from '../../../model/progress';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { CountryService } from '../../../service/country.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-create-country',
@@ -12,17 +13,15 @@ import { CountryService } from '../../../service/country.service';
   styleUrls: ['./create-country.component.scss']
 })
 export class CreateCountryComponent implements OnInit, OnDestroy {
-  constructor(private countryService: CountryService, private fb: FormBuilder) {}
+  constructor(private countryService: CountryService, private fb: FormBuilder, private ngbActiveModal: NgbActiveModal) {}
 
   submitted = false;
   isImageFileChosen = false;
   imageFileName = '';
-  message: string;
   countryCreateForm: FormGroup;
   formData = new FormData();
   file: any;
   subscription: Subscription = new Subscription();
-  error = false;
   progress: Progress = { value: 0 };
   loading: boolean;
 
@@ -52,7 +51,7 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
         progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         console.log('Country successfully created!', event.body);
         const complete = setTimeout(() => {
           progress.value = 0;
@@ -63,6 +62,7 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
           }, 2000);
         }, 500);
         return true;
+      }
     }
   }
 
@@ -82,13 +82,10 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
           .subscribe(
             (event: HttpEvent<any>) => {
               if (this.displayProgress(event, this.progress)) {
-                this.error = false;
-                this.message = 'Artist added successfully!';
+                this.ngbActiveModal.close();
               }
             },
             error => {
-              this.error = true;
-              this.message = 'Failed to add artist.';
               console.log(error.message);
             }
           )
@@ -96,11 +93,15 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   navigate() {
     location.replace('/admin/country-management');
+  }
+
+  close() {
+    this.ngbActiveModal.close();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

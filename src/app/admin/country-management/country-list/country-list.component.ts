@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateCountryComponent } from '../create-country/create-country.component';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { ArtistEditComponent } from '../../artist-management/artist-edit/artist-edit.component';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-country-list',
@@ -24,7 +25,8 @@ export class CountryListComponent implements OnInit {
     private countryService: CountryService,
     private translate: TranslateService,
     private loadingService: LoadingService,
-    private ngbModal: NgbModal
+    private ngbModal: NgbModal,
+    private toastService: VgToastService
   ) {}
 
   ngOnInit(): void {
@@ -48,8 +50,8 @@ export class CountryListComponent implements OnInit {
     event.stopPropagation();
     const ref = this.ngbModal.open(CreateCountryComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
@@ -61,8 +63,8 @@ export class CountryListComponent implements OnInit {
     event.stopPropagation();
     const ref = this.ngbModal.open(ArtistEditComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
@@ -75,8 +77,8 @@ export class CountryListComponent implements OnInit {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
@@ -87,9 +89,11 @@ export class CountryListComponent implements OnInit {
       if (result) {
         this.loadingService.show();
         await this.countryService.deleteCountry(country.id).toPromise();
+        this.toastService.show({ text: 'Country deleted successfully' }, { type: TOAST_TYPE.SUCCESS });
         await this.onScroll(this.pageNumber).finally();
       }
     } catch (e) {
+      this.toastService.show({ text: 'Failed to delete country. An error has occurred' }, { type: TOAST_TYPE.ERROR });
       console.error(e);
     } finally {
       this.loadingService.hide();

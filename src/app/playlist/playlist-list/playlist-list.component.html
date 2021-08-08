@@ -1,25 +1,28 @@
 <ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
+    <app-spinner [type]="4"></app-spinner>
 </ng-container>
-<app-create-playlist (createPlaylist)="refreshPlaylistList()" class="modal-body"></app-create-playlist>
+<button (click)="openCreateDialog($event)"
+        class="btn btn-primary m-2 rounded-pill">{{ 'Create playlist' | translate }}</button>
 <table class="table table-striped">
-  <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col" id="name">{{ 'Title' | translate }}</th>
-    <th scope="col"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}" *ngFor="let playlist of playlistList; index as i">
-    <td>{{ i + 1 }}</td>
-    <td><a [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}">{{ playlist.title }}</a></td>
-    <td class="text-center">
-      <app-delete-playlist [id]="playlist.id" [playlistName]="playlist.title" (deletePlaylist)="refreshPlaylistList()"></app-delete-playlist>
-      <app-edit-playlist [id]="playlist.id" [playlistName]="playlist.title" (editPlaylist)="refreshPlaylistList()"></app-edit-playlist>
-    </td>
-  </tr>
-  </tbody>
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col" id="name">{{ 'Title' | translate }}</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}"
+        *ngFor="let playlist of playlistList; index as i">
+        <td>{{ i + 1 }}</td>
+        <td><a [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}">{{ playlist.title }}</a></td>
+        <td class="text-center">
+            <button (click)="openEditDialog(playlist, $event)"
+                    class="btn btn-secondary m-2 btn-sm rounded-circle"><i class="fas fa-edit"></i></button>
+            <button (click)="openDeleteDialog(playlist, $event)"
+                    class="btn btn-danger btn-sm m-2 rounded-circle"><i class="fas fa-trash-alt"></i></button>
+        </td>
+    </tr>
+    </tbody>
 </table>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
 

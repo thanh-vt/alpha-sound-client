@@ -6,6 +6,7 @@ import { Progress } from '../../../model/progress';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-create-artist',
@@ -13,17 +14,20 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./create-artist.component.scss']
 })
 export class CreateArtistComponent implements OnInit, OnDestroy {
-  constructor(private artistService: ArtistService, private fb: FormBuilder, private ngbActiveModal: NgbActiveModal) {}
+  constructor(
+    private artistService: ArtistService,
+    private fb: FormBuilder,
+    private ngbActiveModal: NgbActiveModal,
+    private toastService: VgToastService
+  ) {}
 
   submitted = false;
   isImageFileChosen = false;
   imageFileName = '';
-  message: string;
   artistUploadForm: FormGroup;
   formData = new FormData();
   file: any;
   subscription: Subscription = new Subscription();
-  error = false;
   progress: Progress = { value: 0 };
   loading: boolean;
 
@@ -55,7 +59,7 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
         progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         console.log('Song successfully created!', event.body);
         const complete = setTimeout(() => {
           progress.value = 0;
@@ -66,6 +70,7 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
           }, 2000);
         }, 500);
         return true;
+      }
     }
   }
 
@@ -75,28 +80,24 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
       this.formData.append('artist', new Blob([JSON.stringify(this.artistUploadForm.value)], { type: 'application/json' }));
       this.formData.append('avatar', this.file);
       this.loading = true;
-      this.subscription.add(
-        this.artistService
-          .uploadArtist(this.formData)
-          .pipe(
-            finalize(() => {
-              this.loading = false;
-            })
-          )
-          .subscribe(
-            (event: HttpEvent<any>) => {
-              if (this.displayProgress(event, this.progress)) {
-                this.error = false;
-                this.message = 'Artist added successfully!';
-              }
-            },
-            error => {
-              this.error = true;
-              this.message = 'Failed to add artist.';
-              console.log(error.message);
+      this.artistService
+        .uploadArtist(this.formData)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(
+          (event: HttpEvent<any>) => {
+            if (this.displayProgress(event, this.progress)) {
+              this.toastService.show({ text: 'Artist added successfully!' }, { type: TOAST_TYPE.SUCCESS });
             }
-          )
-      );
+          },
+          error => {
+            this.toastService.show({ text: 'Failed to add artist' }, { type: TOAST_TYPE.SUCCESS });
+            console.log(error.message);
+          }
+        );
     }
   }
 
@@ -110,5 +111,9 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
 
   cancel() {
     this.ngbActiveModal.dismiss();
+  }
+
+  close() {
+    this.ngbActiveModal.close();
   }
 }

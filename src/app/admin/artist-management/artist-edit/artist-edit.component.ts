@@ -6,6 +6,7 @@ import { Artist } from '../../../model/artist';
 import { Progress } from '../../../model/progress';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-artist-edit',
@@ -20,11 +21,14 @@ export class ArtistEditComponent implements OnInit {
   formData = new FormData();
   file: any;
   subscription: Subscription = new Subscription();
-  message: string;
-  error = false;
   progress: Progress = { value: 0 };
 
-  constructor(private artistService: ArtistService, private fb: FormBuilder, private ngbActiveModal: NgbActiveModal) {}
+  constructor(
+    private artistService: ArtistService,
+    private fb: FormBuilder,
+    private ngbActiveModal: NgbActiveModal,
+    private toastService: VgToastService
+  ) {}
 
   ngOnInit() {
     this.artistUpdateForm = this.fb.group({
@@ -54,7 +58,7 @@ export class ArtistEditComponent implements OnInit {
         progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         console.log('Song successfully created!', event.body);
         const complete = setTimeout(() => {
           progress.value = 0;
@@ -65,6 +69,7 @@ export class ArtistEditComponent implements OnInit {
           }, 2000);
         }, 500);
         return true;
+      }
     }
   }
 
@@ -75,13 +80,11 @@ export class ArtistEditComponent implements OnInit {
     this.artistService.updateArtist(this.formData, this.artist.id).subscribe(
       (event: HttpEvent<any>) => {
         if (this.displayProgress(event, this.progress)) {
-          this.error = false;
-          this.message = 'Update artist successfully.';
+          this.toastService.show({ text: 'Update artist successfully' }, { type: TOAST_TYPE.SUCCESS });
         }
       },
       error => {
-        this.error = true;
-        this.message = 'Failed to update artist';
+        this.toastService.show({ text: 'Failed to update artist' }, { type: TOAST_TYPE.ERROR });
         console.log(error.message);
       }
     );

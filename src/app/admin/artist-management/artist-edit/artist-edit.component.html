@@ -1,5 +1,5 @@
-<app-modal [action]="'edit'" [title]="'Edit artist info' | translate" [darkThemeOn]="false">
-  <form *ngIf="artist" [formGroup]="artistUpdateForm" (ngSubmit)="onSubmit()" class="modal-body">
+<app-modal-wrapper [title]="'Edit artist info' | translate" (closeAction)="close()">
+  <form modalBody *ngIf="artist" [formGroup]="artistUpdateForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="artistName">{{ 'Artist Name' | translate }}</label>
       <input type="text" class="form-control" id="artistName" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)" formControlName="name">
@@ -32,19 +32,12 @@
       <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
       </div>
     </div>
-    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-         [class.alert-success]="!error">{{message}}
-    </div>
     <!-- Progress Bar -->
   </form>
-  <div class="modal_footer">
-    <div class="row">
-      <div class="col-md-12">
-        <button type="submit" ngbAutofocus class="btn btn-primary mr-2" (click)="onSubmit()">
-          {{ 'common.button.save' | translate }}</button>
-        <button class="btn btn-secondary" (click)="close()">
-          {{ 'common.button.cancel' | translate }}</button>
-      </div>
-    </div>
-  </div>
-</app-modal>
+  <ng-container modalFooter>
+    <button type="submit" ngbAutofocus class="btn btn-primary mr-2" (click)="onSubmit()">
+      {{ 'common.button.save' | translate }}</button>
+    <button class="btn btn-secondary" (click)="close()">
+      {{ 'common.button.cancel' | translate }}</button>
+  </ng-container>
+</app-modal-wrapper>

@@ -46,8 +46,8 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     const ref = this.ngbModal.open(CreateArtistComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
@@ -59,8 +59,8 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     const ref = this.ngbModal.open(ArtistEditComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });
@@ -73,8 +73,8 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
       animation: true,
-      backdrop: 'static',
-      centered: true,
+      backdrop: false,
+      centered: false,
       scrollable: true,
       size: 'md'
     });

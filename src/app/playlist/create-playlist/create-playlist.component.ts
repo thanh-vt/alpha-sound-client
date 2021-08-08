@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { PlaylistService } from '../../service/playlist.service';
-import { Subscription } from 'rxjs';
 import { ToastService } from '../../shared/service/toast.service';
 
 @Component({
@@ -15,7 +14,6 @@ import { ToastService } from '../../shared/service/toast.service';
 export class CreatePlaylistComponent implements OnInit {
   createPlaylistForm: FormGroup;
   loading = false;
-  subscription: Subscription = new Subscription();
 
   constructor(
     private modalService: NgbModal,
@@ -35,18 +33,16 @@ export class CreatePlaylistComponent implements OnInit {
   }
 
   onSubmit() {
-    this.subscription.add(
-      this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
-        next => {
-          this.toastService.success('Success', 'Playlist saved successfully');
-          this.ngbActiveModal.close(next);
-        },
-        error => {
-          console.log(error.message);
-          this.toastService.error('Error', 'Failed to save playlist: ' + error.message);
-          this.ngbActiveModal.close();
-        }
-      )
+    this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
+      next => {
+        this.toastService.success('Success', 'Playlist saved successfully');
+        this.ngbActiveModal.close(next);
+      },
+      error => {
+        console.log(error.message);
+        this.toastService.error('Error', 'Failed to save playlist: ' + error.message);
+        this.ngbActiveModal.close();
+      }
     );
   }
 

@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Artist } from '../../../model/artist';
 import { Progress } from '../../../model/progress';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { CountryService } from '../../../service/country.service';
 import { Country } from '../../../model/country';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-edit-country',
@@ -13,19 +14,22 @@ import { Country } from '../../../model/country';
   styleUrls: ['./edit-country.component.scss']
 })
 export class EditCountryComponent implements OnInit {
+  @Input() country: Country;
   countryUpdateForm: FormGroup;
   isImageFileChoosen = false;
   imageFileName = '';
   formData = new FormData();
   file: any;
   subscription: Subscription = new Subscription();
-  message: string;
-  @Input() country: Country;
-  error = false;
   submitted: boolean;
   progress: Progress = { value: 0 };
 
-  constructor(private countryService: CountryService, private fb: FormBuilder) {}
+  constructor(
+    private countryService: CountryService,
+    private fb: FormBuilder,
+    private ngbActiveModal: NgbActiveModal,
+    private toastService: VgToastService
+  ) {}
 
   ngOnInit() {
     this.countryUpdateForm = this.fb.group({
@@ -53,7 +57,7 @@ export class EditCountryComponent implements OnInit {
         progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         console.log('Song successfully created!', event.body);
         const complete = setTimeout(() => {
           progress.value = 0;
@@ -64,6 +68,7 @@ export class EditCountryComponent implements OnInit {
           }, 2000);
         }, 500);
         return true;
+      }
     }
   }
 
@@ -73,16 +78,19 @@ export class EditCountryComponent implements OnInit {
     this.countryService.updateCountry(this.formData, this.country.id).subscribe(
       (event: HttpEvent<any>) => {
         if (this.displayProgress(event, this.progress)) {
-          this.error = false;
-          this.message = 'Update artist successfully.';
+          this.toastService.show({ text: 'Update country successfully' }, { type: TOAST_TYPE.SUCCESS });
+          this.ngbActiveModal.close(this.country);
         }
       },
       error => {
-        this.error = true;
-        this.message = 'Failed to update artist';
+        this.toastService.show({ text: 'Failed to country artist' }, { type: TOAST_TYPE.ERROR });
         console.log(error.message);
       }
     );
+  }
+
+  close() {
+    this.ngbActiveModal.close();
   }
 
   navigate() {

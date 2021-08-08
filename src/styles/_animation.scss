@@ -1,3 +1,3 @@
-.animate-colors-transition * {
+.animate-colors-transition *:not(.cdk-overlay-container *):not(ngb-modal-window, ngb-modal-window *) {
   transition: color 2s, background 2s;
 }
