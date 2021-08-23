@@ -2,23 +2,36 @@
   <form [formGroup]="countryCreateForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="countryName">{{ 'Country Name' | translate }}</label>
-      <input type="text" class="form-control" id="countryName" [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)" formControlName="name">
-      <div class="alert alert-danger" role="alert" *ngIf="countryCreateForm.get('name').hasError('required') && (countryCreateForm.get('name').touched || submitted)">
+      <input
+        type="text"
+        class="form-control"
+        id="countryName"
+        [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)"
+        formControlName="name"
+      />
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="countryCreateForm.get('name').hasError('required') && (countryCreateForm.get('name').touched || submitted)"
+      >
         {{'Country Name' | translate}}{{' '}}{{'must be filled' | translate}}
       </div>
-      <div class="alert alert-danger" role="alert" *ngIf="countryCreateForm.get('name').hasError('minlength') && (countryCreateForm.get('name').touched || submitted)">
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="countryCreateForm.get('name').hasError('minlength') && (countryCreateForm.get('name').touched || submitted)"
+      >
         {{'Country Name' | translate}}{{' '}}{{'must have at least' | translate}}{{' 4 '}}{{'characters' | translate}}
       </div>
     </div>
     <label for="flag">{{ 'Flag' | translate }}</label>
     <div class="form-group custom-file">
-      <label class="custom-file-label" *ngIf=!isImageFileChosen>{{ 'Choose File' | translate }}</label>
-      <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
-      <input type="file" class="custom-file-input" id="flag" (change)="selectFile($event)">
+      <label class="custom-file-label" *ngIf="!isImageFileChosen">{{ 'Choose File' | translate }}</label>
+      <label class="custom-file-label" *ngIf="isImageFileChosen">{{ imageFileName }}</label>
+      <input type="file" class="custom-file-input" id="flag" (change)="selectFile($event)" />
     </div>
     <div class="progress form-group" *ngIf="progress.value > 0">
-      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
-      </div>
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
     </div>
   </form>
   <ng-container modalFooter>

@@ -5,7 +5,7 @@ import { Playlist } from '../../model/playlist';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { CreatePlaylistComponent } from '../create-playlist/create-playlist.component';
-import { ToastService } from '../../shared/service/toast.service';
+import { VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-add-song-to-playlist',
@@ -22,7 +22,7 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private playlistService: PlaylistService,
     private ngbActiveModal: NgbActiveModal,
-    private toastService: ToastService
+    private toastService: VgToastService
   ) {}
 
   ngOnInit(): void {
@@ -34,29 +34,18 @@ export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
           this.loading = false;
         })
       )
-      .subscribe(
-        result => {
-          this.playlistList = result;
-        },
-        error => {
-          console.log(error.message);
-          this.toastService.error('Error', 'An error has occurred.');
-        }
-      );
+      .subscribe(result => {
+        this.playlistList = result;
+      });
   }
 
   addSongToPlaylist(songId: number, playlistId: number) {
     this.subscription.add(
-      this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(
-        _ => {
-          this.toastService.success('Success', 'Song added to playlist');
-          const songToDeleteIndex: number = this.playlistList.findIndex(e => e.id === songId);
-          this.playlistList.splice(songToDeleteIndex, 1);
-        },
-        error => {
-          this.toastService.error('Error', 'Cannot add song to playlist. Cause: ' + error.message);
-        }
-      )
+      this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(_ => {
+        this.toastService.success({ title: 'Success', text: 'Song added to playlist' });
+        const songToDeleteIndex: number = this.playlistList.findIndex(e => e.id === songId);
+        this.playlistList.splice(songToDeleteIndex, 1);
+      })
     );
   }
 

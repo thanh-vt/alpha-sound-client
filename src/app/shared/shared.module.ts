@@ -9,12 +9,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { CardComponent } from './component/card/card.component';
 import { SpinnerComponent } from './component/spinner/spinner.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EnvPipe } from './pipe/env.pipe';
-import { ToastComponent } from './component/toast/toast.component';
 import { ConfirmationModalComponent } from './component/modal/confirmation-modal/confirmation-modal.component';
-import { LoadingComponent } from './layout/loading/loading.component';
 import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wrapper.component';
+import { VgControlModule, VgDirectivesModule, VgErrorDictService } from 'ngx-vengeance-lib';
+import { MusicPlayerComponent } from './layout/music-player/music-player.component';
+import { DurationPipe } from './layout/music-player/duration.pipe';
 
 @NgModule({
   declarations: [
@@ -25,12 +26,28 @@ import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wra
     CardComponent,
     SpinnerComponent,
     EnvPipe,
-    LoadingComponent,
-    ToastComponent,
     ConfirmationModalComponent,
-    ModalWrapperComponent
+    ModalWrapperComponent,
+    MusicPlayerComponent,
+    DurationPipe
   ],
-  imports: [CommonModule, NgbModule, RouterModule, ReactiveFormsModule, TranslateModule],
+  imports: [
+    CommonModule,
+    NgbModule,
+    RouterModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    VgDirectivesModule,
+    VgControlModule.forRoot({
+      provide: VgErrorDictService,
+      useFactory: (translateService: TranslateService) => {
+        const vgErrorDictService: VgErrorDictService = new VgErrorDictService();
+        vgErrorDictService.register('validation.message.', translateService, 'instant');
+        return vgErrorDictService;
+      },
+      deps: [TranslateService]
+    })
+  ],
   exports: [
     NavbarComponent,
     SidebarComponent,
@@ -39,8 +56,11 @@ import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wra
     CardComponent,
     SpinnerComponent,
     EnvPipe,
-    ToastComponent,
-    ModalWrapperComponent
+    ModalWrapperComponent,
+    VgControlModule,
+    MusicPlayerComponent,
+    NgbModule,
+    DurationPipe
   ]
 })
 export class SharedModule {}

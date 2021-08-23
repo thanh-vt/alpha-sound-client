@@ -77,17 +77,11 @@ export class ArtistEditComponent implements OnInit {
     // const id = +this.route.snapshot.paramMap.get('id');
     this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], { type: 'application/json' }));
     this.formData.append('avatar', this.file);
-    this.artistService.updateArtist(this.formData, this.artist.id).subscribe(
-      (event: HttpEvent<any>) => {
-        if (this.displayProgress(event, this.progress)) {
-          this.toastService.show({ text: 'Update artist successfully' }, { type: TOAST_TYPE.SUCCESS });
-        }
-      },
-      error => {
-        this.toastService.show({ text: 'Failed to update artist' }, { type: TOAST_TYPE.ERROR });
-        console.log(error.message);
+    this.artistService.updateArtist(this.formData, this.artist.id).subscribe((event: HttpEvent<any>) => {
+      if (this.displayProgress(event, this.progress)) {
+        this.toastService.show({ text: 'Update artist successfully' }, { type: TOAST_TYPE.SUCCESS });
       }
-    );
+    });
   }
 
   navigate() {

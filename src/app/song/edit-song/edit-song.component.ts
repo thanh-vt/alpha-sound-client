@@ -2,14 +2,14 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Song } from '../../model/song';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SongService } from '../../service/song.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Artist } from '../../model/artist';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ArtistService } from '../../service/artist.service';
 import { Subscription } from 'rxjs';
 import { Progress } from '../../model/progress';
-import { DatePipe } from '@angular/common';
+import { VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-edit-song',
@@ -20,7 +20,6 @@ export class EditSongComponent implements OnInit, OnDestroy {
   @Input() song: Song;
   songId: number;
   songUpdateForm: FormGroup;
-  message: string;
   formData = new FormData();
   filteredArtists: Artist[];
   isLoading = false;
@@ -28,7 +27,6 @@ export class EditSongComponent implements OnInit, OnDestroy {
   audioFileName = '';
   progress: Progress = { value: 0 };
   file: any;
-  error = false;
   subscription: Subscription = new Subscription();
   submitted: boolean;
 
@@ -48,18 +46,12 @@ export class EditSongComponent implements OnInit, OnDestroy {
     this.artists.removeAt(index);
   }
 
-  displayFn(artist: Artist) {
-    if (artist) {
-      return artist.name;
-    }
-  }
-
-  // eslint-disable-next-line max-len
   constructor(
     private route: ActivatedRoute,
     private songService: SongService,
     private fb: FormBuilder,
-    private artistService: ArtistService
+    private artistService: ArtistService,
+    private toastService: VgToastService
   ) {}
 
   ngOnInit() {
@@ -76,35 +68,20 @@ export class EditSongComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.route.queryParams.subscribe(params => {
         this.songId = params.id;
-        this.songService.songDetail(this.songId).subscribe(
-          result => {
-            this.song = result;
-            this.songUpdateForm = this.fb.group({
-              title: [this.song.title, Validators.required],
-              artists: this.fb.array([EditSongComponent.createArtist()]),
-              releaseDate: [this.song.releaseDate],
-              album: [null],
-              genres: [null],
-              tags: [null],
-              country: [null],
-              theme: [null]
-            });
-            this.songUpdateForm.get('artists').setValue(result.artists);
-            for (let i = 0; i < this.artists.length; i++) {
-              this.artists.controls[i].valueChanges
-                .pipe(
-                  debounceTime(300),
-                  tap(() => (this.isLoading = true)),
-                  switchMap(value => this.artistService.searchArtist(value).pipe(finalize(() => (this.isLoading = false))))
-                )
-                .subscribe(artists => (this.filteredArtists = artists));
-            }
-          },
-          error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
-          }
-        );
+        this.songService.songDetail(this.songId).subscribe(result => {
+          this.song = result;
+          this.songUpdateForm = this.fb.group({
+            title: [this.song.title, Validators.required],
+            artists: this.fb.array([EditSongComponent.createArtist()]),
+            releaseDate: [this.song.releaseDate],
+            album: [null],
+            genres: [null],
+            tags: [null],
+            country: [null],
+            theme: [null]
+          });
+          this.songUpdateForm.get('artists').setValue(result.artists);
+        });
       })
     );
   }
@@ -129,7 +106,7 @@ export class EditSongComponent implements OnInit, OnDestroy {
         progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         console.log('Song successfully created!', event.body);
         const complete = setTimeout(() => {
           progress.value = 0;
@@ -140,49 +117,32 @@ export class EditSongComponent implements OnInit, OnDestroy {
           }, 2000);
         }, 500);
         return true;
+      }
     }
   }
 
   onSubmit() {
     this.submitted = true;
     if (this.songUpdateForm.valid) {
-      this.subscription.add(
-        this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], { type: 'application/json' }))
-      );
+      this.formData.append('song', new Blob([JSON.stringify(this.songUpdateForm.value)], { type: 'application/json' }));
       this.formData.append('audio', this.file);
-      this.songService.updateSong(this.formData, this.songId).subscribe(
-        (event: HttpEvent<any>) => {
-          if (this.displayProgress(event, this.progress)) {
-            this.message = 'Song updated successfully!';
-          }
-        },
-        error => {
-          console.log(error.message);
-          this.message = 'Failed to upload song. Cause: Artist(s) not found in database.';
+      this.songService.updateSong(this.formData, this.songId).subscribe((event: HttpEvent<any>) => {
+        if (this.displayProgress(event, this.progress)) {
+          this.toastService.success({ text: 'Song updated successfully!' });
         }
-      );
+      });
     }
   }
 
-  suggestArtist(i) {
-    this.subscription.add(
-      this.artists.controls[i].valueChanges
-        .pipe(
-          debounceTime(300),
-          tap(() => (this.isLoading = true)),
-          switchMap(value =>
-            this.artistService.searchArtist(typeof value === 'string' ? value : '').pipe(finalize(() => (this.isLoading = false)))
-          )
-        )
-        .subscribe(artists => (this.filteredArtists = artists))
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  suggestArtist(value: string): void {
+    this.artistService.searchArtist(value).subscribe(artists => (this.filteredArtists = artists));
   }
 
   navigate() {
     location.replace('/uploaded');
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

@@ -44,19 +44,13 @@ export class EditPlaylistComponent implements OnInit {
           this.loading = false;
         })
       )
-      .subscribe(
-        () => {
-          this.toastService.show({ text: 'Playlist updated successfully' }, { type: TOAST_TYPE.SUCCESS });
-          this.ngbActiveModal.close({
-            ...this.playlist,
-            title: this.playlistEditForm.value.title
-          });
-        },
-        error => {
-          this.toastService.show({ text: 'Failed to update playlist' }, { type: TOAST_TYPE.ERROR });
-          console.log(error.message);
-        }
-      );
+      .subscribe(() => {
+        this.toastService.show({ text: 'Playlist updated successfully' }, { type: TOAST_TYPE.SUCCESS });
+        this.ngbActiveModal.close({
+          ...this.playlist,
+          title: this.playlistEditForm.value.title
+        });
+      });
   }
 
   close() {

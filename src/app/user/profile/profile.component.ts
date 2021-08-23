@@ -18,7 +18,6 @@ import { UserProfile } from '../../model/token-response';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   currentUser: UserProfile;
-  message: string;
   loading: boolean;
   showEditForm = false;
   username: string;
@@ -44,15 +43,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.username = this.route.snapshot.paramMap.get('id');
-    this.userService.getUserDetail(this.username).subscribe(
-      next => {
-        this.user = next;
-      },
-      error => {
-        this.message = 'Cannot retrieve user information.';
-        console.log(error.message);
-      }
-    );
+    this.userService.getUserDetail(this.username).subscribe(next => {
+      this.user = next;
+    });
   }
 
   ngOnDestroy(): void {

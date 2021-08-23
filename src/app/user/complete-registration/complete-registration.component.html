@@ -1,6 +1,18 @@
-<div class="alert text-center w-100 h-auto py-5" *ngIf="message" [class.alert-success]="!error" [class.alert-danger]="error">
-  <span>{{ message | translate }}</span><br>
-  <span *ngIf="!error">{{ 'You will be brought back to the homepage after ' | translate }}{{ countdownSec$ }}s<br></span>
-  <span *ngIf="!error">{{ 'Or' | translate }}<br></span>
-  <span>[</span><a [routerLink]="['/home']">{{ 'Click here to return back to the home page' | translate }}</a><span>]</span>
-</div>
+<ng-container [ngSwitch]="status">
+  <div class="alert alert-success text-center w-100 h-auto py-5" *ngSwitchCase="1">
+    <p>
+      {{ 'Account activated successfully' | translate }}<br />
+      {{ 'You will be brought back to the homepage after ' | translate }}<span>{{ countdownSec$ }}s<br /></span> {{ 'Or' | translate }}<br />
+      [<a [routerLink]="['/home']">{{ 'Click here to return back to the home page' | translate }}</a>]
+    </p>
+  </div>
+  <div class="alert alert-info" *ngSwitchCase="0">
+    <app-spinner [type]="4"></app-spinner>
+  </div>
+  <div class="alert alert-danger text-center w-100 h-auto py-5" *ngSwitchCase="-1">
+    <p>
+      {{ 'Account activated failed' | translate }}<br />
+      [<a [routerLink]="['/home']">{{ 'Click here to return back to the home page' | translate }}</a>]
+    </p>
+  </div>
+</ng-container>

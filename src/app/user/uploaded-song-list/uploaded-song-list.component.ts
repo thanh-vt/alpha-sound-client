@@ -6,6 +6,7 @@ import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/
 import { SongService } from '../../service/song.service';
 import { PlayingQueueService } from '../../service/playing-queue.service';
 import { TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-uploaded-song-list',
@@ -28,8 +29,14 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.subscription.add(
-      this.songService.getUserSongList().subscribe(
-        result => {
+      this.songService
+        .getUserSongList()
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(result => {
           if (result != null) {
             this.songList = result.content;
             this.songList.forEach((value, index) => {
@@ -39,14 +46,7 @@ export class UploadedSongListComponent implements OnInit, OnDestroy {
               this.checkDisabledSong(song);
             }
           }
-        },
-        error => {
-          this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-        },
-        () => {
-          this.loading = false;
-        }
-      )
+        })
     );
   }
 

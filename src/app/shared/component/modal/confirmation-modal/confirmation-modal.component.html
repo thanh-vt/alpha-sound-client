@@ -3,11 +3,7 @@
     <span>{{ 'common.message.confirm_delete' | translate: {subject: subject, name: name} }}</span>
   </div>
   <ng-container modalFooter>
-    <button class="btn btn-primary mr-2" (click)="accept()">
-      {{ 'common.button.accept' | translate}}
-    </button>
-    <button class="btn btn-primary" ngbAutofocus (click)="close()">
-      {{ 'common.button.cancel' | translate}}
-    </button>
+    <button class="btn btn-primary mr-2" (click)="accept()">{{ 'common.button.accept' | translate}}</button>
+    <button class="btn btn-primary" ngbAutofocus (click)="close()">{{ 'common.button.cancel' | translate}}</button>
   </ng-container>
 </app-modal-wrapper>

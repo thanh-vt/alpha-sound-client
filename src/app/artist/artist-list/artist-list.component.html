@@ -3,19 +3,20 @@
 </ng-container>
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
-    <th scope="col" id="avatar">{{ 'Avatar' | translate }}</th>
-  </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
+      <th scope="col" id="avatar">{{ 'Avatar' | translate }}</th>
+    </tr>
   </thead>
   <tbody>
-  <tr [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
-    <td>{{ i + 1 }}</td>
-    <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
-    <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}"><img class="avatar" [src]="artist.avatarUrl" alt=""></a></td>
-  </tr>
+    <tr [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
+      <td>{{ i + 1 }}</td>
+      <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
+      <td>
+        <a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}"><img class="avatar" [src]="artist.avatarUrl" alt="" /></a>
+      </td>
+    </tr>
   </tbody>
 </table>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
-
+<div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{ message | translate }}</div>

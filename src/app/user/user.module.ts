@@ -6,7 +6,6 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component';
 import { SharedModule } from '../shared/shared.module';
-import { NgxAudioPlayerModule } from 'ngx-audio-player';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { SongModule } from '../song/song.module';
 import { NgbButtonsModule, NgbDropdownModule, NgbPaginationModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CompleteRegistrationComponent } from './complete-registration/complete-registration.component';
 import { ResetPasswordSubmissionComponent } from './reset-password-submission/reset-password-submission.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     ReactiveFormsModule,
     UserRoutingModule,
     SharedModule,
-    NgxAudioPlayerModule,
     SongModule,
     NgbPaginationModule,
     NgbNavModule,
@@ -49,7 +48,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     NgbButtonsModule,
     PlaylistModule,
     TranslateModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    VgDirectivesModule,
+    VgControlModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent, SearchComponent]
 })

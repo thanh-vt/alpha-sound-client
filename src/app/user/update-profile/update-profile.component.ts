@@ -8,6 +8,7 @@ import { Progress } from '../../model/progress';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../model/token-response';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-update-profile',
@@ -19,10 +20,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   updateForm: FormGroup;
   loading: boolean;
   submitted = false;
-  error: boolean;
   file: any;
   formData = new FormData();
-  message: string;
   isImageFileChosen = false;
   imageFileName = '';
   progress: Progress = { value: 0 };
@@ -33,7 +32,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private userService: UserProfileService
+    private userService: UserProfileService,
+    private toastService: VgToastService
   ) {
     this.authService.currentUser$.subscribe(next => {
       this.currentUserToken = next;
@@ -42,25 +42,20 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription.add(
-      this.userService.getCurrentUserProfile().subscribe(
-        currentUser => {
-          this.currentUser = currentUser;
-          this.updateForm = this.fb.group({
-            username: [this.currentUser.user_name],
-            // eslint-disable-next-line max-len
-            password: [this.currentUser.password],
-            firstName: [this.currentUser.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-            lastName: [this.currentUser.last_name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-            phoneNumber: [this.currentUser.phone_number, Validators.required],
-            gender: [this.currentUser.gender, Validators.required],
-            birthDate: [this.currentUser.date_of_birth, Validators.required],
-            email: [this.currentUser.email]
-          });
-        },
-        error => {
-          console.log(error);
-        }
-      )
+      this.userService.getCurrentUserProfile().subscribe(currentUser => {
+        this.currentUser = currentUser;
+        this.updateForm = this.fb.group({
+          username: [this.currentUser.user_name],
+          // eslint-disable-next-line max-len
+          password: [this.currentUser.password],
+          firstName: [this.currentUser.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          lastName: [this.currentUser.last_name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+          phoneNumber: [this.currentUser.phone_number, Validators.required],
+          gender: [this.currentUser.gender, Validators.required],
+          birthDate: [this.currentUser.date_of_birth, Validators.required],
+          email: [this.currentUser.email]
+        });
+      })
     );
   }
 
@@ -84,7 +79,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
         progress.value = Math.round((event.loaded / event.total) * 100);
         console.log(`Uploaded! ${progress.value}%`);
         break;
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         console.log('Song successfully created!', event.body);
         const complete = setTimeout(() => {
           progress.value = 0;
@@ -95,6 +90,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
           }, 2000);
         }, 500);
         return true;
+      }
     }
   }
 
@@ -116,35 +112,19 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
               );
             })
           )
-          .subscribe(
-            () => {
-              this.error = false;
-              this.message = 'Profile updated successfully.';
-              if (this.isImageFileChosen) {
-                this.subscription.add(
-                  this.userService.uploadAvatar(this.formData).subscribe(
-                    (event: HttpEvent<any>) => {
-                      console.log(event);
-                      if (this.displayProgress(event, this.progress)) {
-                        this.error = false;
-                        this.message = 'Avatar uploaded successfully.';
-                      }
-                    },
-                    error => {
-                      this.error = true;
-                      this.message = 'Failed to upload avatar.';
-                      console.log(error);
-                    }
-                  )
-                );
-              }
-            },
-            error => {
-              this.error = true;
-              this.message = 'Failed to update profile.';
-              console.log(error);
+          .subscribe(() => {
+            this.toastService.show({ text: 'Profile updated successfully' }, { type: TOAST_TYPE.SUCCESS });
+            if (this.isImageFileChosen) {
+              this.subscription.add(
+                this.userService.uploadAvatar(this.formData).subscribe((event: HttpEvent<any>) => {
+                  console.log(event);
+                  if (this.displayProgress(event, this.progress)) {
+                    this.toastService.show({ text: 'Avatar uploaded successfully' }, { type: TOAST_TYPE.SUCCESS });
+                  }
+                })
+              );
             }
-          )
+          })
       );
     }
   }

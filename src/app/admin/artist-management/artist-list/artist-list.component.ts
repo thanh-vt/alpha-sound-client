@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { ArtistEditComponent } from '../artist-edit/artist-edit.component';
 import { CreateArtistComponent } from '../create-artist/create-artist.component';
-import { LoadingService } from '../../../shared/service/loading.service';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-artist-list',
@@ -24,7 +24,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     private artistService: ArtistService,
     public translate: TranslateService,
     private ngbModal: NgbModal,
-    private loadingService: LoadingService
+    private loaderService: VgLoaderService
   ) {}
 
   ngOnInit() {
@@ -33,12 +33,12 @@ export class ArtistListComponent implements OnInit, OnDestroy {
 
   async getArtistList(): Promise<void> {
     try {
-      this.loadingService.show();
+      this.loaderService.loading(true);
       this.artistList = (await this.artistService.artistList().toPromise()).content;
     } catch (e) {
       console.error(e);
     } finally {
-      this.loadingService.hide();
+      this.loaderService.loading(false);
     }
   }
 
@@ -83,14 +83,14 @@ export class ArtistListComponent implements OnInit, OnDestroy {
     try {
       const result = await ref.result;
       if (result) {
-        this.loadingService.show();
+        this.loaderService.loading(true);
         await this.artistService.deleteArtist(artist.id).toPromise();
         await this.getArtistList();
       }
     } catch (e) {
       console.error(e);
     } finally {
-      this.loadingService.hide();
+      this.loaderService.loading(false);
     }
   }
 

@@ -1,3 +1,3 @@
 export const CommonConstant = {
-  ROLE_ADMIN: 'ADMIN'
+  ROLE_ADMIN: 'ALPHA_SOUND_ADMIN'
 };

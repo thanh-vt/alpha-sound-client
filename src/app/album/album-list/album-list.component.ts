@@ -26,6 +26,7 @@ export class AlbumListComponent implements OnInit, OnDestroy {
   disabled: boolean;
   albumList: Album[];
   subscription: Subscription = new Subscription();
+
   constructor(
     private albumService: AlbumService,
     private userService: UserProfileService,
@@ -47,29 +48,23 @@ export class AlbumListComponent implements OnInit, OnDestroy {
             this.loading = false;
           })
         )
-        .subscribe(
-          result => {
-            if (result != null) {
-              window.scroll(0, 0);
-              this.albumList = result.content;
-              this.albumList.forEach((value, index) => {
-                this.albumList[index].isDisabled = false;
-              });
-              this.first = result.first;
-              this.last = result.last;
-              this.pageNumber = result.pageable.pageNumber;
-              this.pageSize = result.pageable.pageSize;
-              this.pages = new Array(result.totalPages);
-              for (let j = 0; j < this.pages.length; j++) {
-                this.pages[j] = { pageNumber: j };
-              }
+        .subscribe(result => {
+          if (result != null) {
+            window.scroll(0, 0);
+            this.albumList = result.content;
+            this.albumList.forEach((value, index) => {
+              this.albumList[index].isDisabled = false;
+            });
+            this.first = result.first;
+            this.last = result.last;
+            this.pageNumber = result.pageable.pageNumber;
+            this.pageSize = result.pageable.pageSize;
+            this.pages = new Array(result.totalPages);
+            for (let j = 0; j < this.pages.length; j++) {
+              this.pages[j] = { pageNumber: j };
             }
-          },
-          error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
           }
-        )
+        })
     );
   }
 

@@ -79,16 +79,11 @@ export class CreateCountryComponent implements OnInit, OnDestroy {
               this.loading = false;
             })
           )
-          .subscribe(
-            (event: HttpEvent<any>) => {
-              if (this.displayProgress(event, this.progress)) {
-                this.ngbActiveModal.close();
-              }
-            },
-            error => {
-              console.log(error.message);
+          .subscribe((event: HttpEvent<any>) => {
+            if (this.displayProgress(event, this.progress)) {
+              this.ngbActiveModal.close();
             }
-          )
+          })
       );
     }
   }

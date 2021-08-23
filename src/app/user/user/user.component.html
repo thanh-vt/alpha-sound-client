@@ -5,16 +5,12 @@
   <div class="container pb-5">
     <div class="row" style="margin-bottom: 8rem">
       <div class="col-sm-9 px-0" style="margin-top: 3rem">
-        <router-outlet class="col-sm-9 px-0" ></router-outlet>
+        <router-outlet class="col-sm-9 px-0"></router-outlet>
       </div>
-      <app-sidebar class="col-sm-3" ></app-sidebar>
+      <app-sidebar class="col-sm-3"></app-sidebar>
     </div>
   </div>
   <div class="fixed-bottom">
-    <ngx-audio-player [playlist]="msaapPlaylist" [displayTitle]="msaapDisplayTitle"
-                               [displayPlaylist]="msaapDisplayPlayList" [pageSizeOptions]="msaapPageSizeOptions"
-                               [displayVolumeControls]="msaapDisplayVolumeControls" [expanded]="expanded">
-    </ngx-audio-player>
+    <app-music-player></app-music-player>
   </div>
 </div>
-

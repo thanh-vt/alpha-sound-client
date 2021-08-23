@@ -49,12 +49,6 @@ export class AuthService {
       return;
     }
     this.tokenStorageService.clearToken();
-    this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe(
-      () => {},
-      error => {
-        console.log(error);
-      },
-      () => {}
-    );
+    this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe();
   }
 }

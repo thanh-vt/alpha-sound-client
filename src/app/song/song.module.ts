@@ -8,10 +8,6 @@ import { UploadSongComponent } from './upload-song/upload-song.component';
 import { EditSongComponent } from './edit-song/edit-song.component';
 import { DeleteSongComponent } from './delete-song/delete-song.component';
 import { SongComponent } from './song/song.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
 import { ListenSongComponent } from './listen-song/listen-song.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { VgControlModule, VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
 
 @NgModule({
   declarations: [
@@ -37,14 +34,13 @@ import { TranslateModule } from '@ngx-translate/core';
     SongRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatInputModule,
-    MatDatepickerModule,
     NgbModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
     SharedModule,
     PlaylistModule,
-    TranslateModule
+    TranslateModule,
+    VgControlModule,
+    VgDirectivesModule,
+    VgUtilModule
     // AutoSizeInputModule
   ],
   exports: [

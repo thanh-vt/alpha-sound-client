@@ -27,20 +27,15 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.searchText = params.name;
-      this.searchService.getSearchResults(this.searchText).subscribe(
-        result => {
-          this.songList = result.songs;
-          this.artistList = result.artists;
-          this.numberOfSongs = this.songList.length;
-          this.numberOfArtists = this.artistList.length;
-          if (this.numberOfSongs === 0 && this.numberOfArtists > 0) {
-            // this.searchTab.select('artists');
-          }
-        },
-        error => {
-          console.log(error);
+      this.searchService.getSearchResults(this.searchText).subscribe(result => {
+        this.songList = result.songs;
+        this.artistList = result.artists;
+        this.numberOfSongs = this.songList.length;
+        this.numberOfArtists = this.artistList.length;
+        if (this.numberOfSongs === 0 && this.numberOfArtists > 0) {
+          // this.searchTab.select('artists');
         }
-      );
+      });
     });
   }
 }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px;">
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Alpha Sound Admin</a>
   <input class="form-control form-control-dark w-100" type="text" [placeholder]="'Search' | translate" aria-label="Search" />
   <ul class="navbar-nav px-3">
@@ -13,7 +13,7 @@
 
 <div class="container-fluid" [class.dark-theme]="false">
   <div class="row mt-2">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar" >
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul ngbNav #nav="ngbNav" class="nav-pills" [(activeId)]="active" [orientation]="'vertical'">
           <li ngbNavItem="home">
@@ -27,7 +27,6 @@
               <i class="fas fa-border-all"></i>
               Table & Data
             </a>
-
           </li>
           <li ngbNavItem="user_management">
             <a ngbNavLink [routerLink]="['/admin/user-management']">
@@ -42,13 +41,13 @@
             </a>
           </li>
           <li ngbNavItem="artist_management">
-            <a ngbNavLink [routerLink]="['/admin/artist-management']" >
+            <a ngbNavLink [routerLink]="['/admin/artist-management']">
               <i class="fas fa-bars"></i>
               Artist Management
             </a>
           </li>
           <li ngbNavItem="country_management">
-            <a ngbNavLink [routerLink]="['/admin/country-management']" >
+            <a ngbNavLink [routerLink]="['/admin/country-management']">
               <i class="fas fa-bars"></i>
               Country Management
             </a>

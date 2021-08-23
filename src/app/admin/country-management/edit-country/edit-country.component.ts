@@ -75,18 +75,12 @@ export class EditCountryComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.formData.append('country', this.file);
-    this.countryService.updateCountry(this.formData, this.country.id).subscribe(
-      (event: HttpEvent<any>) => {
-        if (this.displayProgress(event, this.progress)) {
-          this.toastService.show({ text: 'Update country successfully' }, { type: TOAST_TYPE.SUCCESS });
-          this.ngbActiveModal.close(this.country);
-        }
-      },
-      error => {
-        this.toastService.show({ text: 'Failed to country artist' }, { type: TOAST_TYPE.ERROR });
-        console.log(error.message);
+    this.countryService.updateCountry(this.formData, this.country.id).subscribe((event: HttpEvent<any>) => {
+      if (this.displayProgress(event, this.progress)) {
+        this.toastService.show({ text: 'Update country successfully' }, { type: TOAST_TYPE.SUCCESS });
+        this.ngbActiveModal.close(this.country);
       }
-    );
+    });
   }
 
   close() {

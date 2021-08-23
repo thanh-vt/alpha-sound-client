@@ -2,22 +2,30 @@
   <form modalBody *ngIf="country" [formGroup]="countryUpdateForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="countryName">{{ 'Country Name' | translate }}</label>
-      <input type="text" class="form-control" id="countryName" [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)" formControlName="name">
-      <div class="alert alert-danger" role="alert"
-           *ngIf="countryUpdateForm.get('name').hasError('required') && (countryUpdateForm.get('name').touched || submitted)">
+      <input
+        type="text"
+        class="form-control"
+        id="countryName"
+        [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)"
+        formControlName="name"
+      />
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="countryUpdateForm.get('name').hasError('required') && (countryUpdateForm.get('name').touched || submitted)"
+      >
         {{ 'Country Name' | translate }}{{' '}}{{ 'must be filled' | translate }}
       </div>
     </div>
 
     <label for="avatar">{{ 'Flag' | translate }}</label>
     <div class="form-group custom-file">
-      <label class="custom-file-label" *ngIf=!isImageFileChoosen>{{ 'Choose file' | translate }}</label>
-      <label class="custom-file-label" *ngIf=isImageFileChoosen>{{ imageFileName }}</label>
-      <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
+      <label class="custom-file-label" *ngIf="!isImageFileChoosen">{{ 'Choose file' | translate }}</label>
+      <label class="custom-file-label" *ngIf="isImageFileChoosen">{{ imageFileName }}</label>
+      <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)" />
     </div>
     <div class="progress form-group" *ngIf="progress.value > 0">
-      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
-      </div>
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
     </div>
     <!-- Progress Bar -->
   </form>

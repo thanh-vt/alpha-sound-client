@@ -66,10 +66,6 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
                   this.checkDisabledSong(song);
                 }
               },
-              error => {
-                this.message = 'An error has occurred.';
-                console.log(error.message);
-              },
               () => {
                 for (const song of this.songList) {
                   if (song.loadingLikeButton) {

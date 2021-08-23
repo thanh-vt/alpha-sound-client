@@ -10,7 +10,7 @@ html, body {
 @import "styles/colors";
 @import "styles/animation";
 @import "styles/theme";
-@import "~ngx-vengeance-lib/src/styles";
+@import "~ngx-vengeance-lib/styles";
 
 .dropdown-toggle::after {
   display:none;

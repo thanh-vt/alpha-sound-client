@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Song } from '../model/song';
 import { PagingInfo } from '../model/paging-info';
 import { HttpUtil } from '../util/http.util';
+import { finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,28 +13,32 @@ import { HttpUtil } from '../util/http.util';
 export class SongService {
   constructor(private http: HttpClient) {}
 
-  getSongList(option?: { page?: number; size?: number; sort?: string[] }): Observable<PagingInfo<Song>> {
-    const requestUrl = `${environment.apiUrl}/song/list`;
-    return this.http.get<PagingInfo<Song>>(requestUrl, { params: HttpUtil.buildParams(option), withCredentials: true });
+  getSongList(params?: { page?: number; size?: number; sort?: string[] }): Observable<PagingInfo<Song>> {
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, { params, withCredentials: true });
   }
 
   updateSong(song: any, id: number): Observable<HttpEvent<Blob>> {
     return this.http.put<any>(`${environment.apiUrl}/song/edit?id=${id}`, song);
   }
 
-  uploadSong(formData): Observable<HttpEvent<any>> {
+  uploadSong(formData): Observable<HttpEvent<Blob>> {
     return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
-  addSongToPlaylist(songId: number, playlistId: number) {
-    return this.http.post(`${environment.apiUrl}/song/add-to-playlist?song-id=${songId}&playlist-id=${playlistId}`, '');
+  addSongToPlaylist(songId: number, playlistId: number): Observable<void> {
+    const params = {
+      songId,
+      playlistId
+    };
+    return this.http.post<void>(`${environment.apiUrl}/playlist/add-song`, params);
   }
 
   songDetail(id: number): Observable<Song> {
-    return this.http.get<any>(`${environment.apiUrl}/song/detail?id=${id}`);
+    const headers = { 'base-url': environment.apiUrl };
+    return this.http.get<Song>(`${environment.apiUrl}/song/detail?id=${id}`, { headers });
   }
 
   deleteSongFromPlaylist(songId: number, playlistId: number): Observable<HttpEvent<any>> {
@@ -52,17 +57,16 @@ export class SongService {
       isLiked
     };
     song.loadingLikeButton = true;
-    this.http.patch<any>(`${environment.apiUrl}/song/like`, params).subscribe(
-      _ => {
+    this.http
+      .patch<void>(`${environment.apiUrl}/song/like`, params)
+      .pipe(
+        finalize(() => {
+          song.loadingLikeButton = false;
+        })
+      )
+      .subscribe(_ => {
         song.liked = isLiked;
-      },
-      error => {
-        console.log(error);
-      },
-      () => {
-        song.loadingLikeButton = false;
-      }
-    );
+      });
   }
 
   patchLikes(songs: Song[]) {

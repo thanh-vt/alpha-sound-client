@@ -16,6 +16,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   loading: boolean;
   subscription: Subscription = new Subscription();
   artistList: Artist[] = [];
+
   constructor(private artistService: ArtistService) {}
 
   ngOnInit() {
@@ -28,20 +29,14 @@ export class ArtistListComponent implements OnInit, OnDestroy {
             this.loading = false;
           })
         )
-        .subscribe(
-          result => {
-            if (result != null) {
-              this.artistList = result.content;
-              this.artistList.forEach((value, index) => {
-                this.artistList[index].isDisabled = false;
-              });
-            }
-          },
-          error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
+        .subscribe(result => {
+          if (result != null) {
+            this.artistList = result.content;
+            this.artistList.forEach((value, index) => {
+              this.artistList[index].isDisabled = false;
+            });
           }
-        )
+        })
     );
   }
 

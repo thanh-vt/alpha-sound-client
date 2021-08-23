@@ -2,56 +2,59 @@
   <form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()" *ngIf="song" class="Lambda_card-body_3">
     <div class="form-group">
       <label for="songTitle">{{ 'Title' | translate }}</label>
-      <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title">
-      <div class="alert alert-danger" role="alert" *ngIf="songUpdateForm.get('title').hasError('required') && (songUpdateForm.get('title').touched || submitted)">
+      <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title" />
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="songUpdateForm.get('title').hasError('required') && (songUpdateForm.get('title').touched || submitted)"
+      >
         {{ 'Title' | translate }}{{' '}}{{'must be filled' | translate }}
       </div>
     </div>
-    <label for="artistName">{{ 'Artist' | translate }}</label>
-    <div formArrayName="artists" class="form-group"
-         *ngFor="let artist of artists.controls; let i = index;">
+    <label>{{ 'Artist' | translate }}</label>
+    <div formArrayName="artists" class="form-group" *ngFor="let artistControl of artists.controls; let i = index;">
       <div [formGroupName]="i">
-        <mat-form-field>
-          <input (focus)="suggestArtist(i)" matInput [matAutocomplete]="auto" id="artistName" class="form-control" type="text"
-                 [formControl]="artists.controls[i]" [placeholder]="('Artist' | translate) + ' ' + (i + 1)">
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngIf="isLoading" class="is-loading">
-              <mat-spinner diameter="25"></mat-spinner>
-            </mat-option>
-            <ng-container *ngIf="!isLoading">
-              <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
-                <span>{{ artist.name }}</span>
-                <small> | ID: {{artist.id}}</small>
-              </mat-option>
-            </ng-container>
-          </mat-autocomplete>
-        </mat-form-field>
-
+        <vg-auto-input
+          [formControl]="artistControl"
+          [nameField]="'name'"
+          [valueField]="''"
+          [imageField]="'avatarUrl'"
+          [searchResults]="filteredArtists"
+          (onChangeText)="suggestArtist($event)"
+        ></vg-auto-input>
+        <vg-error-section [label]="('common.label.artist' | translate) + '#' + (i + 1)" [control]="artistControl"></vg-error-section>
         <button type="button" class="btn btn-info" (click)="addArtist()">+</button>
-        <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-
-        </button>
+        <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-</button>
       </div>
     </div>
 
     <div class="form-group">
       <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-      <input [value]="song.releaseDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="releaseDate" placeholder="yyyy-mm-dd" formControlName="releaseDate">
-      <div class="alert alert-danger" role="alert"
-           *ngIf="songUpdateForm.get('releaseDate').hasError('required') && (songUpdateForm.get('releaseDate').touched || submitted)">
+      <input
+        [value]="song.releaseDate | date: 'yyyy-MM-dd'"
+        type="date"
+        class="form-control"
+        id="releaseDate"
+        placeholder="yyyy-mm-dd"
+        formControlName="releaseDate"
+      />
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="songUpdateForm.get('releaseDate').hasError('required') && (songUpdateForm.get('releaseDate').touched || submitted)"
+      >
         {{ 'Release Date' | translate }}{{' '}}{{'must be picked' | translate }}
       </div>
     </div>
     <label for="audio">{{ 'Audio File' | translate }}</label>
     <div class="form-group custom-file">
-      <label class="custom-file-label" *ngIf=!isAudioFileChosen>{{ 'Choose file' | translate }}</label>
-      <label class="custom-file-label" *ngIf=isAudioFileChosen>{{ audioFileName }}</label>
-      <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)">
+      <label class="custom-file-label" *ngIf="!isAudioFileChosen">{{ 'Choose file' | translate }}</label>
+      <label class="custom-file-label" *ngIf="isAudioFileChosen">{{ audioFileName }}</label>
+      <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)" />
     </div>
     <button type="submit" class="btn btn-primary rounded-pill my-2 float-right">{{ 'Submit' | translate }}</button>
     <div class="progress form-group" *ngIf="progress.value > 0">
-      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
-      </div>
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
     </div>
-    <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error" [class.alert-success]="!error">{{ message | translate}}</div>
   </form>
 </app-card>

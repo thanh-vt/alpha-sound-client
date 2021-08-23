@@ -2,42 +2,50 @@
   <form modalBody *ngIf="artist" [formGroup]="artistUpdateForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="form-group">
       <label for="artistName">{{ 'Artist Name' | translate }}</label>
-      <input type="text" class="form-control" id="artistName" [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)" formControlName="name">
-      <div class="alert alert-danger" role="alert"
-           *ngIf="artistUpdateForm.get('name').hasError('required') && artistUpdateForm.get('name').touched">
+      <input
+        type="text"
+        class="form-control"
+        id="artistName"
+        [placeholder]="('Enter' | translate) + ' ' + ('Artist Name' | translate)"
+        formControlName="name"
+      />
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="artistUpdateForm.get('name').hasError('required') && artistUpdateForm.get('name').touched"
+      >
         {{ 'Artist Name' | translate }}{{' '}}{{ 'must be filled' | translate }}
       </div>
     </div>
     <div class="form-group">
       <label for="birthDate">{{ 'BirthDate' | translate }}</label>
-      <input [value]="artist.birthDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" formControlName="birthDate">
-      <div class="alert alert-danger" role="alert"
-           *ngIf="artistUpdateForm.get('birthDate').hasError('required') && artistUpdateForm.get('birthDate').touched">
+      <input [value]="artist.birthDate | date: 'yyyy-MM-dd'" type="date" class="form-control" id="birthDate" formControlName="birthDate" />
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="artistUpdateForm.get('birthDate').hasError('required') && artistUpdateForm.get('birthDate').touched"
+      >
         {{ 'BirthDate' | translate }}{{' '}}{{ 'must be filled' | translate }}
       </div>
     </div>
 
     <label for="avatar">{{ 'Avatar' | translate }}</label>
     <div class="form-group custom-file">
-
-      <label class="custom-file-label" *ngIf=!isImageFileChosen>{{ 'Choose file' | translate }}</label>
-      <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
-      <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
+      <label class="custom-file-label" *ngIf="!isImageFileChosen">{{ 'Choose file' | translate }}</label>
+      <label class="custom-file-label" *ngIf="isImageFileChosen">{{ imageFileName }}</label>
+      <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)" />
     </div>
     <div class="form-group">
       <label for="biography"></label>
       <textarea class="form-control" id="biography" formControlName="biography"></textarea>
     </div>
     <div class="progress form-group" *ngIf="progress.value > 0">
-      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
-      </div>
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
     </div>
     <!-- Progress Bar -->
   </form>
   <ng-container modalFooter>
-    <button type="submit" ngbAutofocus class="btn btn-primary mr-2" (click)="onSubmit()">
-      {{ 'common.button.save' | translate }}</button>
-    <button class="btn btn-secondary" (click)="close()">
-      {{ 'common.button.cancel' | translate }}</button>
+    <button type="submit" ngbAutofocus class="btn btn-primary mr-2" (click)="onSubmit()">{{ 'common.button.save' | translate }}</button>
+    <button class="btn btn-secondary" (click)="close()">{{ 'common.button.cancel' | translate }}</button>
   </ng-container>
 </app-modal-wrapper>

@@ -24,7 +24,6 @@ export class SettingService {
     this.subscriptions.add(
       this.authService.currentUser$.subscribe(next => {
         this.currentUser = next;
-        console.log(this.currentUser);
         if (this.currentUser) {
           this.getSetting().subscribe(next1 => {
             this.setting = { ...this.setting, ...next1 };
@@ -64,10 +63,10 @@ export class SettingService {
   applySetting(): void {
     this.http.patch<void>(`${environment.apiUrl}/setting`, this.setting).subscribe(
       () => {
-        console.log('Setting applied successfully.');
+        console.debug('Setting applied successfully.');
       },
       () => {
-        console.log('Failed to apply setting.');
+        console.debug('Failed to apply setting.');
       }
     );
   }

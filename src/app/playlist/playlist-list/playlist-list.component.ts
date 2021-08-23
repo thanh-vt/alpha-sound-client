@@ -41,22 +41,16 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
             this.loading = false;
           })
         )
-        .subscribe(
-          result => {
-            if (result != null) {
-              this.playlistList = result.content;
-              this.playlistList.forEach((value, index) => {
-                this.playlistList[index].isDisabled = false;
-              });
-            } else {
-              this.playlistList = null;
-            }
-          },
-          error => {
-            this.toastService.show({ text: 'An error has occurred' }, { type: TOAST_TYPE.ERROR });
-            console.log(error.message);
+        .subscribe(result => {
+          if (result != null) {
+            this.playlistList = result.content;
+            this.playlistList.forEach((value, index) => {
+              this.playlistList[index].isDisabled = false;
+            });
+          } else {
+            this.playlistList = null;
           }
-        )
+        })
     );
   }
 
@@ -117,17 +111,11 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
               this.loading = false;
             })
           )
-          .subscribe(
-            () => {
-              this.toastService.show({ text: 'Playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
-              const index = this.playlistList.indexOf(playlist);
-              this.playlistList.splice(index, 1);
-            },
-            error => {
-              this.toastService.show({ text: 'Failed to remove playlist' }, { type: TOAST_TYPE.ERROR });
-              console.log(error.message);
-            }
-          );
+          .subscribe(() => {
+            this.toastService.show({ text: 'Playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
+            const index = this.playlistList.indexOf(playlist);
+            this.playlistList.splice(index, 1);
+          });
       }
       sub.unsubscribe();
     });

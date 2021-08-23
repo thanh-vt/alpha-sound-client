@@ -55,11 +55,10 @@
   "Image File": "Image File",
   "Cover": "Cover",
   "Multiple tags separated by commas": "Multiple tags separated by commas",
-  "Comment":"Comment",
-  "Leave comment here":"Leave comment here",
+  "Comment": "Comment",
+  "Leave comment here": "Leave comment here",
   "Search result for:": "Search result for:",
   "Dark Mode": "Dark Mode",
-
   "Username": "Username",
   "Password": "Password",
   "Edit Profile": "Edit Profile",
@@ -84,7 +83,6 @@
   "Add to Queue": "Add to queue",
   "Add to Playlist": "Add to Playlist",
   "Choose a country": "Choose a country",
-
   "Playlist saved successfully.": "Playlist created successfully.",
   "Failed to save playlist.": "Failed to create playlist.",
   "Playlist updated successfully.": "Playlist updated successfully.",
@@ -117,6 +115,36 @@
       "artist": "Artist",
       "country": "Country"
     },
+    "label": {
+      "username": "Username",
+      "password": "Password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "birthDate": "Date of birth",
+      "phoneNumber": "Phone number",
+      "email": "Thư điện tử",
+      "newPassword": "New password",
+      "repeatedNewPassword": "Re-enter password"
+    },
+    "placeholder": {
+      "username": "Enter username",
+      "password": "Enter password",
+      "firstName": "Enter first name",
+      "lastName": "Enter last name",
+      "birthDate": "Choose date of birth",
+      "phoneNumber": "Enter phone number",
+      "email": "Enter email",
+      "newPassword": "Enter new password",
+      "repeatedNewPassword": "Re-enter password"
+    },
+    "radio": {
+      "gender": {
+        "male": "Male",
+        "female": "Female",
+        "bisexual": "Bisexual",
+        "unknown": "Unknown"
+      }
+    },
     "message": {
       "confirm_delete": "Are you sure that you want to remove {{subject}} {{name}}"
     },
@@ -125,6 +153,33 @@
       "save": "Save",
       "cancel": "Cancel",
       "accept": "Accept"
+    },
+    "error": {
+      "connection_problem": "Error while attempting connect to server",
+      "unknown": "An unknown error has occurred"
+    }
+  },
+  "validation": {
+    "message": {
+      "required": "{{label}} is required",
+      "max": "Maximum value allowed of {{label}} is {{max}}, currently {{actual}}",
+      "min": "Minimum value allowed of {{label}} is {{min}}, currently {{actual}}",
+      "minlength": "{{label}} must have at least {{requiredLength}} characters, currently {{actualLength}}",
+      "maxlength": "{{label}} can only have a maximum of {{requiredLength}} characters, currently {{actualLength}}",
+      "email": "Invalid email",
+      "mustMatch": "Re-entered password does not match"
+    }
+  },
+  "feature": {
+    "login": {
+      "username": "Username",
+      "password": "Password"
+    },
+    "register": {
+      "successMsg": "User registered successfully. We have sent you an email, please check your it and click on the confirmation link to activate your account"
+    },
+    "resetPassword": {
+      "successMsg": "We've sent you an email. Please check it and click the given URL to complete password reset"
     }
   },
   "An error has occurred.": "An error has occurred.",
@@ -133,7 +188,6 @@
   "Failed to reset password.": "Failed to reset password.",
   "Your login session has expired.": "Your login session has expired.",
   "Please try to log in again.": "Please try to log in again.",
-
   "must be filled": "must be filled",
   "must be picked": "must be picked",
   "must have at least": "must have at least",

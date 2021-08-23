@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { PlaylistService } from '../../service/playlist.service';
-import { ToastService } from '../../shared/service/toast.service';
+import { VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-create-playlist',
@@ -23,7 +23,7 @@ export class CreatePlaylistComponent implements OnInit {
     private authService: AuthService,
     private playlistService: PlaylistService,
     private ngbActiveModal: NgbActiveModal,
-    private toastService: ToastService
+    private toastService: VgToastService
   ) {}
 
   ngOnInit(): void {
@@ -33,17 +33,10 @@ export class CreatePlaylistComponent implements OnInit {
   }
 
   onSubmit() {
-    this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(
-      next => {
-        this.toastService.success('Success', 'Playlist saved successfully');
-        this.ngbActiveModal.close(next);
-      },
-      error => {
-        console.log(error.message);
-        this.toastService.error('Error', 'Failed to save playlist: ' + error.message);
-        this.ngbActiveModal.close();
-      }
-    );
+    this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(next => {
+      this.toastService.success({ title: 'Success', text: 'Playlist saved successfully' });
+      this.ngbActiveModal.close(next);
+    });
   }
 
   close() {

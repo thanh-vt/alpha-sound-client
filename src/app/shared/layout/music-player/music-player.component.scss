@@ -1,0 +1,243 @@
+/* Font Family
+================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+
+
+/* Global Styles
+================================================== */
+
+html,body {
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+  background-color:#0665a2;
+  color:#fff;
+  font-size:1rem;
+  font-family:"Source Sans Pro", arial, sans-serif;
+  font-weight:400;
+  letter-spacing:.025rem;
+  line-height:1.618;
+  padding:1rem 0;
+}
+
+*,::before,::after {
+  box-sizing:border-box;
+}
+
+* {
+  -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color:transparent;
+}
+
+
+/* Setup
+================================================== */
+
+.audio-player-container { position:relative; margin:0 auto; background-color: #daa520; width:100%; }
+.column { width:inherit; }
+
+
+/* Typography / Links
+================================================== */
+
+p { color:#fff; display:block; font-size:.9rem; font-weight:400; margin:0 0 2px; }
+
+a,a:visited { color:#8cc3e6; outline:0; text-decoration:underline; }
+a:hover,a:focus { color:#bbdef5; }
+p a,p a:visited { line-height:inherit; }
+
+
+/* Misc.
+================================================== */
+
+//.add-bottom { margin-bottom:2rem !important; }
+.left { float:left; }
+.right { float:right; }
+.center { text-align:center; }
+.hidden { display:none; }
+
+.no-support {
+  margin:2rem auto;
+  text-align:center;
+  width:90%;
+}
+
+
+/* Audio Player Styles
+================================================== */
+
+audio {
+  display:none;
+}
+
+#audiowrap,
+#plwrap {
+  margin:0 auto;
+}
+
+#tracks {
+  font-size:0;
+  position:relative;
+  text-align:center;
+}
+
+#nowPlay {
+  display:block;
+  font-size:0;
+}
+
+#nowPlay span {
+  display:inline-block;
+  font-size:1.05rem;
+  vertical-align:top;
+}
+
+#nowPlay span#npAction {
+  padding:21px;
+  width:30%;
+}
+
+#nowPlay span#npTitle {
+  padding:21px;
+  text-align:right;
+  width:70%;
+}
+
+#plList {
+  width: 80%;
+  height: 30rem;
+  overflow-y: scroll;
+  background-color: #daa520;
+}
+
+#plList li {
+  background-color: #daa520;
+  cursor:pointer;
+  display:block;
+  margin:0;
+  padding:21px 0;
+}
+
+#plList li:hover {
+  background-color:rgba(0, 0, 0, .2);
+}
+
+.plItem {
+  position:relative;
+}
+
+.plTitle {
+  left:50px;
+  overflow:hidden;
+  position:absolute;
+  right:65px;
+  text-overflow:ellipsis;
+  top:0;
+  white-space:nowrap;
+}
+
+.plNum {
+  padding-left:21px;
+  width:25px;
+}
+
+.plLength {
+  padding-left:21px;
+  position:absolute;
+  right:21px;
+  top:0;
+}
+
+.plSel, .plSel:hover {
+  background-color:rgba(0, 0, 0, .2) !important;
+  color:#fff;
+  cursor:default !important;
+}
+
+.music-control {
+  background-color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.2rem;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+}
+
+.music-control.active {
+  background-color:rgba(0, 0, 0, .2) !important;
+  transition: none !important;
+  i {
+    transition: none !important;
+  }
+}
+
+.music-control:hover {
+  background-color:rgba(0, 0, 0, .2) !important;
+  transition: none !important;
+  i {
+    transition: none !important;
+  }
+}
+
+.dropdown-toggle::after {
+  display:none;
+}
+
+.scrolling-text-container {
+  height: 2rem;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrolling-text {
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* Below doesn't work to pause */
+
+.scrolling-text:hover, .scrolling-text-container:hover {
+  -moz-animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+}
+
+.scrolling-text {
+  text-align: right;
+  position: absolute;
+  white-space: nowrap;
+  /* animation properties */
+  -moz-transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+
+  -moz-animation: my-animation 10s linear infinite;
+  -webkit-animation: my-animation 10s linear infinite;
+  animation: my-animation 10s linear infinite;
+}
+
+/* for Firefox */
+@-moz-keyframes my-animation {
+  from { -moz-transform: translateX(-100%); }
+  to { -moz-transform: translateX(200%); }
+}
+
+/* for Chrome */
+@-webkit-keyframes my-animation {
+  from { -webkit-transform: translateX(-100%); }
+  to { -webkit-transform: translateX(200%); }
+}
+
+@keyframes my-animation {
+  from {
+    -moz-transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+  to {
+    -moz-transform: translateX(200%);
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+  }
+}

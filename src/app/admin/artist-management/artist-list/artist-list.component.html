@@ -1,31 +1,31 @@
-<button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">
-  {{ 'common.button.add'| translate }}</button>
+<button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">{{ 'common.button.add'| translate }}</button>
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
-    <th scope="col" id="birthDate">{{ 'BirthDate' | translate }}</th>
-    <th scope="col">{{ 'Avatar' | translate }}</th>
-    <th></th>
-    <th></th>
-  </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
+      <th scope="col" id="birthDate">{{ 'BirthDate' | translate }}</th>
+      <th scope="col">{{ 'Avatar' | translate }}</th>
+      <th></th>
+      <th></th>
+    </tr>
   </thead>
   <tbody>
-  <tr [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}"
-      *ngFor="let artist of artistList; index as i">
-    <td>{{ i + 1 }}</td>
-    <td><a [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
-    <td>{{ artist.birthDate | date: 'fullDate' : '' : translate.currentLang }}</td>
-    <td><img [src]="artist.avatarUrl" class="avatar" alt=""></td>
-    <td>
-      <button (click)="openDeleteDialog(artist, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
-        <i class="fas fa-trash-alt"></i></button>
-    </td>
-    <td>
-      <button (click)="openEditDialog(artist, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
-        <i class="fas fa-edit"></i></button>
-    </td>
-  </tr>
+    <tr [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
+      <td>{{ i + 1 }}</td>
+      <td><a [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
+      <td>{{ artist.birthDate | date: 'fullDate' : '' : translate.currentLang }}</td>
+      <td><img [src]="artist.avatarUrl" class="avatar" alt="" /></td>
+      <td>
+        <button (click)="openDeleteDialog(artist, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+      <td>
+        <button (click)="openEditDialog(artist, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
+          <i class="fas fa-edit"></i>
+        </button>
+      </td>
+    </tr>
   </tbody>
 </table>

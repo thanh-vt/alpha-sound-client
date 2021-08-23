@@ -19,8 +19,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   adminLoginForm: FormGroup;
   submitted = false;
   loading = false;
-  message: string;
-  error = false;
   returnUrl: string;
   subscription: Subscription = new Subscription();
 
@@ -67,16 +65,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         () => {},
         error => {
           console.log(error);
-          this.error = true;
-          if (error.statusCode === 400) {
-            this.message = 'Wrong username or password';
-          } else {
-            this.message = 'Oop!!! An error has occurred';
-          }
         },
         () => {
           this.loading = false;
-          console.log(localStorage);
         }
       );
   }

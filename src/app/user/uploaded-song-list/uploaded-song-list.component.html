@@ -4,30 +4,34 @@
 <h3 class="text-center">{{ 'Uploaded' | translate }}</h3>
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col">{{ 'Title' | translate }}</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-  </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">{{ 'Title' | translate }}</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
   </thead>
   <tbody>
-  <tr [routerLink]="['/song', 'detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
-    <th scope="row">{{ i + 1 }}</th>
-    <td>
-      <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
-      <a *ngFor="let artist of song.artists; index as j"><small>{{ artist.name }}{{ j === song.artists.length - 1? '': ', '}}</small></a>
-    </td>
-    <td>
-      <small>{{ (Math.floor(song.duration / 60).toString().padStart(2, '0')) }}{{':'}}{{ Math.round(song.duration % 60).toString().padStart(2, '0')}}</small>
-    </td>
-    <td>
-      <button class="btn btn-primary btn-sm rounded-circle mr-2" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled"><i
-        class="fas fa-play-circle"></i>
-      </button>
-      <a class="btn btn-secondary btn-sm rounded-circle" [routerLink]="['/song','edit']" [queryParams]="{id: song.id}"><i class="fas fa-edit"></i></a>
-    </td>
-  </tr>
+    <tr [routerLink]="['/song', 'detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>
+        <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
+        <a *ngFor="let artist of song.artists; index as j"><small>{{ artist.name }}{{ j === song.artists.length - 1? '': ', '}}</small></a>
+      </td>
+      <td>
+        <small
+          >{{ (Math.floor(song.duration / 60).toString().padStart(2, '0')) }}{{':'}}{{ Math.round(song.duration % 60).toString().padStart(2,
+          '0')}}</small
+        >
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm rounded-circle mr-2" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
+          <i class="fas fa-play-circle"></i>
+        </button>
+        <a class="btn btn-secondary btn-sm rounded-circle" [routerLink]="['/song','edit']" [queryParams]="{id: song.id}"
+          ><i class="fas fa-edit"></i
+        ></a>
+      </td>
+    </tr>
   </tbody>
 </table>
-

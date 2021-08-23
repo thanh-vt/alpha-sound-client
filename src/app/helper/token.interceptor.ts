@@ -17,24 +17,25 @@ import {
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../service/token-storage.service';
-import { ToastService } from '../shared/service/toast.service';
+import { VgToastService } from 'ngx-vengeance-lib';
+import { ApiError } from '../model/api-error';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  // @ts-ignore
-  delay;
+  delay: any;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private injector: Injector,
     private tokenStorageService: TokenStorageService,
-    private toastService: ToastService
+    private toastService: VgToastService
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(this.attachTokenToRequest(request)).pipe(
       catchError(error => {
+        console.error(error);
         if (error instanceof HttpErrorResponse) {
           if (request.url.includes('/oauth/token')) {
             return this.handleOauth2RequestError(request, next, error);
@@ -85,9 +86,11 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   handleOauth2RequestError(request: HttpRequest<any>, next: HttpHandler, error: HttpErrorResponse): Observable<HttpEvent<any>> {
-    if (error?.error?.error_description && error?.error?.error_description.startsWith('Invalid refresh token')) {
+    const err: ApiError = error?.error;
+    console.log(err);
+    if (err.code === 'INVALID_TOKEN') {
       // this.authService.sessionTimeout.emit();
-      this.toastService.info('Info', 'Your session expired');
+      this.toastService.info({ text: err?.message });
       this.redirectOut();
     }
     throw error;
@@ -96,7 +99,6 @@ export class TokenInterceptor implements HttpInterceptor {
   attachTokenToRequest(req: HttpRequest<any>): HttpRequest<any> {
     if (req.serializeBody() == null || !req.serializeBody().toString().includes('refresh_token')) {
       const tokenInfo = this.tokenStorageService.accessToken;
-      console.log(tokenInfo);
       if (tokenInfo) {
         switch (tokenInfo.mode) {
           case 'cookie':

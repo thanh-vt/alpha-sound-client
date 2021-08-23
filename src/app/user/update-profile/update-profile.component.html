@@ -1,68 +1,115 @@
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser">
   <div class="form-group">
     <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'First Name' | translate }}</label>
-    <input id="firstName" type="text" [placeholder]="('Enter' | translate) + ' ' + ('First Name' | translate)" formControlName="firstName" class="form-control"/>
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('required') && (updateForm.get('firstName').touched || this.submitted)">
+    <input
+      id="firstName"
+      type="text"
+      [placeholder]="('Enter' | translate) + ' ' + ('First Name' | translate)"
+      formControlName="firstName"
+      class="form-control"
+    />
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('firstName').hasError('required') && (updateForm.get('firstName').touched || this.submitted)"
+    >
       {{ 'First Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('minlength') && (updateForm.get('firstName').touched || this.submitted)">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('firstName').hasError('minlength') && (updateForm.get('firstName').touched || this.submitted)"
+    >
       {{ 'First Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('firstName').hasError('maxlength') && (updateForm.get('firstName').touched || this.submitted)">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('firstName').hasError('maxlength') && (updateForm.get('firstName').touched || this.submitted)"
+    >
       {{ 'First Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
     </div>
   </div>
   <div class="form-group">
     <label for="lastName"><i class="fas fa-user-tie"></i> {{ 'Last Name' | translate}}</label>
-    <input id="lastName" type="text" [placeholder]="('Enter' | translate) + ' ' + ('Password' | translate)" formControlName="lastName" class="form-control"/>
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('lastName').hasError('required') && (updateForm.get('lastName').touched || this.submitted)">
+    <input
+      id="lastName"
+      type="text"
+      [placeholder]="('Enter' | translate) + ' ' + ('Password' | translate)"
+      formControlName="lastName"
+      class="form-control"
+    />
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('lastName').hasError('required') && (updateForm.get('lastName').touched || this.submitted)"
+    >
       {{ 'Last Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('lastName').hasError('minlength') && (updateForm.get('lastName').touched || this.submitted)">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('lastName').hasError('minlength') && (updateForm.get('lastName').touched || this.submitted)"
+    >
       {{ 'Last Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('lastName').hasError('maxlength') && (updateForm.get('lastName').touched || this.submitted)">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('lastName').hasError('maxlength') && (updateForm.get('lastName').touched || this.submitted)"
+    >
       {{ 'Last Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
     </div>
   </div>
   <label><i class="fas fa-venus-mars"></i> {{ 'Gender' | translate }}</label>
   <div class="form-group">
     <div class="form-check form-check-inline">
-      <input type="radio" id="male" [value]=true formControlName="gender">
+      <input type="radio" id="male" [value]="true" formControlName="gender" />
       <label class="form-check-label ml-2" for="male"><i class="fas fa-mars"></i> Male</label>
     </div>
     <div class="form-check form-check-inline">
-      <input type="radio" id="female" [value]=false formControlName="gender">
+      <input type="radio" id="female" [value]="false" formControlName="gender" />
       <label class="form-check-label ml-2" for="female"><i class="fas fa-venus"></i> Female</label>
     </div>
   </div>
   <div class="form-group">
     <label for="birthDate"><i class="fas fa-table"></i> {{ 'BirthDate' | translate }}</label>
-    <input [value]="currentUser?.date_of_birth | date: 'yyyy-MM-dd'"
-           type="date" class="form-control" id="birthDate" formControlName="birthDate">
-    <div class="alert alert-danger" role="alert" *ngIf="updateForm.get('birthDate').hasError('required') && (updateForm.get('birthDate').touched || this.submitted)">
+    <input
+      [value]="currentUser?.date_of_birth | date: 'yyyy-MM-dd'"
+      type="date"
+      class="form-control"
+      id="birthDate"
+      formControlName="birthDate"
+    />
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="updateForm.get('birthDate').hasError('required') && (updateForm.get('birthDate').touched || this.submitted)"
+    >
       {{'BirthDate' | translate }}{{' '}}{{ 'must be picked' | translate }}{{'!'}}
     </div>
   </div>
   <div class="form-group">
     <label for="phoneNumber"><i class="fas fa-phone"></i> {{ 'PhoneNumber' | translate }}</label>
-    <input id="phoneNumber" type="text" [placeholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)" formControlName="phoneNumber" class="form-control"/>
+    <input
+      id="phoneNumber"
+      type="text"
+      [placeholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
+      formControlName="phoneNumber"
+      class="form-control"
+    />
   </div>
   <label><i class="fas fa-user-circle"></i> {{ 'Avatar' | translate }}</label>
   <div class="form-group custom-file">
-    <label class="custom-file-label" *ngIf=!isImageFileChosen>{{ 'Choose file' | translate }}</label>
-    <label class="custom-file-label" *ngIf=isImageFileChosen>{{ imageFileName }}</label>
-    <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)">
+    <label class="custom-file-label" *ngIf="!isImageFileChosen">{{ 'Choose file' | translate }}</label>
+    <label class="custom-file-label" *ngIf="isImageFileChosen">{{ imageFileName }}</label>
+    <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)" />
   </div>
   <button [disabled]="loading" class="btn btn-primary rounded-pill my-2 float-right">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
     <span>{{ 'Update' | translate }}</span>
   </button>
   <div class="progress form-group" *ngIf="progress.value > 0">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value">
-    </div>
-  </div>
-  <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-       [class.alert-success]="!error">{{ message | translate }}
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
   </div>
 </form>

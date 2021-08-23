@@ -1,84 +1,83 @@
 <ng-container *ngIf="loading">
-    <app-spinner [type]="4"></app-spinner>
+  <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <ng-container *ngIf="song">
-    <div>
-        <app-card [title]="'Song Info' | translate" [type]="3">
-            <div class="lambda_card-body_3">
-                <h6 class="d-inline">{{ 'Title' | translate }}: </h6><span>{{song.title}}</span>
-                <div class="d-inline-block float-right mx-1">
-                    <ng-container *ngIf="!!currentUser">
-                        <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)"
-                                class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}</button>
-                    </ng-container>
-                </div>
-                <div class="d-inline-block float-right mx-1">
-                    <button class="btn btn-primary btn-sm rounded-circle" (click)="addToPlaying(song, $event)"
-                            [disabled]="song.isDisabled"><i
-                            class="fas fa-play-circle"></i>
-                    </button>
-                </div>
-                <div class="d-inline-block float-right mx-1">
-                    <ng-container *ngIf="!!currentUser">
-                        <button (click)="likeSong(song, $event, true)"
-                                class="btn btn-outline-danger btn-sm rounded-circle" *ngIf="!song.liked"
-                                [disabled]="song.loadingLikeButton">
-                            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status"
-                                  aria-hidden="true"></span>
-                            <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
-                        </button>
-                        <button (click)="likeSong(song, $event, false)"
-                                class="btn btn-outline-danger btn-sm rounded-circle" *ngIf="song.liked"
-                                [disabled]="song.loadingLikeButton">
-                            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status"
-                                  aria-hidden="true"></span>
-                            <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
-                        </button>
-                    </ng-container>
-                </div>
-                <br>
-                <h6 class="d-inline">{{ 'Release Date' | translate }}: </h6>
-                <span>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</span><br>
-                <h6 class="d-inline">{{ 'Artist(s)' | translate }}: </h6>
-                <ul>
-                    <li *ngFor="let artist of artistList; index as i">
-                        <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}"
-                             [src]="artist.avatarUrl" alt="">
-                        <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
-                    </li>
-                </ul>
-            </div>
-        </app-card>
-        <h4 class="my-4">{{ 'Comment' | translate }}</h4>
-        <ul class="list-group">
-            <li class="list-group-item row d-flex mx-0" *ngFor="let comment of commentList; index as i">
-                <div class="d-inline-block">
-                    <img class="avatar mr-2"
-                         [src]="comment?.userInfo?.profile?.avatar_url || '../../../assets/images/avatar.jpg'" alt="">
-                </div>
-                <div class="d-inline-block">
-                    <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.profile?.user_name }}</a></b><br>
-                    <p>{{ comment.content }}</p>
-                    <small class="text-secondary">{{ comment.localDateTime | date: 'full' : '' : translate.currentLang }}</small>
-                </div>
-                <div *ngIf="currentUser && comment?.userInfo?.username === currentUser?.user_name"
-                     class="ml-auto mr-2 float-right">
-                  <button class="btn btn-dark rounded-pill"
-                          (click)="openDeleteCommentDialog(comment.id)">{{ 'Delete' | translate }}</button>
-                </div>
-            </li>
+  <div>
+    <app-card [title]="'Song Info' | translate" [type]="3">
+      <div class="lambda_card-body_3">
+        <h6 class="d-inline">{{ 'Title' | translate }}:</h6>
+        <span>{{song.title}}</span>
+        <div class="d-inline-block float-right mx-1">
+          <ng-container *ngIf="!!currentUser">
+            <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
+              <i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}
+            </button>
+          </ng-container>
+        </div>
+        <div class="d-inline-block float-right mx-1">
+          <button class="btn btn-primary btn-sm rounded-circle" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
+            <i class="fas fa-play-circle"></i>
+          </button>
+        </div>
+        <div class="d-inline-block float-right mx-1">
+          <ng-container *ngIf="!!currentUser">
+            <button
+              (click)="likeSong(song, $event, true)"
+              class="btn btn-outline-danger btn-sm rounded-circle"
+              *ngIf="!song.liked"
+              [disabled]="song.loadingLikeButton"
+            >
+              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
+            </button>
+            <button
+              (click)="likeSong(song, $event, false)"
+              class="btn btn-outline-danger btn-sm rounded-circle"
+              *ngIf="song.liked"
+              [disabled]="song.loadingLikeButton"
+            >
+              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
+            </button>
+          </ng-container>
+        </div>
+        <br />
+        <h6 class="d-inline">{{ 'Release Date' | translate }}:</h6>
+        <span>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</span><br />
+        <h6 class="d-inline">{{ 'Artist(s)' | translate }}:</h6>
+        <ul>
+          <li *ngFor="let artist of artistList; index as i">
+            <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
+            <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
+          </li>
         </ul>
-    </div>
-    <ng-container *ngIf="!!currentUser">
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-            <label for="comment"></label><textarea class="form-control" id="comment"
-                                                   [placeholder]="'Leave comment here' | translate"
-                                                   formControlName="content"></textarea>
-            <div class="mt-sm-3">
-                <button type="submit" class="btn btn-primary">{{ 'Comment' | translate }}</button>
-            </div>
-        </form>
-    </ng-container>
+      </div>
+    </app-card>
+    <h4 class="my-4">{{ 'Comment' | translate }}</h4>
+    <ul class="list-group">
+      <li class="list-group-item row d-flex mx-0" *ngFor="let comment of commentList; index as i">
+        <div class="d-inline-block">
+          <img class="avatar mr-2" [src]="comment?.userInfo?.profile?.avatar_url || '../../../assets/images/avatar.jpg'" alt="" />
+        </div>
+        <div class="d-inline-block">
+          <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.profile?.user_name }}</a></b
+          ><br />
+          <p>{{ comment.content }}</p>
+          <small class="text-secondary">{{ comment.localDateTime | date: 'full' : '' : translate.currentLang }}</small>
+        </div>
+        <div *ngIf="currentUser && comment?.userInfo?.username === currentUser?.user_name" class="ml-auto mr-2 float-right">
+          <button class="btn btn-dark rounded-pill" (click)="openDeleteCommentDialog(comment.id)">{{ 'Delete' | translate }}</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <ng-container *ngIf="!!currentUser">
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <label for="comment"></label
+      ><textarea class="form-control" id="comment" [placeholder]="'Leave comment here' | translate" formControlName="content"></textarea>
+      <div class="mt-sm-3">
+        <button type="submit" class="btn btn-primary">{{ 'Comment' | translate }}</button>
+      </div>
+    </form>
+  </ng-container>
 </ng-container>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{ message | translate }}</div>

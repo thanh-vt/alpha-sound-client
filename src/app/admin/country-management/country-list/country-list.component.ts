@@ -3,12 +3,11 @@ import { Country } from '../../../model/country';
 import { CountryService } from '../../../service/country.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { LoadingService } from '../../../shared/service/loading.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateCountryComponent } from '../create-country/create-country.component';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { ArtistEditComponent } from '../../artist-management/artist-edit/artist-edit.component';
-import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-country-list',
@@ -24,7 +23,7 @@ export class CountryListComponent implements OnInit {
   constructor(
     private countryService: CountryService,
     private translate: TranslateService,
-    private loadingService: LoadingService,
+    private loadingService: VgLoaderService,
     private ngbModal: NgbModal,
     private toastService: VgToastService
   ) {}
@@ -37,12 +36,12 @@ export class CountryListComponent implements OnInit {
 
   async onScroll(page: number): Promise<void> {
     try {
-      this.loadingService.show();
+      this.loadingService.loading(true);
       this.countryList = (await this.countryService.getCountryList(page).toPromise()).content;
     } catch (e) {
       console.error(e);
     } finally {
-      this.loadingService.hide();
+      this.loadingService.loading(false);
     }
   }
 
@@ -87,7 +86,7 @@ export class CountryListComponent implements OnInit {
     try {
       const result = await ref.result;
       if (result) {
-        this.loadingService.show();
+        this.loadingService.loading(true);
         await this.countryService.deleteCountry(country.id).toPromise();
         this.toastService.show({ text: 'Country deleted successfully' }, { type: TOAST_TYPE.SUCCESS });
         await this.onScroll(this.pageNumber).finally();
@@ -96,7 +95,7 @@ export class CountryListComponent implements OnInit {
       this.toastService.show({ text: 'Failed to delete country. An error has occurred' }, { type: TOAST_TYPE.ERROR });
       console.error(e);
     } finally {
-      this.loadingService.hide();
+      this.loadingService.loading(false);
     }
   }
 }

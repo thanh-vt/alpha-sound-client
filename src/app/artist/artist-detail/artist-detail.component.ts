@@ -24,7 +24,6 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   currentUser: UserProfile;
   artist: Artist;
   artistId: number;
-  message: string;
   first: boolean;
   last: boolean;
   pageNumber = 0;
@@ -73,45 +72,35 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
             this.loading1 = false;
           })
         )
-        .subscribe(
-          result => {
-            window.scroll(0, 0);
-            this.artist = result;
-            this.loading2 = true;
-            this.getSongListOfArtist();
-          },
-          error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
-          }
-        )
+        .subscribe(result => {
+          window.scroll(0, 0);
+          this.artist = result;
+          this.loading2 = true;
+          this.getSongListOfArtist();
+        })
     );
   }
 
   getSongListOfArtist() {
-    this.subscription.add(
-      this.artistService.getSongListOfArtist(this.artistId, this.pageNumber).subscribe(
-        result1 => {
-          if (result1 != null) {
-            this.totalPages = result1.totalPages;
-            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for (let i = 0; i < result1.content.length; i++) {
-              this.songList.push(result1.content[i]);
-            }
-            for (const song of this.songList) {
-              this.checkDisabledSong(song);
-            }
-          }
-        },
-        error => {
-          this.message = 'An error has occurred.';
-          console.log(error.message);
-        },
-        () => {
+    this.artistService
+      .getSongListOfArtist(this.artistId, this.pageNumber)
+      .pipe(
+        finalize(() => {
           this.loading2 = false;
-        }
+        })
       )
-    );
+      .subscribe(result1 => {
+        if (result1 != null) {
+          this.totalPages = result1.totalPages;
+          // eslint-disable-next-line @typescript-eslint/prefer-for-of
+          for (let i = 0; i < result1.content.length; i++) {
+            this.songList.push(result1.content[i]);
+          }
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
+        }
+      });
   }
 
   onScroll() {
@@ -139,9 +128,6 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
               this.pageSize = result.pageable.pageSize;
             }
           },
-          error => {
-            this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-          },
           () => {
             this.loading3 = false;
           }
@@ -163,9 +149,6 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
       this.songService.songDetail(song.id).subscribe(
         result => {
           this.songList[index] = result;
-        },
-        error => {
-          console.log(error);
         },
         () => {
           song.loadingLikeButton = false;

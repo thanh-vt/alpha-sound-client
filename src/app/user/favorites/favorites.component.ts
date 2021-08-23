@@ -11,6 +11,7 @@ import { AuthService } from '../../service/auth.service';
 import { UserProfile } from '../../model/token-response';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorites',
@@ -25,7 +26,6 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   pageSize: number;
   pages: Page[] = [];
   songList: Song[] = [];
-  message: string;
   loading: boolean;
   subscription: Subscription = new Subscription();
 
@@ -60,40 +60,37 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   goToPage(i: number, scroll?: boolean) {
     this.loading = true;
-    this.subscription.add(
-      this.songService.getUserFavoriteSongList({ page: i }).subscribe(
-        result => {
-          if (result != null) {
-            if (scroll) {
-              window.scroll(0, 0);
-            }
-            this.songList = result.content;
-            this.songList.forEach((value, index) => {
-              this.songList[index].isDisabled = false;
-            });
-            this.first = result.first;
-            this.last = result.last;
-            this.pageNumber = result.pageable.pageNumber;
-            this.pageSize = result.pageable.pageSize;
-            this.pages = new Array(result.totalPages);
-            for (let j = 0; j < this.pages.length; j++) {
-              this.pages[j] = { pageNumber: j };
-            }
-            for (const song of this.songList) {
-              this.checkDisabledSong(song);
-            }
-          } else {
-            this.songList = [];
-          }
-        },
-        error => {
-          this.message = 'Cannot retrieve song list. Cause: ' + error.songsMessage;
-        },
-        () => {
+    this.songService
+      .getUserFavoriteSongList({ page: i })
+      .pipe(
+        finalize(() => {
           this.loading = false;
-        }
+        })
       )
-    );
+      .subscribe(result => {
+        if (result != null) {
+          if (scroll) {
+            window.scroll(0, 0);
+          }
+          this.songList = result.content;
+          this.songList.forEach((value, index) => {
+            this.songList[index].isDisabled = false;
+          });
+          this.first = result.first;
+          this.last = result.last;
+          this.pageNumber = result.pageable.pageNumber;
+          this.pageSize = result.pageable.pageSize;
+          this.pages = new Array(result.totalPages);
+          for (let j = 0; j < this.pages.length; j++) {
+            this.pages[j] = { pageNumber: j };
+          }
+          for (const song of this.songList) {
+            this.checkDisabledSong(song);
+          }
+        } else {
+          this.songList = [];
+        }
+      });
   }
 
   likeSong(song: Song, event, isLiked: boolean) {

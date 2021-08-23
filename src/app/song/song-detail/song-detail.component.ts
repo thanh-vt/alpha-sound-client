@@ -25,13 +25,11 @@ import { ConfirmationModalComponent } from '../../shared/component/modal/confirm
 export class SongDetailComponent implements OnInit, OnDestroy {
   song: Song;
   currentUser: UserProfile;
-  message: string;
   loading: boolean;
   songId: number;
   artistList: Artist[];
   commentList: Comment[];
   commentForm: FormGroup;
-  error = false;
   subscription: Subscription = new Subscription();
 
   constructor(
@@ -47,15 +45,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     private modalService: NgbModal
   ) {
     this.subscription.add(
-      this.authService.currentUser$.subscribe(
-        next => {
-          this.currentUser = next;
-        },
-        error => {
-          this.message = 'An error has occurred.';
-          console.log(error);
-        }
-      )
+      this.authService.currentUser$.subscribe(next => {
+        this.currentUser = next;
+      })
     );
   }
 
@@ -79,19 +71,13 @@ export class SongDetailComponent implements OnInit, OnDestroy {
                 this.loading = false;
               })
             )
-            .subscribe(
-              result => {
-                window.scroll(0, 0);
-                this.song = result;
-                this.artistList = this.song.artists;
-                this.commentList = this.song.comments;
-                this.checkDisabledSong(this.song);
-              },
-              error => {
-                this.message = 'An error has occurred.';
-                console.log(error);
-              }
-            )
+            .subscribe(result => {
+              window.scroll(0, 0);
+              this.song = result;
+              this.artistList = this.song.artists;
+              this.commentList = this.song.comments;
+              this.checkDisabledSong(this.song);
+            })
         );
       })
     );
@@ -101,17 +87,12 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.songService.commentSong(this.songId, this.commentForm.value).subscribe(() => {
         this.subscription.add(
-          this.songService.songDetail(this.songId).subscribe(
-            result => {
-              this.commentForm.reset();
-              this.song = result;
-              this.artistList = this.song.artists;
-              this.commentList = this.song.comments;
-            },
-            error => {
-              this.message = 'Cannot retrieve Song . Cause: ' + error.message;
-            }
-          )
+          this.songService.songDetail(this.songId).subscribe(result => {
+            this.commentForm.reset();
+            this.song = result;
+            this.artistList = this.song.artists;
+            this.commentList = this.song.comments;
+          })
         );
       })
     );
@@ -170,15 +151,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
               sub.unsubscribe();
             })
           )
-          .subscribe(
-            () => {
-              this.retrieveSongList();
-            },
-            error => {
-              this.message = 'Cannot delete comment';
-              console.log(error.message);
-            }
-          );
+          .subscribe(() => {
+            this.retrieveSongList();
+          });
       }
     });
   }

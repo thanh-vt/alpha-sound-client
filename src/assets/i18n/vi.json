@@ -119,6 +119,34 @@
       "country": "Quốc gia",
       "comment": "Bình luận"
     },
+    "label": {
+      "username": "Tên người dùng",
+      "password": "Mật khẩu",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "birthDate": "Ngày sinh",
+      "phoneNumber": "Số điện thoại",
+      "newPassword": "Mật khẩu mới",
+      "repeatedNewPassword": "Nhập lại mật khẩu"
+    },
+    "placeholder": {
+      "username": "Điền tên người dùng",
+      "password": "Điền mật khẩu",
+      "firstName": "Điền tên",
+      "lastName": "Điền họ",
+      "birthDate": "Chọn ngày sinh",
+      "phoneNumber": "Điền SĐT",
+      "newPassword": "Nhập mật khẩu mới",
+      "repeatedNewPassword": "Nhập lại mật khẩu"
+    },
+    "radio": {
+      "gender": {
+        "male": "Nam",
+        "female": "Nữ",
+        "bisexual": "LGBT",
+        "unknown": "Không x/định"
+      }
+    },
     "message": {
       "confirm_delete": "Are you sure that you want to remove {{subject}} {{name}}"
     },
@@ -127,6 +155,33 @@
       "save": "Lưu",
       "cancel": "Hủy bỏ",
       "accept": "Đồng ý"
+    },
+    "error": {
+      "connection_problem": "Lỗi kết nối đến máy chủ",
+      "unknown": "Một lỗi không xác định xảy ra"
+    }
+  },
+  "validation": {
+    "message": {
+      "required": "{{label}} là bắt buộc",
+      "max": "Giá trị tối đa cho phép của {{label}} là {{max}}, hiện tại {{actual}}",
+      "min": "Giá trị tối thiểu cho phép {{label}} là {{min}}, hiện tại {{actual}}",
+      "minlength": "{{label}} phải có tối thiểu {{requiredLength}} ký tự, hiện tại {{actualLength}}",
+      "maxlength": "{{label}} chỉ có thể có tối đa {{requiredLength}} ký tự, hiện tại {{actualLength}}",
+      "email": "Email không đúng định dạng",
+      "mustMatch": "Mật khẩu nhập lại không khớp"
+    }
+  },
+  "feature": {
+    "login": {
+      "username": "Tên người dùng",
+      "password": "Mật khẩu"
+    },
+    "register": {
+      "successMsg": "Đăng ký thành công. Làm ơn kiểm tra email và click vào đường dẫn đính kèm để kích hoạt tài khoản"
+    },
+    "resetPassword": {
+      "successMsg": "Chúng tôi vừa gửi cho bạn 1 email, hãy kiểm tra và click vào đường dẫn để đặt lại mật khẩu"
     }
   },
   "An error has occurred.": "Có lỗi xảy ra.",

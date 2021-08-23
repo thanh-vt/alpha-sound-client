@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
   @Input() type: number;
   @Input() title: string;
   @Input() imgSrc: string;
@@ -14,8 +14,6 @@ export class CardComponent implements OnInit {
   @Input() tileHoverEffect: boolean;
 
   constructor() {}
-
-  ngOnInit() {}
 
   showHideEditForm() {
     this.showEditForm.emit();

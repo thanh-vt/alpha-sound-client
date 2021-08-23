@@ -1,25 +1,26 @@
-<button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">
-  {{ 'common.button.add' | translate }}</button>
+<button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">{{ 'common.button.add' | translate }}</button>
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col" id="name">{{ 'Country Name' | translate }}</th>
-    <th scope="col" id="flag">{{ 'Country Flag' | translate }}</th>
-    <th></th>
-  </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" id="name">{{ 'Country Name' | translate }}</th>
+      <th scope="col" id="flag">{{ 'Country Flag' | translate }}</th>
+      <th></th>
+    </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let country of countryList; index as i">
-    <td>{{ i + 1 }}</td>
-    <td>{{ country.name }}</td>
-    <td><img [src]="country.flagUrl" alt=""></td>
-    <td>
-      <button (click)="openDeleteDialog(country, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
-        <i class="fas fa-trash-alt"></i></button>
-      <button (click)="openEditDialog(country, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
-        <i class="fas fa-edit"></i></button>
-    </td>
-  </tr>
+    <tr *ngFor="let country of countryList; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ country.name }}</td>
+      <td><img [src]="country.flagUrl" alt="" /></td>
+      <td>
+        <button (click)="openDeleteDialog(country, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+        <button (click)="openEditDialog(country, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
+          <i class="fas fa-edit"></i>
+        </button>
+      </td>
+    </tr>
   </tbody>
 </table>

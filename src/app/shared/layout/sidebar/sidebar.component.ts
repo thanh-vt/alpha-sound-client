@@ -37,21 +37,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.loading = false;
         })
       )
-      .subscribe(
-        result => {
-          if (result != null) {
-            window.scroll(0, 0);
-            this.songList = result.content;
-            this.songList.forEach((value, index) => {
-              this.songList[index].isDisabled = false;
-            });
-          }
-        },
-        error => {
-          this.message = 'An error has occurred.';
-          console.log(error.message);
+      .subscribe(result => {
+        if (result != null) {
+          window.scroll(0, 0);
+          this.songList = result.content;
+          this.songList.forEach((value, index) => {
+            this.songList[index].isDisabled = false;
+          });
         }
-      );
+      });
   }
 
   ngOnDestroy(): void {

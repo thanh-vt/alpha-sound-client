@@ -87,17 +87,11 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
             this.loading = false;
           })
         )
-        .subscribe(
-          (event: HttpEvent<any>) => {
-            if (this.displayProgress(event, this.progress)) {
-              this.toastService.show({ text: 'Artist added successfully!' }, { type: TOAST_TYPE.SUCCESS });
-            }
-          },
-          error => {
-            this.toastService.show({ text: 'Failed to add artist' }, { type: TOAST_TYPE.SUCCESS });
-            console.log(error.message);
+        .subscribe((event: HttpEvent<any>) => {
+          if (this.displayProgress(event, this.progress)) {
+            this.toastService.show({ text: 'Artist added successfully!' }, { type: TOAST_TYPE.SUCCESS });
           }
-        );
+        });
     }
   }
 

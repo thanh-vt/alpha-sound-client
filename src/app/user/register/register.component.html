@@ -1,84 +1,109 @@
 <app-card [type]="3" [title]="'Create new account' | translate">
-  <h3 class="lambda_card-header_3 text-center">{{ 'Sign Up' | translate }}</h3>
-  <div class="lambda_card-body_3">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <h3 cardHeader class="text-center">{{ 'Sign Up' | translate }}</h3>
+  <div cardBody>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" vgFocusFirstInvalid [form]="registerForm">
       <div class="form-group">
-        <label for="username"><i class="fas fa-users"></i> {{'Username' | translate }}</label>
-        <input id="username" type="text" [placeholder]="('Enter' | translate) + ' ' + ('Username' | translate)" formControlName="username" class="form-control"/>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('username').hasError('required') && (registerForm.get('username').touched || this.submitted)">
-          {{ 'Username' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('username').hasError('minlength') && (registerForm.get('username').touched || this.submitted)">
-          {{ 'Username' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 6 '}}{{ 'characters' | translate }}{{'!'}}
-        </div>
+        <label for="username"><i class="fas fa-users"></i> {{ 'common.label.username' | translate }}</label>
+        <input
+          id="username"
+          type="text"
+          [placeholder]="'common.placeholder.username' | translate"
+          formControlName="username"
+          class="form-control"
+        />
+        <vg-error-section
+          [label]="'common.placeholder.username' | translate"
+          [group]="registerForm"
+          controlName="username"
+        ></vg-error-section>
       </div>
       <div class="form-group">
-        <label for="password"><i class="fas fa-key"></i>  {{ 'Password' | translate }}</label>
-        <input id="password" type="password" [placeholder]="('Enter' | translate) + ' ' + ('Password' | translate)" formControlName="password" class="form-control"/>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('required') && (registerForm.get('password').touched || this.submitted)">
-          {{ 'Password' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('password').hasError('minlength') && (registerForm.get('password').touched || this.submitted)">
-          {{ 'Password' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 6 '}}{{ 'characters' | translate }}{{'!'}}
-        </div>
+        <label for="password"><i class="fas fa-key"></i> {{ 'common.label.birthDate' | translate }}</label>
+        <input
+          id="password"
+          type="password"
+          [placeholder]="'common.placeholder.password' | translate"
+          formControlName="password"
+          class="form-control"
+        />
+        <vg-error-section
+          [label]="'common.placeholder.password' | translate"
+          [group]="registerForm"
+          controlName="password"
+        ></vg-error-section>
       </div>
       <div class="form-group">
-        <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'First Name' | translate }}</label>
-        <input id="firstName" type="text" [placeholder]="('Enter' | translate) + ' ' + ('First Name' | translate)" formControlName="firstName" class="form-control"/>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('firstName').hasError('required') && (registerForm.get('firstName').touched || this.submitted)">
-          {{ 'First Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('firstName').hasError('minlength') && (registerForm.get('firstName').touched || this.submitted)">
-          {{ 'First Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('firstName').hasError('maxlength') && (registerForm.get('firstName').touched || this.submitted)">
-          {{ 'First Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
-        </div>
+        <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'common.label.birthDate' | translate }}</label>
+        <input
+          id="firstName"
+          type="text"
+          [placeholder]="'common.placeholder.firstName' | translate"
+          formControlName="firstName"
+          class="form-control"
+        />
+        <vg-error-section
+          [label]="'common.placeholder.firstName' | translate"
+          [group]="registerForm"
+          controlName="firstName"
+        ></vg-error-section>
       </div>
       <div class="form-group">
-        <label for="lastName"><i class="fas fa-user-tie"></i> {{ 'Last Name' | translate }}</label>
-        <input id="lastName" type="text" [placeholder]="('Enter' | translate) + ' ' + ('Last Name' | translate)" formControlName="lastName" class="form-control"/>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('lastName').hasError('required') && (registerForm.get('lastName').touched || this.submitted)">
-          {{ 'Last Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('lastName').hasError('minlength') && (registerForm.get('lastName').touched || this.submitted)">
-          {{ 'Last Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('lastName').hasError('maxlength') && (registerForm.get('lastName').touched || this.submitted)">
-          {{ 'Last Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
-        </div>
+        <label for="lastName"><i class="fas fa-user-tie"></i> {{ 'common.label.birthDate' | translate }}</label>
+        <input
+          id="lastName"
+          type="text"
+          [placeholder]="'common.placeholder.lastName' | translate"
+          formControlName="lastName"
+          class="form-control"
+        />
+        <vg-error-section
+          [label]="'common.placeholder.lastName' | translate"
+          [group]="registerForm"
+          controlName="lastName"
+        ></vg-error-section>
       </div>
-      <label><i class="fas fa-venus-mars"></i> {{ 'Gender' | translate }}</label>
+      <label><i class="fas fa-venus-mars"></i> {{ 'common.label.birthDate' | translate }}</label>
       <div class="form-group">
         <div class="form-check form-check-inline">
-          <input type="radio" id="male" [value]=true formControlName="gender">
-          <label class="form-check-label ml-2" for="male"><i class="fas fa-mars"></i> Male</label>
+          <input type="radio" id="male" [value]="1" formControlName="gender" />
+          <label class="form-check-label ml-2" for="male"><i class="fas fa-mars"></i> {{'common.radio.gender.male' | translate}}</label>
         </div>
         <div class="form-check form-check-inline">
-          <input type="radio" id="female" [value]=false formControlName="gender">
-          <label class="form-check-label ml-2" for="female"><i class="fas fa-venus"></i> Female</label>
+          <input type="radio" id="female" [value]="2" formControlName="gender" />
+          <label class="form-check-label ml-2" for="female"
+            ><i class="fas fa-venus"></i> {{'common.radio.gender.female' | translate}}</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" id="bisexual" [value]="3" formControlName="gender" />
+          <label class="form-check-label ml-2" for="male"><i class="fas fa-mars"></i> {{'common.radio.gender.bisexual' | translate}}</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" id="unknown" [value]="4" formControlName="gender" />
+          <label class="form-check-label ml-2" for="female"
+            ><i class="fas fa-venus"></i> {{'common.radio.gender.unknown' | translate}}</label
+          >
         </div>
       </div>
       <div class="form-group">
-        <label for="birthDate"><i class="fas fa-table"></i> {{ 'BirthDate' | translate }}</label>
-        <input id="birthDate" type="date" formControlName="birthDate" class="form-control"/>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('birthDate').hasError('required') && (registerForm.get('email').touched || this.submitted)">
-          {{'BirthDate' | translate }}{{' '}}{{ 'must be picked' | translate }}{{'!'}}
-        </div>
+        <label for="birthDate"><i class="fas fa-table"></i> {{ 'common.label.birthDate' | translate }}</label>
+        <input id="birthDate" type="date" formControlName="birthDate" class="form-control" />
+        <vg-error-section [label]="'common.label.birthDate' | translate" [group]="registerForm" controlName="birthDate"></vg-error-section>
       </div>
       <div class="form-group">
-        <label for="phoneNumber"><i class="fas fa-phone"></i> {{ 'PhoneNumber' | translate }}</label>
-        <input id="phoneNumber" type="text" [placeholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)" formControlName="phoneNumber" class="form-control"/>
+        <label for="phoneNumber"><i class="fas fa-phone"></i> {{ 'common.label.phoneNumber' | translate }}</label>
+        <input
+          id="phoneNumber"
+          type="text"
+          [placeholder]="'common.placeholder.phoneNumber' | translate"
+          formControlName="phoneNumber"
+          class="form-control"
+        />
       </div>
       <div class="form-group">
-        <label for="email"><i class="fas fa-envelope-square"> Email</i></label>
-        <input id="email" type="text" [placeholder]="('Enter' | translate) + ' email'" formControlName="email" class="form-control"/>
-        <div class="alert alert-danger" role="alert" *ngIf="registerForm.get('email').hasError('email') && (registerForm.get('email').touched || this.submitted)">
-          {{ 'Not a valid Email' | translate }}
-        </div>
-      </div>
-      <div *ngIf="message" class="alert mt-3 mb-0" [class.alert-danger]="error"
-           [class.alert-success]="!error">{{ message | translate }}
+        <label for="email"><i class="fas fa-envelope-square"> {{ 'common.label.email' | translate }}</i></label>
+        <input id="email" type="text" [placeholder]="'common.placeholder.email' | translate" formControlName="email" class="form-control" />
+        <vg-error-section [label]="'common.label.email' | translate" [group]="registerForm" controlName="email"></vg-error-section>
       </div>
       <button [disabled]="loading" class="btn btn-primary rounded-pill float-right mt-2">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

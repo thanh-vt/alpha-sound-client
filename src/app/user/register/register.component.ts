@@ -1,32 +1,37 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Inject, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { UserProfileService } from '../../service/user-profile.service';
 import { Subscription } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
+import { VgToastService } from 'ngx-vengeance-lib';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnDestroy {
   registerForm: FormGroup;
   loading = false;
-  submitted = false;
-  returnUrl: string;
-  error = false;
   file: File;
-  message: string;
   subscription: Subscription = new Subscription();
 
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private userService: UserProfileService
+    private userService: UserProfileService,
+    private translateService: TranslateService,
+    private toastService: VgToastService
   ) {
+    const registerSuccessUrl = `${document.location.protocol}'//'${document.location.hostname}${
+      document.location.port ? ':' + document.location.port : ''
+    }/#/`;
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(5)]],
       // eslint-disable-next-line max-len
@@ -37,40 +42,32 @@ export class RegisterComponent implements OnInit, OnDestroy {
       phoneNumber: ['', Validators.required],
       gender: [true, Validators.required],
       birthDate: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      redirectUrl: [registerSuccessUrl]
     });
   }
-
-  ngOnInit() {}
 
   get f() {
     return this.registerForm.controls;
   }
 
   onSubmit() {
-    this.submitted = true;
     if (this.registerForm.valid) {
-      this.subscription.add(
-        this.userService.register(this.registerForm.value).subscribe(
-          () => {
-            this.error = false;
-            // eslint-disable-next-line max-len
-            this.message =
-              'User registered successfully. We have sent you an email, please check your it and click on the confirmation link to activate your account.';
-            const navigation = setInterval(() => {
-              this.navigate();
-              clearTimeout(navigation);
-            }, 3000);
-          },
-          error => {
-            this.error = true;
-            this.message = 'Failed to register.';
-            console.log(error);
-          }
-        )
+      this.userService.register(this.registerForm.value).subscribe(
+        () => {
+          this.toastService.success({ text: this.translateService.instant('feature.register.successMsg') });
+          const navigation = setInterval(() => {
+            this.navigate();
+            clearTimeout(navigation);
+          }, 3000);
+        },
+        error => {
+          console.error(error);
+        }
       );
     }
   }
+
   navigate() {
     this.router.navigateByUrl('');
   }

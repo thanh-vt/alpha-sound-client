@@ -10,23 +10,23 @@ import { Album } from '../model/album';
 export class AudioUploadService {
   constructor(private http: HttpClient) {}
 
-  uploadSong(formData: FormData, album?: Album): Observable<HttpEvent<any>> {
+  uploadSong(formData: FormData, album?: Album): Observable<HttpEvent<never>> {
     if (album) {
-      const params: any = { ['album-id']: album.id };
-      return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {
+      const params: { [key: string]: string } = { ['album-id']: `${album.id}` };
+      return this.http.post<never>(`${environment.apiUrl}/song/upload`, formData, {
         reportProgress: true,
         observe: 'events',
         params
       });
     } else {
-      return this.http.post<any>(`${environment.apiUrl}/song/upload`, formData, {
+      return this.http.post<never>(`${environment.apiUrl}/song/upload`, formData, {
         reportProgress: true,
         observe: 'events'
       });
     }
   }
 
-  uploadAlbum(formData): Observable<Album> {
+  uploadAlbum(formData: FormData): Observable<Album> {
     return this.http.post<Album>(`${environment.apiUrl}/album/upload`, formData);
   }
 }

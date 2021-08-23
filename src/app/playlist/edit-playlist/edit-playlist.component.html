@@ -1,16 +1,15 @@
 <app-modal-wrapper [title]="'Edit playlist' | translate" (closeAction)="close()">
-    <div modalBody>
-        <form [formGroup]="playlistEditForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="title">{{ 'Title' | translate}}</label>
-                <input class="form-control" type="text" id="title" [placeholder]="'Enter playlist title' | translate"
-                       formControlName="title">
-            </div>
-        </form>
-    </div>
-    <ng-container modalFooter>
-        <button (click)=onSubmit() class="btn btn-primary rounded-pill">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Update' | translate }}
-        </button>
-    </ng-container>
+  <div modalBody>
+    <form [formGroup]="playlistEditForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="title">{{ 'Title' | translate}}</label>
+        <input class="form-control" type="text" id="title" [placeholder]="'Enter playlist title' | translate" formControlName="title" />
+      </div>
+    </form>
+  </div>
+  <ng-container modalFooter>
+    <button (click)="onSubmit()" class="btn btn-primary rounded-pill">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Update' | translate }}
+    </button>
+  </ng-container>
 </app-modal-wrapper>

@@ -1,24 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { UserProfileService } from '../../service/user-profile.service';
 import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy {
+export class ResetPasswordComponent implements OnInit {
   getPasswordResetTokenForm: FormGroup;
-  submitted: boolean;
-  subscription: Subscription = new Subscription();
-  message: string;
-  error: boolean;
   loading: boolean;
 
-  constructor(private fb: FormBuilder, private userService: UserProfileService, private route: ActivatedRoute) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserProfileService,
+    private route: ActivatedRoute,
+    private translateService: TranslateService,
+    private toastService: VgToastService
+  ) {}
 
   ngOnInit() {
     this.getPasswordResetTokenForm = this.fb.group({
@@ -27,33 +30,18 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.submitted = true;
     if (this.getPasswordResetTokenForm.valid) {
       this.loading = true;
-      this.subscription.add(
-        this.userService
-          .getPasswordResetToken(this.getPasswordResetTokenForm.value)
-          .pipe(
-            finalize(() => {
-              this.loading = false;
-            })
-          )
-          .subscribe(
-            next => {
-              this.error = false;
-              this.message = "We've sent you an email. Please check it and click the given URL to complete password reset!";
-            },
-            error => {
-              this.error = true;
-              this.message = 'Failed to send email';
-              console.log(error);
-            }
-          )
-      );
+      this.userService
+        .getPasswordResetToken(this.getPasswordResetTokenForm.value)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(_ => {
+          this.toastService.show({ text: this.translateService.instant('feature.resetPassword.successMsg') }, { type: TOAST_TYPE.INFO });
+        });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }

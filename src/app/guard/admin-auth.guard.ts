@@ -14,6 +14,7 @@ import { UserProfileService } from '../service/user-profile.service';
 import { AuthService } from '../service/auth.service';
 import { map } from 'rxjs/operators';
 import { AuthUtil } from '../util/auth.util';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ import { AuthUtil } from '../util/auth.util';
 export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(private router: Router, private userService: UserProfileService, private authService: AuthService) {}
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.authService.currentUser$.pipe(
       map(user => {
         if (user) {
@@ -40,7 +41,7 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
     );
   }
 
-  canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.authService.currentUser$.pipe(
       map(user => {
         if (user) {

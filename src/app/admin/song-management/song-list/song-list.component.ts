@@ -5,8 +5,7 @@ import { SongService } from '../../../service/song.service';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { LoadingService } from '../../../shared/service/loading.service';
-import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-song-list',
@@ -22,7 +21,7 @@ export class SongListComponent implements OnInit {
     private songService: SongService,
     private ngbModal: NgbModal,
     private translate: TranslateService,
-    private loadingService: LoadingService,
+    private loadingService: VgLoaderService,
     private toastService: VgToastService
   ) {}
 
@@ -32,12 +31,12 @@ export class SongListComponent implements OnInit {
 
   async getSongList(): Promise<void> {
     try {
-      this.loadingService.show();
+      this.loadingService.loading(true);
       this.songList = (await this.songService.getSongList().toPromise()).content;
     } catch (e) {
       console.error(e);
     } finally {
-      this.loadingService.hide();
+      this.loadingService.loading(false);
     }
   }
 
@@ -55,7 +54,7 @@ export class SongListComponent implements OnInit {
     try {
       const result = await ref.result;
       if (result) {
-        this.loadingService.show();
+        this.loadingService.loading(true);
         await this.songService.deleteSong(song?.id).toPromise();
         this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
         await this.getSongList();
@@ -64,7 +63,7 @@ export class SongListComponent implements OnInit {
       this.toastService.show({ text: 'Failed to delete song. An error has occurred' }, { type: TOAST_TYPE.ERROR });
       console.error(e);
     } finally {
-      this.loadingService.hide();
+      this.loadingService.loading(false);
     }
   }
 }

@@ -1,31 +1,20 @@
 <div class="text-center">
-  <form [formGroup]="adminLoginForm" (ngSubmit)="onSubmit()" class="form-group">
+  <form [formGroup]="adminLoginForm" (ngSubmit)="onSubmit()" class="form-group" vgFocusFirstInvalid [form]="adminLoginForm">
     <h1 class="text-center">Welcome</h1>
     <label for="username">Admin Name</label>
-    <input class="form-control" type="text" id="username" placeholder="Admin name" formControlName="username">
-    <div class="alert alert-danger" *ngIf="adminLoginForm.get('username').hasError('required') && (adminLoginForm.touched || submitted)">Username is required</div>
-    <div class="alert alert-danger" *ngIf="adminLoginForm.get('username').hasError('minlength') && adminLoginForm.touched">Username must have at least 6 characters</div>
+    <input class="form-control" type="text" id="username" placeholder="Admin name" formControlName="username" />
+    <vg-error-section [label]="'feature.login.username' | translate" [group]="adminLoginForm" [controlName]="'username'"></vg-error-section>
 
     <label for="password">Password</label>
-    <input class="form-control" type="password" id="password" placeholder="Password" formControlName="password">
-    <div class="alert alert-danger" *ngIf="adminLoginForm.get('password').hasError('required') && (adminLoginForm.touched || submitted)">Password is required</div>
-    <div class="alert alert-danger" *ngIf="adminLoginForm.get('password').hasError('minlength') && adminLoginForm.touched">Password must have at least 6 characters</div>
+    <input class="form-control" type="password" id="password" placeholder="Password" formControlName="password" />
+    <vg-error-section [label]="'feature.login.password' | translate" [group]="adminLoginForm" [controlName]="'password'"></vg-error-section>
     <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="dropdownCheck" formControlName="rememberMe">
+      <input type="checkbox" class="form-check-input" id="dropdownCheck" formControlName="rememberMe" />
       <label class="form-check-label" for="dropdownCheck">Remember Me</label>
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="adminLoginForm.invalid && submitted">
-      Fields must be filled in!
-    </div>
-    <div class="alert" [class.alert-success]="!error" [class.alert-danger]="error" role="alert" *ngIf="message">
-      {{ message }}
-    </div>
-    <button type="submit" class="btn btn-dark" [disabled]="adminLoginForm.invalid">
+    <button type="submit" class="btn btn-dark" [disabled]="adminLoginForm.errors">
       <span>{{ 'Sign In' | translate }}</span>
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
     </button>
   </form>
 </div>
-
-
-

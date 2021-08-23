@@ -5,13 +5,10 @@
   </ng-container>
   <ul class="list-group" *ngFor="let song of songList; index as i">
     <li [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" class="list-group-item">
-      <img class="user-avatar" [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:'../../../assets/images/avatar.jpg'" alt="">
+      <img class="user-avatar" [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:'../../../assets/images/avatar.jpg'" alt="" />
       <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
       <span class="float-right"><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</span>
     </li>
   </ul>
 </div>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0" >{{ message | translate }}</div>
-
-
-
+<div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{ message | translate }}</div>

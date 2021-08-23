@@ -4,6 +4,8 @@ import { HttpClient, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { UserProfile } from '../model/token-response';
+import { RegistrationConfirm } from '../model/registration-confirm';
+import { ChangePassword } from '../model/change-password';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +22,12 @@ export class UserProfileService {
     return this.http.get<UserProfile>(`${environment.authUrl}/api/user`, { params });
   }
 
-  register(formGroup): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/register`, formGroup);
+  register(formGroup): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/register`, formGroup);
+  }
+
+  confirmRegistration(registrationConfirm: RegistrationConfirm): Observable<void> {
+    return this.http.patch<void>(`${environment.apiUrl}/registration-confirm`, registrationConfirm);
   }
 
   uploadAvatar(formData: FormData): Observable<HttpEvent<any>> {
@@ -34,12 +40,12 @@ export class UserProfileService {
     return this.http.put<any>(`${environment.apiUrl}/profile`, formGroup);
   }
 
-  getPasswordResetToken(formGroup): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/reset-password`, formGroup);
+  getPasswordResetToken(formGroup): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/reset-password`, formGroup);
   }
 
-  resetPasswordSubmission(formGroup, id: number, token: string): Observable<HttpEvent<any>> {
-    return this.http.put<any>(`${environment.apiUrl}/reset-password?id=${id}&token=${token}`, formGroup);
+  resetPasswordSubmission(changePassword: ChangePassword): Observable<void> {
+    return this.http.patch<void>(`${environment.apiUrl}/reset-password`, changePassword);
   }
 
   errorMgmt(error: HttpErrorResponse) {

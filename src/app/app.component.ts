@@ -2,18 +2,18 @@ import { Component } from '@angular/core';
 import { UserProfileService } from './service/user-profile.service';
 import { AuthService } from './service/auth.service';
 import { LocationStrategy } from '@angular/common';
-import { LoadingService } from './shared/service/loading.service';
-import { VgToastData, VgToastService, TOAST_TYPE } from 'ngx-vengeance-lib';
+import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({ selector: 'app-root', templateUrl: 'app.component.html' })
 export class AppComponent {
   constructor(
-    private loadingService: LoadingService,
     private userService: UserProfileService,
     private authService: AuthService,
     private location: LocationStrategy,
-    private toastService: VgToastService
+    private toastService: VgToastService,
+    private loaderService: VgLoaderService
   ) {
+    // this.loaderService.loading(true);
     // this.loadingService.show({text: 'loading'});
     // setTimeout(() => {
     //   this.loadingService.hide();

@@ -20,14 +20,16 @@
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/recommended",
         "eslint:recommended",
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
       ],
-      "plugins": ["prettier"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["prettier", "@typescript-eslint"],
       "rules": {
-        "no-unused-vars": "off",
         "prefer-const": ["error", {
           "destructuring": "any",
           "ignoreReadBeforeAssign": false
@@ -55,8 +57,15 @@
       "files": [
         "*.html"
       ],
+      "parser": "eslint-html-parser"
+    },
+    {
+      "files": [
+        "*.component.html"
+      ],
       "extends": [
-        "plugin:@angular-eslint/template/recommended"
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:prettier/recommended"
       ],
       "rules": {}
     }

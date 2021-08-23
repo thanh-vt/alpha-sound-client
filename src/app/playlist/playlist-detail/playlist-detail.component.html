@@ -1,31 +1,29 @@
 <ng-container *ngIf="loading">
-    <app-spinner [type]="4"></app-spinner>
+  <app-spinner [type]="4"></app-spinner>
 </ng-container>
 <h4 class="text-center" *ngIf="playList">{{ playList.title }}</h4>
 <table class="table table-striped" *ngIf="playList">
-    <thead>
+  <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">{{ 'Title' | translate }}</th>
-        <th scope="col">{{ 'Release Date' | translate }}</th>
-        <th scope="col"></th>
+      <th scope="col">#</th>
+      <th scope="col">{{ 'Title' | translate }}</th>
+      <th scope="col">{{ 'Release Date' | translate }}</th>
+      <th scope="col"></th>
     </tr>
-    </thead>
-    <tbody>
+  </thead>
+  <tbody>
     <tr [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
-        <th scope="row">{{ i + 1 }}</th>
-        <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
-        <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
-        <td>
-            <button (click)="addToPlaying(song, $event)" class="btn btn-primary rounded-circle"
-                    [disabled]="song.isDisabled">
-                <i class="fas fa-play-circle"></i>
-            </button>
-            <button [disabled]="loading" class="btn btn-primary rounded-pill"
-                    (click)="openDeleteDialog(playList, song)">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{'Remove' | translate }}
-            </button>
-        </td>
+      <th scope="row">{{ i + 1 }}</th>
+      <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
+      <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
+      <td>
+        <button (click)="addToPlaying(song, $event)" class="btn btn-primary rounded-circle" [disabled]="song.isDisabled">
+          <i class="fas fa-play-circle"></i>
+        </button>
+        <button [disabled]="loading" class="btn btn-primary rounded-pill" (click)="openDeleteDialog(playList, song)">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{'Remove' | translate }}
+        </button>
+      </td>
     </tr>
-    </tbody>
+  </tbody>
 </table>

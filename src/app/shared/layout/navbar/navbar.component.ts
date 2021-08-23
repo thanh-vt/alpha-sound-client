@@ -9,6 +9,7 @@ import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../../model/token-response';
 import { Setting } from '../../../model/setting';
 import { SettingService } from '../../../service/setting.service';
+import { VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-navbar',
@@ -18,14 +19,12 @@ import { SettingService } from '../../../service/setting.service';
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: UserProfile;
   setting: Setting = { darkMode: true };
-  message: string;
   isCollapsed: boolean;
   loginForm: FormGroup;
   searchForm: FormGroup;
   loading = false;
   submitted = false;
   returnUrl: string;
-  error: boolean;
   subscription = new Subscription();
 
   @ViewChild('language') language: ElementRef;
@@ -38,7 +37,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private userService: UserProfileService,
     private fb: FormBuilder,
     public translate: TranslateService,
-    private settingService: SettingService
+    private settingService: SettingService,
+    private toastService: VgToastService
   ) {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
@@ -46,16 +46,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authService.currentUser$.subscribe(next => {
       this.currentUser = next;
     });
-    this.settingService.setting$.subscribe(
-      next => {
-        if (next) {
-          this.setting = next;
-        }
-      },
-      error => {
-        console.log(error);
+    this.settingService.setting$.subscribe(next => {
+      if (next) {
+        this.setting = next;
       }
-    );
+    });
   }
 
   ngOnInit() {
@@ -81,25 +76,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
           .pipe(
             finalize(() => {
               this.loading = false;
-              this.clearMessage();
             })
           )
-          .subscribe(
-            () => {
-              this.loading = false;
-              this.error = false;
-              this.message = 'Signed in successfully';
-              const redirectToHome = setTimeout(() => {
-                this.router.navigate([this.returnUrl]);
-                clearTimeout(redirectToHome);
-              }, 1500);
-            },
-            e => {
-              console.error(e);
-              this.error = true;
-              this.message = 'Wrong username or password';
-            }
-          )
+          .subscribe(() => {
+            this.loading = false;
+            this.toastService.success({ text: 'Signed in successfully' });
+            const redirectToHome = setTimeout(() => {
+              this.router.navigate([this.returnUrl]);
+              clearTimeout(redirectToHome);
+            }, 1500);
+          })
       );
     }
   }
@@ -109,10 +95,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return;
     }
     const searchText = this.searchForm.get('searchText').value;
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.navigate(['/', 'search'], { queryParams: { name: searchText } });
   }
 
@@ -121,13 +104,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const navigation = setTimeout(() => {
       this.router.navigate(['/home']);
       clearTimeout(navigation);
-    }, 3000);
-  }
-
-  clearMessage() {
-    const clearMessage = setTimeout(() => {
-      this.message = '';
-      clearTimeout(clearMessage);
     }, 3000);
   }
 

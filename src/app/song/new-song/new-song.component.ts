@@ -13,7 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
-import { ToastService } from '../../shared/service/toast.service';
+import { VgLoaderService } from 'ngx-vengeance-lib';
+import { AppLoaderService } from '../../shared/layout/loading/app-loader.service';
 
 @Component({
   selector: 'app-new-song',
@@ -28,7 +29,6 @@ export class NewSongComponent implements OnInit, OnDestroy {
   pages: Page[] = [];
   first: boolean;
   last: boolean;
-  loading: boolean;
   songList: Song[] = [];
   imageOrder = 0;
   Math: Math = Math;
@@ -49,8 +49,9 @@ export class NewSongComponent implements OnInit, OnDestroy {
     private playlistService: PlaylistService,
     private authService: AuthService,
     public translate: TranslateService,
-    private toastService: ToastService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loaderService: VgLoaderService,
+    private appLoaderService: AppLoaderService
   ) {
     this.authService.currentUser$.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -61,7 +62,6 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loading = true;
     this.goToPage(this.pageNumber, true);
   }
 
@@ -78,50 +78,45 @@ export class NewSongComponent implements OnInit, OnDestroy {
   }
 
   goToPage(i: number, scrollUp?: boolean) {
-    this.subscription.add(
-      this.songService
-        .getSongList({ page: i, sort: ['release_date,desc'] })
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(
-          result => {
-            if (result != null) {
-              if (scrollUp) {
-                window.scroll(0, 0);
-              }
-              this.songList = result.content;
-              this.songList.forEach((value, index) => {
-                this.songList[index].isDisabled = false;
-              });
-              this.first = result.first;
-              this.last = result.last;
-              this.pageNumber = result.pageable.pageNumber;
-              this.pageSize = result.pageable.pageSize;
-              this.pages = new Array(result.totalPages);
-              for (let j = 0; j < this.pages.length; j++) {
-                this.pages[j] = { pageNumber: j };
-              }
-              for (const song of this.songList) {
-                this.checkDisabledSong(song);
-              }
+    this.loaderService.loading(true);
+    this.songService
+      .getSongList({ page: i, sort: ['release_date,desc'] })
+      .pipe(
+        finalize(() => {
+          this.loaderService.loading(false);
+        })
+      )
+      .subscribe(
+        result => {
+          if (result != null) {
+            if (scrollUp) {
+              window.scroll(0, 0);
             }
-          },
-          error => {
-            console.log(error.message);
-            this.toastService.error('Error', 'An error has occurred');
-          },
-          () => {
+            this.songList = result.content;
+            this.songList.forEach((value, index) => {
+              this.songList[index].isDisabled = false;
+            });
+            this.first = result.first;
+            this.last = result.last;
+            this.pageNumber = result.pageable.pageNumber;
+            this.pageSize = result.pageable.pageSize;
+            this.pages = new Array(result.totalPages);
+            for (let j = 0; j < this.pages.length; j++) {
+              this.pages[j] = { pageNumber: j };
+            }
             for (const song of this.songList) {
-              if (song.loadingLikeButton) {
-                song.loadingLikeButton = false;
-              }
+              this.checkDisabledSong(song);
             }
           }
-        )
-    );
+        },
+        () => {
+          for (const song of this.songList) {
+            if (song.loadingLikeButton) {
+              song.loadingLikeButton = false;
+            }
+          }
+        }
+      );
   }
 
   likeSong(song: Song, event, isLiked: boolean) {

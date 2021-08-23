@@ -56,24 +56,18 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
             this.loading = false;
           })
         )
-        .subscribe(
-          result => {
-            if (result != null) {
-              this.playList = result;
-              this.playList.isDisabled = false;
-              this.songList = this.playList.songs;
-              for (const song of this.songList) {
-                this.checkDisabledSong(song);
-              }
-            } else {
-              this.playList = null;
+        .subscribe(result => {
+          if (result != null) {
+            this.playList = result;
+            this.playList.isDisabled = false;
+            this.songList = this.playList.songs;
+            for (const song of this.songList) {
+              this.checkDisabledSong(song);
             }
-          },
-          error => {
-            this.toastService.show({ text: 'An error has occurred' }, { type: TOAST_TYPE.ERROR });
-            console.log(error.message);
+          } else {
+            this.playList = null;
           }
-        )
+        })
     );
   }
 
@@ -110,15 +104,9 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
               this.loading = false;
             })
           )
-          .subscribe(
-            () => {
-              this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
-            },
-            error => {
-              this.toastService.show({ text: 'Failed to remove song playlist' }, { type: TOAST_TYPE.ERROR });
-              console.log(error.message);
-            }
-          );
+          .subscribe(() => {
+            this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
+          });
       }
       sub.unsubscribe();
     });

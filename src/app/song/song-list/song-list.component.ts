@@ -25,7 +25,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   pageNumber = 0;
   pageSize: number;
   pages: Page[] = [];
-  message: string;
   songList: Song[] = [];
   loading: boolean;
   Math: Math = Math;
@@ -82,10 +81,6 @@ export class SongListComponent implements OnInit, OnDestroy {
                 this.checkDisabledSong(song);
               }
             }
-          },
-          error => {
-            this.message = 'An error has occurred.';
-            console.log(error.message);
           },
           () => {
             for (const song of this.songList) {

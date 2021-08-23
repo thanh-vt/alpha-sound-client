@@ -10,14 +10,10 @@ import { EditAlbumComponent } from './edit-album/edit-album.component';
 import { DeleteAlbumComponent } from './delete-album/delete-album.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
 
 @NgModule({
   declarations: [AlbumComponent, AlbumListComponent, AlbumDetailComponent, UploadAlbumComponent, EditAlbumComponent, DeleteAlbumComponent],
@@ -26,14 +22,11 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     AlbumRoutingModule,
     ReactiveFormsModule,
     NgbModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
     SharedModule,
     PlaylistModule,
     TranslateModule,
-    AutocompleteLibModule
+    VgDirectivesModule,
+    VgUtilModule
   ]
 })
 export class AlbumModule {}
