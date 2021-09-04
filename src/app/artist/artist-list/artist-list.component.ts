@@ -1,46 +1,32 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { Artist } from '../../model/artist';
 import { ArtistService } from '../../service/artist.service';
-import { finalize } from 'rxjs/operators';
-import { UserProfile } from '../../model/token-response';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-artist-list',
   templateUrl: './artist-list.component.html',
   styleUrls: ['./artist-list.component.scss']
 })
-export class ArtistListComponent implements OnInit, OnDestroy {
-  currentUser: UserProfile;
-  message: string;
-  loading: boolean;
-  subscription: Subscription = new Subscription();
-  artistList: Artist[] = [];
+export class ArtistListComponent implements OnInit {
+  artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo();
 
-  constructor(private artistService: ArtistService) {}
+  constructor(private artistService: ArtistService, private loaderService: VgLoaderService) {}
 
-  ngOnInit() {
-    this.loading = true;
-    this.subscription.add(
-      this.artistService
-        .artistList()
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(result => {
-          if (result != null) {
-            this.artistList = result.content;
-            this.artistList.forEach((value, index) => {
-              this.artistList[index].isDisabled = false;
-            });
-          }
-        })
-    );
+  async ngOnInit(): Promise<void> {
+    await this.getArtistPage(0);
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  async getArtistPage(number: number): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.artistPage = await this.artistService.artistList(number).toPromise();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
+    }
   }
 }

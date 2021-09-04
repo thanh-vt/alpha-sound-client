@@ -117,7 +117,6 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
             if (this.isImageFileChosen) {
               this.subscription.add(
                 this.userService.uploadAvatar(this.formData).subscribe((event: HttpEvent<any>) => {
-                  console.log(event);
                   if (this.displayProgress(event, this.progress)) {
                     this.toastService.show({ text: 'Avatar uploaded successfully' }, { type: TOAST_TYPE.SUCCESS });
                   }

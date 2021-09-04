@@ -1,76 +1,67 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PlaylistService } from '../../service/playlist.service';
 import { Playlist } from '../../model/playlist';
 import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { CreatePlaylistComponent } from '../create-playlist/create-playlist.component';
-import { VgToastService } from 'ngx-vengeance-lib';
+import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
 
 @Component({
   selector: 'app-add-song-to-playlist',
   templateUrl: './add-song-to-playlist.component.html',
   styleUrls: ['./add-song-to-playlist.component.scss']
 })
-export class AddSongToPlaylistComponent implements OnInit, OnDestroy {
+export class AddSongToPlaylistComponent implements OnInit {
   @Input() songId: number;
-  playlistList: Playlist[] = [];
-  loading: boolean;
-  subscription: Subscription = new Subscription();
+  playlistList: PagingInfo<Playlist> = DataUtil.initPagingInfo();
 
   constructor(
     private modalService: NgbModal,
     private playlistService: PlaylistService,
     private ngbActiveModal: NgbActiveModal,
-    private toastService: VgToastService
+    private toastService: VgToastService,
+    private loaderService: VgLoaderService
   ) {}
 
-  ngOnInit(): void {
-    this.loading = true;
-    this.playlistService
-      .getPlaylistListToAdd(this.songId)
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe(result => {
-        this.playlistList = result;
-      });
+  async ngOnInit(): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.playlistList = await this.playlistService.getPlaylistListToAdd(this.songId).toPromise();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
+    }
   }
 
-  addSongToPlaylist(songId: number, playlistId: number) {
-    this.subscription.add(
-      this.playlistService.addSongToPlaylist(songId, playlistId).subscribe(_ => {
-        this.toastService.success({ title: 'Success', text: 'Song added to playlist' });
-        const songToDeleteIndex: number = this.playlistList.findIndex(e => e.id === songId);
-        this.playlistList.splice(songToDeleteIndex, 1);
-      })
-    );
+  addSongToPlaylist(songId: number, playlistId: number): void {
+    this.playlistService.addSongToPlaylist(playlistId, [songId]).subscribe(() => {
+      this.toastService.success({ title: 'Success', text: 'Song added to playlist' });
+      const songToDeleteIndex: number = this.playlistList.content.findIndex(e => e.id === songId);
+      this.playlistList.content.splice(songToDeleteIndex, 1);
+    });
   }
 
-  openCreatePlaylistDialog() {
+  openCreatePlaylistDialog(): void {
     const sub: Subscription = this.modalService
       .open(CreatePlaylistComponent, {
         animation: true,
         backdrop: false,
         centered: false,
-        scrollable: true,
+        scrollable: false,
         size: 'md'
       })
       .closed.subscribe(next => {
         if (next) {
-          this.playlistList = [...this.playlistList, next];
+          this.playlistList.content = [...this.playlistList.content, next];
         }
         sub.unsubscribe();
       });
   }
 
-  close() {
+  close(): void {
     this.ngbActiveModal.close();
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }

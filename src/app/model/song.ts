@@ -8,6 +8,7 @@ import { UserProfile } from './token-response';
 import { ResourceInfo } from './resource-info';
 
 export interface Song {
+  rn: number;
   id: number;
   title: string;
   releaseDate: number;

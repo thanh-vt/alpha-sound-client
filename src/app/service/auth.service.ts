@@ -51,4 +51,16 @@ export class AuthService {
     this.tokenStorageService.clearToken();
     this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe();
   }
+
+  checkIsAnonymous(): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/is-anonymous`);
+  }
+
+  checkIsAuthenticated(): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/is-authenticated`);
+  }
+
+  checkMenuAccess(menu: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/has-access`, { params: { menu } });
+  }
 }

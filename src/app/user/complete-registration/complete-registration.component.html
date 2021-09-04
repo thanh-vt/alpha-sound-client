@@ -6,9 +6,7 @@
       [<a [routerLink]="['/home']">{{ 'Click here to return back to the home page' | translate }}</a>]
     </p>
   </div>
-  <div class="alert alert-info" *ngSwitchCase="0">
-    <app-spinner [type]="4"></app-spinner>
-  </div>
+
   <div class="alert alert-danger text-center w-100 h-auto py-5" *ngSwitchCase="-1">
     <p>
       {{ 'Account activated failed' | translate }}<br />

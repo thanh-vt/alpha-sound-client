@@ -1,88 +1,53 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlbumService } from '../../service/album.service';
 import { Album } from '../../model/album';
-import { Page } from '../../model/page';
-import { Subscription } from 'rxjs';
-import { UserProfileService } from '../../service/user-profile.service';
 import { SongService } from '../../service/song.service';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { finalize } from 'rxjs/operators';
-import { UserProfile } from '../../model/token-response';
+import { Song } from '../../model/song';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-album-list',
   templateUrl: './album-list.component.html',
   styleUrls: ['./album-list.component.scss']
 })
-export class AlbumListComponent implements OnInit, OnDestroy {
-  currentUser: UserProfile;
-  first: boolean;
-  last: boolean;
-  pageNumber = 0;
-  pageSize: number;
-  pages: Page[] = [];
-  message: string;
-  loading: boolean;
-  disabled: boolean;
-  albumList: Album[];
-  subscription: Subscription = new Subscription();
+export class AlbumListComponent implements OnInit {
+  albumPage: PagingInfo<Album> = DataUtil.initPagingInfo();
 
-  constructor(
-    private albumService: AlbumService,
-    private userService: UserProfileService,
-    private songService: SongService,
-    private playingQueueService: PlayingQueueService
-  ) {}
+  constructor(private albumService: AlbumService, private songService: SongService, private loaderService: VgLoaderService) {}
 
-  ngOnInit() {
-    this.loading = true;
-    this.goToPage(this.pageNumber);
+  ngOnInit(): void {
+    this.getAlbumPage(0);
   }
 
-  goToPage(i) {
-    this.subscription.add(
-      this.albumService
-        .albumList(i)
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(result => {
-          if (result != null) {
-            window.scroll(0, 0);
-            this.albumList = result.content;
-            this.albumList.forEach((value, index) => {
-              this.albumList[index].isDisabled = false;
-            });
-            this.first = result.first;
-            this.last = result.last;
-            this.pageNumber = result.pageable.pageNumber;
-            this.pageSize = result.pageable.pageSize;
-            this.pages = new Array(result.totalPages);
-            for (let j = 0; j < this.pages.length; j++) {
-              this.pages[j] = { pageNumber: j };
-            }
-          }
+  getAlbumPage(page: number): void {
+    this.loaderService.loading(true);
+    this.albumService
+      .albumList(page)
+      .pipe(
+        finalize(() => {
+          this.loaderService.loading(false);
         })
-    );
+      )
+      .subscribe(result => {
+        this.albumPage = result;
+      });
   }
 
-  addToPlaying(song) {
-    this.playingQueueService.addToQueue(song);
-  }
-
-  addAllToPlaying(albumId: number) {
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    this.albumService.albumDetail(albumId).subscribe(result => {
-      // eslint-disable-next-line @typescript-eslint/prefer-for-of
-      for (let i = 0; i < result.songs.length; i++) {
-        this.addToPlaying(result.songs[i]);
-      }
+  addToPlaying(song: Song): void {
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  addAlbumToPlaying(album: Album, event: Event): void {
+    event.stopPropagation();
+    album.isDisabled = true;
+    this.albumService.albumDetail(album.id).subscribe(next => {
+      this.songService.playAlbum(next);
+    });
   }
 }

@@ -1,44 +1,15 @@
-.poly-prod{
-  text-align:center;
-  padding:5px;
-  float: left;
-}
-
-.poly-prod .panel-body img{
-  height: 150px;
-  max-width: 95%;
-}
-
-img {
-  height: 8rem;
-  width: 8rem;
-}
-
-.dropdown-toggle::after{
-  content:initial
+.dropdown-toggle::after {
+  content: initial;
 }
 button {
   margin-right: 0.5rem;
 }
 
 .active {
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: #0055aa;
 }
 
 .modal-footer {
   border: 0;
 }
-
-.card-body {
-  height: 18rem;
-}
-
-div.card, a {
-  cursor: pointer;
-}
-
-div.card.tile:nth-child(n):hover {
-  background-color: #c7c7c7;
-}
-

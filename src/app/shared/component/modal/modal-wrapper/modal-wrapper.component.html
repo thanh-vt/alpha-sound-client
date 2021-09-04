@@ -1,17 +1,12 @@
 <div class="modal-header">
   <h5 class="modal-title" id="modal-basic-title">{{ title }}</h5>
-  <button type="button" class="close" aria-label="Close" (click)="close()">
-    <span aria-hidden="true">&times;</span>
+  <button class="btn btn-close-white" (click)="close()">
+    <i class="bi bi-x-circle-fill"></i>
   </button>
 </div>
-<div class="modal-body">
+<div class="modal-body overflow-auto">
   <ng-content select="[modalBody]"></ng-content>
 </div>
 <div class="modal-footer d-flex justify-content-end">
   <ng-content select="[modalFooter]"></ng-content>
 </div>
-<!--<button (click)="open(content, $event)" *ngIf="action=='delete'" class="btn btn-danger btn-sm m-2 rounded-circle"><i class="fas fa-trash-alt"></i></button>-->
-<!--<button (click)="open(content, $event)" *ngIf="action=='create'" class="btn btn-primary m-2 rounded-pill">{{ title }}</button>-->
-<!--<button (click)="open(content, $event)" *ngIf="action=='edit'" class="btn btn-secondary m-2 btn-sm rounded-circle"><i class="fas fa-edit"></i></button>-->
-<!--<button ngbDropdownItem (click)="open(content, $event)" *ngIf="action=='addToPlaylist'" class="btn btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}</button>-->
-<!--<button (click)="open(content, $event)" *ngIf="action=='addToPlaylist_roundedBtn'" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-plus"></i></button>-->

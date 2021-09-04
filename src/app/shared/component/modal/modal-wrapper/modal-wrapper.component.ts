@@ -1,10 +1,9 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modal-wrapper',
   templateUrl: './modal-wrapper.component.html',
-  styleUrls: ['./modal-wrapper.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./modal-wrapper.component.scss']
 })
 export class ModalWrapperComponent {
   @Input() title = '';
@@ -12,9 +11,7 @@ export class ModalWrapperComponent {
   @Output() closeAction = new EventEmitter();
   @ViewChild('content') content: ElementRef;
 
-  constructor() {}
-
-  close() {
+  close(): void {
     this.closeAction.emit();
   }
 }

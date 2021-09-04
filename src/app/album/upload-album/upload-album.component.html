@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-sm-12">
+<div class="row" *ngIf="albumUploadData?.formGroup">
+  <div class="col-sm-12 mb-3">
     <app-card [type]="3" [title]="'Upload Album' | translate" class="col-sm-12">
       <div cardBody3>
         <form [formGroup]="albumUploadData.formGroup" vgFocusFirstInvalid [form]="albumUploadData.formGroup" (ngSubmit)="onSubmit()">
@@ -20,11 +20,10 @@
               <div [formGroupName]="i" class="col-md-10">
                 <vg-auto-input
                   [formControl]="$any(artistControl)"
-                  [nameField]="'name'"
-                  [valueField]="''"
-                  [imageField]="'avatarUrl'"
+                  [modelToTextMapper]="modelToTextMapper"
+                  [modelToImgSrcMapper]="modelToImgSrcMapper"
                   [searchResults]="albumUploadData.filteredAlbumArtists"
-                  (onChangeText)="suggestAlbumArtist($event)"
+                  (changeTextEvent)="suggestAlbumArtist($event)"
                 ></vg-auto-input>
                 <vg-error-section
                   [label]="('common.label.artist' | translate) + '#' + (i + 1)"
@@ -47,7 +46,23 @@
           </div>
           <div class="form-group">
             <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
-            <input type="date" class="form-control" id="albumReleaseDate" placeholder="Release Date" formControlName="releaseDate" />
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="dd/MM/yyyy"
+                id="albumReleaseDate"
+                name="dp"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                formControlName="releaseDate"
+                [minDate]="minDate"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                  <i class="bi bi-calendar3"></i>
+                </button>
+              </div>
+            </div>
             <vg-error-section
               [label]="'Release Date' | translate"
               [group]="albumUploadData.formGroup"
@@ -56,18 +71,13 @@
           </div>
           <div class="form-group">
             <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>
-            <div class="custom-file">
-              <input
-                type="file"
-                class="custom-file-input"
-                id="albumCover"
-                [placeholder]="'Image File' | translate"
-                (change)="selectImage($event)"
-              />
-              <label class="custom-file-label" for="albumCover" *ngIf="albumUploadData.imageFile; else emptyFileBlock">
-                {{ albumUploadData.imageFile.name }}
-              </label>
-            </div>
+            <vg-file-input
+              id="albumCover"
+              formControlName="coverUrl"
+              [remoteFileType]="'image'"
+              [formData]="albumUploadData.formData"
+              [formDataFilePart]="'cover'"
+            ></vg-file-input>
           </div>
           <div>
             <button type="submit" class="btn btn-primary rounded-pill mb-2 float-right">{{ 'Submit' | translate }}</button>
@@ -78,12 +88,12 @@
   </div>
 </div>
 <div class="row" *ngFor="let songUploadData of songUploadDataList, index as j">
-  <div class="col-sm-12" #card1>
+  <div class="col-sm-12 mb-3">
     <app-card [type]="3" [title]="('Song' | translate) + ' #' + (j + 1)" class="col-sm-12">
+      <button cardEsc3 class="btn btn-info float-sm-right rounded-circle" style="margin-bottom: 1rem" (click)="removeForm(j)">
+        <i class="bi bi-x-circle"></i>
+      </button>
       <div cardBody3>
-        <button class="btn btn-info float-sm-right rounded-circle" style="margin-bottom: 1rem" (click)="removeForm(j)">
-          <i class="fas fa-times"></i>
-        </button>
         <form [formGroup]="songUploadData.formGroup" vgFocusFirstInvalid [form]="songUploadData.formGroup">
           <div class="form-group">
             <label for="songTitle">{{ 'Title' | translate }}</label>
@@ -103,11 +113,10 @@
                 <div [formGroupName]="k" class="col-md-10">
                   <vg-auto-input
                     [formControl]="$any(artistControl)"
-                    [nameField]="'name'"
-                    [valueField]="''"
-                    [imageField]="'avatarUrl'"
+                    [modelToTextMapper]="modelToTextMapper"
+                    [modelToImgSrcMapper]="modelToImgSrcMapper"
                     [searchResults]="songUploadData.filteredSongArtists"
-                    (onChangeText)="suggestSongArtist($event, j)"
+                    (changeTextEvent)="suggestSongArtist($event, j)"
                   ></vg-auto-input>
                   <vg-error-section
                     [label]="('common.label.artist' | translate) + '#' + (k + 1)"
@@ -131,13 +140,23 @@
           </div>
           <div class="form-group">
             <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-            <input
-              type="date"
-              class="form-control"
-              id="releaseDate"
-              [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)"
-              formControlName="releaseDate"
-            />
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="dd/MM/yyyy"
+                id="releaseDate"
+                name="dp"
+                ngbDatepicker
+                #d="ngbDatepicker"
+                formControlName="releaseDate"
+                [minDate]="minDate"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                  <i class="bi bi-calendar3"></i>
+                </button>
+              </div>
+            </div>
             <vg-error-section
               [label]="'Release Date' | translate"
               [group]="songUploadData.formGroup"
@@ -146,27 +165,29 @@
           </div>
           <div class="form-group">
             <label>{{ 'Audio File' | translate }}</label>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" [id]="'songAudio#' + j" (change)="selectAudio($event, j)" />
-              <label class="custom-file-label" [for]="'songAudio#' + j" *ngIf="songUploadData.audioFile; else emptyFileBlock">
-                {{ songUploadData.audioFile.name }}
-              </label>
-            </div>
+            <vg-file-input
+              formControlName="url"
+              [remoteFileType]="'audio'"
+              [formData]="songUploadData.formData"
+              [formDataFilePart]="'audio'"
+              (metadataLoadedEvent)="retrieveSongDuration($event, songUploadData.formGroup)"
+            ></vg-file-input>
           </div>
           <vg-upload-progress
             [httpObs]="songUploadData.observable"
             [successMsg]="'Song uploaded successfully' | translate"
+            (successEvent)="uploadSongSuccess($event, songUploadData, j)"
+            (failureEvent)="uploadSongFailed($event)"
           ></vg-upload-progress>
         </form>
       </div>
     </app-card>
   </div>
 </div>
-<div class="card col-sm-12 add_song_form" #card2 style="margin-bottom: 10rem; height: 10rem">
+<div class="card col-sm-12" style="margin-bottom: 10rem; height: 10rem">
   <div class="card-body d-flex p-2 justify-content-center">
-    <button class="align-self-center btn btn-info rounded-circle" (click)="addForm()"><i class="fas fa-plus fa-4x"></i></button>
+    <button class="align-self-center btn btn-info rounded-circle" (click)="addForm()">
+      <i style="font-size: 2rem" class="bi bi-plus-circle"></i>
+    </button>
   </div>
 </div>
-<ng-template #emptyFileBlock>
-  <label class="custom-file-label">{{ 'Choose File' | translate }}</label>
-</ng-template>

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PlaylistService } from '../../service/playlist.service';
 import { SongService } from '../../service/song.service';
 import { ActivatedRoute } from '@angular/router';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { Song } from '../../model/song';
 import { Playlist } from '../../model/playlist';
 import { Subscription } from 'rxjs';
@@ -10,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
-import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -22,91 +21,68 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playList: Playlist;
   subscription: Subscription = new Subscription();
   playlistId: number;
-  loading: boolean;
 
   constructor(
     private playlistService: PlaylistService,
     private songService: SongService,
     private route: ActivatedRoute,
-    private playingQueueService: PlayingQueueService,
     private modalService: NgbModal,
     private toastService: VgToastService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private loaderService: VgLoaderService
   ) {}
 
-  ngOnInit() {
-    this.loading = true;
-    this.route.queryParams.subscribe(params => {
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(async params => {
       this.playlistId = params.id;
-      this.refreshPlaylistDetail();
+      await this.refreshPlaylistDetail();
     });
   }
 
-  addToPlaying(song: Song, event) {
+  addToPlaying(song: Song, event: Event): void {
     event.stopPropagation();
-    this.playingQueueService.addToQueue(song);
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
+    });
   }
 
-  refreshPlaylistDetail() {
-    this.subscription.add(
-      this.playlistService
-        .getPlayListDetail(this.playlistId)
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(result => {
-          if (result != null) {
-            this.playList = result;
-            this.playList.isDisabled = false;
-            this.songList = this.playList.songs;
-            for (const song of this.songList) {
-              this.checkDisabledSong(song);
-            }
-          } else {
-            this.playList = null;
-          }
-        })
-    );
-  }
-
-  checkDisabledSong(song: Song) {
-    let isDisabled = false;
-    for (const track of this.playingQueueService.currentQueueSubject.value) {
-      if (song.url === track.link) {
-        isDisabled = true;
-        break;
-      }
+  async refreshPlaylistDetail(): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.playList = await this.playlistService.getPlayListDetail(this.playlistId).toPromise();
+      this.playList.isDisabled = false;
+      this.songList = this.playList.songs;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
     }
-    song.isDisabled = isDisabled;
   }
 
-  openDeleteDialog(playlist: Playlist, song: Song) {
+  openDeleteDialog(playlist: Playlist, song: Song): void {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     const comp: ConfirmationModalComponent = modalRef.componentInstance;
     comp.subject = this.translate.instant('Do you want to delete playlist');
     comp.name = playlist?.title;
     comp.data = { playlist, song };
-    const sub: Subscription = modalRef.closed.subscribe((result: { song: Song; playlist: Playlist }) => {
+    const sub: Subscription = modalRef.closed.subscribe(async (result: { song: Song; playlist: Playlist }) => {
       if (result) {
-        this.loading = true;
-        this.songService
-          .deleteSongFromPlaylist(result.song?.id, result.playlist?.id)
-          .pipe(
-            finalize(() => {
-              this.loading = false;
-            })
-          )
-          .subscribe(() => {
-            this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
-          });
+        try {
+          this.loaderService.loading(true);
+          await this.playlistService.deleteSongFromPlaylist(result.playlist?.id, [result.song?.id]).toPromise();
+          this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
+        } catch (e) {
+          console.error(e);
+        } finally {
+          this.loaderService.loading(false);
+        }
       }
       sub.unsubscribe();
     });

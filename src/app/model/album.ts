@@ -11,6 +11,8 @@ export interface Album {
   title: string;
   releaseDate: Date;
   coverUrl?: string;
+  listeningFrequency: number;
+  duration: number;
   coverResource?: ResourceInfo;
   genres: Genre[];
   songs: Song[];

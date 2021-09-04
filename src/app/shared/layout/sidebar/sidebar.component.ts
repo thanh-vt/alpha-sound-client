@@ -1,54 +1,39 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Song } from '../../../model/song';
 import { ActivatedRoute } from '@angular/router';
 import { SongService } from '../../../service/song.service';
-import { PlayingQueueService } from '../../../service/playing-queue.service';
-import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
-  message: string;
-  loading: boolean;
+export class SidebarComponent implements OnInit {
   songList: Song[];
-  subscription: Subscription = new Subscription();
 
-  constructor(private route: ActivatedRoute, private songService: SongService, private playingQueueService: PlayingQueueService) {}
+  constructor(private route: ActivatedRoute, private songService: SongService, private loaderService: VgLoaderService) {}
 
-  ngOnInit() {
-    this.goToPage();
+  async ngOnInit(): Promise<void> {
+    await this.goToPage();
   }
 
-  addToPlaying(song) {
+  addToPlaying(song: Song): void {
     song.isDisabled = true;
-    this.playingQueueService.addToQueue(song);
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
+    });
   }
 
-  goToPage() {
-    this.loading = true;
-    this.songService
-      .getSongList({ page: 0, size: 10, sort: ['listening_frequency'] })
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe(result => {
-        if (result != null) {
-          window.scroll(0, 0);
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  async goToPage(): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.songList = (await this.songService.songList({ page: 0, size: 10, sort: ['listening_frequency'] }).toPromise()).content;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
+    }
   }
 }

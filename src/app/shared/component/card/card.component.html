@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="type">
-  <div *ngSwitchCase="1" class="card col-sm-auto mx-2 py-2 text-center card_type_1" [class.tile]="tileHoverEffect">
+  <div *ngSwitchCase="1" class="card mx-2 py-2 text-center card_type_1" [class.tile]="tileHoverEffect">
     <div class="card-header">
       <ng-content select="[cardHeader1]"></ng-content>
       <ng-content select="[cardTitle1]"></ng-content>
@@ -20,7 +20,7 @@
   <div *ngSwitchCase="2" class="card mb-3 w-100 card_type_2">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img [src]="imgSrc" class="card-img img-thumbnail" alt="" onerror="this.src = '../../../assets/images/avatar.jpg'" />
+        <img [src]="imgSrc" class="card-img img-thumbnail" alt="" />
       </div>
       <div class="col-md-8">
         <div class="card-body">
@@ -40,10 +40,11 @@
   </div>
 
   <div *ngSwitchCase="3" class="card w-100 card_type_3">
-    <div class="card-header text-center">
+    <div class="card-header d-flex justify-content-around align-items-center">
+      <div style="width: 5rem"></div>
       <h3>{{ title }}</h3>
-      <div class="card-subtitle mb-2 text-muted">
-        <ng-content select="[cardSubtitle3]"></ng-content>
+      <div style="width: 5rem">
+        <ng-content select="[cardEsc3]"></ng-content>
       </div>
     </div>
     <div class="card-body">

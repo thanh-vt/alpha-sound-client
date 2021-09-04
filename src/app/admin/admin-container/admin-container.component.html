@@ -11,50 +11,50 @@
   </ul>
 </nav>
 
-<div class="container-fluid" [class.dark-theme]="false">
+<div class="container-fluid">
   <div class="row mt-2">
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul ngbNav #nav="ngbNav" class="nav-pills" [(activeId)]="active" [orientation]="'vertical'">
           <li ngbNavItem="home">
             <a ngbNavLink href="#">
-              <i class="fas fa-home"></i>
+              <i class="bi bi-house"></i>
               Dashboard <span class="sr-only">(current)</span>
             </a>
           </li>
           <li ngbNavItem="table_data">
             <a ngbNavLink href="#">
-              <i class="fas fa-border-all"></i>
+              <i class="bi bi-table"></i>
               Table & Data
             </a>
           </li>
-          <li ngbNavItem="user_management">
+          <li ngbNavItem="/admin/user-management">
             <a ngbNavLink [routerLink]="['/admin/user-management']">
-              <i class="fas fa-users"></i>
+              <i class="bi bi-people-fill"></i>
               User Management
             </a>
           </li>
-          <li ngbNavItem="song_management">
+          <li ngbNavItem="/admin/song-management">
             <a ngbNavLink [routerLink]="['/admin/song-management']">
-              <i class="fas fa-music"></i>
+              <i class="bi bi-music-note-list"></i>
               Song Management
             </a>
           </li>
-          <li ngbNavItem="artist_management">
+          <li ngbNavItem="/admin/artist-management">
             <a ngbNavLink [routerLink]="['/admin/artist-management']">
-              <i class="fas fa-bars"></i>
+              <i class="bi bi-list"></i>
               Artist Management
             </a>
           </li>
-          <li ngbNavItem="country_management">
+          <li ngbNavItem="/admin/country-management">
             <a ngbNavLink [routerLink]="['/admin/country-management']">
-              <i class="fas fa-bars"></i>
+              <i class="bi bi-list"></i>
               Country Management
             </a>
           </li>
           <li ngbNavItem="upload_request">
             <a ngbNavLink href="#">
-              <i class="fas fa-bell"></i>
+              <i class="bi bi-bell"></i>
               Uploads Request
             </a>
           </li>

@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Song } from '../../model/song';
-import { Page } from '../../model/page';
 import { Subscription } from 'rxjs';
 import { UserComponent } from '../user/user.component';
 import { SongService } from '../../service/song.service';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { PlaylistService } from '../../service/playlist.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../service/auth.service';
 import { UserProfile } from '../../model/token-response';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { finalize } from 'rxjs/operators';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-favorites',
@@ -20,102 +20,58 @@ import { finalize } from 'rxjs/operators';
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
   currentUser: UserProfile;
-  first: boolean;
-  last: boolean;
-  pageNumber = 0;
-  pageSize: number;
-  pages: Page[] = [];
-  songList: Song[] = [];
-  loading: boolean;
+  songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   subscription: Subscription = new Subscription();
-
   @ViewChild(UserComponent) userComponent: UserComponent;
-  Math: Math = Math;
 
-  // eslint-disable-next-line max-len
   constructor(
     private songService: SongService,
-    private playingQueueService: PlayingQueueService,
     private playlistService: PlaylistService,
     public translate: TranslateService,
     private authService: AuthService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loaderService: VgLoaderService
   ) {
     this.authService.currentUser$.subscribe(next => {
       this.currentUser = next;
     });
-    this.playingQueueService.update.subscribe(() => {
-      this.goToPage(this.pageNumber);
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.getSongPage(0);
+  }
+
+  async getSongPage(number: number): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.songPage = await this.songService.getUserFavoriteSongList({ page: number }).toPromise();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
+    }
+  }
+
+  addToPlaying(song: Song, event: Event): void {
+    event.stopPropagation();
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
     });
   }
 
-  ngOnInit() {
-    this.goToPage(this.pageNumber, true);
-  }
-
-  addToPlaying(song: Song, event) {
-    event.stopPropagation();
-    this.playingQueueService.addToQueue(song);
-  }
-
-  goToPage(i: number, scroll?: boolean) {
-    this.loading = true;
-    this.songService
-      .getUserFavoriteSongList({ page: i })
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe(result => {
-        if (result != null) {
-          if (scroll) {
-            window.scroll(0, 0);
-          }
-          this.songList = result.content;
-          this.songList.forEach((value, index) => {
-            this.songList[index].isDisabled = false;
-          });
-          this.first = result.first;
-          this.last = result.last;
-          this.pageNumber = result.pageable.pageNumber;
-          this.pageSize = result.pageable.pageSize;
-          this.pages = new Array(result.totalPages);
-          for (let j = 0; j < this.pages.length; j++) {
-            this.pages[j] = { pageNumber: j };
-          }
-          for (const song of this.songList) {
-            this.checkDisabledSong(song);
-          }
-        } else {
-          this.songList = [];
-        }
-      });
-  }
-
-  likeSong(song: Song, event, isLiked: boolean) {
+  likeSong(song: Song, event: Event, isLiked: boolean): void {
     event.stopPropagation();
     this.songService.likeSong(song, isLiked);
   }
 
-  checkDisabledSong(song: Song) {
-    let isDisabled = false;
-    for (const track of this.playingQueueService.currentQueueSubject.value) {
-      if (song.url === track.link) {
-        isDisabled = true;
-        break;
-      }
-    }
-    song.isDisabled = isDisabled;
-  }
-
-  openPlaylistDialog(songId: number, event: Event) {
+  openPlaylistDialog(songId: number, event: Event): void {
     event.stopPropagation();
     const ref = this.modalService.open(AddSongToPlaylistComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.songId = songId;

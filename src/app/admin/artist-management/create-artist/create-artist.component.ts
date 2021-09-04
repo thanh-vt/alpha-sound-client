@@ -1,19 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ArtistService } from '../../../service/artist.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { Progress } from '../../../model/progress';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { finalize } from 'rxjs/operators';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { ArtistUploadData } from '../../../model/avatar-upload-data';
+import { Artist } from '../../../model/artist';
+import { DateUtil } from '../../../util/date-util';
 
 @Component({
   selector: 'app-create-artist',
   templateUrl: './create-artist.component.html',
   styleUrls: ['./create-artist.component.scss']
 })
-export class CreateArtistComponent implements OnInit, OnDestroy {
+export class CreateArtistComponent implements OnInit {
+  artistUploadData!: ArtistUploadData;
+  minDate = DateUtil.getMinDate();
+  loading = false;
+
   constructor(
     private artistService: ArtistService,
     private fb: FormBuilder,
@@ -21,93 +24,33 @@ export class CreateArtistComponent implements OnInit, OnDestroy {
     private toastService: VgToastService
   ) {}
 
-  submitted = false;
-  isImageFileChosen = false;
-  imageFileName = '';
-  artistUploadForm: FormGroup;
-  formData = new FormData();
-  file: any;
-  subscription: Subscription = new Subscription();
-  progress: Progress = { value: 0 };
-  loading: boolean;
-
-  ngOnInit() {
-    this.artistUploadForm = this.fb.group({
-      name: ['', [Validators.required, Validators.min(4)]],
-      birthDate: ['', Validators.required],
-      biography: ['', Validators.required]
-    });
+  ngOnInit(): void {
+    this.artistUploadData = new ArtistUploadData(
+      this.fb.group({
+        name: ['', [Validators.required, Validators.min(4)]],
+        birthDate: [new Date(), [Validators.required]],
+        biography: ['', [Validators.required]],
+        avatarUrl: [null, [Validators.required]]
+      })
+    );
   }
 
-  selectFile(event) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
-      this.isImageFileChosen = true;
-      this.imageFileName = event.target.files[0].name;
+  onSubmit(): void {
+    if (!this.artistUploadData.isValid(true)) {
+      return;
     }
+    const formData = this.artistUploadData.setup();
+    this.artistUploadData.observable = this.artistService.createArtist(formData);
   }
 
-  displayProgress(event, progress: Progress): boolean {
-    switch (event.type) {
-      case HttpEventType.Sent:
-        console.log('Request has been made!');
-        break;
-      case HttpEventType.ResponseHeader:
-        console.log('Response header has been received!');
-        break;
-      case HttpEventType.UploadProgress:
-        progress.value = Math.round((event.loaded / event.total) * 100);
-        console.log(`Uploaded! ${progress.value}%`);
-        break;
-      case HttpEventType.Response: {
-        console.log('Song successfully created!', event.body);
-        const complete = setTimeout(() => {
-          progress.value = 0;
-          const navigation = setInterval(() => {
-            this.navigate();
-            clearTimeout(navigation);
-            clearTimeout(complete);
-          }, 2000);
-        }, 500);
-        return true;
-      }
-    }
+  onUpdateSuccess(artist: Artist): void {
+    this.toastService.show({ text: 'Create artist successfully' }, { type: TOAST_TYPE.SUCCESS });
+    setTimeout(() => {
+      this.ngbActiveModal.close(artist);
+    }, 1000);
   }
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.artistUploadForm.valid) {
-      this.formData.append('artist', new Blob([JSON.stringify(this.artistUploadForm.value)], { type: 'application/json' }));
-      this.formData.append('avatar', this.file);
-      this.loading = true;
-      this.artistService
-        .uploadArtist(this.formData)
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe((event: HttpEvent<any>) => {
-          if (this.displayProgress(event, this.progress)) {
-            this.toastService.show({ text: 'Artist added successfully!' }, { type: TOAST_TYPE.SUCCESS });
-          }
-        });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  navigate() {
-    location.replace('/admin/artist-management');
-  }
-
-  cancel() {
-    this.ngbActiveModal.dismiss();
-  }
-
-  close() {
+  close(): void {
     this.ngbActiveModal.close();
   }
 }

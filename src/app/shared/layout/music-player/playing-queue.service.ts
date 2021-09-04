@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AudioTrack } from './audio-track';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayingQueueService {
   playlist: AudioTrack[] = [];
-  playlistSubject: BehaviorSubject<{ tracks: AudioTrack[]; needPlay: boolean }> = new BehaviorSubject({
+  private playlistSubject: BehaviorSubject<{ tracks: AudioTrack[]; needPlay: boolean }> = new BehaviorSubject({
     tracks: this.playlist,
     needPlay: false
   });
-
-  constructor() {}
+  playListObs: Observable<{ tracks: AudioTrack[]; needPlay: boolean }> = this.playlistSubject.asObservable();
+  trackEvent: BehaviorSubject<{ track: AudioTrack; event: string }> = new BehaviorSubject(null);
 
   addToQueue(audioTrack: AudioTrack): void {
     this.playlist = this.playlist.concat(audioTrack);
@@ -25,6 +25,9 @@ export class PlayingQueueService {
   }
 
   addToQueueAndPlay(audioTrack: AudioTrack): void {
+    if (this.checkAlreadyInQueue(audioTrack.url)) {
+      return;
+    }
     this.playlist = this.playlist.concat(audioTrack);
     this.notifyUpdate(true);
   }
@@ -39,5 +42,9 @@ export class PlayingQueueService {
       tracks: this.playlist,
       needPlay: needPlay
     });
+  }
+
+  checkAlreadyInQueue(inputUrl: string | undefined): boolean {
+    return this.playlist.map(track => track.url).some(url => url === inputUrl);
   }
 }

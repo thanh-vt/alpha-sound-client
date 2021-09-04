@@ -1,7 +1,6 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
-<h3 class="text-center">{{ 'Uploaded' | translate }}</h3>
+<h3 class="text-center">{{ 'Uploaded Song list' | translate }}</h3>
+
+<hr />
 <table class="table table-striped">
   <thead>
     <tr>
@@ -12,26 +11,32 @@
     </tr>
   </thead>
   <tbody>
-    <tr [routerLink]="['/song', 'detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
-      <th scope="row">{{ i + 1 }}</th>
+    <tr [routerLink]="['/song', 'detail']" [queryParams]="{id: song.id}" *ngFor="let song of songPage.content; index as i">
+      <th scope="row">{{ song.rn }}</th>
       <td>
         <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
-        <a *ngFor="let artist of song.artists; index as j"><small>{{ artist.name }}{{ j === song.artists.length - 1? '': ', '}}</small></a>
-      </td>
-      <td>
-        <small
-          >{{ (Math.floor(song.duration / 60).toString().padStart(2, '0')) }}{{':'}}{{ Math.round(song.duration % 60).toString().padStart(2,
-          '0')}}</small
+        <a *ngFor="let artist of song.artists; index as j"
+          ><small>{{ artist.name }}{{ j === song.artists.length - 1 ? '' : ', '}}</small></a
         >
       </td>
       <td>
-        <button class="btn btn-primary btn-sm rounded-circle mr-2" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-          <i class="fas fa-play-circle"></i>
+        <small>{{ song.duration | duration }}</small>
+      </td>
+      <td>
+        <button class="btn btn-info rounded-circle mr-2" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
+          <i class="bi bi-play-circle"></i>
         </button>
-        <a class="btn btn-secondary btn-sm rounded-circle" [routerLink]="['/song','edit']" [queryParams]="{id: song.id}"
-          ><i class="fas fa-edit"></i
+        <a class="btn btn-secondary rounded-circle" [routerLink]="['/song','edit']" [queryParams]="{id: song.id}"
+          ><i class="bi bi-pencil-square"></i
         ></a>
       </td>
     </tr>
   </tbody>
 </table>
+<ngb-pagination
+  *ngIf="songPage.totalPages > 1"
+  [collectionSize]="songPage.totalElements"
+  [page]="songPage.pageable?.pageNumber + 1"
+  [pageSize]="songPage.pageable?.pageSize"
+  (pageChange)="getUserSongUploadedPage($event - 1)"
+></ngb-pagination>

@@ -9,7 +9,7 @@
     aria-expanded="false"
     aria-label="Toggle navigation"
   >
-    <i class="fas fa-bars"></i>
+    <i class="bi bi-list"></i>
   </button>
 
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse thead-dark ml-3" id="navbarSupportedContent">
@@ -21,72 +21,71 @@
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/song']"
-          ><h3><i class="fas fa-music"></i> {{ 'Song' | translate }}</h3></a
+          ><h3><i class="bi bi-music-note"></i> {{ 'Song' | translate }}</h3></a
         >
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/album']"
-          ><h3><i class="fas fa-compact-disc"></i> {{ 'Album' | translate }}</h3></a
+          ><h3><i class="bi bi-disc"></i> {{ 'Album' | translate }}</h3></a
         >
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/artist']"
-          ><h3><i class="fas fa-microphone-alt"></i> {{ 'Artist' | translate }}</h3></a
+          ><h3><i class="bi bi-mic"></i> {{ 'Artist' | translate }}</h3></a
         >
       </div>
     </div>
 
-    <div class="slider-container d-inline-block text-white pl-3 mx-1 rounded-pill" style="background-color: #6c757d !important">
-      <label class="bg-secondary" for="myRange"><i class="fas fa-moon mt-2"></i></label>
+    <div
+      class="slider-container d-inline-flex justify-content-center align-items-center text-white rounded-pill"
+      style="background-color: #6c757d !important; min-height: 2rem; min-width: 8rem"
+    >
+      <i class="bi bi-sun"></i>
       <input
         type="range"
         min="1"
         [max]="2"
-        [value]="setting.darkMode ? 2 : 1"
-        class="custom-range bg-secondary pt-2"
+        [value]="(setting$ | async).darkMode ? 2 : 1"
+        class="custom-range bg-secondary"
         id="myRange"
-        (change)="turnDarkThemeOnOff()"
+        (change)="turnDarkThemeOnOff($event)"
       />
+      <i class="bi bi-moon-stars"></i>
     </div>
-
-    <div class="search_upload ml-auto mr-1">
-      <div ngbDropdown class="d-inline-block mx-1" *ngIf="!!currentUser">
-        <button
-          ngbDropdownToggle
-          class="dropdown-toggle btn btn-info mx-0 rounded-pill"
-          id="uploadSelect"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <i class="fas fa-upload"></i>
-        </button>
-        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
-          <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">{{ 'Upload Song' | translate }}</a>
-          <div class="dropdown-divider"></div>
-          <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">{{ 'Upload Album' | translate }}</a>
-        </div>
-      </div>
-
-      <div class="d-inline-block mx-1">
-        <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline">
-          <input
-            class="form-control rounded-pill mr-1"
-            type="search"
-            [placeholder]="'Search' | translate"
-            aria-label="Search"
-            formControlName="searchText"
-            style="width: 12rem"
-          />
-          <button type="submit" class="btn btn-info mx-1 rounded-circle"><i class="fas fa-search"></i></button>
-        </form>
+    <div ngbDropdown class="d-inline-block mx-auto" *ngIf="!!currentUser">
+      <button
+        ngbDropdownToggle
+        class="dropdown-toggle btn btn-info mx-0 rounded-pill"
+        id="uploadSelect"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="bi bi-upload"></i>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">{{ 'Upload Song' | translate }}</a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">{{ 'Upload Album' | translate }}</a>
       </div>
     </div>
+
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="row row-cols-lg-auto mx-auto">
+      <input
+        class="form-control rounded-pill mr-1"
+        type="search"
+        [placeholder]="'Search' | translate"
+        aria-label="Search"
+        formControlName="searchText"
+        style="width: 12rem"
+      />
+      <button type="submit" class="btn btn-info mx-1 rounded-circle"><i class="bi bi-search"></i></button>
+    </form>
   </div>
-  <div ngbDropdown class="d-inline-block ml-auto mr-1" *ngIf="!currentUser" placement="bottom-right" display="dynamic">
+  <div ngbDropdown class="d-inline-block ml-auto mr-1" *ngIf="!currentUser" placement="bottom-end" display="dynamic">
     <button class="btn btn-info rounded-pill" id="dropdownForm1" ngbDropdownToggle>
-      <i class="fas fa-sign-in-alt"></i> {{ 'Sign In' | translate}}
+      <i class="bi bi-box-arrow-in-right"></i> {{ 'Sign In' | translate}}
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownForm1">
       <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="px-4 py-3" vgFocusFirstInvalid [form]="loginForm">
@@ -137,37 +136,43 @@
       aria-haspopup="true"
       aria-expanded="false"
     >
-      <span class="d-inline-block user-avatar" *ngIf="!currentUser?.avatar_url"> <i class="fas fa-user-circle"></i></span>
-      <img
-        class="d-inline-block user-avatar"
-        *ngIf="!!currentUser?.avatar_url"
-        [src]="currentUser?.avatar_url"
-        onerror="src = '../../../assets/images/avatar.jpg'"
-        alt=""
-      />
+      <span class="d-inline-block user-avatar" *ngIf="!currentUser?.avatar_url"> <i class="bi bi-person-circle"></i></span>
+      <img class="d-inline-block user-avatar" *ngIf="!!currentUser?.avatar_url" [src]="currentUser?.avatar_url" alt="" />
       <span> {{ currentUser.user_name }}</span>
     </button>
     <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUser.user_name]"
-        ><span><i class="fas fa-user"></i> {{ 'Profile' | translate }}</span></a
+        ><span><i class="bi bi-person-circle"></i> {{ 'Profile' | translate }}</span></a
       >
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"
-        ><span><i class="fas fa-headphones-alt"></i> {{ 'Playlist' | translate }}</span></a
+        ><span><i class="bi bi-music-note-list"></i> {{ 'Playlist' | translate }}</span></a
       >
       <div class="dropdown-divider"></div>
-      <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded']"><i class="fas fa-upload"></i> {{ 'Uploaded' | translate }}</a>
+      <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded/song']"
+        ><i class="bi bi-upload"></i> {{ 'Uploaded Song' | translate }}</a
+      >
+      <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded/album']"
+        ><i class="bi bi-upload"></i> {{ 'Uploaded Album' | translate }}</a
+      >
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']"
-        ><i class="fab fa-gratipay"></i> {{ 'Favorites' | translate }}</a
+        ><i class="bi bi-bookmark-heart"></i> {{ 'Favorites' | translate }}</a
       >
       <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true"
-        ><i class="fas fa-sign-out-alt"></i> {{ 'Sign Out' | translate }}</a
+        ><i class="bi bi-box-arrow-right"></i> {{ 'Sign Out' | translate }}</a
       >
     </div>
   </div>
   <div class="d-inline-block ml-auto mr-2">
-    <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded-pill"
-      >{{ 'Language' | translate }}
-      <select class="custom-select mx-1 rounded-pill" name="" id="language" #language (change)="translatePage()" style="width: 6rem">
+    <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded-lg"
+      ><i class="bi bi-globe2"></i>
+      <select
+        class="custom-select mx-1 rounded-sm d-inline-block"
+        name=""
+        id="language"
+        #language
+        (change)="translatePage()"
+        style="width: 6rem"
+      >
         <option [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
         <option [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
       </select>

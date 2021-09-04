@@ -1,6 +1,3 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
 <button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">{{ 'Create playlist' | translate }}</button>
 <table class="table table-striped">
   <thead>
@@ -16,10 +13,10 @@
       <td><a [routerLink]="['/playlist','detail']" [queryParams]="{id: playlist.id}">{{ playlist.title }}</a></td>
       <td class="text-center">
         <button (click)="openEditDialog(playlist, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
-          <i class="fas fa-edit"></i>
+          <i class="bi bi-pencil-square"></i>
         </button>
         <button (click)="openDeleteDialog(playlist, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
-          <i class="fas fa-trash-alt"></i>
+          <i class="bi bi-trash"></i>
         </button>
       </td>
     </tr>

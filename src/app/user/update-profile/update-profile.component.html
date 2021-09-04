@@ -1,6 +1,6 @@
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser">
   <div class="form-group">
-    <label for="firstName"><i class="fas fa-user-tie"></i> {{ 'First Name' | translate }}</label>
+    <label for="firstName"><i class="bi bi-tag"></i> {{ 'First Name' | translate }}</label>
     <input
       id="firstName"
       type="text"
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="lastName"><i class="fas fa-user-tie"></i> {{ 'Last Name' | translate}}</label>
+    <label for="lastName"><i class="bi bi-tag"></i> {{ 'Last Name' | translate}}</label>
     <input
       id="lastName"
       type="text"
@@ -61,19 +61,19 @@
       {{ 'Last Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
     </div>
   </div>
-  <label><i class="fas fa-venus-mars"></i> {{ 'Gender' | translate }}</label>
+  <label><i class="bi bi-gender-female"></i> {{ 'Gender' | translate }}</label>
   <div class="form-group">
     <div class="form-check form-check-inline">
       <input type="radio" id="male" [value]="true" formControlName="gender" />
-      <label class="form-check-label ml-2" for="male"><i class="fas fa-mars"></i> Male</label>
+      <label class="form-check-label ml-2" for="male"><i class="bi bi-gender-male"></i> Male</label>
     </div>
     <div class="form-check form-check-inline">
       <input type="radio" id="female" [value]="false" formControlName="gender" />
-      <label class="form-check-label ml-2" for="female"><i class="fas fa-venus"></i> Female</label>
+      <label class="form-check-label ml-2" for="female"><i class="bi bi-gender-female"></i> Female</label>
     </div>
   </div>
   <div class="form-group">
-    <label for="birthDate"><i class="fas fa-table"></i> {{ 'BirthDate' | translate }}</label>
+    <label for="birthDate"><i class="bi bi-calendar3"></i> {{ 'BirthDate' | translate }}</label>
     <input
       [value]="currentUser?.date_of_birth | date: 'yyyy-MM-dd'"
       type="date"
@@ -90,7 +90,7 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="phoneNumber"><i class="fas fa-phone"></i> {{ 'PhoneNumber' | translate }}</label>
+    <label for="phoneNumber"><i class="bi bi-telephone"></i> {{ 'PhoneNumber' | translate }}</label>
     <input
       id="phoneNumber"
       type="text"
@@ -99,7 +99,7 @@
       class="form-control"
     />
   </div>
-  <label><i class="fas fa-user-circle"></i> {{ 'Avatar' | translate }}</label>
+  <label><i class="bi bi-person-bounding-box"></i> {{ 'Avatar' | translate }}</label>
   <div class="form-group custom-file">
     <label class="custom-file-label" *ngIf="!isImageFileChosen">{{ 'Choose file' | translate }}</label>
     <label class="custom-file-label" *ngIf="isImageFileChosen">{{ imageFileName }}</label>

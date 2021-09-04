@@ -41,7 +41,7 @@ export class ResetPasswordSubmissionComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const queryParamMap = this.route.snapshot.queryParamMap;
     if (queryParamMap.has('token') && queryParamMap.has('email')) {
       const token = queryParamMap.get('token');
@@ -55,7 +55,7 @@ export class ResetPasswordSubmissionComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.resetPasswordForm.valid && this.passwordResetToken) {
       this.loading = true;
       this.userService
@@ -81,14 +81,14 @@ export class ResetPasswordSubmissionComponent implements OnInit {
           },
           error => {
             this.status = -1;
-            console.log(error);
+            console.error(error);
           }
         );
     }
   }
 }
 
-export function mustMatch(controlName: string, matchingControlName: string) {
+export function mustMatch(controlName: string, matchingControlName: string): (formGroup: FormGroup) => void {
   return (formGroup: FormGroup) => {
     const control = formGroup.controls[controlName];
     const matchingControl = formGroup.controls[matchingControlName];

@@ -1,6 +1,3 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
 <h4 class="text-center" *ngIf="playList">{{ playList.title }}</h4>
 <table class="table table-striped" *ngIf="playList">
   <thead>
@@ -13,15 +10,15 @@
   </thead>
   <tbody>
     <tr [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
-      <th scope="row">{{ i + 1 }}</th>
+      <th scope="row">{{ song.rn }}</th>
       <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
       <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
       <td>
         <button (click)="addToPlaying(song, $event)" class="btn btn-primary rounded-circle" [disabled]="song.isDisabled">
-          <i class="fas fa-play-circle"></i>
+          <i class="bi bi-play-circle"></i>
         </button>
-        <button [disabled]="loading" class="btn btn-primary rounded-pill" (click)="openDeleteDialog(playList, song)">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{'Remove' | translate }}
+        <button class="btn btn-primary rounded-pill" (click)="openDeleteDialog(playList, song)">
+          <span class="spinner-border spinner-border-sm mr-1"></span>{{'Remove' | translate }}
         </button>
       </td>
     </tr>

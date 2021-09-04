@@ -1,18 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { SongService } from '../../service/song.service';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { Album } from '../../model/album';
 import { AlbumService } from '../../service/album.service';
 import { Song } from '../../model/song';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../model/token-response';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ArtistService } from '../../service/artist.service';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-album-detail',
@@ -20,14 +22,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./album-detail.component.scss']
 })
 export class AlbumDetailComponent implements OnInit, OnDestroy {
-  currentUser: UserProfile;
+  currentUser$: Observable<UserProfile>;
   album: Album;
   albumId: number;
-  songList: Song[] = [];
-  loading: boolean;
-  message: string;
+  songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   subscription: Subscription = new Subscription();
-  Math: Math = Math;
 
   constructor(
     private fb: FormBuilder,
@@ -36,85 +35,70 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private albumService: AlbumService,
     private songService: SongService,
-    private playingQueueService: PlayingQueueService,
+    private artistService: ArtistService,
     public translate: TranslateService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loaderService: VgLoaderService
   ) {
-    this.authService.currentUser$.subscribe(next => {
-      this.currentUser = next;
-    });
+    this.currentUser$ = this.authService.currentUser$;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscription.add(
-      this.route.queryParams.subscribe(params => {
-        this.loading = true;
-        this.albumId = params.id;
-        this.subscription.add(
-          this.albumService
-            .albumDetail(this.albumId)
-            .pipe(
-              finalize(() => {
-                this.loading = false;
-              })
-            )
-            .subscribe(
-              result => {
-                this.album = result;
-                this.songList = result.songs;
-                for (const song of this.songList) {
-                  this.checkDisabledSong(song);
-                }
-              },
-              () => {
-                for (const song of this.songList) {
-                  if (song.loadingLikeButton) {
-                    song.loadingLikeButton = false;
-                  }
-                }
-              }
-            )
-        );
+      this.route.queryParams.subscribe(async params => {
+        try {
+          this.loaderService.loading(true);
+          this.albumId = params.id;
+          this.album = await this.albumService.albumDetail(this.albumId).toPromise();
+          await this.getSongPage(0);
+        } catch (e) {
+          console.error(e);
+        } finally {
+          this.loaderService.loading(false);
+        }
       })
     );
   }
 
-  addToPlaying(song: Song, event) {
-    event.stopPropagation();
-    this.playingQueueService.addToQueue(song);
-  }
-
-  addAllToPlaying(event) {
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < this.album.songs.length; i++) {
-      this.addToPlaying(this.album.songs[i], event);
+  async getSongPage(number: number): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.songPage = await this.songService.getAlbumSongList(this.album.id, number, 10).toPromise();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
     }
-    this.album.isDisabled = true;
   }
 
-  likeSong(song: Song, event, isLiked: boolean) {
+  addToPlaying(song: Song, event: Event): void {
+    event.stopPropagation();
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
+    });
+  }
+
+  addAlbumToPlaying(album: Album, event: Event): void {
+    event.stopPropagation();
+    album.isDisabled = true;
+    this.albumService.albumDetail(album.id).subscribe(next => {
+      this.songService.playAlbum(next);
+    });
+  }
+
+  likeSong(song: Song, event: Event, isLiked: boolean): void {
     event.stopPropagation();
     this.songService.likeSong(song, isLiked);
   }
 
-  checkDisabledSong(song: Song) {
-    let isDisabled = false;
-    for (const track of this.playingQueueService.currentQueueSubject.value) {
-      if (song.url === track.link) {
-        isDisabled = true;
-        break;
-      }
-    }
-    song.isDisabled = isDisabled;
-  }
-
-  openPlaylistDialog(songId: number, event: Event) {
+  openPlaylistDialog(songId: number, event: Event): void {
     event.stopPropagation();
     const ref = this.modalService.open(AddSongToPlaylistComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.songId = songId;

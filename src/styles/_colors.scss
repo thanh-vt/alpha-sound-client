@@ -1,7 +1,7 @@
-$accent-color: #FF0000;
-$accent-color-dark: #0000FF;
+$accent-color: #ff0000;
+$accent-color-dark: #0000ff;
 
-$toolbar-color: #EEEEEE;
+$toolbar-color: #eeeeee;
 $toolbar-color-dark: #232323;
 
 $toolbar-text-color: $toolbar-color-dark;
@@ -9,14 +9,96 @@ $toolbar-text-color-dark: $toolbar-color;
 
 $card-background: #fafafa;
 $card-background-dark: #494949;
-$card-border: #eee;
-$card-border-dark: #5c5c5c;
-
+$card-border: #000000;
+$card-border-dark: #8d8d8d;
 
 $colors: (
-  --accent-color: ($accent-color, $accent-color-dark),
-  --toolbar-color: ($toolbar-color, $toolbar-color-dark),
-  --toolbar-text-color: ($toolbar-text-color, $toolbar-text-color-dark),
-  --card-background: ($card-background, $card-background-dark),
-  --card-border: ($card-border, $card-border-dark)
-)
+  --body-bg-color: (
+    white,
+    black
+  ),
+  --nav-bg-color: (
+    rgba(186, 186, 255),
+    rgba(218, 165, 32)
+  ),
+  --nav-bg-hover: (
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.2)
+  ),
+  --nav-bg-color-active: (
+    rgba(228, 228, 255),
+    rgba(255, 200, 91)
+  ),
+  --table-color: (
+    rgba(0, 0, 0),
+    rgba(255, 255, 255)
+  ),
+  --table-row-title: (
+    rgba(165, 42, 42),
+    rgba(240, 128, 128)
+  ),
+  --table-bg-color-row-odd: (
+    rgba(227, 227, 227, 1),
+    rgba(36, 36, 36, 1)
+  ),
+  --table-row-hover-color: (
+    rgba(195, 195, 195, 1),
+    rgba(195, 195, 195, 0.5)
+  ),
+  --table-small-text-color: (
+    rgba(186, 0, 181, 1),
+    rgba(255, 255, 76)
+  ),
+  --menu-color: (
+    rgba(0, 0, 0),
+    rgba(255, 255, 255)
+  ),
+  --menu-bg: (
+    rgba(255, 255, 255),
+    rgba(0, 0, 0)
+  ),
+  --menu-color-disabled: (
+    rgba(50, 50, 50),
+    rgba(200, 200, 200)
+  ),
+  --menu-bg-disabled: (
+    rgba(200, 200, 200),
+    rgba(50, 50, 50)
+  ),
+  --list-color: (
+    rgba(50, 50, 50),
+    rgba(200, 200, 200)
+  ),
+  --list-bg: (
+    rgba(200, 200, 200),
+    rgba(50, 50, 50)
+  ),
+  --card-bg: (
+    rgba(200, 200, 200),
+    rgba(50, 50, 50)
+  ),
+  --card-color: (
+    rgba(50, 50, 50),
+    rgba(200, 200, 200)
+  ),
+  --accent-color: (
+    $accent-color,
+    $accent-color-dark
+  ),
+  --toolbar-color: (
+    $toolbar-color,
+    $toolbar-color-dark
+  ),
+  --toolbar-text-color: (
+    $toolbar-text-color,
+    $toolbar-text-color-dark
+  ),
+  --card-background: (
+    $card-background,
+    $card-background-dark
+  ),
+  --card-border: (
+    $card-border,
+    $card-border-dark
+  )
+);

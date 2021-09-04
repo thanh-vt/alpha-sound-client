@@ -1,3 +1,43 @@
-div.card:hover {
+div.card.tile:hover {
   background-color: darkgrey !important;
+}
+
+.card_type_1 {
+  .card-header {
+    height: 15%;
+    width: 100%;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: inline-block !important;
+  }
+}
+
+//
+//div.card.card_type_1 {
+//  background-color: black !important;
+//  border-color: white;
+//}
+//
+//div.card.card_type_2,
+//div.card.card_type_3 {
+//  color: whitesmoke;
+//  background-color: black !important;
+//  border-color: white;
+//
+//  h6 {
+//    color: crimson;
+//  }
+//
+//  h3 {
+//    color: #2daaed;
+//  }
+//}
+div.card {
+  height: 100%;
+}
+
+div.card.card_type_3,
+div.card.card_type_2 {
+  height: auto;
 }

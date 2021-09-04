@@ -32,7 +32,7 @@ export class SongListComponent implements OnInit {
   async getSongList(): Promise<void> {
     try {
       this.loadingService.loading(true);
-      this.songList = (await this.songService.getSongList().toPromise()).content;
+      this.songList = (await this.songService.songList().toPromise()).content;
     } catch (e) {
       console.error(e);
     } finally {
@@ -46,7 +46,7 @@ export class SongListComponent implements OnInit {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.subject = this.translate.instant('common.entity.song');

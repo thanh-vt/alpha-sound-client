@@ -1,60 +1,84 @@
 <app-card [type]="3" [title]="'Edit song' | translate">
-  <form [formGroup]="songUpdateForm" (ngSubmit)="onSubmit()" *ngIf="song" class="Lambda_card-body_3">
+  <form cardBody3 [formGroup]="songUploadData.formGroup" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="songTitle">{{ 'Title' | translate }}</label>
       <input type="text" class="form-control" id="songTitle" placeholder="Enter song title" formControlName="title" />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="songUpdateForm.get('title').hasError('required') && (songUpdateForm.get('title').touched || submitted)"
-      >
-        {{ 'Title' | translate }}{{' '}}{{'must be filled' | translate }}
-      </div>
+      <vg-error-section [label]="'Title' | translate" [group]="songUploadData.formGroup" controlName="title"></vg-error-section>
     </div>
     <label>{{ 'Artist' | translate }}</label>
     <div formArrayName="artists" class="form-group" *ngFor="let artistControl of artists.controls; let i = index;">
-      <div [formGroupName]="i">
-        <vg-auto-input
-          [formControl]="artistControl"
-          [nameField]="'name'"
-          [valueField]="''"
-          [imageField]="'avatarUrl'"
-          [searchResults]="filteredArtists"
-          (onChangeText)="suggestArtist($event)"
-        ></vg-auto-input>
-        <vg-error-section [label]="('common.label.artist' | translate) + '#' + (i + 1)" [control]="artistControl"></vg-error-section>
-        <button type="button" class="btn btn-info" (click)="addArtist()">+</button>
-        <button type="button" class="btn btn-danger" (click)="removeArtist(i)" *ngIf="artists.controls.length > 1">-</button>
+      <div class="row">
+        <div [formGroupName]="i" class="col-md-10">
+          <vg-auto-input
+            [formControl]="$any(artistControl)"
+            [modelToTextMapper]="modelToTextMapper"
+            [modelToImgSrcMapper]="modelToImgSrcMapper"
+            [searchResults]="songUploadData.filteredSongArtists"
+            (changeTextEvent)="suggestArtist($event)"
+          ></vg-auto-input>
+          <vg-error-section [label]="('common.label.artist' | translate) + '#' + (i + 1)" [control]="artistControl"></vg-error-section>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-info rounded-lg mx-1" style="min-width: 2rem" (click)="addArtist()">+</button>
+          <button
+            type="button"
+            class="btn btn-danger rounded-lg mx-1"
+            style="min-width: 2rem"
+            (click)="removeArtist(i)"
+            *ngIf="artists.controls.length > 1"
+          >
+            -
+          </button>
+        </div>
       </div>
     </div>
 
     <div class="form-group">
       <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-      <input
-        [value]="song.releaseDate | date: 'yyyy-MM-dd'"
-        type="date"
-        class="form-control"
-        id="releaseDate"
-        placeholder="yyyy-mm-dd"
-        formControlName="releaseDate"
-      />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="songUpdateForm.get('releaseDate').hasError('required') && (songUpdateForm.get('releaseDate').touched || submitted)"
-      >
-        {{ 'Release Date' | translate }}{{' '}}{{'must be picked' | translate }}
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="dd/MM/yyyy"
+          id="releaseDate"
+          name="dp"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          formControlName="releaseDate"
+          [minDate]="minDate"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+            <i class="bi bi-calendar3"></i>
+          </button>
+        </div>
       </div>
+      <vg-error-section
+        [label]="'Release Date' | translate"
+        [group]="songUploadData.formGroup"
+        controlName="releaseDate"
+      ></vg-error-section>
     </div>
     <label for="audio">{{ 'Audio File' | translate }}</label>
-    <div class="form-group custom-file">
-      <label class="custom-file-label" *ngIf="!isAudioFileChosen">{{ 'Choose file' | translate }}</label>
-      <label class="custom-file-label" *ngIf="isAudioFileChosen">{{ audioFileName }}</label>
-      <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)" />
+    <div class="form-group">
+      <vg-file-input
+        id="audio"
+        formControlName="url"
+        [remoteFileType]="'audio'"
+        [formData]="songUploadData.formData"
+        [formDataFilePart]="'audio'"
+      ></vg-file-input>
     </div>
     <button type="submit" class="btn btn-primary rounded-pill my-2 float-right">{{ 'Submit' | translate }}</button>
-    <div class="progress form-group" *ngIf="progress.value > 0">
-      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
-    </div>
+    <vg-upload-progress
+      [hidden]="!songUploadData.observable"
+      [httpObs]="songUploadData.observable"
+      (successEvent)="onUploadSuccess()"
+    ></vg-upload-progress>
+    <!--    <vg-upload-progress-->
+    <!--      [hidden]="songUploadData | vg"-->
+    <!--      [httpObs]="songUploadData.observable"-->
+    <!--      (successEvent)="onUploadSuccess()"-->
+    <!--    ></vg-upload-progress>-->
+    <!--    TODO-->
   </form>
 </app-card>

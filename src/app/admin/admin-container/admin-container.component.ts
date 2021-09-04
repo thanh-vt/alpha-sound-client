@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserProfile } from '../../model/token-response';
-import { AuthUtil } from '../../util/auth.util';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from '../login/login.component';
+import { SettingService } from '../../service/setting.service';
 
 @Component({
   selector: 'app-admin',
@@ -17,14 +17,15 @@ export class AdminContainerComponent implements OnInit {
   currentUser: UserProfile;
   hasNotLoggedInAsAdmin = false;
   subscription: Subscription = new Subscription();
-  active: 'top';
+  active: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private ngbModal: NgbModal,
     private authService: AuthService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private settingService: SettingService
   ) {
     const currentLanguage = this.translate.getBrowserLang();
     translate.setDefaultLang(currentLanguage);
@@ -36,17 +37,9 @@ export class AdminContainerComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    if (!this.currentUser) {
-      this.hasNotLoggedInAsAdmin = true;
-    } else {
-      const hasRoleAdmin = AuthUtil.isAdmin(this.currentUser);
-      this.hasNotLoggedInAsAdmin = !hasRoleAdmin;
-    }
-    // if (this.hasNotLoggedInAsAdmin) {
-    //   this.signOut();
-    //   this.router.navigate(['/admin']);
-    // }
+  ngOnInit(): void {
+    this.active = this.router.url;
+    this.settingService.setTheme('light');
   }
 
   signOut() {
@@ -59,7 +52,7 @@ export class AdminContainerComponent implements OnInit {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
   }

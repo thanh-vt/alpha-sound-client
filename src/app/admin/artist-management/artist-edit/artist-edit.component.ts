@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ArtistService } from '../../../service/artist.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Artist } from '../../../model/artist';
 import { Progress } from '../../../model/progress';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { ArtistUploadData } from '../../../model/avatar-upload-data';
+import { Artist } from '../../../model/artist';
+import { DateUtil } from '../../../util/date-util';
 
 @Component({
   selector: 'app-artist-edit',
@@ -14,14 +15,19 @@ import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
   styleUrls: ['./artist-edit.component.scss']
 })
 export class ArtistEditComponent implements OnInit {
-  @Input() artist: Artist;
-  artistUpdateForm: FormGroup;
-  isImageFileChosen = false;
-  imageFileName = '';
-  formData = new FormData();
-  file: any;
+  @Input() artistId: number;
+  artistUploadData: ArtistUploadData = new ArtistUploadData(
+    this.fb.group({
+      id: [null],
+      name: ['', [Validators.required]],
+      birthDate: [new Date(), [Validators.required]],
+      biography: ['', [Validators.required]],
+      avatarUrl: [null]
+    })
+  );
   subscription: Subscription = new Subscription();
   progress: Progress = { value: 0 };
+  minDate = DateUtil.getMinDate();
 
   constructor(
     private artistService: ArtistService,
@@ -30,65 +36,28 @@ export class ArtistEditComponent implements OnInit {
     private toastService: VgToastService
   ) {}
 
-  ngOnInit() {
-    this.artistUpdateForm = this.fb.group({
-      name: [this.artist.name, Validators.required],
-      birthDate: [this.artist.birthDate, Validators.required],
-      biography: [this.artist.biography, Validators.required]
+  ngOnInit(): void {
+    this.artistService.artistDetail(this.artistId).subscribe(next => {
+      this.artistUploadData.formGroup.patchValue(next);
     });
   }
 
-  selectFile(event) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
-      this.isImageFileChosen = true;
-      this.imageFileName = event.target.files[0].name;
+  onSubmit(): void {
+    if (!this.artistUploadData.isValid()) {
+      return;
     }
+    const formData: FormData = this.artistUploadData.setup();
+    this.artistUploadData.observable = this.artistService.updateArtist(formData, this.artistId);
   }
 
-  displayProgress(event, progress: Progress): boolean {
-    switch (event.type) {
-      case HttpEventType.Sent:
-        console.log('Request has been made!');
-        break;
-      case HttpEventType.ResponseHeader:
-        console.log('Response header has been received!');
-        break;
-      case HttpEventType.UploadProgress:
-        progress.value = Math.round((event.loaded / event.total) * 100);
-        console.log(`Uploaded! ${progress.value}%`);
-        break;
-      case HttpEventType.Response: {
-        console.log('Song successfully created!', event.body);
-        const complete = setTimeout(() => {
-          progress.value = 0;
-          const navigation = setInterval(() => {
-            this.navigate();
-            clearTimeout(navigation);
-            clearTimeout(complete);
-          }, 2000);
-        }, 500);
-        return true;
-      }
-    }
+  onUpdateSuccess(artist: Artist): void {
+    this.toastService.show({ text: 'Update artist successfully' }, { type: TOAST_TYPE.SUCCESS });
+    setTimeout(() => {
+      this.ngbActiveModal.close(artist);
+    }, 1000);
   }
 
-  onSubmit() {
-    // const id = +this.route.snapshot.paramMap.get('id');
-    this.formData.append('artist', new Blob([JSON.stringify(this.artistUpdateForm.value)], { type: 'application/json' }));
-    this.formData.append('avatar', this.file);
-    this.artistService.updateArtist(this.formData, this.artist.id).subscribe((event: HttpEvent<any>) => {
-      if (this.displayProgress(event, this.progress)) {
-        this.toastService.show({ text: 'Update artist successfully' }, { type: TOAST_TYPE.SUCCESS });
-      }
-    });
-  }
-
-  navigate() {
-    location.replace('/admin/artist-management');
-  }
-
-  close() {
-    this.ngbActiveModal.dismiss();
+  close(): void {
+    this.ngbActiveModal.close();
   }
 }

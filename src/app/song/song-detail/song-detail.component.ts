@@ -9,13 +9,16 @@ import { Comment } from '../../model/comment';
 import { Subscription } from 'rxjs';
 import { UserProfileService } from '../../service/user-profile.service';
 import { PlaylistService } from '../../service/playlist.service';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../model/token-response';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import { ArtistService } from '../../service/artist.service';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-song-detail',
@@ -23,13 +26,14 @@ import { ConfirmationModalComponent } from '../../shared/component/modal/confirm
   styleUrls: ['./song-detail.component.scss']
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
-  song: Song;
   currentUser: UserProfile;
-  loading: boolean;
+  song: Song;
   songId: number;
-  artistList: Artist[];
+  artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo(5);
   commentList: Comment[];
-  commentForm: FormGroup;
+  commentForm: FormGroup = this.fb.group({
+    content: ['']
+  });
   subscription: Subscription = new Subscription();
 
   constructor(
@@ -38,11 +42,12 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private songService: SongService,
+    private artistService: ArtistService,
     private userService: UserProfileService,
     private playlistService: PlaylistService,
-    private playingQueueService: PlayingQueueService,
     public translate: TranslateService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loaderService: VgLoaderService
   ) {
     this.subscription.add(
       this.authService.currentUser$.subscribe(next => {
@@ -51,92 +56,81 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit() {
-    this.commentForm = this.fb.group({
-      content: ['']
-    });
+  ngOnInit(): void {
     this.retrieveSongList();
   }
 
-  retrieveSongList() {
+  retrieveSongList(): void {
     this.subscription.add(
-      this.route.queryParams.subscribe(params => {
-        this.songId = params.id;
-        this.loading = true;
-        this.subscription.add(
-          this.songService
-            .songDetail(this.songId)
-            .pipe(
-              finalize(() => {
-                this.loading = false;
-              })
-            )
-            .subscribe(result => {
-              window.scroll(0, 0);
-              this.song = result;
-              this.artistList = this.song.artists;
-              this.commentList = this.song.comments;
-              this.checkDisabledSong(this.song);
-            })
-        );
+      this.route.queryParams.subscribe(async params => {
+        try {
+          this.songId = params.id;
+          this.loaderService.loading(true);
+          this.song = await this.songService.songDetail(this.songId).toPromise();
+          await this.getArtistList();
+          this.commentList = this.song.comments;
+        } catch (e) {
+          console.error(e);
+        } finally {
+          this.loaderService.loading(false);
+        }
       })
     );
   }
 
-  onSubmit() {
-    this.subscription.add(
-      this.songService.commentSong(this.songId, this.commentForm.value).subscribe(() => {
-        this.subscription.add(
-          this.songService.songDetail(this.songId).subscribe(result => {
-            this.commentForm.reset();
-            this.song = result;
-            this.artistList = this.song.artists;
-            this.commentList = this.song.comments;
-          })
-        );
+  async getArtistList(page = 0): Promise<void> {
+    this.artistPage = await this.artistService
+      .searchArtist({
+        songId: `${this.songId}`,
+        page: `${page}`,
+        size: `${this.artistPage.pageable?.pageSize}`
       })
-    );
+      .toPromise();
   }
 
-  addToPlaying(song: Song, event) {
+  async onSubmit(): Promise<void> {
+    try {
+      await this.songService.commentSong(this.songId, this.commentForm.value).toPromise();
+      this.song = await this.songService.songDetail(this.songId).toPromise();
+      this.commentForm.reset();
+      this.artistPage = await this.artistService.artistList().toPromise();
+      this.commentList = this.song.comments;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  addToPlaying(song: Song, event: Event): void {
     event.stopPropagation();
-    this.playingQueueService.addToQueue(song);
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
+    });
   }
 
-  likeSong(song: Song, event, isLiked: boolean) {
+  likeSong(song: Song, event: Event, isLiked: boolean): void {
     event.stopPropagation();
     this.songService.likeSong(song, isLiked);
   }
 
-  checkDisabledSong(song: Song) {
-    let isDisabled = false;
-    for (const track of this.playingQueueService.currentQueueSubject.value) {
-      if (song.url === track.link) {
-        isDisabled = true;
-        break;
-      }
-    }
-    song.isDisabled = isDisabled;
-  }
-
-  openPlaylistDialog(songId: number, event: Event) {
+  openPlaylistDialog(songId: number, event: Event): void {
     event.stopPropagation();
     const ref = this.modalService.open(AddSongToPlaylistComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.songId = songId;
   }
 
-  openDeleteCommentDialog(commentId: number) {
+  openDeleteCommentDialog(commentId: number): void {
     const dialogRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     const comp: ConfirmationModalComponent = dialogRef.componentInstance;

@@ -2,13 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Playlist } from '../../model/playlist';
 import { PlaylistService } from '../../service/playlist.service';
 import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EditPlaylistComponent } from '../edit-playlist/edit-playlist.component';
 import { CreatePlaylistComponent } from '../create-playlist/create-playlist.component';
 import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { TranslateService } from '@ngx-translate/core';
-import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-playlist-list',
@@ -16,7 +15,6 @@ import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
   styleUrls: ['./playlist-list.component.scss']
 })
 export class PlaylistListComponent implements OnInit, OnDestroy {
-  loading = false;
   subscription: Subscription = new Subscription();
   playlistList: Playlist[] = [];
 
@@ -24,42 +22,32 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     private playlistService: PlaylistService,
     private translate: TranslateService,
     private modalService: NgbModal,
-    private toastService: VgToastService
+    private toastService: VgToastService,
+    private loaderService: VgLoaderService
   ) {}
 
-  ngOnInit() {
-    this.refreshPlaylistList();
+  async ngOnInit(): Promise<void> {
+    await this.refreshPlaylistList();
   }
 
-  refreshPlaylistList() {
-    this.loading = true;
-    this.subscription.add(
-      this.playlistService
-        .getPlaylistList()
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(result => {
-          if (result != null) {
-            this.playlistList = result.content;
-            this.playlistList.forEach((value, index) => {
-              this.playlistList[index].isDisabled = false;
-            });
-          } else {
-            this.playlistList = null;
-          }
-        })
-    );
+  async refreshPlaylistList(): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.playlistList = (await this.playlistService.getPlaylistList().toPromise()).content;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
+    }
   }
 
-  openCreateDialog($event: MouseEvent) {
+  openCreateDialog(event: MouseEvent): void {
+    event.stopPropagation();
     const modalRef: NgbModalRef = this.modalService.open(CreatePlaylistComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     const sub: Subscription = modalRef.closed.subscribe((result: Playlist) => {
@@ -70,12 +58,13 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     });
   }
 
-  openEditDialog(playlist: Playlist, $event: MouseEvent) {
+  openEditDialog(playlist: Playlist, event: MouseEvent): void {
+    event.stopPropagation();
     const modalRef: NgbModalRef = this.modalService.open(EditPlaylistComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     const comp: EditPlaylistComponent = modalRef.componentInstance;
@@ -89,35 +78,34 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDeleteDialog(playlist: Playlist, $event: MouseEvent) {
+  openDeleteDialog(playlist: Playlist, event: MouseEvent): void {
+    event.stopPropagation();
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     const comp: ConfirmationModalComponent = modalRef.componentInstance;
-    comp.subject = this.translate.instant('Do you want to delete playlist');
+    comp.subject = this.translate.instant('common.entity.playlist');
     comp.name = playlist?.title;
     comp.data = playlist;
-    const sub: Subscription = modalRef.closed.subscribe((result: Playlist) => {
+    this.subscription = modalRef.closed.subscribe(async (result: Playlist) => {
       if (result) {
-        this.loading = true;
-        this.playlistService
-          .deletePlaylist(result?.id)
-          .pipe(
-            finalize(() => {
-              this.loading = false;
-            })
-          )
-          .subscribe(() => {
-            this.toastService.show({ text: 'Playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
-            const index = this.playlistList.indexOf(playlist);
-            this.playlistList.splice(index, 1);
-          });
+        try {
+          this.loaderService.loading(true);
+          await this.playlistService.deletePlaylist(result?.id).toPromise();
+          this.toastService.show({ text: 'Playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
+          const index = this.playlistList.indexOf(playlist);
+          this.playlistList.splice(index, 1);
+        } catch (e) {
+          console.error(e);
+        } finally {
+          this.loaderService.loading(false);
+        }
       }
-      sub.unsubscribe();
+      this.subscription.unsubscribe();
     });
   }
 

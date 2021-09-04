@@ -1,73 +1,48 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Page } from '../../model/page';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Song } from '../../model/song';
-import { Subscription } from 'rxjs';
 import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { SongService } from '../../service/song.service';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-uploaded-song-list',
   templateUrl: './uploaded-song-list.component.html',
   styleUrls: ['./uploaded-song-list.component.scss']
 })
-export class UploadedSongListComponent implements OnInit, OnDestroy {
-  pageNumber: number;
-  pageSize: number;
-  pages: Page[] = [];
-  message: string;
-  songList: Song[];
-  loading: boolean;
-  subscription: Subscription = new Subscription();
+export class UploadedSongListComponent implements OnInit {
+  songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   @ViewChild(AddSongToPlaylistComponent) child: AddSongToPlaylistComponent;
-  Math: Math = Math;
 
-  constructor(private songService: SongService, private playingQueueService: PlayingQueueService, public translate: TranslateService) {}
+  constructor(private songService: SongService, public translate: TranslateService, private loaderService: VgLoaderService) {}
 
-  ngOnInit() {
-    this.loading = true;
-    this.subscription.add(
-      this.songService
-        .getUserSongList()
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(result => {
-          if (result != null) {
-            this.songList = result.content;
-            this.songList.forEach((value, index) => {
-              this.songList[index].isDisabled = false;
-            });
-            for (const song of this.songList) {
-              this.checkDisabledSong(song);
-            }
-          }
-        })
-    );
+  ngOnInit(): void {
+    this.getUserSongUploadedPage(0);
   }
 
-  addToPlaying(song: Song, event) {
+  addToPlaying(song: Song, event: Event): void {
     event.stopPropagation();
     song.isDisabled = true;
-    this.playingQueueService.addToQueue(song);
+    this.songService.songDetail(song.id).subscribe(next => {
+      song.url = next.url;
+      this.songService.play(song);
+    });
   }
 
-  checkDisabledSong(song: Song) {
-    let isDisabled = false;
-    for (const track of this.playingQueueService.currentQueueSubject.value) {
-      if (song.url === track.link) {
-        isDisabled = true;
-        break;
-      }
-    }
-    song.isDisabled = isDisabled;
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  getUserSongUploadedPage(number: number): void {
+    this.loaderService.loading(true);
+    this.songService
+      .getUploadedSongList(number)
+      .pipe(
+        finalize(() => {
+          this.loaderService.loading(false);
+        })
+      )
+      .subscribe(result => {
+        this.songPage = result;
+      });
   }
 }

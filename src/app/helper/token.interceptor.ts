@@ -87,7 +87,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
   handleOauth2RequestError(request: HttpRequest<any>, next: HttpHandler, error: HttpErrorResponse): Observable<HttpEvent<any>> {
     const err: ApiError = error?.error;
-    console.log(err);
     if (err.code === 'INVALID_TOKEN') {
       // this.authService.sessionTimeout.emit();
       this.toastService.info({ text: err?.message });
@@ -102,9 +101,9 @@ export class TokenInterceptor implements HttpInterceptor {
       if (tokenInfo) {
         switch (tokenInfo.mode) {
           case 'cookie':
-            return req.clone({ withCredentials: true });
+            return req.clone({ withCredentials: true, setHeaders: { 'base-url': environment.apiRootUrl } });
           case 'header':
-            return req.clone({ setHeaders: { Authorization: `Bearer ${tokenInfo.token}` } });
+            return req.clone({ setHeaders: { Authorization: `Bearer ${tokenInfo.token}`, 'base-url': environment.apiRootUrl } });
         }
       }
     }

@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ArtistListComponent } from './artist-list/artist-list.component';
-import { AdminAuthGuard } from '../../guard/admin-auth.guard';
+import { ArtistDetailComponent } from './artist-detail/artist-detail.component';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AdminAuthGuard],
-    canActivateChild: [AdminAuthGuard],
     component: ArtistListComponent
+  },
+  {
+    path: 'detail',
+    component: ArtistDetailComponent
   },
   {
     path: '**',

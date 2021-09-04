@@ -20,6 +20,7 @@ import { CompleteRegistrationComponent } from './complete-registration/complete-
 import { ResetPasswordSubmissionComponent } from './reset-password-submission/reset-password-submission.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
+import { UploadedAlbumListComponent } from './uploaded-album-list/uploaded-album-list.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
     UserProfileComponent,
     CompleteRegistrationComponent,
     ResetPasswordSubmissionComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    UploadedAlbumListComponent
   ],
   imports: [
     CommonModule,

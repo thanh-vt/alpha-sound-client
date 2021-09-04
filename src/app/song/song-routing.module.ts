@@ -6,7 +6,7 @@ import { UploadSongComponent } from './upload-song/upload-song.component';
 import { EditSongComponent } from './edit-song/edit-song.component';
 import { DeleteSongComponent } from './delete-song/delete-song.component';
 import { SongDetailComponent } from './song-detail/song-detail.component';
-import { AuthGuard } from '../guard/auth.guard';
+import { UserAuthGuard } from '../guard/user-auth.guard';
 
 const routes: Routes = [
   {
@@ -24,17 +24,14 @@ const routes: Routes = [
       },
       {
         path: 'upload',
-        canActivate: [AuthGuard],
         component: UploadSongComponent
       },
       {
         path: 'edit',
-        canActivate: [AuthGuard],
         component: EditSongComponent
       },
       {
         path: 'delete',
-        canActivate: [AuthGuard],
         component: DeleteSongComponent
       },
       {

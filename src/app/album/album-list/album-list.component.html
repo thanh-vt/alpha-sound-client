@@ -1,41 +1,24 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
-<div class="row">
-  <div *ngFor="let album of albumList; index as i">
+<div class="row row-cols-sm-auto gy-5">
+  <div *ngFor="let album of albumPage.content; index as i" class="col-sm-3">
     <app-card [type]="1" [tileHoverEffect]="true">
-      <div class="lambda_card-header_1"><a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a></div>
-      <div class="lambda_card-text_1 align-items-center">
-        <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"><img [src]="album.coverUrl" alt="" /></a>
+      <a cardHeader1 [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a>
+      <div cardText1 class="align-items-center h-100">
+        <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"
+          ><img class="card-img img-thumbnail h-100" [src]="album.coverUrl" alt=""
+        /></a>
       </div>
-      <div class="lambda_card-footer_1">
-        <button (click)="addAllToPlaying(album.id)" class="btn btn-info rounded-circle" [disabled]="album.isDisabled">
-          <i class="fas fa-play-circle"></i>
+      <div cardFooter1 class="d-flex align-items-center justify-content-around">
+        <button (click)="addAlbumToPlaying(album, $event)" class="btn btn-info rounded-circle" [disabled]="album.isDisabled">
+          <i class="bi bi-play-circle"></i>
         </button>
       </div>
     </app-card>
   </div>
 </div>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{ message | translate }}</div>
-<nav>
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" *ngIf="!first" (click)="goToPage(pageNumber - 1)" tabindex="-1" aria-disabled="true"
-        >{{ 'Previous' | translate}}</a
-      >
-    </li>
-    <li *ngFor="let page of pages" class="page-item">
-      <a
-        class="page-link"
-        [class.active]="page.pageNumber === pageNumber"
-        (click)="goToPage(page.pageNumber)"
-        tabindex="-1"
-        aria-disabled="true"
-        >{{ page.pageNumber + 1 }}</a
-      >
-    </li>
-    <li class="page-item">
-      <a class="page-link" *ngIf="!last" (click)="goToPage(pageNumber + 1)" tabindex="-1" aria-disabled="true">{{ 'Next' | translate }}</a>
-    </li>
-  </ul>
-</nav>
+<ngb-pagination
+  *ngIf="albumPage.totalPages > 1"
+  [collectionSize]="albumPage.totalElements"
+  [page]="albumPage.pageable?.pageNumber + 1"
+  [pageSize]="albumPage.pageable?.pageSize"
+  (pageChange)="getAlbumPage($event - 1)"
+></ngb-pagination>

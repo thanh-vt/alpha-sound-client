@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PlayingQueueService } from './playing-queue.service';
 import { AudioTrack } from './audio-track';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-music-player',
@@ -9,76 +10,84 @@ import { AudioTrack } from './audio-track';
   styleUrls: ['./music-player.component.scss'],
   providers: [NgbDropdownConfig]
 })
-export class MusicPlayerComponent implements OnInit, AfterViewInit {
+export class MusicPlayerComponent implements OnDestroy {
   tracks: AudioTrack[] = [];
-  index = 0;
-  mediaPath = 'https://archive.org/download/mythium/';
-  extension = '';
+  currentTrackIndex = -1;
   title = '';
   action = '';
+  isPlaying: boolean;
   isRepeat = false;
   isShuffle = false;
-  isShowTrackList = false;
-  @ViewChild('audio') audioRef: ElementRef<HTMLAudioElement>;
   noSupportHtml5Audio = false;
+  queueSub = new Subscription();
+  @ViewChild('audio') audioRef: ElementRef<HTMLAudioElement>;
 
   constructor(config: NgbDropdownConfig, private playingQueueService: PlayingQueueService) {
     // customize default values of dropdowns used by this component tree
     config.placement = 'top-left';
     config.autoClose = false;
-    this.playingQueueService.playlistSubject.subscribe(next => {
-      this.tracks = next.tracks;
-      if (this.tracks.length && next.needPlay) {
-        setTimeout(() => {
-          this.playTrack(this.tracks.length - 1);
-        }, 500);
+    this.queueSub = this.playingQueueService.playListObs.subscribe(
+      next => {
+        this.tracks = next.tracks;
+        if (this.tracks.length && next.needPlay) {
+          setTimeout(() => {
+            const lastIndex = this.tracks.length - 1;
+            if (lastIndex >= 0) {
+              this.playTrack(lastIndex, this.tracks[lastIndex]);
+            }
+          }, 500);
+        }
+      },
+      error => {
+        console.error(error);
       }
-    });
+    );
   }
 
-  ngOnInit(): void {
-    console.log('init');
+  // ngAfterViewInit(): void {
+  // this.extension = this.audioRef.nativeElement.canPlayType('audio/mpeg')
+  //   ? '.mp3'
+  //   : this.audioRef.nativeElement.canPlayType('audio/ogg')
+  //   ? '.ogg'
+  //   : '';
+  // if (this.extension) {
+  //   if (this.tracks.length) {
+  //     this.loadTrack(this.index);
+  //   }
+  // } else {
+  //   this.noSupportHtml5Audio = true;
+  // }
+  // }?
+
+  onLoadMetadata(): void {
+    this.tracks[this.currentTrackIndex].duration = this.audioRef.nativeElement.duration;
   }
 
-  ngAfterViewInit(): void {
-    this.extension = this.audioRef.nativeElement.canPlayType('audio/mpeg')
-      ? '.mp3'
-      : this.audioRef.nativeElement.canPlayType('audio/ogg')
-      ? '.ogg'
-      : '';
-    if (this.extension) {
-      if (this.tracks.length) {
-        this.loadTrack(this.index);
-      }
-    } else {
-      this.noSupportHtml5Audio = true;
-    }
-  }
-
-  play() {
+  onPlay(): void {
     this.action = 'Now Playing...';
+    this.isPlaying = true;
   }
 
-  pause() {
+  onPause(): void {
     this.action = 'Paused...';
+    this.isPlaying = false;
   }
 
-  ended() {
+  onEnded(): void {
     this.action = 'Paused...';
     if (this.isShuffle) {
-      this.index = this.getRandomArbitrary(0, this.tracks.length - 1);
-      console.log('random', this.index);
-      this.loadTrack(this.index);
+      this.currentTrackIndex = this.getRandomArbitrary(0, this.tracks.length - 1);
+      this.loadTrack(this.currentTrackIndex);
       this.audioRef.nativeElement.play();
     } else {
-      if (this.index + 1 < this.tracks.length) {
-        this.index++;
-        this.loadTrack(this.index);
+      if (this.currentTrackIndex + 1 < this.tracks.length) {
+        this.currentTrackIndex++;
+        this.loadTrack(this.currentTrackIndex);
         this.audioRef.nativeElement.play();
       } else {
         this.audioRef.nativeElement.pause();
-        this.index = 0;
-        this.loadTrack(this.index);
+        this.currentTrackIndex = 0;
+        this.loadTrack(this.currentTrackIndex);
         if (this.isRepeat) {
           this.audioRef.nativeElement.play();
         }
@@ -86,82 +95,83 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loadTrack(id: number) {
-    this.title = this.tracks[id].name;
-    this.index = id;
-    this.audioRef.nativeElement.src = this.mediaPath + this.tracks[id].file + this.extension;
+  loadTrack(id: number): void {
+    this.title = this.tracks[id].title;
+    this.currentTrackIndex = id;
+    this.audioRef.nativeElement.src = this.tracks[id].url;
   }
 
-  playTrack(id: number) {
-    if (id !== this.index) {
+  playTrack(id: number, track: AudioTrack): void {
+    if (id !== this.currentTrackIndex) {
       this.loadTrack(id);
-      this.audioRef.nativeElement.play();
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      this.audioRef.nativeElement.ontimeupdate = () => {};
+      this.audioRef.nativeElement.play().then(() => {
+        this.playingQueueService.trackEvent.next({
+          track,
+          event: 'play'
+        });
+      });
     }
   }
 
-  first() {
+  first(): void {
     if (this.tracks.length) {
-      this.index = 0;
-      this.loadTrack(this.index);
+      this.currentTrackIndex = 0;
+      this.loadTrack(this.currentTrackIndex);
       this.audioRef.nativeElement.play();
     }
   }
 
-  prev() {
-    if (this.index - 1 > -1) {
-      this.index--;
-      this.loadTrack(this.index);
+  prev(): void {
+    if (this.currentTrackIndex - 1 > -1) {
+      this.currentTrackIndex--;
+      this.loadTrack(this.currentTrackIndex);
       this.audioRef.nativeElement.play();
     } else {
       this.audioRef.nativeElement.pause();
-      this.index = 0;
-      this.loadTrack(this.index);
+      this.currentTrackIndex = 0;
+      this.loadTrack(this.currentTrackIndex);
     }
   }
 
-  next() {
-    if (this.index + 1 < this.tracks.length) {
-      this.index++;
-      this.loadTrack(this.index);
+  next(): void {
+    if (this.currentTrackIndex + 1 < this.tracks.length) {
+      this.currentTrackIndex++;
+      this.loadTrack(this.currentTrackIndex);
       this.audioRef.nativeElement.play();
     } else {
       this.audioRef.nativeElement.pause();
-      this.index = 0;
-      this.loadTrack(this.index);
+      this.currentTrackIndex = 0;
+      this.loadTrack(this.currentTrackIndex);
     }
   }
 
-  last() {
+  last(): void {
     if (this.tracks.length) {
-      this.index = this.tracks.length - 1;
-      this.loadTrack(this.index);
+      this.currentTrackIndex = this.tracks.length - 1;
+      this.loadTrack(this.currentTrackIndex);
       this.audioRef.nativeElement.play();
     }
   }
 
-  jump(ref: HTMLAudioElement, evt: any) {
-    ref.currentTime = Number(evt.target.value);
-    // ref.play();
-    // ref.pause();
-    // ref.currentTime = Number(evt.target.value);
-    // setTimeout(() => {
-    //   ref.play();
-    // }, 100);
+  jump(ref: HTMLAudioElement, event: Event): void {
+    ref.currentTime = Number((event.target as HTMLInputElement).value);
   }
 
-  changeVolume(audio: HTMLAudioElement, event: Event) {
-    audio.volume = Number((event.target as any).value);
+  changeVolume(audio: HTMLAudioElement, event: Event): void {
+    audio.volume = Number((event.target as HTMLInputElement).value);
     audio.muted = audio.volume === 0;
   }
 
-  toggleMute(ref: HTMLAudioElement) {
+  toggleMute(ref: HTMLAudioElement): void {
     ref.muted = !ref.muted;
     if (!ref.muted && ref.volume === 0) {
       ref.volume = 0.5;
     }
   }
 
-  togglePlay(ref: HTMLAudioElement) {
+  togglePlay(ref: HTMLAudioElement): void {
     if (ref.paused) {
       ref.play();
     } else {
@@ -169,30 +179,36 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleTrackList(event: boolean, plList: HTMLUListElement) {
-    this.isShowTrackList = event;
-    if (this.isShowTrackList) {
-      setTimeout(() => {
-        plList.focus();
-      }, 0);
-    }
-  }
-
-  toggleReplay() {
+  toggleReplay(): void {
     this.isRepeat = !this.isRepeat;
   }
 
-  toggleShuffle() {
+  toggleShuffle(): void {
     this.isShuffle = !this.isShuffle;
   }
 
-  getRandomArbitrary(min, max) {
+  getRandomArbitrary(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  blur() {
-    console.log('blur');
+  ngOnDestroy(): void {
+    this.queueSub.unsubscribe();
+  }
+
+  removeAudio(i: number): void {
+    const currentTrack = this.tracks[this.currentTrackIndex];
+    if (this.currentTrackIndex === i) {
+      this.currentTrackIndex = -1;
+      this.audioRef.nativeElement.pause();
+      this.audioRef.nativeElement.src = '';
+    }
+    const [deletedTrack] = this.tracks.splice(i, 1);
+    this.currentTrackIndex = this.tracks.indexOf(currentTrack);
+    this.playingQueueService.trackEvent.next({
+      track: deletedTrack,
+      event: 'remove'
+    });
   }
 }

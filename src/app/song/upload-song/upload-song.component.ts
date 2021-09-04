@@ -1,38 +1,44 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AudioUploadService } from '../../service/audio-upload.service';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ArtistService } from '../../service/artist.service';
 import { finalize } from 'rxjs/operators';
 import { CountryService } from '../../service/country.service';
 import { Country } from '../../model/country';
 import { VgToastService } from 'ngx-vengeance-lib';
 import { SongUploadData } from '../../model/song-upload-data';
+import { SongService } from '../../service/song.service';
+import { artistModelToImgSrcMapper, artistModelToTextMapper } from '../../util/mapper.util';
+import { Router } from '@angular/router';
+import { Song } from '../../model/song';
+import { BaseUploadComponent } from '../../common/base-upload.component';
+import { DateUtil } from '../../util/date-util';
 
 @Component({
   selector: 'app-upload-song',
   templateUrl: './upload-song.component.html',
-  styleUrls: ['./upload-song.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./upload-song.component.scss']
 })
-export class UploadSongComponent implements OnInit {
-  songUploadData: SongUploadData;
+export class UploadSongComponent extends BaseUploadComponent implements OnInit {
+  songUploadData: SongUploadData = this.initSongUploadData();
   isLoading = false;
   countryList: Country[];
+  modelToTextMapper = artistModelToTextMapper;
+  modelToImgSrcMapper = artistModelToImgSrcMapper;
+  minDate = DateUtil.getMinDate();
 
   constructor(
-    private audioUploadService: AudioUploadService,
-    private artistService: ArtistService,
+    private songService: SongService,
+    protected artistService: ArtistService,
     private countryService: CountryService,
-    private fb: FormBuilder,
+    protected fb: FormBuilder,
+    protected router: Router,
     private toastService: VgToastService
-  ) {}
+  ) {
+    super(fb, router, artistService, null);
+  }
 
   get artists(): FormArray {
     return this.songUploadData.formGroup.get('artists') as FormArray;
-  }
-
-  createArtist(): FormControl {
-    return new FormControl('', Validators.compose([Validators.required]));
   }
 
   addArtist(): void {
@@ -44,34 +50,9 @@ export class UploadSongComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.songUploadData = new SongUploadData(
-      this.fb.group({
-        title: ['', [Validators.required]],
-        artists: this.fb.array([this.createArtist()]),
-        releaseDate: [new Date(), Validators.compose([Validators.required])],
-        album: [null],
-        genres: [null],
-        tags: [null],
-        country: [null],
-        theme: [null],
-        duration: [null]
-      }),
-      []
-    );
     this.countryService.getCountryList(0).subscribe(next => {
       this.countryList = next.content;
     });
-  }
-
-  selectFile(event: Event): void {
-    const eventTarget: HTMLInputElement = event.target as HTMLInputElement;
-    if (eventTarget.files.length > 0) {
-      this.songUploadData.audioFile = eventTarget.files[0];
-      new Audio(URL.createObjectURL(this.songUploadData.audioFile)).onloadedmetadata = (loadedEvent: Event) => {
-        const target = loadedEvent.currentTarget as HTMLAudioElement;
-        this.songUploadData.formGroup.get('duration').setValue(target.duration);
-      };
-    }
   }
 
   upload(): void {
@@ -79,21 +60,26 @@ export class UploadSongComponent implements OnInit {
       return;
     }
     const songFormDate = this.songUploadData.setup();
-    this.songUploadData.observable = this.audioUploadService.uploadSong(songFormDate);
+    this.songUploadData.observable = this.songService.uploadSong(songFormDate);
   }
 
-  uploadSuccess(): void {
+  uploadSuccess(song: Song): void {
     this.toastService.success({ text: 'Upload song successfully!' });
     setTimeout(() => {
-      location.replace('/uploaded/list');
-    }, 3000);
+      this.router.navigate(['song', 'detail'], { queryParams: { id: song.id } });
+    }, 1500);
   }
 
   suggestArtist(value: string): void {
     this.isLoading = true;
     this.artistService
-      .searchArtist(value)
+      .searchArtistByName(value)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(artists => (this.songUploadData.filteredSongArtists = artists));
+  }
+
+  setMetadata(event: Event, formGroup: FormGroup): void {
+    const target = event.target as HTMLAudioElement;
+    formGroup.get('duration').setValue(target.duration);
   }
 }

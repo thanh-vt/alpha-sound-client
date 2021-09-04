@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {},
         error => {
-          console.log(error);
+          console.error(error);
         },
         () => {
           this.loading = false;

@@ -1,6 +1,7 @@
 export interface AudioTrack {
-  name: string;
-  duration: string;
-  file: string;
+  id: number;
+  title: string;
+  duration: number;
+  url: string;
   cover?: string;
 }

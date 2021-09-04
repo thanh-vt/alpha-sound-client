@@ -11,21 +11,31 @@
     </tr>
   </thead>
   <tbody>
-    <tr [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
+    <tr
+      [routerLink]="['/','admin','artist-management','detail']"
+      [queryParams]="{id: artist.id}"
+      *ngFor="let artist of artistPage.content; index as i"
+    >
       <td>{{ i + 1 }}</td>
-      <td><a [routerLink]="['/','artist','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
-      <td>{{ artist.birthDate | date: 'fullDate' : '' : translate.currentLang }}</td>
+      <td><a [routerLink]="['/','admin','artist-management','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
+      <td>{{ artist.birthDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</td>
       <td><img [src]="artist.avatarUrl" class="avatar" alt="" /></td>
       <td>
         <button (click)="openDeleteDialog(artist, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
-          <i class="fas fa-trash-alt"></i>
+          <i class="bi bi-trash"></i>
         </button>
       </td>
       <td>
         <button (click)="openEditDialog(artist, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
-          <i class="fas fa-edit"></i>
+          <i class="bi bi-pencil-square"></i>
         </button>
       </td>
     </tr>
   </tbody>
 </table>
+<ngb-pagination
+  [collectionSize]="artistPage.totalElements"
+  [page]="artistPage.pageable?.pageNumber + 1"
+  [pageSize]="artistPage.pageable?.pageSize"
+  (pageChange)="getArtistList($event - 1)"
+></ngb-pagination>

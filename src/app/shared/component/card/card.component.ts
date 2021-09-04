@@ -13,9 +13,7 @@ export class CardComponent {
   @Output() showEditForm = new EventEmitter();
   @Input() tileHoverEffect: boolean;
 
-  constructor() {}
-
-  showHideEditForm() {
+  showHideEditForm(): void {
     this.showEditForm.emit();
   }
 }

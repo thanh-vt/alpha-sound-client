@@ -10,9 +10,23 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { CreateArtistComponent } from './create-artist/create-artist.component';
+import { VgDirectivesModule, VgLayoutModule, VgUtilModule } from 'ngx-vengeance-lib';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [ArtistListComponent, ArtistEditComponent, ArtistDetailComponent, CreateArtistComponent],
-  imports: [CommonModule, ArtistManagementRoutingModule, NgbDropdownModule, ReactiveFormsModule, SharedModule, TranslateModule]
+  imports: [
+    CommonModule,
+    ArtistManagementRoutingModule,
+    NgbDropdownModule,
+    ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
+    VgUtilModule,
+    InfiniteScrollModule,
+    VgDirectivesModule,
+    VgLayoutModule
+  ]
+  // providers: [{ provide: NgbDateAdapter, useClass: CustomNgbDateAdapter }]
 })
 export class ArtistManagementModule {}

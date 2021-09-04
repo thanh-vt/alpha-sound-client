@@ -3,13 +3,9 @@ import { Subscription } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { ArtistService } from '../../service/artist.service';
-import { SongService } from '../../service/song.service';
-import { PlaylistService } from '../../service/playlist.service';
-import { PlayingQueueService } from '../../service/playing-queue.service';
 import { UserProfileService } from '../../service/user-profile.service';
-import { TranslateService } from '@ngx-translate/core';
 import { UserProfile } from '../../model/token-response';
+import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +14,6 @@ import { UserProfile } from '../../model/token-response';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   currentUser: UserProfile;
-  loading: boolean;
   showEditForm = false;
   username: string;
   user: UserProfile;
@@ -29,23 +24,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private artistService: ArtistService,
-    private songService: SongService,
-    private playlistService: PlaylistService,
-    private playingQueueService: PlayingQueueService,
     private userService: UserProfileService,
-    public translate: TranslateService
+    private loaderService: VgLoaderService
   ) {
-    this.authService.currentUser$.subscribe(next => {
-      this.currentUser = next;
-    });
+    this.subscription.add(
+      this.authService.currentUser$.subscribe(next => {
+        this.currentUser = next;
+      })
+    );
   }
 
-  ngOnInit() {
-    this.username = this.route.snapshot.paramMap.get('id');
-    this.userService.getUserDetail(this.username).subscribe(next => {
-      this.user = next;
-    });
+  ngOnInit(): void {
+    this.subscription.add(
+      this.route.paramMap.subscribe(async next => {
+        try {
+          this.loaderService.loading(true);
+          this.username = next.get('id');
+          this.user = await this.userService.getUserDetail(this.username).toPromise();
+        } catch (e) {
+          console.error(e);
+        } finally {
+          this.loaderService.loading(false);
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {

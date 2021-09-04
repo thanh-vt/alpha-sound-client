@@ -2,54 +2,71 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { filter, map, tap } from 'rxjs/operators';
 import { Artist } from '../model/artist';
 import { PagingInfo } from '../model/paging-info';
+import { map, tap } from 'rxjs/operators';
+import { Song } from '../model/song';
+import { PlayingQueueService } from '../shared/layout/music-player/playing-queue.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArtistService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private playingQueueService: PlayingQueueService) {}
 
-  artistList(): Observable<PagingInfo<Artist>> {
-    return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/list`);
+  artistList(page = 0, size = 10): Observable<PagingInfo<Artist>> {
+    return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/list`, {
+      params: {
+        page,
+        size
+      }
+    });
+  }
+
+  searchArtist(params: { [key: string]: string }): Observable<PagingInfo<Artist>> {
+    return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/search`, {
+      params
+    });
+  }
+
+  searchArtistByName(name: string): Observable<Artist[]> {
+    return this.searchArtist({ phrase: name }).pipe(map(response => response.content));
   }
 
   artistDetail(id: number): Observable<Artist> {
-    return this.http.get<Artist>(`${environment.apiUrl}/artist/detail?id=${id}`);
+    return this.http.get<Artist>(`${environment.apiUrl}/artist/detail/${id}`);
   }
 
-  getSongListOfArtist(id: number, page: number) {
-    return this.http.get<any>(`${environment.apiUrl}/artist/song-list?artist-id=${id}&page=${page}`);
-  }
-
-  searchArtist(name: string): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/artist/search?name=${name}`).pipe(
-      tap((response: any) => {
-        if (response) {
-          response.map(artist => artist.name);
-        }
+  getSongListOfArtist(id: number, page: number): Observable<PagingInfo<Song>> {
+    const params = {
+      artistId: `${id}`,
+      page,
+      size: 10
+    };
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, { params }).pipe(
+      tap(songPage => {
+        songPage.content.forEach(song => {
+          song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
+        });
       })
     );
   }
 
-  uploadArtist(formData: FormData): Observable<HttpEvent<any>> {
-    return this.http.post<any>(`${environment.apiUrl}/artist/create`, formData, {
+  createArtist(formData: FormData): Observable<HttpEvent<Artist>> {
+    return this.http.post<Artist>(`${environment.apiUrl}/artist/create`, formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
-  deleteArtist(id: number) {
-    return this.http.delete<any>(`${environment.apiUrl}/artist/delete?id=${id}`);
+  updateArtist(formData: FormData, id: number): Observable<HttpEvent<Artist>> {
+    return this.http.put<Artist>(`${environment.apiUrl}/artist/edit/${id}`, formData, {
+      reportProgress: true,
+      observe: 'response'
+    });
   }
 
-  getArtistDetail(id: number): Observable<Artist> {
-    return this.http.get<Artist>(`${environment.apiUrl}/artist/detail?id=${id}`);
-  }
-
-  updateArtist(formGroup: FormData, id: number): Observable<HttpEvent<any>> {
-    return this.http.put<any>(`${environment.apiUrl}/artist/update?id=${id}`, formGroup);
+  deleteArtist(id: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/artist/delete/${id}`);
   }
 }

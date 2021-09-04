@@ -22,11 +22,10 @@
           <div class="col-sm-10">
             <vg-auto-input
               [formControl]="$any(artistControl)"
-              [nameField]="'name'"
-              [valueField]="''"
-              [imageField]="'avatarUrl'"
+              [modelToTextMapper]="modelToTextMapper"
+              [modelToImgSrcMapper]="modelToImgSrcMapper"
               [searchResults]="songUploadData.filteredSongArtists"
-              (onChangeText)="suggestArtist($event)"
+              (changeTextEvent)="suggestArtist($event)"
             ></vg-auto-input>
             <vg-error-section [label]="('common.label.artist' | translate) + '#' + (i + 1)" [control]="artistControl"></vg-error-section>
           </div>
@@ -47,13 +46,23 @@
 
       <div class="form-group">
         <label for="releaseDate">{{ 'Release Date' | translate }}</label>
-        <input
-          type="date"
-          class="form-control"
-          id="releaseDate"
-          [placeholder]="('Pick' | translate) + ' ' + ('Release Date' | translate)"
-          formControlName="releaseDate"
-        />
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="dd/MM/yyyy"
+            id="releaseDate"
+            name="dp"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            formControlName="releaseDate"
+            [minDate]="minDate"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <i class="bi bi-calendar3"></i>
+            </button>
+          </div>
+        </div>
         <vg-error-section
           [label]="'feature.song.label.releaseDate' | translate"
           [group]="songUploadData.formGroup"
@@ -78,9 +87,15 @@
         />
       </div>
       <label for="audio">{{ 'Audio File' | translate}}</label>
-      <div class="form-group custom-file">
-        <label class="custom-file-label" *ngIf="songUploadData.audioFile; else emptyFileBlock"> {{ songUploadData.audioFile.name }} </label>
-        <input type="file" class="custom-file-input" id="audio" (change)="selectFile($event)" />
+      <div class="form-group">
+        <vg-file-input
+          id="audio"
+          formControlName="url"
+          [remoteFileType]="'audio'"
+          [formData]="songUploadData.formData"
+          [formDataFilePart]="'audio'"
+          (metadataLoadedEvent)="setMetadata($event, songUploadData.formGroup)"
+        ></vg-file-input>
       </div>
       <div class="mt-sm-3">
         <button type="submit" class="btn btn-primary">{{ 'Submit' | translate }}</button>
@@ -88,12 +103,9 @@
       <vg-upload-progress
         [httpObs]="songUploadData.observable"
         [successMsg]="'Song uploaded successfully' | translate"
-        (successEvent)="uploadSuccess()"
+        (successEvent)="uploadSuccess($event)"
       >
       </vg-upload-progress>
     </form>
   </div>
 </app-card>
-<ng-template #emptyFileBlock>
-  <label class="custom-file-label">{{ 'Choose File' | translate}}</label>
-</ng-template>

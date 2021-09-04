@@ -13,7 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
+import { VgDirectivesModule, VgToastService, VgUtilModule } from 'ngx-vengeance-lib';
 
 @NgModule({
   declarations: [AlbumComponent, AlbumListComponent, AlbumDetailComponent, UploadAlbumComponent, EditAlbumComponent, DeleteAlbumComponent],

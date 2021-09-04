@@ -1,6 +1,3 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -10,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistList; index as i">
+    <tr [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}" *ngFor="let artist of artistPage.content; index as i">
       <td>{{ i + 1 }}</td>
       <td><a [routerLink]="['/artist', 'detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
       <td>
@@ -19,4 +16,10 @@
     </tr>
   </tbody>
 </table>
-<div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{ message | translate }}</div>
+<ngb-pagination
+  *ngIf="artistPage.totalPages > 1"
+  [collectionSize]="artistPage.totalElements"
+  [page]="artistPage.pageable?.pageNumber + 1"
+  [pageSize]="artistPage.pageable?.pageSize"
+  (pageChange)="getArtistPage($event - 1)"
+></ngb-pagination>

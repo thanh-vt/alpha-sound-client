@@ -1,17 +1,14 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
 <ng-container *ngIf="album">
   <app-card [type]="2" [showEditButton]="false" [title]="'Album Info' | translate" [imgSrc]="album.coverUrl">
     <div cardText2>
-      <button class="btn btn-primary rounded-circle float-right" [disabled]="album.isDisabled" (click)="addAllToPlaying($event)">
-        <i class="fas fa-play-circle"></i>
+      <button class="btn btn-primary rounded-circle float-right" [disabled]="album.isDisabled" (click)="addAlbumToPlaying(album, $event)">
+        <i class="bi bi-play-circle"></i>
       </button>
       <h6 class="d-inline">{{ 'Title' | translate }}:</h6>
       <span class="text-secondary">{{album.title}}</span><br />
       <h6 class="d-inline">{{ 'Artist(s)' | translate }}:</h6>
-      <ul>
-        <li *ngFor="let artist of album.artists; index as i">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let artist of album.artists; index as i">
           <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
           <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
         </li>
@@ -46,27 +43,24 @@
       </tr>
     </thead>
     <tbody>
-      <tr [routerLink]="['/song/detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
-        <th scope="row">{{ i + 1 }}</th>
+      <tr [routerLink]="['/song/detail']" [queryParams]="{id: song.id}" *ngFor="let song of songPage.content; index as i">
+        <th scope="row">{{ song.rn }}</th>
         <td>
           <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
           <a *ngFor="let artist of song.artists; index as j"
-            ><small>{{ artist.name }}{{ j === song.artists.length - 1? '': ', '}}</small></a
+            ><small>{{ artist.name }}{{ j === song.artists.length - 1 ? '' : ', '}}</small></a
           >
         </td>
         <td>
-          <small
-            >{{ (Math.floor(song.duration / 60).toString().padStart(2, '0')) }}{{':'}}{{ Math.round(song.duration %
-            60).toString().padStart(2, '0')}}</small
-          >
+          <small>{{ song.duration | duration }}</small>
         </td>
         <td>
           <span class="float-right"
-            ><small><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</small></span
+            ><small><i class="bi bi-headphones"></i> {{song.listeningFrequency}}</small></span
           >
         </td>
         <td>
-          <ng-container *ngIf="!!currentUser">
+          <ng-container *ngIf="!!(currentUser$ | async)">
             <button
               (click)="likeSong(song, $event, true)"
               class="btn btn-outline-danger btn-sm border-0"
@@ -74,7 +68,7 @@
               [disabled]="song.loadingLikeButton"
             >
               <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
+              <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
             </button>
             <button
               (click)="likeSong(song, $event, false)"
@@ -83,20 +77,20 @@
               [disabled]="song.loadingLikeButton"
             >
               <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
+              <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart-fill"></i></span>
             </button>
           </ng-container>
           <div ngbDropdown class="d-inline-block" placement="bottom" display="dynamic">
             <button (click)="$event.stopPropagation()" class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
-              <i class="fas fa-ellipsis-h"></i>
+              <i class="bi bi-three-dots-vertical"></i>
             </button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
               <button ngbDropdownItem class="btn btn-primary btn-sm" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-                <i class="fas fa-play-circle mr-1"></i><span>{{ 'Add to Queue' | translate }}</span>
+                <i class="bi bi-play-circle mr-1"></i><span>{{ 'Add to Queue' | translate }}</span>
               </button>
-              <ng-container *ngIf="!!currentUser">
+              <ng-container *ngIf="!!(currentUser$ | async)">
                 <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
-                  <i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}
+                  <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
                 </button>
               </ng-container>
             </div>
@@ -105,5 +99,11 @@
       </tr>
     </tbody>
   </table>
-  <div *ngIf="message" class="alert alert-danger mt-3 mb-0">{{ message | translate }}</div>
+  <ngb-pagination
+    *ngIf="songPage.totalPages > 1"
+    [collectionSize]="songPage.totalElements"
+    [page]="songPage.pageable?.pageNumber + 1"
+    [pageSize]="songPage.pageable?.pageSize"
+    (pageChange)="getSongPage($event - 1)"
+  ></ngb-pagination>
 </div>

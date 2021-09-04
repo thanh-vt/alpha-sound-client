@@ -51,7 +51,7 @@ export class CountryListComponent implements OnInit {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     await ref.result;
@@ -64,7 +64,7 @@ export class CountryListComponent implements OnInit {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.country = country;
@@ -78,7 +78,7 @@ export class CountryListComponent implements OnInit {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.subject = this.translate.instant('common.entity.country');

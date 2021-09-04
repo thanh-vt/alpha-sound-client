@@ -48,6 +48,7 @@ import { DurationPipe } from './layout/music-player/duration.pipe';
       deps: [TranslateService]
     })
   ],
+  providers: [],
   exports: [
     NavbarComponent,
     SidebarComponent,

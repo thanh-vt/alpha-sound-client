@@ -1,1 +1,53 @@
-<p>artist-detail works!</p>
+<div *ngIf="artist">
+  <app-card [type]="2" [imgSrc]="artist.avatarUrl" [title]="'Artist Info' | translate" [showEditButton]="false">
+    <div cardText2>
+      <h6 class="d-inline">{{ 'Artist Name' | translate }}:&nbsp;</h6>
+      <span class="text-secondary">{{artist.name}}</span><br />
+      <h6 class="d-inline">{{ 'Date of Birth' | translate }}:&nbsp;</h6>
+      <span class="text-secondary">{{artist.birthDate | date: 'dd/MM/yyyy'}}</span><br />
+      <h6 class="d-inline">{{ 'Biography' | translate }}:&nbsp;</h6>
+      <p class="text-secondary" style="overflow-wrap: break-word">{{artist.biography}}</p>
+    </div>
+  </app-card>
+</div>
+<h3 class="text-center">{{ 'Song List' | translate }}</h3>
+<div
+  class="songList py-2"
+  infiniteScroll
+  [scrollWindow]="false"
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <table class="table table-striped py-2">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">{{ 'Title' | translate }}</th>
+        <th scope="col">{{ 'Release Date' | translate }}</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr [routerLink]="['/song/detail']" [queryParams]="{id: song.id}" *ngFor="let song of songPage.content; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
+          <a *ngFor="let artist of song.artists; index as j"
+            ><small>{{ artist.name }}{{ j === song.artists.length - 1 ? '' : ', '}}</small></a
+          >
+        </td>
+        <td>
+          <small>{{ song.duration | duration }}</small>
+        </td>
+        <td>
+          <span class="float-right">
+            <small><i class="bi bi-headphones"></i> {{song.listeningFrequency}}</small></span
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

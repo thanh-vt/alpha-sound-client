@@ -2,10 +2,9 @@ import { FormGroup } from '@angular/forms';
 import { Artist } from './artist';
 
 export class AlbumUploadData {
-  private readonly formData: FormData;
+  public readonly formData: FormData;
   formGroup: FormGroup;
   filteredAlbumArtists: Artist[];
-  imageFile?: File | null;
 
   constructor(formGroup: FormGroup, filteredSongArtists: Artist[] = []) {
     this.formData = new FormData();
@@ -13,16 +12,13 @@ export class AlbumUploadData {
     this.filteredAlbumArtists = filteredSongArtists;
   }
 
-  isValid(): boolean {
-    return this.imageFile && this.formGroup.valid;
+  isValid(needUpload?: boolean): boolean {
+    if (needUpload) return this.formData.get('cover') && this.formGroup.valid;
+    return this.formGroup.valid;
   }
 
   setup(): FormData {
-    if (this.formGroup.invalid || !this.imageFile) {
-      return null;
-    }
     this.formData.set('album', new Blob([JSON.stringify(this.formGroup.getRawValue())], { type: 'application/json' }));
-    this.formData.set('cover', this.imageFile);
     return this.formData;
   }
 }

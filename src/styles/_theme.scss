@@ -1,4 +1,4 @@
-@import "colors";
+@import 'colors';
 
 .theme-light {
   @each $name, $color in $colors {

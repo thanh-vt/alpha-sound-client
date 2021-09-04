@@ -4,6 +4,7 @@
 
 export const environment = {
   authUrl: `https://${window.location.hostname}:8082/lambda-auth`,
+  apiRootUrl: `https://${window.location.hostname}:8086/alpha-sound`,
   apiUrl: `https://${window.location.hostname}:8086/alpha-sound/api`,
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',

@@ -28,12 +28,18 @@
         "plugin:@typescript-eslint/recommended"
       ],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["prettier", "@typescript-eslint"],
+      "plugins": [
+        "prettier",
+        "@typescript-eslint"
+      ],
       "rules": {
-        "prefer-const": ["error", {
-          "destructuring": "any",
-          "ignoreReadBeforeAssign": false
-        }],
+        "prefer-const": [
+          "error",
+          {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+          }
+        ],
         "prettier/prettier": "error",
         "@angular-eslint/component-selector": [
           "error",
@@ -63,6 +69,7 @@
       "files": [
         "*.component.html"
       ],
+      "parser": "@angular-eslint/template-parser",
       "extends": [
         "plugin:@angular-eslint/template/recommended",
         "plugin:prettier/recommended"

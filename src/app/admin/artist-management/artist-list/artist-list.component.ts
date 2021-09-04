@@ -8,6 +8,9 @@ import { ConfirmationModalComponent } from '../../../shared/component/modal/conf
 import { ArtistEditComponent } from '../artist-edit/artist-edit.component';
 import { CreateArtistComponent } from '../create-artist/create-artist.component';
 import { VgLoaderService } from 'ngx-vengeance-lib';
+import { SongService } from '../../../service/song.service';
+import { PagingInfo } from '../../../model/paging-info';
+import { DataUtil } from '../../../util/data-util';
 
 @Component({
   selector: 'app-artist-list',
@@ -15,26 +18,26 @@ import { VgLoaderService } from 'ngx-vengeance-lib';
   styleUrls: ['./artist-list.component.scss']
 })
 export class ArtistListComponent implements OnInit, OnDestroy {
-  artistList: Artist[];
-  message: string;
-  subscription: Subscription = new Subscription();
+  artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo();
   loading: boolean;
+  subscription: Subscription = new Subscription();
 
   constructor(
     private artistService: ArtistService,
+    private songService: SongService,
     public translate: TranslateService,
     private ngbModal: NgbModal,
     private loaderService: VgLoaderService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getArtistList().finally();
   }
 
-  async getArtistList(): Promise<void> {
+  async getArtistList(page?: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.artistList = (await this.artistService.artistList().toPromise()).content;
+      this.artistPage = await this.artistService.artistList(page ?? this.artistPage.pageable.pageNumber).toPromise();
     } catch (e) {
       console.error(e);
     } finally {
@@ -48,7 +51,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     await ref.result;
@@ -61,12 +64,17 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
-    ref.componentInstance.artist = artist;
-    await ref.result;
-    await this.getArtistList();
+    ref.componentInstance.artistId = artist.id;
+    const editedArtist = (await ref.result) as Artist;
+    if (editedArtist) {
+      const index = this.artistPage.content.indexOf(artist);
+      this.artistPage.content.splice(index, 1, editedArtist);
+    }
+
+    // await this.getArtistList();
   }
 
   async openDeleteDialog(artist: Artist, event: Event): Promise<void> {
@@ -75,7 +83,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       animation: true,
       backdrop: false,
       centered: false,
-      scrollable: true,
+      scrollable: false,
       size: 'md'
     });
     ref.componentInstance.subject = this.translate.instant('common.entity.artist');

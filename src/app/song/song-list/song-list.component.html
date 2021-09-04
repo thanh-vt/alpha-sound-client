@@ -1,6 +1,3 @@
-<ng-container *ngIf="loading">
-  <app-spinner [type]="4"></app-spinner>
-</ng-container>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -12,25 +9,29 @@
     </tr>
   </thead>
   <tbody>
-    <tr [tabIndex]="song.id" [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
-      <th scope="row">{{ i + 1 }}</th>
+    <tr
+      [tabIndex]="song.id"
+      [routerLink]="['/song','detail']"
+      [queryParams]="{id: song.id}"
+      *ngFor="let song of songPage.content; index as i"
+    >
+      <th scope="row">{{ song.rn }}</th>
       <td>
         <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
-        <a *ngFor="let artist of song.artists; index as j"><small>{{ artist.name }}{{ j === song.artists.length - 1? '': ', '}}</small></a>
+        <a *ngFor="let artist of song.artists; index as j"
+          ><small>{{ artist.name }}{{ j === song.artists.length - 1 ? '' : ', '}}</small></a
+        >
       </td>
       <td>
-        <small
-          >{{ (Math.floor(song.duration / 60).toString().padStart(2, '0')) }}{{':'}}{{ Math.round(song.duration % 60).toString().padStart(2,
-          '0')}}</small
-        >
+        <small>{{ song.duration | duration }}</small>
       </td>
       <td>
         <span class="float-right"
-          ><small><i class="fas fa-headphones-alt"></i> {{song.listeningFrequency}}</small></span
+          ><small><i class="bi bi-headphones"></i> {{song.listeningFrequency}}</small></span
         >
       </td>
       <td>
-        <ng-container *ngIf="!!currentUser">
+        <ng-container *ngIf="!!(currentUser$ | async)">
           <button
             (click)="likeSong(song, $event, true)"
             class="btn btn-outline-danger btn-sm border-0"
@@ -38,7 +39,7 @@
             [disabled]="song.loadingLikeButton"
           >
             <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span *ngIf="!song.loadingLikeButton"><i class="far fa-heart"></i></span>
+            <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
           </button>
           <button
             (click)="likeSong(song, $event, false)"
@@ -47,20 +48,20 @@
             [disabled]="song.loadingLikeButton"
           >
             <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span *ngIf="!song.loadingLikeButton"><i class="fas fa-heart"></i></span>
+            <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart-fill"></i></span>
           </button>
         </ng-container>
         <div ngbDropdown class="d-inline-block" placement="bottom" display="dynamic">
           <button (click)="$event.stopPropagation()" class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
-            <i class="fas fa-ellipsis-h"></i>
+            <i class="bi bi-three-dots-vertical"></i>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
             <button ngbDropdownItem class="btn btn-primary btn-sm" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-              <i class="fas fa-play-circle mr-1"></i><span>{{ 'Add to Queue' | translate }}</span>
+              <i class="bi bi-play-circle mr-1"></i><span>{{ 'Add to Queue' | translate }}</span>
             </button>
-            <ng-container *ngIf="!!currentUser">
+            <ng-container *ngIf="!!(currentUser$ | async)">
               <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
-                <i class="fas fa-plus mr-1"></i>{{ 'Add to Playlist' | translate }}
+                <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
               </button>
             </ng-container>
           </div>
@@ -69,23 +70,10 @@
     </tr>
   </tbody>
 </table>
-<nav>
-  <ul class="pagination">
-    <li class="page-item" *ngIf="!first">
-      <a class="page-link" (click)="goToPage(pageNumber - 1, true)" tabindex="-1" aria-disabled="true">{{ 'Previous' | translate }}</a>
-    </li>
-    <li *ngFor="let page of pages" class="page-item">
-      <a
-        class="page-link"
-        [class.active]="page.pageNumber === pageNumber"
-        (click)="goToPage(page.pageNumber, true)"
-        tabindex="-1"
-        aria-disabled="true"
-        >{{ page.pageNumber + 1 }}</a
-      >
-    </li>
-    <li class="page-item" *ngIf="!last">
-      <a class="page-link" (click)="goToPage(pageNumber + 1, true)" tabindex="-1" aria-disabled="true">{{ 'Next' | translate }}</a>
-    </li>
-  </ul>
-</nav>
+<ngb-pagination
+  *ngIf="songPage.totalPages > 1"
+  [collectionSize]="songPage.totalElements"
+  [page]="songPage.pageable?.pageNumber + 1"
+  [pageSize]="songPage.pageable?.pageSize"
+  (pageChange)="getSongPage($event - 1)"
+></ngb-pagination>
