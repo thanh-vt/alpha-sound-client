@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserProfileService } from './service/user-profile.service';
 import { AuthService } from './service/auth.service';
 import { LocationStrategy } from '@angular/common';
