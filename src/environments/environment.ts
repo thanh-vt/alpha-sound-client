@@ -10,7 +10,8 @@ export const environment = {
   clientSecret: '@lph@123',
   production: false,
   baseHref: '',
-  credMode: 'header' // cookie only available in https, otherwise set to header
+  credMode: 'header', // cookie only available in https, otherwise set to header
+  pingEndpointConfig: {}
 };
 
 /*

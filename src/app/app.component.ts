@@ -3,29 +3,12 @@ import { UserProfileService } from './service/user-profile.service';
 import { AuthService } from './service/auth.service';
 import { LocationStrategy } from '@angular/common';
 import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { environment } from '../environments/environment';
 
 @Component({ selector: 'app-root', templateUrl: 'app.component.html' })
 export class AppComponent {
-  endpointMap = {
-    ['0']: {
-      'chi-discovery-service': {
-        url: 'https://chi-discovery-service.herokuapp.com/'
-      }
-    },
-    ['1']: {
-      'phi-config-service': {
-        url: 'https://phi-config-service.herokuapp.com/'
-      }
-    },
-    ['2']: {
-      'lambda-auth-service': {
-        url: 'https://lambda-auth-service.herokuapp.com/lambda-auth/'
-      },
-      'alpha-sound-service': {
-        url: 'https://alpha-sound-service.herokuapp.com/alpha-sound/'
-      }
-    }
-  };
+  endpointMap = environment.pingEndpointConfig;
+
   constructor(
     private userService: UserProfileService,
     private authService: AuthService,
