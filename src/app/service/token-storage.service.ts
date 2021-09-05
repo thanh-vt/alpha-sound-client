@@ -63,14 +63,14 @@ export class TokenStorageService {
 
   getToken(key: string): { token: string; mode: 'cookie' | 'header' } {
     let tokenInfo: { token: string; mode: 'cookie' | 'header' };
-    if (environment.credMode === 'cookie') {
-      tokenInfo = { token: this.cookieService.get(key), mode: 'cookie' };
-    } else {
-      if (this.isRememberMe()) {
-        tokenInfo = { token: localStorage.getItem(key), mode: 'header' };
+    if (this.isRememberMe()) {
+      if (environment.credMode === 'cookie') {
+        tokenInfo = { token: this.cookieService.get(key), mode: 'cookie' };
       } else {
-        tokenInfo = { token: sessionStorage.getItem(key), mode: 'header' };
+        tokenInfo = { token: localStorage.getItem(key), mode: 'header' };
       }
+    } else {
+      tokenInfo = { token: sessionStorage.getItem(key), mode: 'header' };
     }
     if (tokenInfo.token) {
       return tokenInfo;
