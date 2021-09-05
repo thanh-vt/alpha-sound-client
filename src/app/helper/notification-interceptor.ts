@@ -22,7 +22,6 @@ export class NotificationInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('second interceptor invoke: ', req.url);
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
         this.subject.next(err);

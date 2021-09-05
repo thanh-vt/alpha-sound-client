@@ -101,7 +101,10 @@ export class TokenInterceptor implements HttpInterceptor {
       if (tokenInfo) {
         switch (tokenInfo.mode) {
           case 'cookie':
-            return req.clone({ withCredentials: true, setHeaders: { 'base-url': environment.apiRootUrl } });
+            return req.clone({
+              withCredentials: true,
+              setHeaders: { Authorization: `Bearer ${tokenInfo.token}`, 'base-url': environment.apiRootUrl }
+            });
           case 'header':
             return req.clone({ setHeaders: { Authorization: `Bearer ${tokenInfo.token}`, 'base-url': environment.apiRootUrl } });
         }
