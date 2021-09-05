@@ -18,7 +18,7 @@ import localeEn from '@angular/common/locales/en';
 import { registerLocaleData } from '@angular/common';
 import { GestureConfig } from '../gesture-config';
 import { NotificationInterceptor } from './helper/notification-interceptor';
-import { VgLoaderModule, VgToastModule } from 'ngx-vengeance-lib';
+import { VgLoaderModule, VgToastModule, VgUtilModule } from 'ngx-vengeance-lib';
 import { NgbDateCustomParserFormatter } from './helper/ngb-date-custom-parser-formatter';
 import { CustomNgbDateAdapter } from './helper/custom-ngb-date-adapter';
 
@@ -50,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     }),
     VgToastModule.forRoot(),
     VgLoaderModule,
-    HammerModule
+    HammerModule,
+    VgUtilModule
 
     // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
   ],
