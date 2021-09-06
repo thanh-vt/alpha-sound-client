@@ -7,5 +7,24 @@ export const environment = {
   production: true,
   baseHref: '/client/alpha-sound',
   credMode: 'cookie', // cookie only available in https, otherwise set to header
-  pingEndpointConfig: {}
+  pingEndpointConfig: {
+    ['0']: {
+      'chi-discovery-service': {
+        url: `https://${window.location.hostname}/service/chi-discovery/`
+      }
+    },
+    ['1']: {
+      'phi-config-service': {
+        url: `https://${window.location.hostname}/service/phi-config/`
+      }
+    },
+    ['2']: {
+      'lambda-auth-service': {
+        url: `https://${window.location.hostname}/service/lambda-auth/`
+      },
+      'alpha-sound-service': {
+        url: `https://${window.location.hostname}/service/alpha-sound/`
+      }
+    }
+  }
 };

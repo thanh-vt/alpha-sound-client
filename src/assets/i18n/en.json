@@ -155,7 +155,7 @@
       "accept": "Accept"
     },
     "error": {
-      "connection_problem": "Error while attempting connect to server",
+      "connection_timeout": "Server didn't responded",
       "unknown": "An unknown error has occurred"
     }
   },

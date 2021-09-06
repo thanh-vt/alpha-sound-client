@@ -157,7 +157,7 @@
       "accept": "Đồng ý"
     },
     "error": {
-      "connection_problem": "Lỗi kết nối đến máy chủ",
+      "connection_timeout": "Không nhận được phản hồi từ máy chủ",
       "unknown": "Một lỗi không xác định xảy ra"
     }
   },

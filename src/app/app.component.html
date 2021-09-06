@@ -1,4 +1,5 @@
 <vg-loader></vg-loader>
-<vg-heroku-wakeup [configList]="endpointMap">
+<vg-heroku-wakeup [configList]="endpointMap" [templateRef]="main"></vg-heroku-wakeup>
+<ng-template #main>
   <router-outlet></router-outlet>
-</vg-heroku-wakeup>
+</ng-template>

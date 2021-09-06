@@ -110,7 +110,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       }
     }
-    return req;
+    return req.clone({ setHeaders: { 'base-url': environment.apiRootUrl } });
   }
 
   redirectOut(): void {
