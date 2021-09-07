@@ -21,7 +21,9 @@ export const environment = {
     ['2']: {
       'lambda-auth-service': {
         url: 'https://lambda-auth-service.herokuapp.com/lambda-auth/'
-      },
+      }
+    },
+    ['3']: {
       'alpha-sound-service': {
         url: 'https://alpha-sound-service.herokuapp.com/alpha-sound/'
       }

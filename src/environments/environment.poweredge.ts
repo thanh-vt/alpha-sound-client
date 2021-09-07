@@ -21,7 +21,9 @@ export const environment = {
     ['2']: {
       'lambda-auth-service': {
         url: `https://${window.location.hostname}/service/lambda-auth/`
-      },
+      }
+    },
+    ['3']: {
       'alpha-sound-service': {
         url: `https://${window.location.hostname}/service/alpha-sound/`
       }
