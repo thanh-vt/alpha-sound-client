@@ -142,10 +142,10 @@
     </button>
     <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUser.user_name]"
-        ><span><i class="bi bi-person-circle"></i> {{ 'Profile' | translate }}</span></a
+        ><i class="bi bi-person-circle"></i> {{ 'Profile' | translate }}</a
       >
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"
-        ><span><i class="bi bi-music-note-list"></i> {{ 'Playlist' | translate }}</span></a
+        ><i class="bi bi-music-note-list"></i> {{ 'Playlist' | translate }}</a
       >
       <div class="dropdown-divider"></div>
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded/song']"
@@ -162,20 +162,33 @@
       >
     </div>
   </div>
-  <div class="d-inline-block ml-auto mr-2">
-    <label for="language" class="d-inline-block bg-secondary text-white px-2 my-0 rounded-lg"
-      ><i class="bi bi-globe2"></i>
-      <select
-        class="custom-select mx-1 rounded-sm d-inline-block"
-        name=""
-        id="language"
-        #language
-        (change)="translatePage()"
-        style="width: 6rem"
-      >
-        <option [selected]="this.translate.getBrowserLang() === 'en'" value="en">{{ 'English' | translate}}</option>
-        <option [selected]="this.translate.getBrowserLang() === 'vi'" value="vi">{{ 'Vietnamese' | translate }}</option>
-      </select>
-    </label>
+  <div class="d-inline-block ml-auto mx-2">
+    <div id="language" class="btn-group mr-3" style="width: 6rem">
+      <div #langList="ngbDropdown" class="btn-group w-100" ngbDropdown role="group" placement="bottom" display="dynamic">
+        <button class="btn btn-secondary dropdown-toggle-split d-flex align-items-center justify-content-between" ngbDropdownToggle>
+          <i class="bi bi-globe2"></i>
+          <i class="bi bi-caret-down-fill" *ngIf="langList._open; else closeLang"></i>
+          <ng-template #closeLang>
+            <i class="bi bi-caret-right-fill"></i>
+          </ng-template>
+          <img
+            class="ml-2 flag-image"
+            [src]="('baseHref' | env) + '/assets/flags/'+ translate.currentLang + '-flag.png'"
+            [alt]=" translate.currentLang + '_flag'"
+          />
+        </button>
+
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button ngbDropdownItem (click)="changeLang('vi')">
+            <img class="flag-image" [src]="('baseHref' | env) + '/assets/flags/vi-flag.png'" alt="vi_flag" />&nbsp; {{'common.lang.vi' |
+            translate}}
+          </button>
+          <button ngbDropdownItem (click)="changeLang('en')">
+            <img class="flag-image" [src]="('baseHref' | env) + '/assets/flags/en-flag.png'" alt="en_flag" />&nbsp; {{'common.lang.en' |
+            translate}}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>

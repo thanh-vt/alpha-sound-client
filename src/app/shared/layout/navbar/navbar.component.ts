@@ -115,4 +115,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const target = event.target as HTMLInputElement;
     this.settingService.toggleDarkMode(target.value == '2');
   }
+
+  changeLang(lang: string): void {
+    this.translate.use(lang);
+  }
 }

@@ -1,0 +1,28 @@
+<ng-container *ngIf="artistFormArr" [formGroup]="uploadData.formGroup">
+  <div formArrayName="artists" class="form-group" *ngFor="let artistControl of artistFormArr.controls; let i = index;">
+    <div class="row my-2">
+      <div [formGroupName]="i" class="col-md-10">
+        <vg-auto-input
+          [formControl]="$any(artistControl)"
+          [modelToTextMapper]="modelToTextMapper"
+          [modelToImgSrcMapper]="modelToImgSrcMapper"
+          [searchResults]="uploadData.filteredArtists"
+          (changeTextEvent)="suggestArtist($event)"
+        ></vg-auto-input>
+        <vg-error-section [label]="('common.label.artist' | translate) + '#' + (i + 1)" [control]="artistControl"></vg-error-section>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-info rounded-lg mx-1" style="min-width: 2rem" (click)="addArtist()">+</button>
+        <button
+          type="button"
+          class="btn btn-danger rounded-lg mx-1"
+          style="min-width: 2rem"
+          (click)="removeArtist(i)"
+          *ngIf="artistFormArr.controls.length > 1"
+        >
+          -
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

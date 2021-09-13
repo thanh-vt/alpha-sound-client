@@ -11,6 +11,7 @@ $card-border-color: var(--card-color);
 $card-bg: var(--card-bg);
 $modal-content-color: var(--card-color);
 $modal-content-bg: var(--card-bg);
+$dropdown-link-color: var(--dropdown-link-color);
 
 @import '~bootstrap/scss/bootstrap';
 @import 'styles/colors';
@@ -34,6 +35,14 @@ h5,
 h6,
 label {
   color: var(--menu-color);
+}
+
+span {
+  color: var(--content-color);
+}
+
+i.bi.bi-heart-fill {
+  color: #dc3545;
 }
 
 input {

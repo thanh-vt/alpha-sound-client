@@ -6,7 +6,6 @@ import { SongListComponent } from './song-list/song-list.component';
 import { SongDetailComponent } from './song-detail/song-detail.component';
 import { UploadSongComponent } from './upload-song/upload-song.component';
 import { EditSongComponent } from './edit-song/edit-song.component';
-import { DeleteSongComponent } from './delete-song/delete-song.component';
 import { SongComponent } from './song/song.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +23,6 @@ import { VgControlModule, VgDirectivesModule, VgUtilModule } from 'ngx-vengeance
     SongDetailComponent,
     UploadSongComponent,
     EditSongComponent,
-    DeleteSongComponent,
     SongComponent,
     NewSongComponent,
     ListenSongComponent
@@ -41,16 +39,7 @@ import { VgControlModule, VgDirectivesModule, VgUtilModule } from 'ngx-vengeance
     VgControlModule,
     VgDirectivesModule,
     VgUtilModule
-    // AutoSizeInputModule
   ],
-  exports: [
-    SongListComponent,
-    SongDetailComponent,
-    UploadSongComponent,
-    EditSongComponent,
-    DeleteSongComponent,
-    SongComponent,
-    NewSongComponent
-  ]
+  exports: [SongListComponent, SongDetailComponent, UploadSongComponent, EditSongComponent, SongComponent, NewSongComponent]
 })
 export class SongModule {}

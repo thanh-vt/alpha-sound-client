@@ -109,6 +109,10 @@
   "Failed to remove song playlist.": "Failed to remove song playlist.",
   "Are you sure that you want to remove from playlist song": "Are you sure that you want to remove from playlist song",
   "common": {
+    "lang":{
+      "vi": "Vietnamese",
+      "en": "English"
+    },
     "entity": {
       "song": "Song",
       "album": "Album",

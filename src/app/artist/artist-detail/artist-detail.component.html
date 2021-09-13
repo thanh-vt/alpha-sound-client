@@ -74,7 +74,7 @@
             </button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
               <button ngbDropdownItem class="btn btn-primary btn-sm" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-                <i class="bi bi-play-circle mr-1"></i><span>{{ 'Add to Queue' | translate }}</span>
+                <i class="bi bi-play-circle mr-1"></i>{{ 'Add to Queue' | translate }}
               </button>
               <ng-container *ngIf="!!currentUser">
                 <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">

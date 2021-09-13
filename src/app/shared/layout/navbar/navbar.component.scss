@@ -4,6 +4,7 @@
   .nav-item:hover {
     background-color: var(--nav-bg-hover);
   }
+
   .nav-item.active {
     //background-color: khaki !important;
     background-color: var(--nav-bg-color-active);
@@ -12,6 +13,7 @@
       color: brown;
     }
   }
+
   .dropdown-menu,
   .form-group,
   .dropdown-item {
@@ -19,6 +21,7 @@
     background-color: black !important;
     border-color: white;
   }
+
   a.dropdown-item:hover {
     background-color: grey !important;
     border-color: white;
@@ -32,9 +35,11 @@
   div.alert.alert-danger {
     background-color: #f8d7da !important;
   }
+
   div.alert.alert-success {
     background-color: lightgreen !important;
   }
+
   button#userProfile {
     background-color: lightgreen;
   }
@@ -78,6 +83,7 @@
   border-radius: 25px;
   border: 1px solid #ccc;
 }
+
 .search-form .input-group input.form-control {
   margin-left: -25px;
   border: none;
@@ -90,17 +96,21 @@
 .search-form .input-group input.form-control::-webkit-input-placeholder {
   display: none;
 }
+
 .search-form .input-group input.form-control:-moz-placeholder {
   /* Firefox 18- */
   display: none;
 }
+
 .search-form .input-group input.form-control::-moz-placeholder {
   /* Firefox 19+ */
   display: none;
 }
+
 .search-form .input-group input.form-control:-ms-input-placeholder {
   display: none;
 }
+
 .search-form .input-group:hover,
 .search-form .input-group.hover {
   width: 100%;
@@ -150,4 +160,9 @@
   border-radius: 100%;
   background: black;
   cursor: pointer;
+}
+
+.flag-image {
+  width: 30px;
+  height: 20px;
 }

@@ -101,7 +101,7 @@
             </button>
           </div>
           <div class="scrolling-text-container" style="width: 80%">
-            <div class="scrolling-text">{{title}}</div>
+            <div class="scrolling-text">{{title}} {{ isPlaying ? ' - ' + tracks[currentTrackIndex]?.artist : ''}}</div>
           </div>
           <ul ngbDropdownMenu id="plList" aria-labelledby="dropdownConfig" tabindex="0">
             <li
@@ -112,7 +112,10 @@
             >
               <div class="plItem">
                 <span class="plNum">{{i + 1}}.</span>
-                <span class="plTitle">{{track.title}}</span>
+                <div class="plTitle">
+                  <span>{{track.title}}</span><br />
+                  <small>{{track.artist}}</small>
+                </div>
                 <span class="plLength">{{track.duration | duration}}</span>
                 <button class="btn btn-sm btn-close-white" (click)="removeAudio(i)">
                   <i class="bi bi-x-circle-fill"></i>

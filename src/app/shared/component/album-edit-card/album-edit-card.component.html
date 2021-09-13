@@ -1,0 +1,49 @@
+<form [formGroup]="albumUploadData.formGroup" vgFocusFirstInvalid [form]="albumUploadData.formGroup" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="albumTitle">{{ 'Title' | translate }}</label>
+    <input
+      type="text"
+      class="form-control"
+      id="albumTitle"
+      [placeholder]="('Enter' | translate) + ' ' + ('Album title' | translate)"
+      formControlName="title"
+    />
+    <vg-error-section [label]="'Title' | translate" [group]="albumUploadData.formGroup" controlName="title"></vg-error-section>
+  </div>
+  <label>{{ 'Artist' | translate }}</label>
+  <app-artist-add-suggestion [uploadData]="albumUploadData"></app-artist-add-suggestion>
+  <div class="form-group">
+    <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="dd/MM/yyyy"
+        id="albumReleaseDate"
+        name="dp"
+        ngbDatepicker
+        #d="ngbDatepicker"
+        formControlName="releaseDate"
+        [minDate]="minDate"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+          <i class="bi bi-calendar3"></i>
+        </button>
+      </div>
+    </div>
+    <vg-error-section [label]="'Release Date' | translate" [group]="albumUploadData.formGroup" controlName="releaseDate"></vg-error-section>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>
+    <vg-file-input
+      id="albumCover"
+      formControlName="coverUrl"
+      [remoteFileType]="'image'"
+      [formData]="albumUploadData.formData"
+      [formDataFilePart]="'cover'"
+    ></vg-file-input>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary rounded-pill mb-2 float-right">{{ 'Submit' | translate }}</button>
+  </div>
+</form>

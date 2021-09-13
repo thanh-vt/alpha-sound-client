@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Progress } from '../../../model/progress';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import { CountryService } from '../../../service/country.service';
 import { Country } from '../../../model/country';
 import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
@@ -31,17 +31,18 @@ export class EditCountryComponent implements OnInit {
     private toastService: VgToastService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.countryUpdateForm = this.fb.group({
       name: [this.country.name, Validators.required]
     });
   }
 
-  selectFile(event) {
-    if (event.target.files.length > 0) {
-      this.file = event.target.files[0];
+  selectFile(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files.length > 0) {
+      this.file = target.files[0];
       this.isImageFileChoosen = true;
-      this.imageFileName = event.target.files[0].name;
+      this.imageFileName = target.files[0].name;
     }
   }
 
@@ -72,10 +73,10 @@ export class EditCountryComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
     this.formData.append('country', this.file);
-    this.countryService.updateCountry(this.formData, this.country.id).subscribe((event: HttpEvent<any>) => {
+    this.countryService.updateCountry(this.formData, this.country.id).subscribe(event => {
       if (this.displayProgress(event, this.progress)) {
         this.toastService.show({ text: 'Update country successfully' }, { type: TOAST_TYPE.SUCCESS });
         this.ngbActiveModal.close(this.country);
@@ -83,11 +84,11 @@ export class EditCountryComponent implements OnInit {
     });
   }
 
-  close() {
+  close(): void {
     this.ngbActiveModal.close();
   }
 
-  navigate() {
+  navigate(): void {
     location.replace('/admin/country-management');
   }
 }

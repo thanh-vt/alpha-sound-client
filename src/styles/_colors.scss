@@ -12,6 +12,12 @@ $card-background-dark: #494949;
 $card-border: #000000;
 $card-border-dark: #8d8d8d;
 
+$content-color: #a60a67;
+$content-color-dark: #41ff8b;
+
+$dropdown-link-color: #123bd4;
+$dropdown-link-color-dark: #01a94d;
+
 $colors: (
   --body-bg-color: (
     white,
@@ -100,5 +106,13 @@ $colors: (
   --card-border: (
     $card-border,
     $card-border-dark
+  ),
+  --content-color: (
+    $content-color,
+    $content-color-dark
+  ),
+  --dropdown-link-color: (
+    $dropdown-link-color,
+    $dropdown-link-color-dark
   )
 );

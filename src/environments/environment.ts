@@ -14,22 +14,22 @@ export const environment = {
   pingEndpointConfig: {
     ['0']: {
       'chi-discovery-service': {
-        url: `https://${window.location.hostname}/service/chi-discovery/`
+        url: `http://${window.location.hostname}:8010/`
       }
     },
     ['1']: {
       'phi-config-service': {
-        url: `https://${window.location.hostname}/service/phi-config/`
+        url: `http://${window.location.hostname}:8030/`
       }
     },
     ['2']: {
       'lambda-auth-service': {
-        url: `https://${window.location.hostname}/service/lambda-auth/`
+        url: `https://${window.location.hostname}:8082/lambda-auth/`
       }
     },
     ['3']: {
       'alpha-sound-service': {
-        url: `https://${window.location.hostname}/service/alpha-sound/`
+        url: `https://${window.location.hostname}:8086/alpha-sound/`
       }
     }
   }

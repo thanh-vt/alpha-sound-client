@@ -13,9 +13,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EnvPipe } from './pipe/env.pipe';
 import { ConfirmationModalComponent } from './component/modal/confirmation-modal/confirmation-modal.component';
 import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wrapper.component';
-import { VgControlModule, VgDirectivesModule, VgErrorDictService } from 'ngx-vengeance-lib';
+import { VgControlModule, VgDirectivesModule, VgErrorDictService, VgUtilModule } from 'ngx-vengeance-lib';
 import { MusicPlayerComponent } from './layout/music-player/music-player.component';
 import { DurationPipe } from './layout/music-player/duration.pipe';
+import { SongEditCardComponent } from './component/song-edit-card/song-edit-card.component';
+import { ArtistAddSuggestionComponent } from './component/artist-add-suggestion/artist-add-suggestion.component';
+import { AlbumEditCardComponent } from './component/album-edit-card/album-edit-card.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { DurationPipe } from './layout/music-player/duration.pipe';
     ConfirmationModalComponent,
     ModalWrapperComponent,
     MusicPlayerComponent,
-    DurationPipe
+    DurationPipe,
+    ArtistAddSuggestionComponent,
+    SongEditCardComponent,
+    AlbumEditCardComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +52,8 @@ import { DurationPipe } from './layout/music-player/duration.pipe';
         return vgErrorDictService;
       },
       deps: [TranslateService]
-    })
+    }),
+    VgUtilModule
   ],
   providers: [],
   exports: [
@@ -61,7 +68,10 @@ import { DurationPipe } from './layout/music-player/duration.pipe';
     VgControlModule,
     MusicPlayerComponent,
     NgbModule,
-    DurationPipe
+    DurationPipe,
+    ArtistAddSuggestionComponent,
+    SongEditCardComponent,
+    AlbumEditCardComponent
   ]
 })
 export class SharedModule {}

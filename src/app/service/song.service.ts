@@ -159,7 +159,8 @@ export class SongService {
       id: song.id,
       title: song.title,
       duration: song.duration,
-      url: song.url
+      url: song.url,
+      artist: song.artists?.length ? song.artists.map(e => e.name).join(', ') : ''
     });
   }
 
@@ -170,7 +171,8 @@ export class SongService {
         id: song.id,
         title: song.title,
         duration: song.duration,
-        url: song.url
+        url: song.url,
+        artist: song.artists?.length ? song.artists.map(e => e.name).join(', ') : ''
       }));
       this.playingQueueService.addAllToQueueAndPlay(tracks);
     });

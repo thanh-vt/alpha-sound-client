@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { PagingInfo } from '../model/paging-info';
 import { Country } from '../model/country';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +16,18 @@ export class CountryService {
     return this.http.get<PagingInfo<Country>>(`${environment.apiUrl}/country/list?page=${page}`);
   }
 
-  deleteCountry(id: number) {
-    return this.http.delete<any>(`${environment.apiUrl}/country?id=${id}`);
-  }
-
-  updateCountry(formData: FormData, id: number) {
-    return this.http.put<any>(`${environment.apiUrl}/country/update?id=${id}`, formData);
-  }
-
-  createCountry(formData: FormData) {
-    return this.http.post<any>(`${environment.apiUrl}/country/create`, formData, {
+  createCountry(formData: FormData): Observable<HttpEvent<Country>> {
+    return this.http.post<Country>(`${environment.apiUrl}/country/create`, formData, {
       reportProgress: true,
       observe: 'events'
     });
+  }
+
+  updateCountry(formData: FormData, id: number): Observable<Country> {
+    return this.http.put<Country>(`${environment.apiUrl}/country/update?id=${id}`, formData);
+  }
+
+  deleteCountry(id: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/country/${id}`);
   }
 }
