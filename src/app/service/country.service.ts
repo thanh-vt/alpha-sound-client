@@ -10,7 +10,15 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CountryService {
-  constructor(private http: HttpClient) {}
+  countryList$: BehaviorSubject<Country[]> = new BehaviorSubject<Country[]>([]);
+
+  constructor(private http: HttpClient) {
+    this.getCountryList(0)
+      .pipe(map(result => result.content))
+      .subscribe(next => {
+        this.countryList$.next(next);
+      });
+  }
 
   getCountryList(page: number): Observable<PagingInfo<Country>> {
     return this.http.get<PagingInfo<Country>>(`${environment.apiUrl}/country/list?page=${page}`);

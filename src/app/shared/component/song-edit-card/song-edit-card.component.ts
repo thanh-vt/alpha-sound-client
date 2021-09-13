@@ -26,7 +26,7 @@ export class SongEditCardComponent {
   };
 
   constructor(private countryService: CountryService) {
-    this.countryList$ = this.countryService.getCountryList(0).pipe(map(result => result.content));
+    this.countryList$ = this.countryService.countryList$;
   }
 
   onSubmit(): void {

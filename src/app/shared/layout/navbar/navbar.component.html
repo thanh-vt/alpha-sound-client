@@ -138,7 +138,7 @@
     >
       <span class="d-inline-block user-avatar" *ngIf="!currentUser?.avatar_url"> <i class="bi bi-person-circle"></i></span>
       <img class="d-inline-block user-avatar" *ngIf="!!currentUser?.avatar_url" [src]="currentUser?.avatar_url" alt="" />
-      <span> {{ currentUser.user_name }}</span>
+      <span class="text-dark"> {{ currentUser.user_name }}</span>
     </button>
     <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile', currentUser.user_name]"
