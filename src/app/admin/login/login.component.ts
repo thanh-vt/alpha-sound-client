@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.submitted = false;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/admin';
     this.adminLoginForm = this.fb.group({
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
     if (this.adminLoginForm.invalid) {
       return;

@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../service/auth.service';
 import { UserProfileService } from '../../../service/user-profile.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../../model/token-response';
@@ -16,18 +16,20 @@ import { VgToastService } from 'ngx-vengeance-lib';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit {
   currentUser: UserProfile;
   setting$: Observable<Setting>;
   isCollapsed: boolean;
-  loginForm: FormGroup;
-  searchForm: FormGroup;
+  loginForm: FormGroup = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+    rememberMe: [false]
+  });
+  searchForm: FormGroup = this.fb.group({
+    searchText: ['', Validators.required]
+  });
   loading = false;
-  submitted = false;
   returnUrl: string;
-  subscription = new Subscription();
-
-  @ViewChild('language') language: ElementRef;
 
   // eslint-disable-next-line max-len
   constructor(
@@ -50,39 +52,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      rememberMe: [false]
-    });
-    this.searchForm = this.fb.group({
-      searchText: ['', Validators.required]
-    });
     this.isCollapsed = true;
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
   onSignIn(): void {
-    this.submitted = true;
+    this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
       this.loading = true;
-      this.subscription.add(
-        this.authService
-          .login(this.loginForm.get('username').value, this.loginForm.get('password').value, this.loginForm.get('rememberMe').value)
-          .pipe(
-            finalize(() => {
-              this.loading = false;
-            })
-          )
-          .subscribe(() => {
+      const { username, password, rememberMe } = this.loginForm.value;
+      this.authService
+        .login(username, password, rememberMe)
+        .pipe(
+          finalize(() => {
             this.loading = false;
-            this.toastService.success({ text: 'Signed in successfully' });
-            const redirectToHome = setTimeout(() => {
-              this.router.navigate([this.returnUrl]);
-              clearTimeout(redirectToHome);
-            }, 1500);
           })
-      );
+        )
+        .subscribe(() => {
+          this.toastService.success({ text: 'Signed in successfully' });
+          const redirectToHome = setTimeout(() => {
+            this.router.navigate([this.returnUrl]);
+            clearTimeout(redirectToHome);
+          }, 1500);
+        });
     }
   }
 
@@ -101,14 +93,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home']);
       clearTimeout(navigation);
     }, 3000);
-  }
-
-  translatePage(): void {
-    this.translate.use(this.language.nativeElement.value);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   turnDarkThemeOnOff(event: Event): void {

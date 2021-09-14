@@ -1,68 +1,28 @@
-<form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser">
-  <div class="form-group">
-    <label for="firstName"><i class="bi bi-tag"></i> {{ 'First Name' | translate }}</label>
+<form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser" vgFocusFirstInvalid [form]="updateForm">
+  <div class="form-group mb-3">
+    <label class="form-label" for="first_name"><i class="bi bi-tag"></i> {{ 'First Name' | translate }}</label>
     <input
-      id="firstName"
+      id="first_name"
       type="text"
       [placeholder]="('Enter' | translate) + ' ' + ('First Name' | translate)"
-      formControlName="firstName"
+      formControlName="first_name"
       class="form-control"
     />
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('firstName').hasError('required') && (updateForm.get('firstName').touched || this.submitted)"
-    >
-      {{ 'First Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
-    </div>
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('firstName').hasError('minlength') && (updateForm.get('firstName').touched || this.submitted)"
-    >
-      {{ 'First Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
-    </div>
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('firstName').hasError('maxlength') && (updateForm.get('firstName').touched || this.submitted)"
-    >
-      {{ 'First Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
-    </div>
+    <vg-error-section [group]="updateForm" [label]="'First Name' | translate" controlName="first_name"></vg-error-section>
   </div>
-  <div class="form-group">
-    <label for="lastName"><i class="bi bi-tag"></i> {{ 'Last Name' | translate}}</label>
+  <div class="form-group mb-3">
+    <label class="form-label" for="last_name"><i class="bi bi-tag"></i> {{ 'Last Name' | translate}}</label>
     <input
-      id="lastName"
+      id="last_name"
       type="text"
       [placeholder]="('Enter' | translate) + ' ' + ('Password' | translate)"
-      formControlName="lastName"
+      formControlName="last_name"
       class="form-control"
     />
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('lastName').hasError('required') && (updateForm.get('lastName').touched || this.submitted)"
-    >
-      {{ 'Last Name' | translate }}{{' '}}{{ 'must be filled' | translate }}{{'!'}}
-    </div>
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('lastName').hasError('minlength') && (updateForm.get('lastName').touched || this.submitted)"
-    >
-      {{ 'Last Name' | translate }}{{' '}}{{ 'must have at least' | translate }}{{' 2 '}}{{ 'characters' | translate }}{{'!'}}
-    </div>
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('lastName').hasError('maxlength') && (updateForm.get('lastName').touched || this.submitted)"
-    >
-      {{ 'Last Name' | translate }}{{' '}}{{ 'can only contain up to' | translate }}{{' 30 '}}{{ 'characters' | translate }}{{'!'}}
-    </div>
+    <vg-error-section [group]="updateForm" [label]="'Last Name' | translate" controlName="last_name"></vg-error-section>
   </div>
-  <label><i class="bi bi-gender-female"></i> {{ 'Gender' | translate }}</label>
-  <div class="form-group">
+  <div class="form-group mb-3">
+    <label class="form-label"><i class="bi bi-gender-female"></i> {{ 'Gender' | translate }}</label>
     <div class="form-check form-check-inline">
       <input type="radio" id="male" [value]="true" formControlName="gender" />
       <label class="form-check-label ml-2" for="male"><i class="bi bi-gender-male"></i> Male</label>
@@ -72,44 +32,49 @@
       <label class="form-check-label ml-2" for="female"><i class="bi bi-gender-female"></i> Female</label>
     </div>
   </div>
-  <div class="form-group">
-    <label for="birthDate"><i class="bi bi-calendar3"></i> {{ 'BirthDate' | translate }}</label>
-    <input
-      [value]="currentUser?.date_of_birth | date: 'yyyy-MM-dd'"
-      type="date"
-      class="form-control"
-      id="birthDate"
-      formControlName="birthDate"
-    />
-    <div
-      class="alert alert-danger"
-      role="alert"
-      *ngIf="updateForm.get('birthDate').hasError('required') && (updateForm.get('birthDate').touched || this.submitted)"
-    >
-      {{'BirthDate' | translate }}{{' '}}{{ 'must be picked' | translate }}{{'!'}}
+  <div class="form-group mb-3">
+    <label class="form-label" for="birth_date">{{ 'Date of Birth' | translate }}</label>
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="dd/MM/yyyy"
+        id="birth_date"
+        name="dp"
+        ngbDatepicker
+        #d="ngbDatepicker"
+        formControlName="date_of_birth"
+        [minDate]="minDate"
+        [maxDate]="maxDate"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+          <i class="bi bi-calendar3"></i>
+        </button>
+      </div>
     </div>
+    <vg-error-section [group]="updateForm" [label]="'Date of Birth' | translate" controlName="date_of_birth"></vg-error-section>
   </div>
-  <div class="form-group">
-    <label for="phoneNumber"><i class="bi bi-telephone"></i> {{ 'PhoneNumber' | translate }}</label>
+  <div class="form-group mb-3">
+    <label class="form-label" for="phone_number"><i class="bi bi-telephone"></i> {{ 'PhoneNumber' | translate }}</label>
     <input
-      id="phoneNumber"
+      id="phone_number"
       type="text"
       [placeholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
-      formControlName="phoneNumber"
+      formControlName="phone_number"
       class="form-control"
     />
   </div>
-  <label><i class="bi bi-person-bounding-box"></i> {{ 'Avatar' | translate }}</label>
-  <div class="form-group custom-file">
-    <label class="custom-file-label" *ngIf="!isImageFileChosen">{{ 'Choose file' | translate }}</label>
-    <label class="custom-file-label" *ngIf="isImageFileChosen">{{ imageFileName }}</label>
-    <input type="file" class="custom-file-input" id="avatar" (change)="selectFile($event)" />
+  <div class="form-group mb-3">
+    <label class="form-label"><i class="bi bi-person-bounding-box"></i> {{ 'Avatar' | translate }}</label>
+    <vg-file-input
+      formControlName="avatar_url"
+      [formData]="formData"
+      [formDataFilePart]="'avatar'"
+      [remoteFileType]="'image'"
+    ></vg-file-input>
   </div>
   <button [disabled]="loading" class="btn btn-primary rounded-pill my-2 float-right">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
     <span>{{ 'Update' | translate }}</span>
   </button>
-  <div class="progress form-group" *ngIf="progress.value > 0">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress.value"></div>
-  </div>
 </form>

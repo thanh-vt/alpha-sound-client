@@ -3,8 +3,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { TokenResponse, UserProfile } from '../model/token-response';
-import { finalize, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
+import { UserProfileService } from './user-profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,23 @@ export class AuthService {
   // sessionTimeout = new EventEmitter();
   subscription: Subscription = new Subscription();
 
-  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) {
+  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService, private userProfileService: UserProfileService) {
     const tokenInfo = this.tokenStorageService.accessToken;
     const refreshTokenInfo = this.tokenStorageService.accessToken;
     const currentUser = tokenInfo || refreshTokenInfo ? this.tokenStorageService.currentUser : null;
     this.currentUserSubject = new BehaviorSubject<UserProfile>(currentUser);
     this.currentUser$ = this.currentUserSubject.asObservable();
+    this.userProfileService.getCurrentUserProfile().subscribe(next => {
+      this.currentUserValue = next;
+    });
   }
 
   public get currentUserValue(): UserProfile {
     return this.currentUserSubject.value;
+  }
+
+  public set currentUserValue(val: UserProfile) {
+    this.currentUserSubject.next({ ...this.currentUserValue, ...val });
   }
 
   login(username: string, password: string, rememberMe: boolean): Observable<UserProfile> {
@@ -36,7 +44,9 @@ export class AuthService {
     return this.http.post<TokenResponse>(`${environment.authUrl}/oauth/token`, params, { headers }).pipe(
       map(userToken => {
         const userInfo: UserProfile = this.tokenStorageService.storeAccessToken(userToken, rememberMe);
-        this.currentUserSubject.next(userInfo);
+        this.userProfileService.getCurrentUserProfile().subscribe(next => {
+          this.currentUserValue = { ...userInfo, ...next };
+        });
         return userInfo;
       })
     );

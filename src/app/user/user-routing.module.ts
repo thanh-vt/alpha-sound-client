@@ -43,6 +43,10 @@ const routes: Routes = [
         component: ResetPasswordComponent
       },
       {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
         path: 'profile/:id',
         component: ProfileComponent
       },

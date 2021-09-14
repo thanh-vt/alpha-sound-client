@@ -3,30 +3,30 @@
     [type]="2"
     [imgSrc]="user?.avatar_url || '../../../assets/avatars/default-user-avatar.png'"
     [title]="'Profile' | translate"
-    [showEditButton]="currentUser && username===currentUser.user_name"
+    [showEditButton]="user?.user_name===currentUser?.user_name"
     (showEditForm)="showEditForm=!showEditForm"
   >
     <span cardButton2><i class="bi bi-person-check"></i></span>
     <div cardText2>
-      <h6 class="d-inline">{{ 'Username' | translate }}:</h6>
-      <span *ngIf="user?.user_name" class="text-secondary">{{user?.user_name}}</span>
+      <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
+      <span *ngIf="user?.user_name" class="text-secondary">{{user.user_name}}</span>
       <span *ngIf="!user?.user_name" class="text-secondary">**********</span>
       <br />
-      <h6 class="d-inline">{{ 'First Name' | translate }}:</h6>
+      <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
       <span class="text-secondary">{{user?.first_name}}</span><br />
-      <h6 class="d-inline">{{ 'Last Name' | translate }}:</h6>
+      <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
       <span class="text-secondary">{{user?.last_name}}</span><br />
-      <h6 class="d-inline">{{ 'BirthDate' | translate }}:</h6>
+      <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
       <span *ngIf="user?.date_of_birth" class="text-secondary"> {{user?.date_of_birth | date: 'dd/MM/yyyy' : '' }}</span>
       <span *ngIf="!user?.date_of_birth" class="text-secondary">**********</span>
       <br />
-      <h6 class="d-inline">{{ 'Gender' | translate }}:</h6>
+      <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
       <span> <i *ngIf="user?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
       <ng-template #female>
         <i class="bi bi-gender-female" style="color: hotpink"></i>
       </ng-template>
       <br />
-      <h6 class="d-inline">Email:</h6>
+      <h6 class="d-inline">Email:&nbsp;</h6>
       <span *ngIf="user?.email" class="text-secondary">{{user?.email}}</span>
       <span *ngIf="!user?.email && user?.email !== null" class="text-secondary">**********</span><br />
     </div>

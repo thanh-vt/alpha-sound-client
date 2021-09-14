@@ -24,10 +24,15 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary rounded-circle float-right">
-            <ng-content select="[cardButton2]"></ng-content>
-          </button>
-          <h3 class="card-title text-center">{{ title }}</h3>
+          <div class="d-flex justify-content-between align-items-center">
+            <div style="width: 10%"></div>
+            <h3 class="card-title text-center" style="width: 80%">{{ title }}</h3>
+            <div style="width: 10%">
+              <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary rounded-circle float-right">
+                <ng-content select="[cardButton2]"></ng-content>
+              </button>
+            </div>
+          </div>
           <div class="card-text">
             <ng-content select="[cardText2]"></ng-content>
           </div>

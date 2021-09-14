@@ -6,7 +6,6 @@ import { Country } from '../../../model/country';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { CountryService } from '../../../service/country.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-song-edit-card',

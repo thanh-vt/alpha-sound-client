@@ -30,6 +30,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.authService.currentUser$.subscribe(next => {
         this.currentUser = next;
+        if (this.currentUser?.user_name === this.user?.user_name) {
+          this.user = this.currentUser;
+        }
       })
     );
   }
@@ -40,7 +43,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         try {
           this.loaderService.loading(true);
           this.username = next.get('id');
-          this.user = await this.userService.getUserDetail(this.username).toPromise();
+          if (!this.username) {
+            this.user = await this.userService.getCurrentUserProfile().toPromise();
+          } else {
+            this.user = await this.userService.getUserDetail(this.username).toPromise();
+          }
         } catch (e) {
           console.error(e);
         } finally {
