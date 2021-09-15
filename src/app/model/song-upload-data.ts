@@ -10,6 +10,10 @@ export class SongUploadData {
   filteredArtists: Artist[];
   observable?: Observable<HttpEvent<Song>> | null;
   type?: 'create' | 'update' = 'create';
+  editable?: boolean;
+  editing?: boolean;
+  checked?: boolean;
+  temp: Song;
 
   constructor(formGroup: FormGroup, filteredSongArtists: Artist[] = [], type: 'create' | 'update' = 'create') {
     this.formData = new FormData();
@@ -31,7 +35,8 @@ export class SongUploadData {
         country: [null],
         theme: [null],
         duration: [null],
-        url: [null]
+        url: [null],
+        uploader: [null]
       }),
       []
     );
@@ -46,6 +51,40 @@ export class SongUploadData {
       return this.formData.get('audio') && this.formGroup.valid;
     }
     return this.formGroup.valid;
+  }
+
+  setEditable(val: boolean): void {
+    this.editable = val;
+    this.setEditing(false);
+  }
+
+  setEditing(val: boolean): void {
+    this.editing = val;
+    if (this.editing) {
+      this.formGroup.enable();
+    } else {
+      this.formGroup.disable();
+    }
+  }
+
+  toggleEdit(): void {
+    if (!this.editable) {
+      return;
+    }
+    this.editing = !this.editing;
+    if (this.editing) {
+      this.formGroup.enable();
+      this.temp = this.formGroup.getRawValue();
+    } else {
+      this.formGroup.disable();
+      this.temp = null;
+    }
+  }
+
+  resetForm(): void {
+    if (this.temp) {
+      this.formGroup.patchValue(this.temp);
+    }
   }
 
   setup(): FormData {

@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { Album } from '../../model/album';
 import { DateUtil } from '../../util/date-util';
 import { SongUploadData } from '../../model/song-upload-data';
+import { AuthService } from '../../service/auth.service';
+import { Song } from '../../model/song';
 
 @Component({
   selector: 'app-edit-album',
@@ -23,12 +25,13 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
   minDate = DateUtil.getMinDate();
 
   constructor(
-    protected fb: FormBuilder,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
-    protected router: Router,
-    protected albumService: AlbumService,
+    private router: Router,
+    private albumService: AlbumService,
     private songService: SongService,
-    protected artistService: ArtistService,
+    private artistService: ArtistService,
+    private authService: AuthService,
     private toastService: VgToastService
   ) {
     this.albumUploadData = AlbumUploadData.instance({
@@ -61,6 +64,7 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
           });
           this.albumUploadData.songUploadDataList = tmpSongUploadDataList;
           this.albumUploadData.holder = [];
+          this.albumUploadData.checkEditableSongList(this.authService.currentUserValue.user_name);
         } catch (e) {
           console.error(e);
         }
@@ -80,13 +84,34 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
       const albumFormData: FormData = this.albumUploadData.setup();
       const createAlbumResult = await this.albumService.updateAlbum(albumFormData, this.album.id).toPromise();
       this.toastService.success({ text: 'Album updated successfully' });
-      this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult);
+      this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult, true);
       for (const songUploadData of this.albumUploadData.songUploadDataList) {
-        const songFormData: FormData = songUploadData.setup();
-        songUploadData.observable =
-          songUploadData.type === 'create'
-            ? this.songService.uploadSong(songFormData)
-            : this.songService.updateSong(songFormData, songUploadData.formGroup.get('id').value);
+        if (songUploadData.checked) {
+          const songFormData: FormData = songUploadData.setup();
+          if (songFormData.get('audio')) {
+            songUploadData.observable =
+              songUploadData.type === 'create'
+                ? this.songService.uploadSong(songFormData)
+                : this.songService.updateSong(songFormData, songUploadData.formGroup.get('id').value);
+          }
+        }
+      }
+    }
+  }
+
+  onUploadSongSuccess(event: Song): void {
+    console.log(event);
+    this.toastService.success({ text: 'Song created/updated successfully' });
+  }
+
+  onSubmitSong(songUploadData: SongUploadData): void {
+    if (songUploadData.isValid()) {
+      const songFormData = songUploadData.setup();
+      const id = songUploadData.formGroup.get('id').value;
+      if (id) {
+        songUploadData.observable = this.songService.updateSong(songFormData, id);
+      } else {
+        songUploadData.observable = this.songService.uploadSong(songFormData);
       }
     }
   }

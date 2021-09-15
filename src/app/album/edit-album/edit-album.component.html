@@ -1,29 +1,74 @@
 <div class="row" *ngIf="albumUploadData">
-  <div class="col-sm-12">
+  <div class="col-sm-12 mb-3">
     <app-card [type]="3" [title]="'Edit Album' | translate" class="col-sm-12">
+      <div card3BtnLeft1 class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [ngModel]="albumUploadData.checked"
+          (change)="albumUploadData.checkAlbumUploadData($event)"
+        />
+      </div>
       <app-album-edit-card cardBody3 [albumUploadData]="albumUploadData" (submitEvent)="onSubmit()"></app-album-edit-card>
     </app-card>
   </div>
 </div>
-<div class="row" *ngFor="let songUploadData of albumUploadData.songUploadDataList, index as j">
-  <div class="col-sm-12 mb-3">
-    <app-card [type]="3" [title]="('Song' | translate) + ' #' + (j + 1)" class="col-sm-12">
-      <button
-        cardEsc3
-        class="btn btn-info float-sm-right rounded-circle"
-        style="margin-bottom: 1rem"
-        (click)="albumUploadData.removeForm(j)"
-      >
-        <i class="bi bi-x-circle"></i>
-      </button>
-      <app-song-edit-card cardBody3 [songUploadData]="songUploadData" [isSubmittable]="false"></app-song-edit-card>
-    </app-card>
-  </div>
+<div class="row">
+  <ng-container *ngFor="let songUploadData of albumUploadData.songUploadDataList, index as j">
+    <div class="col-sm-6 mb-3">
+      <app-card [type]="3" [title]="('Song' | translate) + ' #' + (j + 1)" class="col-sm-12">
+        <div card3BtnLeft1 class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [ngModel]="songUploadData.checked"
+            (change)="albumUploadData.checkSongUploadData($event, j)"
+          />
+        </div>
+        <button
+          *ngIf="songUploadData.editable;"
+          card3BtnRight1
+          class="btn btn-info btn-sm rounded-circle ms-1"
+          (click)="songUploadData.toggleEdit()"
+        >
+          <i class="bi bi-pencil" *ngIf="songUploadData.editable; else editableBlock"></i>
+        </button>
+        <button
+          *ngIf="songUploadData.editing"
+          card3BtnRight2
+          class="btn btn-success btn-sm rounded-circle ms-1"
+          (click)="onSubmitSong(songUploadData)"
+        >
+          <i class="bi bi-save"></i>
+        </button>
+        <button
+          *ngIf="songUploadData.editing"
+          card3BtnRight3
+          class="btn btn-warning btn-sm rounded-circle ms-1"
+          (click)="songUploadData.resetForm()"
+        >
+          <i class="bi bi-arrow-repeat"></i>
+        </button>
+        <button cardEsc3 class="btn btn-danger btn-sm rounded-circle ms-1" (click)="albumUploadData.removeForm(j)">
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <app-song-edit-card
+          cardBody3
+          [songUploadData]="songUploadData"
+          [isSubmittable]="false"
+          (uploadSuccessEvent)="onUploadSongSuccess($event)"
+        ></app-song-edit-card>
+      </app-card>
+    </div>
+  </ng-container>
 </div>
 <div class="card col-sm-12" style="margin-bottom: 10rem; height: 10rem">
   <div class="card-body d-flex p-2 justify-content-center">
     <button class="align-self-center btn btn-info rounded-circle" (click)="albumUploadData.addForm()">
-      <i style="font-size: 2rem" class="bi bi-plus-circle"></i>
+      <i style="font-size: 2rem" class="bi bi-plus"></i>
     </button>
   </div>
 </div>
+<ng-template #editableBlock>
+  <i class="bi bi-pencil-square"></i>
+</ng-template>

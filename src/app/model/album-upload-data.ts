@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { AlbumUpdate } from './album-update';
 import { Router } from '@angular/router';
 import { AlbumService } from '../service/album.service';
+import { UserInfo } from './user-info';
 
 export type AlbumUploadOptions = {
   fb: FormBuilder;
@@ -24,6 +25,9 @@ export class AlbumUploadData {
   private fb: FormBuilder;
   private router: Router;
   private albumService: AlbumService;
+  editable = true;
+  editing?: boolean;
+  checked?: boolean;
 
   constructor(fb: FormBuilder, router: Router, albumService: AlbumService) {
     this.fb = fb;
@@ -66,9 +70,16 @@ export class AlbumUploadData {
     return [SongUploadData.instance(fb)];
   }
 
+  checkEditableSongList(username: string): void {
+    this.songUploadDataList.forEach(songUploadData => {
+      const songOwner = (songUploadData.formGroup.get('uploader').value as UserInfo)?.username;
+      songUploadData.setEditable(songOwner === username);
+    });
+  }
+
   addForm(): void {
     if (this.songUploadDataList.length < 20) {
-      this.songUploadDataList.push(
+      const newForm = this.songUploadDataList.push(
         new SongUploadData(
           this.fb.group({
             id: [null],
@@ -109,8 +120,13 @@ export class AlbumUploadData {
     this.songUploadSubject.next(null);
   }
 
-  waitAndProcessUploadSongList(createAlbumResult: Album): void {
-    const totalForm = this.songUploadDataList.length;
+  waitAndProcessUploadSongList(createAlbumResult: Album, countChecked?: boolean): void {
+    let totalForm;
+    if (countChecked) {
+      totalForm = this.songUploadDataList.filter(songUploadData => songUploadData.checked).length;
+    } else {
+      totalForm = this.songUploadDataList.length;
+    }
     let count = 0;
     const sub = this.songUploadSubject.subscribe(async next => {
       if (next) {
@@ -126,5 +142,19 @@ export class AlbumUploadData {
         return;
       }
     });
+  }
+
+  checkAlbumUploadData(event: Event): void {
+    this.checked = (event.target as HTMLInputElement).checked;
+    this.songUploadDataList.forEach(songUploadData => {
+      songUploadData.checked = this.checked;
+    });
+  }
+
+  checkSongUploadData(event: Event, index: number): void {
+    const songUploadData = this.songUploadDataList[index];
+    songUploadData.checked = (event.target as HTMLInputElement).checked;
+    this.checked = this.songUploadDataList.map(songUploadData => songUploadData.checked).every(val => val === true);
+    console.log(this.checked);
   }
 }

@@ -7,7 +7,7 @@ import { AlbumListComponent } from './album-list/album-list.component';
 import { AlbumDetailComponent } from './album-detail/album-detail.component';
 import { UploadAlbumComponent } from './upload-album/upload-album.component';
 import { EditAlbumComponent } from './edit-album/edit-album.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
@@ -25,7 +25,8 @@ import { VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
     PlaylistModule,
     TranslateModule,
     VgDirectivesModule,
-    VgUtilModule
+    VgUtilModule,
+    FormsModule
   ]
 })
 export class AlbumModule {}

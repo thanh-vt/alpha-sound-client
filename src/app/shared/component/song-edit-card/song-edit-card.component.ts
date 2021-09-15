@@ -16,10 +16,10 @@ export class SongEditCardComponent {
   @Input() songId: number;
   @Input() isSubmittable!: boolean;
   @Input() songUploadData!: SongUploadData;
-  countryList$: Observable<Country[]>;
   @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>();
   @Output() uploadSuccessEvent: EventEmitter<Song> = new EventEmitter<Song>();
   minDate = DateUtil.getMinDate();
+  countryList$: Observable<Country[]>;
   compareCountries = (country1: Country, country2: Country): boolean => {
     return country1?.id === country2?.id;
   };

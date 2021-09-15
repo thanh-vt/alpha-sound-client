@@ -45,10 +45,17 @@
   </div>
 
   <div *ngSwitchCase="3" class="card w-100 card_type_3">
-    <div class="card-header d-flex justify-content-around align-items-center">
-      <div style="width: 5rem"></div>
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <div style="width: 15%">
+        <ng-content select="[card3BtnLeft1]"></ng-content>
+        <ng-content select="[card3BtnLeft2]"></ng-content>
+        <ng-content select="[card3BtnLeft3]"></ng-content>
+      </div>
       <h3>{{ title }}</h3>
-      <div style="width: 5rem">
+      <div style="width: 15%" class="d-flex justify-content-end align-items-center">
+        <ng-content select="[card3BtnRight1]"></ng-content>
+        <ng-content select="[card3BtnRight2]"></ng-content>
+        <ng-content select="[card3BtnRight3]"></ng-content>
         <ng-content select="[cardEsc3]"></ng-content>
       </div>
     </div>

@@ -23,12 +23,18 @@ export class ArtistAddSuggestionComponent implements OnInit {
   }
 
   addArtist(): void {
+    if (!this.uploadData.editing) {
+      return;
+    }
     if (this.artistFormArr.length < 5) {
       this.artistFormArr.push(SongUploadData.createArtist(this.fb));
     }
   }
 
   removeArtist(index: number): void {
+    if (!this.uploadData.editing) {
+      return;
+    }
     this.artistFormArr.removeAt(index);
   }
 

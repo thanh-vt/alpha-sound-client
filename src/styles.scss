@@ -13,7 +13,6 @@ $modal-content-color: var(--card-color);
 $modal-content-bg: var(--card-bg);
 $dropdown-link-color: var(--dropdown-link-color);
 
-@import '~bootstrap/scss/bootstrap';
 @import 'styles/colors';
 @import 'styles/animation';
 @import 'styles/theme';
@@ -149,6 +148,13 @@ a.page-link.active {
 
 .cdk-overlay-container {
   z-index: 1200;
+}
+
+.form-control:disabled,
+.form-control[readonly],
+.form-select:disabled {
+  background-color: #9e9e9e;
+  opacity: 1;
 }
 
 /* width */

@@ -8,28 +8,41 @@
   >
     <span cardButton2><i class="bi bi-person-check"></i></span>
     <div cardText2>
+      <ng-container *ngIf="user?.user_name===currentUser?.user_name; else notOwnProfileBlock">
+        <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
+        <span class="text-secondary">{{user?.user_name}}</span>
+        <br />
+        <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
+        <span class="text-secondary">{{user?.first_name}}</span><br />
+        <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
+        <span class="text-secondary">{{user?.last_name}}</span><br />
+        <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
+        <span *ngIf="user?.date_of_birth" class="text-secondary"> {{user?.date_of_birth | date: 'dd/MM/yyyy' : '' }}</span>
+        <br />
+        <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
+        <span> <i *ngIf="user?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
+        <br />
+        <h6 class="d-inline">Email:&nbsp;</h6>
+        <span *ngIf="user?.email" class="text-secondary">{{user?.email}}</span>
+      </ng-container>
+    </div>
+    <ng-template #notOwnProfileBlock>
       <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
-      <span *ngIf="user?.user_name" class="text-secondary">{{user.user_name}}</span>
-      <span *ngIf="!user?.user_name" class="text-secondary">**********</span>
+      <span class="text-secondary">{{user.user_name}}</span>
       <br />
       <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
-      <span class="text-secondary">{{user?.first_name}}</span><br />
+      <span class="text-secondary">**********</span>
       <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
-      <span class="text-secondary">{{user?.last_name}}</span><br />
+      <span class="text-secondary">**********</span>
       <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
-      <span *ngIf="user?.date_of_birth" class="text-secondary"> {{user?.date_of_birth | date: 'dd/MM/yyyy' : '' }}</span>
       <span *ngIf="!user?.date_of_birth" class="text-secondary">**********</span>
       <br />
       <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
       <span> <i *ngIf="user?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
-      <ng-template #female>
-        <i class="bi bi-gender-female" style="color: hotpink"></i>
-      </ng-template>
       <br />
       <h6 class="d-inline">Email:&nbsp;</h6>
-      <span *ngIf="user?.email" class="text-secondary">{{user?.email}}</span>
       <span *ngIf="!user?.email && user?.email !== null" class="text-secondary">**********</span><br />
-    </div>
+    </ng-template>
   </app-card>
 </ng-container>
 <div *ngIf="showEditForm" class="update_profile">
@@ -37,3 +50,6 @@
     <app-update-profile cardText3></app-update-profile>
   </app-card>
 </div>
+<ng-template #female>
+  <i class="bi bi-gender-female" style="color: hotpink"></i>
+</ng-template>
