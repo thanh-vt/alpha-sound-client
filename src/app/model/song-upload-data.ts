@@ -11,7 +11,7 @@ export class SongUploadData {
   observable?: Observable<HttpEvent<Song>> | null;
   type?: 'create' | 'update' = 'create';
   editable?: boolean;
-  editing?: boolean;
+  editing?: boolean = true;
   checked?: boolean;
   temp: Song;
 

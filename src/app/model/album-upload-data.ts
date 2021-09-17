@@ -25,7 +25,7 @@ export class AlbumUploadData {
   private fb: FormBuilder;
   private router: Router;
   private albumService: AlbumService;
-  editable = true;
+  editable?: boolean;
   editing?: boolean;
   checked?: boolean;
 

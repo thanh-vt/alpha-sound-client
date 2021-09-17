@@ -15,7 +15,7 @@
 </div>
 <div class="row">
   <ng-container *ngFor="let songUploadData of albumUploadData.songUploadDataList, index as j">
-    <div class="col-sm-6 mb-3">
+    <div class="col-sm-6 mb-3" appSwappableList [id]="j" [dataList]="albumUploadData.songUploadDataList">
       <app-card [type]="3" [title]="('Song' | translate) + ' #' + (j + 1)" class="col-sm-12">
         <div card3BtnLeft1 class="form-check">
           <input

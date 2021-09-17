@@ -30,13 +30,16 @@ export class CreateArtistComponent implements OnInit {
         name: ['', [Validators.required, Validators.min(4)]],
         birthDate: [new Date(), [Validators.required]],
         biography: ['', [Validators.required]],
-        avatarUrl: [null, [Validators.required]]
+        avatarUrl: [null]
       })
     );
   }
 
   onSubmit(): void {
     if (!this.artistUploadData.isValid(true)) {
+      if (!this.artistUploadData.formData.get('avatar')) {
+        this.toastService.warning({ text: 'Artist avatar must be chosen' });
+      }
       return;
     }
     const formData = this.artistUploadData.setup();

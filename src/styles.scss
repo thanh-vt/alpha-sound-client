@@ -157,6 +157,10 @@ a.page-link.active {
   opacity: 1;
 }
 
+.on-drag-enter {
+  opacity: 50%;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 0.5rem;

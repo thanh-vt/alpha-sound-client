@@ -13,9 +13,17 @@ import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
+import { SwappableListDirective } from './edit-album/swappable-list.directive';
 
 @NgModule({
-  declarations: [AlbumComponent, AlbumListComponent, AlbumDetailComponent, UploadAlbumComponent, EditAlbumComponent],
+  declarations: [
+    AlbumComponent,
+    AlbumListComponent,
+    AlbumDetailComponent,
+    UploadAlbumComponent,
+    EditAlbumComponent,
+    SwappableListDirective
+  ],
   imports: [
     CommonModule,
     AlbumRoutingModule,
