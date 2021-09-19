@@ -40,12 +40,7 @@ export class EditSongComponent implements OnInit {
           this.songId = params.id;
           this.loaderServer.loading(true);
           const result = await this.songService.songDetail(this.songId).toPromise();
-          this.songUploadData.formGroup.patchValue({
-            title: result.title,
-            releaseDate: result.releaseDate,
-            url: result.url,
-            country: result.country
-          });
+          this.songUploadData.formGroup.patchValue(result);
           const artistFormArr = this.songUploadData.formGroup.get('artists') as FormArray;
           artistFormArr.clear();
           result.artists.forEach(artist => {

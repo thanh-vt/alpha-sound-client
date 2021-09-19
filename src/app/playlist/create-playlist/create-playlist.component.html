@@ -15,7 +15,7 @@
       [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')"
       class="btn btn-primary rounded-pill mx-1"
     >
-      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Save' | translate }}
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'common.button.save' | translate }}
     </button>
   </ng-container>
 </app-modal-wrapper>

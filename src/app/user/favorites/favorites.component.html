@@ -29,41 +29,8 @@
         >
       </td>
       <td>
-        <ng-container *ngIf="!!currentUser">
-          <button
-            (click)="likeSong(song, $event, true)"
-            class="btn btn-outline-danger btn-sm border-0"
-            *ngIf="!song.liked"
-            [disabled]="song.loadingLikeButton"
-          >
-            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
-          </button>
-          <button
-            (click)="likeSong(song, $event, false)"
-            class="btn btn-outline-danger btn-sm border-0"
-            *ngIf="song.liked"
-            [disabled]="song.loadingLikeButton"
-          >
-            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart-fill"></i></span>
-          </button>
-        </ng-container>
-        <div ngbDropdown class="d-inline-block" placement="bottom-right" display="dynamic">
-          <button (click)="$event.stopPropagation()" class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
-            <i class="bi bi-three-dots-vertical"></i>
-          </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
-            <button ngbDropdownItem class="btn btn-primary btn-sm" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-              <i class="bi bi-play-circle mr-1"></i>{{ 'Add to Queue' | translate }}
-            </button>
-            <ng-container *ngIf="!!currentUser">
-              <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
-              </button>
-            </ng-container>
-          </div>
-        </div>
+        <app-song-like-btn [song]="song"></app-song-like-btn>
+        <app-song-menu-btn [song]="song"></app-song-menu-btn>
       </td>
     </tr>
   </tbody>

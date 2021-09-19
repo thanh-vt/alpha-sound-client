@@ -25,6 +25,18 @@ export class SongService {
   songList(params?: { page?: number; size?: number; sort?: string[] }): Observable<PagingInfo<Song>> {
     return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, { params, withCredentials: true }).pipe(
       tap(songPage => {
+        this.patchLikes(songPage.content);
+        songPage.content.forEach(song => {
+          song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
+        });
+      })
+    );
+  }
+
+  searchForSong(params?: { page?: number; size?: number; sort?: string[] } | { [key: string]: string }): Observable<PagingInfo<Song>> {
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, { params, withCredentials: true }).pipe(
+      tap(songPage => {
+        this.patchLikes(songPage.content);
         songPage.content.forEach(song => {
           song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
         });
@@ -38,6 +50,10 @@ export class SongService {
         song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
       })
     );
+  }
+
+  songAdditionalInfo(id: number): Observable<Song> {
+    return this.http.get<Song>(`${environment.apiUrl}/song/additional-info/${id}`);
   }
 
   uploadSong(formData: FormData): Observable<HttpEvent<never>> {
@@ -77,6 +93,9 @@ export class SongService {
   }
 
   patchLikes(songs: Song[]): void {
+    if (!this.authService.currentUserValue) {
+      return;
+    }
     const userSongLikeMap = {};
     songs.forEach(e => {
       userSongLikeMap[e.id] = e.liked;

@@ -1,0 +1,18 @@
+<div ngbDropdown class="d-inline-block" placement="bottom" display="dynamic">
+  <button (click)="$event.stopPropagation()" class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
+    <i class="bi bi-three-dots-vertical"></i>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
+    <div ngbDropdownItem>
+      <button (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled" class="dropdown-item">
+        <i class="bi bi-play-circle mr-1"></i>{{ 'Add to Queue' | translate }}
+      </button>
+    </div>
+    <div ngbDropdownItem>
+      <button (click)="addSong.openPlaylistDialog(song.id, $event)" [disabled]="song.isDisabled" class="dropdown-item">
+        <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
+      </button>
+    </div>
+    <app-song-play-btn #addSong [hidden]="true" ngbDropdownItem [ngClass]="'dropdown-item'" [song]="song"></app-song-play-btn>
+  </div>
+</div>

@@ -13,7 +13,7 @@ export class NotificationInterceptor implements HttpInterceptor {
     this.subject.subscribe(err => {
       let msg: string;
       if (err?.status === 0) {
-        msg = this.translate.instant('common.error.connection_problem');
+        msg = this.translate.instant('common.error.connection_timeout');
       } else {
         msg = err?.error?.message ?? this.translate.instant('common.error.unknown');
       }

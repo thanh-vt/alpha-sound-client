@@ -1,24 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../service/auth.service';
 import { SongService } from '../../service/song.service';
 import { Artist } from '../../model/artist';
 import { Song } from '../../model/song';
 import { Comment } from '../../model/comment';
-import { Subscription } from 'rxjs';
-import { UserProfileService } from '../../service/user-profile.service';
-import { PlaylistService } from '../../service/playlist.service';
+import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
-import { UserProfile } from '../../model/token-response';
-import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { ArtistService } from '../../service/artist.service';
 import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
+import { UserProfile } from '../../model/token-response';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-song-detail',
@@ -26,7 +23,7 @@ import { VgLoaderService } from 'ngx-vengeance-lib';
   styleUrls: ['./song-detail.component.scss']
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
-  currentUser: UserProfile;
+  currentUser$: Observable<UserProfile>;
   song: Song;
   songId: number;
   artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo(5);
@@ -43,17 +40,11 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private songService: SongService,
     private artistService: ArtistService,
-    private userService: UserProfileService,
-    private playlistService: PlaylistService,
     public translate: TranslateService,
     private modalService: NgbModal,
     private loaderService: VgLoaderService
   ) {
-    this.subscription.add(
-      this.authService.currentUser$.subscribe(next => {
-        this.currentUser = next;
-      })
-    );
+    this.currentUser$ = this.authService.currentUser$;
   }
 
   ngOnInit(): void {
@@ -66,8 +57,17 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         try {
           this.songId = params.id;
           this.loaderService.loading(true);
-          this.song = await this.songService.songDetail(this.songId).toPromise();
-          await this.getArtistList();
+          // eslint-disable-next-line
+          const songInfo: any[] = await Promise.all([
+            this.songService.songDetail(this.songId).toPromise(),
+            this.songService.songAdditionalInfo(this.songId).toPromise(),
+            this.getArtistList()
+          ]);
+          console.log('load', songInfo);
+          this.song = {
+            ...songInfo[0],
+            ...songInfo[1]
+          };
           this.commentList = this.song.comments;
         } catch (e) {
           console.error(e);
@@ -98,31 +98,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     } catch (e) {
       console.error(e);
     }
-  }
-
-  addToPlaying(song: Song, event: Event): void {
-    event.stopPropagation();
-    this.songService.songDetail(song.id).subscribe(next => {
-      song.url = next.url;
-      this.songService.play(song);
-    });
-  }
-
-  likeSong(song: Song, event: Event, isLiked: boolean): void {
-    event.stopPropagation();
-    this.songService.likeSong(song, isLiked);
-  }
-
-  openPlaylistDialog(songId: number, event: Event): void {
-    event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, {
-      animation: true,
-      backdrop: false,
-      centered: false,
-      scrollable: false,
-      size: 'md'
-    });
-    ref.componentInstance.songId = songId;
   }
 
   openDeleteCommentDialog(commentId: number): void {

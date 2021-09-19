@@ -1,25 +1,7 @@
 {
-  "Song": "Song",
-  "Album": "Album",
-  "Artist": "Artist",
-  "Playlist": "Playlist",
-  "Song List": "Song List",
-  "Song Info": "Song Info",
-  "Album Info": "Album Info",
-  "Artist Info": "Artist Info",
-  "Album title": "Album title",
-  "Song title": "Song title",
-  "Profile": "Profile",
-  "Uploaded": "Uploaded",
   "Favorites": "Favorites",
-  "Sign Up": "Sign Up",
-  "New around here? Sign up": "New around here? Sign up",
-  "Sign In": "Sign In",
-  "Sign Out": "Sign Out",
   "Search": "Search",
   "Language": "Language",
-  "Upload Song": "Upload Song",
-  "Upload Album": "Upload Album",
   "Title": "Title",
   "Release Date": "Release Date",
   "English": "English",
@@ -31,19 +13,15 @@
   "Artist Name": "Artist Name",
   "Artist(s)": "Artist(s)",
   "Genre(s)": "Genre(s)",
-  "Country": "Country",
   "Theme": "Theme",
   "Tags": "Tags",
   "Listening Frequency": "Listening Frequency",
-  "Date of Birth": "Date of Birth",
-  "Biography": "Biography",
   "Select a playlist to add": "Select a playlist to add",
   "Create playlist": "Create playlist",
   "Enter playlist title": "Enter playlist title",
   "Create new playlist": "Create new playlist",
   "Create new artist": "Create new artist",
   "Edit song": "Edit song",
-  "Save": "Save",
   "Do you want to delete playlist": "Do you want to delete playlist",
   "Delete": "Delete",
   "Edit playlist": "Edit playlist",
@@ -56,7 +34,6 @@
   "Cover": "Cover",
   "Multiple tags separated by commas": "Multiple tags separated by commas",
   "Comment": "Comment",
-  "Leave comment here": "Leave comment here",
   "Search result for:": "Search result for:",
   "Dark Mode": "Dark Mode",
   "Username": "Username",
@@ -65,7 +42,6 @@
   "First Name": "First Name",
   "Last Name": "Last Name",
   "Gender": "Gender",
-  "BirthDate": "Date of Birth",
   "PhoneNumber": "Phone Number",
   "Avatar": "Avatar",
   "Create new account": "Create new account",
@@ -117,7 +93,11 @@
       "song": "Song",
       "album": "Album",
       "artist": "Artist",
-      "country": "Country"
+      "playlist": "Playlist",
+      "country": "Country",
+      "genre": "Genre",
+      "tag": "Tag",
+      "theme": "Theme"
     },
     "label": {
       "username": "Username",
@@ -128,7 +108,9 @@
       "phoneNumber": "Phone number",
       "email": "Thư điện tử",
       "newPassword": "New password",
-      "repeatedNewPassword": "Re-enter password"
+      "repeatedNewPassword": "Re-enter password",
+      "create_time": "Create date",
+      "update_time": "Update date"
     },
     "placeholder": {
       "username": "Enter username",
@@ -159,7 +141,7 @@
       "accept": "Accept"
     },
     "error": {
-      "connection_timeout": "Server didn't responded",
+      "connection_connection_timeout": "Server didn't responded",
       "unknown": "An unknown error has occurred"
     }
   },
@@ -175,28 +157,78 @@
     }
   },
   "feature": {
-    "login": {
+    "account": {
+      "profile": "Profile",
       "username": "Username",
-      "password": "Password"
+      "password": "Password",
+      "login_success": "Login successfully",
+      "login": "Login",
+      "logout": "Logout",
+      "sign_up": "Sign up",
+      "sign_up_hint": "New around here? Sign up"
     },
     "register": {
       "successMsg": "User registered successfully. We have sent you an email, please check your it and click on the confirmation link to activate your account"
     },
     "resetPassword": {
       "successMsg": "We've sent you an email. Please check it and click the given URL to complete password reset"
+    },
+    "song": {
+      "song_info": "Song Info",
+      "song_list": "Song List",
+      "additional_info": "Additional Info",
+      "upload_song": "Upload song",
+      "uploaded_song": "Uploaded Song",
+      "song_title_hint": "Enter song title",
+      "lyric": "Lyric"
+    },
+    "album": {
+      "album_info": "Album Info",
+      "album_list": "Album List",
+      "upload_album": "Upload album",
+      "uploaded_album": "Uploaded Album",
+      "album_title_hint": "Enter album title"
+    },
+    "artist": {
+      "artist_info": "Artist Info",
+      "artist_list": "Artist List",
+      "biography": "Biography"
+    },
+    "genre": {
+      "choose": "Choose one or multiple genres",
+      "genre_management": "Genre management",
+      "genre_name": "Genre name",
+      "genre_name_hint": "Enter genre name",
+      "create_genre": "Create genre",
+      "update_success": "Genre updated successfully!",
+      "create_success": "Genre created successfully!",
+      "delete_success": "Genre deleted successfully!"
+    },
+    "tag": {
+      "tag_separator_hint": "Multiple tags separated by commas",
+      "tag_management": "Tag management",
+      "tag_name": "Tag name",
+      "tag_name_hint": "Enter tag name",
+      "create_genre": "Create tag",
+      "update_success": "Tag updated successfully!",
+      "create_success": "Tag created successfully!",
+      "delete_success": "Tag deleted successfully!"
+    },
+    "theme": {
+      "theme_management": "Theme management",
+      "theme_name": "Theme name",
+      "theme_name_hint": "Enter theme name",
+      "create_theme": "Create theme",
+      "update_success": "Theme updated successfully!",
+      "create_success": "Theme created successfully!",
+      "delete_success": "Theme deleted successfully!"
+    },
+    "comment": {
+      "leave_comment": "Leave comment here"
     }
   },
-  "An error has occurred.": "An error has occurred.",
-  "Signed in successfully": "Signed in successfully",
   "Password reset successfully.": "Password reset successfully",
-  "Failed to reset password.": "Failed to reset password.",
-  "Your login session has expired.": "Your login session has expired.",
-  "Please try to log in again.": "Please try to log in again.",
-  "must be filled": "must be filled",
-  "must be picked": "must be picked",
-  "must have at least": "must have at least",
-  "does not match": "does not match",
-  "can only contain up to": "can only contain up to",
-  "characters": "characters",
-  "Not a valid Email": "Not a valid Email"
+  "Failed to reset password.": "Failed to reset password",
+  "Your login session has expired.": "Your login session has expired",
+  "Please try to log in again.": "Please try to log in again"
 }

@@ -25,6 +25,18 @@ const routes: Routes = [
         loadChildren: () => import('./country-management/country-management.module').then(mod => mod.CountryManagementModule)
       },
       {
+        path: 'tag-management',
+        loadChildren: () => import('./tag-management/tag-management.module').then(mod => mod.TagManagementModule)
+      },
+      {
+        path: 'genre-management',
+        loadChildren: () => import('./genre-management/genre-management.module').then(mod => mod.GenreManagementModule)
+      },
+      {
+        path: 'theme-management',
+        loadChildren: () => import('./theme-management/theme-management.module').then(mod => mod.ThemeManagementModule)
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'

@@ -1,16 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Song } from '../../model/song';
 import { SongService } from '../../service/song.service';
-import { PlaylistService } from '../../service/playlist.service';
-import { Subscription } from 'rxjs';
 import { UserComponent } from '../../user/user/user.component';
-import { UserProfile } from '../../model/token-response';
-import { AuthService } from '../../service/auth.service';
-import { NgbCarousel, NgbModal, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
+import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { AddSongToPlaylistComponent } from '../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { VgLoaderService } from 'ngx-vengeance-lib';
 import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
@@ -18,16 +12,11 @@ import { DataUtil } from '../../util/data-util';
 @Component({
   selector: 'app-new-song',
   templateUrl: './new-song.component.html',
-  styleUrls: ['./new-song.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./new-song.component.scss']
 })
-export class NewSongComponent implements OnInit, OnDestroy {
-  currentUser: UserProfile;
+export class NewSongComponent implements OnInit {
   songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   imageOrder = 0;
-  Math: Math = Math;
-  subscription: Subscription = new Subscription();
-
   images = [1, 2, 3].map(() => `${environment.baseHref}/assets/slides/slide_number_${this.roll()}.jpg`);
   description: string[] = ['Bring you the greatest music', 'Hundreds of songs and albums', 'Customize your own playlist'];
   paused = false;
@@ -37,21 +26,7 @@ export class NewSongComponent implements OnInit, OnDestroy {
   @ViewChild(UserComponent) userComponent: UserComponent;
   @ViewChild('carousel', { static: true }) carousel: NgbCarousel;
 
-  constructor(
-    private songService: SongService,
-    private playlistService: PlaylistService,
-    private authService: AuthService,
-    public translate: TranslateService,
-    private modalService: NgbModal,
-    private loaderService: VgLoaderService
-  ) {
-    this.authService.currentUser$.subscribe(currentUser => {
-      this.currentUser = currentUser;
-      if (this.currentUser) {
-        this.songService.patchLikes(this.songPage.content);
-      }
-    });
-  }
+  constructor(private songService: SongService, private loaderService: VgLoaderService) {}
 
   ngOnInit(): void {
     this.goToPage(this.songPage.pageable?.pageNumber, true);
@@ -62,14 +37,6 @@ export class NewSongComponent implements OnInit, OnDestroy {
       this.imageOrder = 0;
     }
     return ++this.imageOrder;
-  }
-
-  addToPlaying(song: Song, event: Event): void {
-    event.stopPropagation();
-    this.songService.songDetail(song.id).subscribe(next => {
-      song.url = next.url;
-      this.songService.play(song);
-    });
   }
 
   goToPage(i: number, scrollUp?: boolean): void {
@@ -100,11 +67,6 @@ export class NewSongComponent implements OnInit, OnDestroy {
       );
   }
 
-  likeSong(song: Song, event: Event, isLiked: boolean): void {
-    event.stopPropagation();
-    this.songService.likeSong(song, isLiked);
-  }
-
   togglePaused(): void {
     if (this.paused) {
       this.carousel.cycle();
@@ -125,21 +87,5 @@ export class NewSongComponent implements OnInit, OnDestroy {
     if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
       this.togglePaused();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  openPlaylistDialog(songId: number, event: Event): void {
-    event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, {
-      animation: true,
-      backdrop: false,
-      centered: false,
-      scrollable: false,
-      size: 'md'
-    });
-    ref.componentInstance.songId = songId;
   }
 }

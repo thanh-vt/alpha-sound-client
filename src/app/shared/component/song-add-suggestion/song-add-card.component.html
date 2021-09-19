@@ -1,0 +1,11 @@
+<div class="card col-sm-12" style="margin-bottom: 10rem; height: 10rem">
+  <div class="card-body d-flex p-2 justify-content-center" ngbDropdown placement="end">
+    <button class="align-self-center btn btn-info rounded-circle" ngbDropdownToggle>
+      <i style="font-size: 2rem" class="bi bi-plus"></i>
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button ngbDropdownItem (click)="newSong()">{{'Add new song' | translate}}</button>
+      <button ngbDropdownItem (click)="openSuggestionDialog()">{{'Choose an existed song' | translate}}</button>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,7 @@
       <button class="btn btn-light" (click)="popLoginFormUp($event)" *ngIf="hasNotLoggedInAsAdmin">Sign in as Administrator</button>
     </li>
     <li class="nav-item text-nowrap">
-      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">{{ 'Sign Out' | translate }}</button>
+      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">{{ 'feature.account.logout' | translate }}</button>
     </li>
   </ul>
 </nav>
@@ -42,14 +42,32 @@
           </li>
           <li ngbNavItem="/admin/artist-management">
             <a ngbNavLink [routerLink]="['/admin/artist-management']">
-              <i class="bi bi-list"></i>
+              <i class="bi bi-person-lines-fill"></i>
               Artist Management
             </a>
           </li>
           <li ngbNavItem="/admin/country-management">
             <a ngbNavLink [routerLink]="['/admin/country-management']">
-              <i class="bi bi-list"></i>
+              <i class="bi bi-flag"></i>
               Country Management
+            </a>
+          </li>
+          <li ngbNavItem="/admin/genre-management">
+            <a ngbNavLink [routerLink]="['/admin/genre-management']">
+              <i class="bi bi-subtract"></i>
+              Genre Management
+            </a>
+          </li>
+          <li ngbNavItem="/admin/tag-management">
+            <a ngbNavLink [routerLink]="['/admin/tag-management']">
+              <i class="bi bi-tags"></i>
+              Tag Management
+            </a>
+          </li>
+          <li ngbNavItem="/admin/theme-management">
+            <a ngbNavLink [routerLink]="['/admin/theme-management']">
+              <i class="bi bi-palette"></i>
+              Theme Management
             </a>
           </li>
           <li ngbNavItem="upload_request">

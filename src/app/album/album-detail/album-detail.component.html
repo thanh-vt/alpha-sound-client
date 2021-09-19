@@ -1,11 +1,10 @@
 <ng-container *ngIf="album">
-  <app-card [type]="2" [showEditButton]="false" [title]="'Album Info' | translate" [imgSrc]="album.coverUrl">
+  <app-card [type]="2" [showEditButton]="false" [title]="'feature.album.album_info' | translate" [imgSrc]="album.coverUrl">
+    <app-album-play-btn card2LeftBtn1 [album]="album"></app-album-play-btn>
     <div cardText2>
-      <button class="btn btn-primary rounded-circle float-right" [disabled]="album.isDisabled" (click)="addAlbumToPlaying(album, $event)">
-        <i class="bi bi-play-circle"></i>
-      </button>
       <h6 class="d-inline">{{ 'Title' | translate }}:</h6>
-      <span class="text-secondary">{{album.title}}</span><br />
+      <span class="text-secondary">{{album.title}}</span>
+      <br />
       <h6 class="d-inline">{{ 'Artist(s)' | translate }}:</h6>
       <ul class="list-group">
         <li class="list-group-item" *ngFor="let artist of album.artists; index as i">
@@ -14,7 +13,7 @@
         </li>
       </ul>
       <h6 class="d-inline">{{ 'Release Date' | translate }}:</h6>
-      <span class="text-secondary">{{album.releaseDate | date: 'fullDate' : '' : translate.currentLang}}</span><br />
+      <span class="text-secondary">{{album.releaseDate | date: 'dd/MM/yyyy'}}</span><br />
       <h6 class="d-inline">{{ 'Genre(s)' | translate }}:</h6>
       <ul *ngIf="!!album.genres && album.genres.length > 0">
         <li *ngFor="let genre of album.genres">{{ genre.name }}</li>
@@ -23,7 +22,7 @@
         <li *ngFor="let genre of album.tags">{{ genre.name }}</li>
       </ul>
       <br />
-      <h6 class="d-inline">{{ 'Country' | translate }}:</h6>
+      <h6 class="d-inline">{{ 'common.entity.country' | translate }}:</h6>
       <span *ngIf="!!album.country" class="text-secondary">{{ album.country.name }}</span><br />
       <h6 class="d-inline">{{ 'Theme' | translate}}:</h6>
       <span *ngIf="!!album.theme" class="text-secondary">{{ album.theme.name }}</span><br />
@@ -60,41 +59,8 @@
           >
         </td>
         <td>
-          <ng-container *ngIf="!!(currentUser$ | async)">
-            <button
-              (click)="likeSong(song, $event, true)"
-              class="btn btn-outline-danger btn-sm border-0"
-              *ngIf="!song.liked"
-              [disabled]="song.loadingLikeButton"
-            >
-              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
-            </button>
-            <button
-              (click)="likeSong(song, $event, false)"
-              class="btn btn-outline-danger btn-sm border-0"
-              *ngIf="song.liked"
-              [disabled]="song.loadingLikeButton"
-            >
-              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart-fill"></i></span>
-            </button>
-          </ng-container>
-          <div ngbDropdown class="d-inline-block" placement="bottom" display="dynamic">
-            <button (click)="$event.stopPropagation()" class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
-              <i class="bi bi-three-dots-vertical"></i>
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
-              <button ngbDropdownItem class="btn btn-primary btn-sm" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-                <i class="bi bi-play-circle mr-1"></i>{{ 'Add to Queue' | translate }}
-              </button>
-              <ng-container *ngIf="!!(currentUser$ | async)">
-                <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
-                  <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
-                </button>
-              </ng-container>
-            </div>
-          </div>
+          <app-song-like-btn [song]="song"></app-song-like-btn>
+          <app-song-menu-btn [song]="song"></app-song-menu-btn>
         </td>
       </tr>
     </tbody>

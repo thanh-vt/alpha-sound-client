@@ -2,7 +2,7 @@
   <app-card
     [type]="2"
     [imgSrc]="user?.avatar_url || '../../../assets/avatars/default-user-avatar.png'"
-    [title]="'Profile' | translate"
+    [title]="'feature.account.profile' | translate"
     [showEditButton]="user?.user_name===currentUser?.user_name"
     (showEditForm)="showEditForm=!showEditForm"
   >

@@ -18,6 +18,9 @@ $content-color-dark: #41ff8b;
 $dropdown-link-color: #123bd4;
 $dropdown-link-color-dark: #01a94d;
 
+$dragging-border: 5px dashed black;
+$dragging-border-dark: 5px dashed white;
+
 $colors: (
   --body-bg-color: (
     white,
@@ -114,5 +117,9 @@ $colors: (
   --dropdown-link-color: (
     $dropdown-link-color,
     $dropdown-link-color-dark
+  ),
+  --dragging-border: (
+    $dragging-border,
+    $dragging-border-dark
   )
 );

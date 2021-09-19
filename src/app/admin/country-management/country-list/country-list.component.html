@@ -5,6 +5,8 @@
       <th scope="col">#</th>
       <th scope="col" id="name">{{ 'Country Name' | translate }}</th>
       <th scope="col" id="flag">{{ 'Country Flag' | translate }}</th>
+      <th scope="col">{{ 'common.label.create_time' | translate }}</th>
+      <th scope="col">{{ 'common.label.update_time' | translate }}</th>
       <th></th>
     </tr>
   </thead>
@@ -13,6 +15,12 @@
       <td>{{ i + 1 }}</td>
       <td>{{ country.name }}</td>
       <td><img [src]="country.flagUrl" alt="" /></td>
+      <td>
+        <span>{{ country.createTime | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+      </td>
+      <td>
+        <span>{{ country.updateTime | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+      </td>
       <td>
         <button (click)="openDeleteDialog(country, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
           <i class="bi bi-trash"></i>

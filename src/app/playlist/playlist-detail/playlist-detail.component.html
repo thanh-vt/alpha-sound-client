@@ -15,7 +15,7 @@
       <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
       <td>
         <button (click)="addToPlaying(song, $event)" class="btn btn-primary rounded-circle" [disabled]="song.isDisabled">
-          <i class="bi bi-play-circle"></i>
+          <i class="bi bi-play"></i>
         </button>
         <button class="btn btn-primary rounded-pill" (click)="openDeleteDialog(playList, song)">
           <span class="spinner-border spinner-border-sm mr-1"></span>{{'Remove' | translate }}

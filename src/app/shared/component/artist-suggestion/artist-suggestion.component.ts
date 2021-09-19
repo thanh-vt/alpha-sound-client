@@ -6,11 +6,11 @@ import { SongUploadData } from '../../../model/song-upload-data';
 import { AlbumUploadData } from '../../../model/album-upload-data';
 
 @Component({
-  selector: 'app-artist-add-suggestion',
-  templateUrl: './artist-add-suggestion.component.html',
-  styleUrls: ['./artist-add-suggestion.component.scss']
+  selector: 'app-artist-suggestion',
+  templateUrl: './artist-suggestion.component.html',
+  styleUrls: ['./artist-suggestion.component.scss']
 })
-export class ArtistAddSuggestionComponent implements OnInit {
+export class ArtistSuggestionComponent implements OnInit {
   @Input() uploadData!: SongUploadData | AlbumUploadData;
   artistFormArr!: FormArray;
   modelToTextMapper = artistModelToTextMapper;

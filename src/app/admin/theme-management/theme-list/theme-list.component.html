@@ -1,0 +1,66 @@
+<h4>{{'feature.theme.theme_management' | translate}}</h4>
+<form [formGroup]="themeCreateForm" (ngSubmit)="createTheme()">
+  <div>
+    <label for="name" class="form-label">{{'feature.theme.create_theme' | translate}}</label>
+    <input type="text" class="form-control" id="name" [placeholder]="'feature.theme.theme_name' | translate" formControlName="name" />
+    <vg-error-section [label]="'common.entity.theme' | translate" [group]="themeCreateForm" controlName="name"></vg-error-section>
+  </div>
+  <button type="submit" class="btn btn-primary rounded-pill my-2">{{'common.button.save'| translate}}</button>
+</form>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">{{ 'ID' | translate }}</th>
+      <th scope="col">{{ 'feature.theme.theme_name' | translate }}</th>
+      <th scope="col">{{ 'common.label.create_time' | translate }}</th>
+      <th scope="col">{{ 'common.label.update_time' | translate }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let theme of themePage.content; index as i">
+      <td>{{ themePage.pageable?.pageSize * themePage.pageable.pageNumber + i + 1 }}</td>
+      <td>
+        <span>{{ theme.id }}</span>
+      </td>
+      <td>
+        <span *ngIf="!theme.editing else editBlock">{{ theme.name }}</span>
+      </td>
+      <td>
+        <span>{{ theme.createTime | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+      </td>
+      <td>
+        <span>{{ theme.updateTime | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+      </td>
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <button *ngIf="!theme.editing" class="btn btn-sm btn-primary rounded-circle mx-2" (click)="toggleEdit(theme, true)">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button *ngIf="theme.editing" class="btn btn-sm btn-primary rounded-circle mx-2" (click)="updateTheme(i)">
+            <i class="bi bi-save"></i>
+          </button>
+          <button *ngIf="theme.editing" class="btn btn-sm btn-warning rounded-circle mx-2" (click)="toggleEdit(theme, false)">
+            <i class="bi bi-x-lg"></i>
+          </button>
+          <button class="btn btn-sm btn-danger rounded-circle mx-2" (click)="openDeleteDialog($event, theme)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ngb-pagination
+  [collectionSize]="themePage.totalElements"
+  [page]="themePage.pageable?.pageNumber + 1"
+  [pageSize]="themePage.pageable?.pageSize"
+  (pageChange)="getThemeList($event - 1)"
+></ngb-pagination>
+<ng-template #editBlock>
+  <form [formGroup]="themeUpdateForm">
+    <input type="text" class="form-control" formControlName="name" />
+    <vg-error-section [label]="'common.entity.theme' | translate" [group]="themeUpdateForm" controlName="name"></vg-error-section>
+  </form>
+</ng-template>

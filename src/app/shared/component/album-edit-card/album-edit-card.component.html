@@ -5,13 +5,13 @@
       type="text"
       class="form-control"
       id="albumTitle"
-      [placeholder]="('Enter' | translate) + ' ' + ('Album title' | translate)"
+      [placeholder]="'feature.album.album_title_hint' | translate"
       formControlName="title"
     />
     <vg-error-section [label]="'Title' | translate" [group]="albumUploadData.formGroup" controlName="title"></vg-error-section>
   </div>
-  <label>{{ 'Artist' | translate }}</label>
-  <app-artist-add-suggestion [uploadData]="albumUploadData"></app-artist-add-suggestion>
+  <label>{{ 'common.entity.artist' | translate }}</label>
+  <app-artist-suggestion [uploadData]="albumUploadData"></app-artist-suggestion>
   <div class="form-group">
     <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
     <div class="input-group">

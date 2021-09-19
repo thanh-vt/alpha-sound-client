@@ -26,7 +26,7 @@ export class AlbumUploadData {
   private router: Router;
   private albumService: AlbumService;
   editable?: boolean;
-  editing?: boolean;
+  editing = true;
   checked?: boolean;
 
   constructor(fb: FormBuilder, router: Router, albumService: AlbumService) {
@@ -52,7 +52,7 @@ export class AlbumUploadData {
     instance.formGroup = instance.fb.group({
       id: [null],
       title: ['', Validators.compose([Validators.required])],
-      artists: instance.fb.array([instance.fb.control(null, Validators.compose([Validators.required]))]),
+      artists: instance.fb.array([instance.fb.control(null, Validators.required)]),
       releaseDate: ['', Validators.compose([Validators.required])],
       genres: [null],
       tags: [null],
@@ -77,14 +77,14 @@ export class AlbumUploadData {
     });
   }
 
-  addForm(): void {
+  addForm(songUploadData?: SongUploadData): void {
     if (this.songUploadDataList.length < 20) {
-      const newForm = this.songUploadDataList.push(
-        new SongUploadData(
+      if (!songUploadData) {
+        songUploadData = new SongUploadData(
           this.fb.group({
             id: [null],
             title: ['', Validators.compose([Validators.required])],
-            artists: this.fb.array([this.fb.control(null, Validators.compose([Validators.required]))]),
+            artists: this.fb.array([this.fb.control(null, Validators.required)]),
             releaseDate: ['', Validators.compose([Validators.required])],
             album: [''],
             genres: [null],
@@ -96,8 +96,9 @@ export class AlbumUploadData {
           }),
           [],
           'create'
-        )
-      );
+        );
+      }
+      this.songUploadDataList.push(songUploadData);
     }
   }
 

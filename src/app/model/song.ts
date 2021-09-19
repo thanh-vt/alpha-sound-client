@@ -6,6 +6,7 @@ import { Theme } from './theme';
 import { Country } from './country';
 import { UserProfile } from './token-response';
 import { ResourceInfo } from './resource-info';
+import { Setting } from './setting';
 
 export interface Song {
   rn: number;
@@ -23,9 +24,14 @@ export interface Song {
   country?: Country;
   isDisabled?: boolean;
   liked?: boolean;
-  uploader?: UserProfile;
+  uploader?: {
+    username: string;
+    profile: UserProfile;
+    setting: Setting;
+  };
   comments?: Comment[];
   listeningFrequency?: number;
   loadingLikeButton?: boolean;
   duration: number;
+  lyric: string;
 }

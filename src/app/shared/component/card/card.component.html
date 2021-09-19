@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="type">
-  <div *ngSwitchCase="1" class="card mx-2 py-2 text-center card_type_1" [class.tile]="tileHoverEffect">
+  <div *ngSwitchCase="1" class="card py-2 text-center card_type_1" [class.tile]="tileHoverEffect">
     <div class="card-header">
       <ng-content select="[cardHeader1]"></ng-content>
       <ng-content select="[cardTitle1]"></ng-content>
@@ -25,9 +25,12 @@
       <div class="col-md-8">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
-            <div style="width: 10%"></div>
+            <div style="width: 10%">
+              <ng-content select="[card2LeftBtn1]"></ng-content>
+            </div>
             <h3 class="card-title text-center" style="width: 80%">{{ title }}</h3>
             <div style="width: 10%">
+              <ng-content select="[card2RightBtn1]"></ng-content>
               <button *ngIf="showEditButton" (click)="showHideEditForm()" class="btn btn-secondary rounded-circle float-right">
                 <ng-content select="[cardButton2]"></ng-content>
               </button>

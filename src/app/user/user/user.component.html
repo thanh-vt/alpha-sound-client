@@ -1,16 +1,16 @@
-<div>
-  <div class="fixed-top">
-    <app-navbar></app-navbar>
-  </div>
+<div class="fixed-top" style="height: 4rem">
+  <app-navbar></app-navbar>
+</div>
+<div class="d-flex justify-content-center w-100" style="position: fixed; top: 4rem; bottom: 3rem; overflow-y: scroll">
   <div class="container pb-5">
-    <div class="row" style="margin-bottom: 8rem">
+    <div class="row">
       <div class="col-sm-9 px-0" style="margin-top: 3rem">
         <router-outlet class="col-sm-9 px-0"></router-outlet>
       </div>
       <app-sidebar class="col-sm-3"></app-sidebar>
     </div>
   </div>
-  <div class="fixed-bottom">
-    <app-music-player></app-music-player>
-  </div>
+</div>
+<div class="fixed-bottom" style="height: 3rem">
+  <app-music-player></app-music-player>
 </div>

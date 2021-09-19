@@ -1,16 +1,16 @@
 <div *ngIf="artist">
-  <app-card [type]="2" [imgSrc]="artist.avatarUrl" [title]="'Artist Info' | translate" [showEditButton]="false">
+  <app-card [type]="2" [imgSrc]="artist.avatarUrl" [title]="'feature.artist.artist_info' | translate" [showEditButton]="false">
     <div cardText2>
       <h6 class="d-inline">{{ 'Artist Name' | translate }}:&nbsp;</h6>
-      <span class="text-secondary">{{artist.name}}</span><br />
-      <h6 class="d-inline">{{ 'Date of Birth' | translate }}:&nbsp;</h6>
-      <span class="text-secondary">{{artist.birthDate | date: 'fullDate' : '' : translate.currentLang}}</span><br />
-      <h6 class="d-inline">{{ 'Biography' | translate }}:&nbsp;</h6>
-      <p class="text-secondary" style="overflow-wrap: break-word">{{artist.biography}}</p>
+      <span>{{artist.name}}</span><br />
+      <h6 class="d-inline">{{ 'common.label.birthDate' | translate }}:&nbsp;</h6>
+      <span>{{artist.birthDate | date: 'dd/MM/yyyy'}}</span><br />
+      <h6 class="d-inline">{{ 'feature.artist.biography' | translate }}:&nbsp;</h6>
+      <p style="overflow-wrap: break-word">{{artist.biography}}</p>
     </div>
   </app-card>
 </div>
-<h3 class="text-center">{{ 'Song List' | translate }}</h3>
+<h3 class="text-center">{{ 'feature.song.song_list' | translate }}</h3>
 <div
   class="songList py-2"
   infiniteScroll
@@ -48,41 +48,8 @@
           >
         </td>
         <td>
-          <ng-container *ngIf="!!currentUser">
-            <button
-              (click)="likeSong(song, i, $event, true)"
-              class="btn btn-outline-danger btn-sm border-0"
-              *ngIf="!song.liked"
-              [disabled]="song.loadingLikeButton"
-            >
-              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
-            </button>
-            <button
-              (click)="likeSong(song, i, $event, false)"
-              class="btn btn-outline-danger btn-sm border-0"
-              *ngIf="song.liked"
-              [disabled]="song.loadingLikeButton"
-            >
-              <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
-            </button>
-          </ng-container>
-          <div ngbDropdown class="d-inline-block" placement="bottom" display="dynamic">
-            <button (click)="$event.stopPropagation()" class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
-              <i class="bi bi-three-dots-vertical"></i>
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
-              <button ngbDropdownItem class="btn btn-primary btn-sm" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-                <i class="bi bi-play-circle mr-1"></i>{{ 'Add to Queue' | translate }}
-              </button>
-              <ng-container *ngIf="!!currentUser">
-                <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
-                  <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
-                </button>
-              </ng-container>
-            </div>
-          </div>
+          <app-song-like-btn [song]="song"></app-song-like-btn>
+          <app-song-menu-btn [song]="song"></app-song-menu-btn>
         </td>
       </tr>
     </tbody>

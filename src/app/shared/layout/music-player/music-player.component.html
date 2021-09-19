@@ -2,7 +2,7 @@
   <div class="column add-bottom" [hidden]="noSupportHtml5Audio">
     <div id="mainwrap" class="row d-flex align-items-center">
       <div id="nowPlay" class="col-md-2">
-        <span>{{action}}</span>
+        <span class="text-dark">{{action}}</span>
       </div>
       <div id="audiowrap" class="col-md-6">
         <div tabindex="0" class="row d-flex align-items-center">
@@ -46,7 +46,7 @@
               [disabled]="audio.paused"
               (input)="jump(audio, $event)"
             />
-            <span style="width: auto" class="d-inline-block"
+            <span style="width: auto" class="text-dark d-inline-block"
               >{{audio.currentTime | duration}}&nbsp;/&nbsp;{{audio.duration | duration}}</span
             >
           </div>

@@ -1,31 +1,31 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SongUploadData } from '../../../model/song-upload-data';
 import { DateUtil } from '../../../util/date-util';
 import { Song } from '../../../model/song';
-import { Country } from '../../../model/country';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { CountryService } from '../../../service/country.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { SongEditAdditionalInfoComponent } from '../song-edit-additional-info/song-edit-additional-info.component';
 
 @Component({
   selector: 'app-song-edit-card',
   templateUrl: './song-edit-card.component.html',
   styleUrls: ['./song-edit-card.component.scss']
 })
-export class SongEditCardComponent {
+export class SongEditCardComponent implements OnInit {
   @Input() songId: number;
   @Input() isSubmittable!: boolean;
   @Input() songUploadData!: SongUploadData;
   @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>();
   @Output() uploadSuccessEvent: EventEmitter<Song> = new EventEmitter<Song>();
   minDate = DateUtil.getMinDate();
-  countryList$: Observable<Country[]>;
-  compareCountries = (country1: Country, country2: Country): boolean => {
-    return country1?.id === country2?.id;
-  };
+  additionalRef: NgbModalRef;
 
-  constructor(private countryService: CountryService) {
-    this.countryList$ = this.countryService.countryList$;
+  constructor(private modalService: NgbModal) {}
+
+  ngOnInit(): void {
+    if (this.songUploadData?.type === 'view') {
+      this.songUploadData?.formGroup?.disable();
+    }
   }
 
   onSubmit(): void {
@@ -43,5 +43,24 @@ export class SongEditCardComponent {
   setMetadata(event: Event, formGroup: FormGroup): void {
     const target = event.target as HTMLAudioElement;
     formGroup.get('duration').setValue(target.duration);
+  }
+
+  openAdditionalForm(): void {
+    this.additionalRef = this.modalService.open(SongEditAdditionalInfoComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: false,
+      size: 'lg'
+    });
+    const songId = this.songUploadData.formGroup.get('id').value;
+    console.log(songId);
+    this.additionalRef.componentInstance.songId = songId;
+    const sub = this.additionalRef.closed.subscribe(next => {
+      if (next) {
+        this.songUploadData.formGroup.get('additionalInfo').setValue(next);
+      }
+      sub.unsubscribe();
+    });
   }
 }

@@ -3,7 +3,7 @@
 <div ngbNav [orientation]="'horizontal'">
   <div id="songs">
     <ng-template ngbNav
-      ><h5>{{ 'Song' | translate }} <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template
+      ><h5>{{ 'common.entity.song' | translate }} <span class="badge badge-secondary">{{numberOfSongs}}</span></h5></ng-template
     >
     <ng-template ngbNavContent>
       <table *ngIf="songList.length > 0" class="table table-striped">
@@ -28,7 +28,7 @@
   </div>
   <div id="artists">
     <ng-template ngbNav
-      ><h5>{{ 'Artist' | translate }} <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template
+      ><h5>{{ 'common.entity.artist' | translate }} <span class="badge badge-secondary">{{numberOfArtists}}</span></h5></ng-template
     >
     <ng-template ngbNavContent>
       <table *ngIf="artistList.length > 0" class="table table-striped">

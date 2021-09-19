@@ -21,17 +21,17 @@
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/song']"
-          ><h3><i class="bi bi-music-note"></i> {{ 'Song' | translate }}</h3></a
+          ><h3><i class="bi bi-music-note"></i> {{ 'common.entity.song' | translate }}</h3></a
         >
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/album']"
-          ><h3><i class="bi bi-disc"></i> {{ 'Album' | translate }}</h3></a
+          ><h3><i class="bi bi-disc"></i> {{ 'common.entity.album' | translate }}</h3></a
         >
       </div>
       <div class="nav-item px-2 pt-1 mx-1" routerLinkActive="active rounded">
         <a class="nav-link" [routerLink]="['/artist']"
-          ><h3><i class="bi bi-mic"></i> {{ 'Artist' | translate }}</h3></a
+          ><h3><i class="bi bi-mic"></i> {{ 'common.entity.artist' | translate }}</h3></a
         >
       </div>
     </div>
@@ -65,9 +65,9 @@
         <i class="bi bi-upload"></i>
       </button>
       <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="uploadSelect">
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">{{ 'Upload Song' | translate }}</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/song','upload']">{{ 'feature.song.upload_song' | translate }}</a>
         <div class="dropdown-divider"></div>
-        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">{{ 'Upload Album' | translate }}</a>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/album','upload']">{{ 'feature.album.upload_album' | translate }}</a>
       </div>
     </div>
 
@@ -122,7 +122,7 @@
         </button>
       </form>
       <div class="dropdown-divider"></div>
-      <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/register']">{{ 'New around here? Sign up' | translate}}</a>
+      <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/register']">{{ 'feature.account.sign_up_hint' | translate}}</a>
       <a ngbDropdownItem class="dropdown-item text-center" [routerLink]="['/reset-password']">{{ 'Forgot password?' | translate }}</a>
     </div>
   </div>
@@ -142,23 +142,23 @@
     </button>
     <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/profile']"
-        ><i class="bi bi-person-circle"></i> {{ 'Profile' | translate }}</a
+        ><i class="bi bi-person-circle"></i> {{ 'feature.account.profile' | translate }}</a
       >
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"
-        ><i class="bi bi-music-note-list"></i> {{ 'Playlist' | translate }}</a
+        ><i class="bi bi-music-note-list"></i> {{ 'common.entity.playlist' | translate }}</a
       >
       <div class="dropdown-divider"></div>
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded/song']"
-        ><i class="bi bi-upload"></i> {{ 'Uploaded Song' | translate }}</a
+        ><i class="bi bi-upload"></i> {{ 'feature.song.uploaded_song' | translate }}</a
       >
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded/album']"
-        ><i class="bi bi-upload"></i> {{ 'Uploaded Album' | translate }}</a
+        ><i class="bi bi-upload"></i> {{ 'feature.album.uploaded_album' | translate }}</a
       >
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']"
         ><i class="bi bi-bookmark-heart"></i> {{ 'Favorites' | translate }}</a
       >
       <a ngbDropdownItem (click)="logout()" class="dropdown-item" tabindex="-1" aria-disabled="true"
-        ><i class="bi bi-box-arrow-right"></i> {{ 'Sign Out' | translate }}</a
+        ><i class="bi bi-box-arrow-right"></i> {{ 'feature.account.logout' | translate }}</a
       >
     </div>
   </div>

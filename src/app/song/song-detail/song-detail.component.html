@@ -1,59 +1,45 @@
 <ng-container *ngIf="song">
-  <app-card [title]="'Song Info' | translate" [type]="3">
-    <div cardBody3>
-      <h6 class="d-inline">{{ 'Title' | translate }}:&nbsp;</h6>
-      <span>{{song.title}}</span>
-      <div class="d-inline-block float-right mx-1">
-        <ng-container *ngIf="!!currentUser">
-          <button ngbDropdownItem (click)="openPlaylistDialog(song.id, $event)" class="btn btn-primary btn-sm">
-            <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
-          </button>
-        </ng-container>
+  <app-card [title]="'feature.song.song_info' | translate" [type]="3">
+    <app-song-menu-btn card3BtnLeft1 [song]="song"></app-song-menu-btn>
+    <app-song-like-btn card3BtnLeft2 [song]="song"></app-song-like-btn>
+    <div cardBody3 class="row">
+      <div class="col-md-6">
+        <h6 class="d-inline">{{ 'Title' | translate }}:&nbsp;</h6>
+        <span>{{song.title}}</span>
+        <br />
+        <h6 class="d-inline">{{ 'Release Date' | translate }}::&nbsp;</h6>
+        <span>{{ song.releaseDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</span><br />
+        <h6 class="d-inline">{{ 'Artist(s)' | translate }}:</h6>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let artist of artistPage.content; index as i">
+            <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
+            <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
+          </li>
+        </ul>
+        <ngb-pagination
+          *ngIf="artistPage.totalPages > 1"
+          [collectionSize]="artistPage.totalElements"
+          [page]="artistPage.pageable?.pageNumber + 1"
+          [pageSize]="artistPage.pageable?.pageSize"
+          (pageChange)="getArtistList($event - 1)"
+        ></ngb-pagination>
+        <h6 class="d-inline">{{ 'common.entity.country' | translate }}:&nbsp;</h6>
+        <span>{{song.country?.name}}</span>
+        <br />
+        <h6 class="d-inline">{{ 'common.entity.genre' | translate }}:&nbsp;</h6>
+        <span>{{song.genres | stringArray}}</span>
+        <br />
+        <h6 class="d-inline">{{ 'common.entity.tag' | translate }}:&nbsp;</h6>
+        <span>{{song.tags | stringArray}}</span>
+        <br />
+        <h6 class="d-inline">{{ 'common.entity.theme' | translate }}:&nbsp;</h6>
+        <span>{{song.theme?.name}}</span>
+        <br />
       </div>
-      <div class="d-inline-block float-right mx-1">
-        <button class="btn btn-primary btn-sm rounded-circle" (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled">
-          <i class="bi bi-play-circle"></i>
-        </button>
+      <div class="col-md-6">
+        <h6 class="d-inline">{{ 'feature.song.lyric' | translate }}:&nbsp;</h6>
+        <p style="height: 12rem; overflow-y: scroll; word-break: break-word; white-space: pre-line">{{song.lyric}}</p>
       </div>
-      <div class="d-inline-block float-right mx-1">
-        <ng-container *ngIf="!!currentUser">
-          <button
-            (click)="likeSong(song, $event, true)"
-            class="btn btn-outline-danger btn-sm rounded-circle"
-            *ngIf="!song.liked"
-            [disabled]="song.loadingLikeButton"
-          >
-            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
-          </button>
-          <button
-            (click)="likeSong(song, $event, false)"
-            class="btn btn-outline-danger btn-sm rounded-circle"
-            *ngIf="song.liked"
-            [disabled]="song.loadingLikeButton"
-          >
-            <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart-fill"></i></span>
-          </button>
-        </ng-container>
-      </div>
-      <br />
-      <h6 class="d-inline">{{ 'Release Date' | translate }}::&nbsp;</h6>
-      <span>{{ song.releaseDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</span><br />
-      <h6 class="d-inline">{{ 'Artist(s)' | translate }}:</h6>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let artist of artistPage.content; index as i">
-          <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
-          <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
-        </li>
-      </ul>
-      <ngb-pagination
-        *ngIf="artistPage.totalPages > 1"
-        [collectionSize]="artistPage.totalElements"
-        [page]="artistPage.pageable?.pageNumber + 1"
-        [pageSize]="artistPage.pageable?.pageSize"
-        (pageChange)="getArtistList($event - 1)"
-      ></ngb-pagination>
     </div>
   </app-card>
   <h4 class="my-4">{{ 'Comment' | translate }}</h4>
@@ -68,15 +54,20 @@
         <p>{{ comment.content }}</p>
         <small class="text-secondary">{{ comment.localDateTime | date: 'full' : '' : translate.currentLang }}</small>
       </div>
-      <div *ngIf="currentUser && comment?.userInfo?.username === currentUser?.user_name" class="ml-auto mr-2 float-right">
+      <div *ngIf="(currentUser$ | async)?.user_name === comment?.userInfo?.username" class="ml-auto mr-2 float-right">
         <button class="btn btn-dark rounded-pill" (click)="openDeleteCommentDialog(comment.id)">{{ 'Delete' | translate }}</button>
       </div>
     </li>
   </ul>
-  <ng-container *ngIf="!!currentUser">
+  <ng-container *ngIf="!!(currentUser$ | async)">
     <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
       <label for="comment"></label
-      ><textarea class="form-control" id="comment" [placeholder]="'Leave comment here' | translate" formControlName="content"></textarea>
+      ><textarea
+        class="form-control"
+        id="comment"
+        [placeholder]="'feature.comment.leave_comment' | translate"
+        formControlName="content"
+      ></textarea>
       <div class="mt-sm-3">
         <button type="submit" class="btn btn-primary">{{ 'Comment' | translate }}</button>
       </div>

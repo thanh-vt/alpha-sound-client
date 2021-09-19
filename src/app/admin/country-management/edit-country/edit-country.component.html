@@ -9,15 +9,8 @@
         [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)"
         formControlName="name"
       />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="countryUpdateForm.get('name').hasError('required') && (countryUpdateForm.get('name').touched || submitted)"
-      >
-        {{ 'Country Name' | translate }}{{' '}}{{ 'must be filled' | translate }}
-      </div>
+      <vg-error-section [label]="'common.entity.country' | translate" [group]="countryUpdateForm" controlName="name"></vg-error-section>
     </div>
-
     <label for="avatar">{{ 'Flag' | translate }}</label>
     <div class="form-group custom-file">
       <label class="custom-file-label" *ngIf="!isImageFileChoosen">{{ 'Choose file' | translate }}</label>

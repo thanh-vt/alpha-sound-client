@@ -1,0 +1,20 @@
+<app-modal-wrapper [title]="'Add existed song' | translate" (closeAction)="close()">
+  <div modalBody>
+    <label for="typeahead-prevent-manual-entry">{{'Search for a song:' | translate}}</label>
+    <input
+      id="typeahead-prevent-manual-entry"
+      type="text"
+      class="form-control"
+      [ngbTypeahead]="search"
+      [inputFormatter]="formatter"
+      [resultFormatter]="formatter"
+      [editable]="false"
+      (selectItem)="selectSong($event)"
+    />
+    <hr />
+    <pre>Model: {{ selectedSong | json }}</pre>
+  </div>
+  <ng-container modalFooter>
+    <button class="btn btn-primary" (click)="close(selectedSong)">{{'Ok' | translate}}</button>
+  </ng-container>
+</app-modal-wrapper>

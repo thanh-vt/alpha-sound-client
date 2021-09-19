@@ -9,20 +9,7 @@
         [placeholder]="('Enter' | translate) + ' ' + ('Country Name' | translate)"
         formControlName="name"
       />
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="countryCreateForm.get('name').hasError('required') && (countryCreateForm.get('name').touched || submitted)"
-      >
-        {{'Country Name' | translate}}{{' '}}{{'must be filled' | translate}}
-      </div>
-      <div
-        class="alert alert-danger"
-        role="alert"
-        *ngIf="countryCreateForm.get('name').hasError('minlength') && (countryCreateForm.get('name').touched || submitted)"
-      >
-        {{'Country Name' | translate}}{{' '}}{{'must have at least' | translate}}{{' 4 '}}{{'characters' | translate}}
-      </div>
+      <vg-error-section [label]="'common.entity.country' | translate" [group]="countryCreateForm" controlName="name"></vg-error-section>
     </div>
     <label for="flag">{{ 'Flag' | translate }}</label>
     <div class="form-group custom-file">

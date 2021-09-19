@@ -1,14 +1,14 @@
 <div class="row" *ngIf="albumUploadData">
   <div class="col-sm-12 mb-3">
-    <app-card [type]="3" [title]="'Upload Album' | translate" class="col-sm-12">
+    <app-card [type]="3" [title]="'feature.album.upload_album' | translate" class="col-sm-12">
       <app-album-edit-card cardBody3 [albumUploadData]="albumUploadData" (submitEvent)="onSubmit()"></app-album-edit-card>
     </app-card>
   </div>
 </div>
 <div class="row">
   <ng-container *ngFor="let songUploadData of albumUploadData.songUploadDataList, index as j">
-    <div class="col-sm-6 mb-3">
-      <app-card [type]="3" [title]="('Song' | translate) + ' #' + (j + 1)" class="col-sm-12">
+    <div class="col-sm-6 mb-3" vgSwappableList [collectionName]="'uploadAlbum'" [dataList]="albumUploadData.songUploadDataList" [id]="j">
+      <app-card [type]="3" [title]="('common.entity.song' | translate) + ' #' + (j + 1)" class="col-sm-12">
         <button cardEsc3 class="btn btn-danger btn-sm rounded-circle" (click)="albumUploadData.removeForm(j)">
           <i class="bi bi-x-lg"></i>
         </button>
@@ -17,10 +17,4 @@
     </div>
   </ng-container>
 </div>
-<div class="card col-sm-12" style="margin-bottom: 10rem; height: 10rem">
-  <div class="card-body d-flex p-2 justify-content-center">
-    <button class="align-self-center btn btn-info rounded-circle" (click)="albumUploadData.addForm()">
-      <i style="font-size: 2rem" class="bi bi-plus"></i>
-    </button>
-  </div>
-</div>
+<app-song-suggestion-card (selectSongEvent)="albumUploadData.addForm($event)"></app-song-suggestion-card>

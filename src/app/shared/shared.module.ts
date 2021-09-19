@@ -17,8 +17,16 @@ import { VgControlModule, VgDirectivesModule, VgErrorDictService, VgUtilModule }
 import { MusicPlayerComponent } from './layout/music-player/music-player.component';
 import { DurationPipe } from './layout/music-player/duration.pipe';
 import { SongEditCardComponent } from './component/song-edit-card/song-edit-card.component';
-import { ArtistAddSuggestionComponent } from './component/artist-add-suggestion/artist-add-suggestion.component';
+import { ArtistSuggestionComponent } from './component/artist-suggestion/artist-suggestion.component';
 import { AlbumEditCardComponent } from './component/album-edit-card/album-edit-card.component';
+import { SongLikeBtnComponent } from './component/song-like-btn/song-like-btn.component';
+import { SongMenuBtnComponent } from './component/song-menu-btn/song-menu-btn.component';
+import { SongPlayBtnComponent } from './component/song-play-btn/song-play-btn.component';
+import { AlbumPlayBtnComponent } from './component/album-play-btn/album-play-btn.component';
+import { SongSuggestionComponent } from './component/song-suggestion/song-suggestion.component';
+import { SongAddCardComponent } from './component/song-add-suggestion/song-add-card.component';
+import { SongEditAdditionalInfoComponent } from './component/song-edit-additional-info/song-edit-additional-info.component';
+import { StringArrayPipe } from './pipe/string-array.pipe';
 
 @NgModule({
   declarations: [
@@ -33,9 +41,17 @@ import { AlbumEditCardComponent } from './component/album-edit-card/album-edit-c
     ModalWrapperComponent,
     MusicPlayerComponent,
     DurationPipe,
-    ArtistAddSuggestionComponent,
+    ArtistSuggestionComponent,
     SongEditCardComponent,
-    AlbumEditCardComponent
+    AlbumEditCardComponent,
+    SongLikeBtnComponent,
+    SongMenuBtnComponent,
+    SongPlayBtnComponent,
+    AlbumPlayBtnComponent,
+    SongSuggestionComponent,
+    SongAddCardComponent,
+    SongEditAdditionalInfoComponent,
+    StringArrayPipe
   ],
   imports: [
     CommonModule,
@@ -69,9 +85,15 @@ import { AlbumEditCardComponent } from './component/album-edit-card/album-edit-c
     MusicPlayerComponent,
     NgbModule,
     DurationPipe,
-    ArtistAddSuggestionComponent,
+    ArtistSuggestionComponent,
     SongEditCardComponent,
-    AlbumEditCardComponent
+    AlbumEditCardComponent,
+    SongLikeBtnComponent,
+    SongMenuBtnComponent,
+    SongPlayBtnComponent,
+    AlbumPlayBtnComponent,
+    SongAddCardComponent,
+    StringArrayPipe
   ]
 })
 export class SharedModule {}

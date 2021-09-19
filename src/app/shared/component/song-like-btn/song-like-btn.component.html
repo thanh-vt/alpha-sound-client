@@ -1,0 +1,20 @@
+<ng-container *ngIf="!!(currentUser$ | async)">
+  <button
+    (click)="likeSong(song, $event, true)"
+    class="btn btn-outline-danger btn-sm rounded-circle border-0"
+    *ngIf="!song.liked"
+    [disabled]="song.loadingLikeButton"
+  >
+    <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart"></i></span>
+  </button>
+  <button
+    (click)="likeSong(song, $event, false)"
+    class="btn btn-outline-danger btn-sm rounded-circle border-0"
+    *ngIf="song.liked"
+    [disabled]="song.loadingLikeButton"
+  >
+    <span *ngIf="song.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="!song.loadingLikeButton"><i class="bi bi-heart-fill"></i></span>
+  </button>
+</ng-container>

@@ -1,25 +1,7 @@
 {
-  "Song": "Bài hát",
-  "Album": "Album",
-  "Artist": "Nghệ sĩ",
-  "Playlist": "Danh sách phát",
-  "Song List": "Danh sách bài hát",
-  "Song Info": "Thông tin bài hát",
-  "Album Info": "Thông tin album",
-  "Artist Info": "Thông tin nghệ sĩ",
-  "Album title": "Tiêu đề album",
-  "Song title": "Tiêu đề bài hát",
-  "Profile": "Hồ sơ cá nhân",
-  "Uploaded": "Bài hát đã tải lên",
   "Favorites": "Bài hát yêu thích",
-  "Sign Up": "Đăng ký",
-  "New around here? Sign up": "Bạn mới truy truy cập lần đầu? Đăng ký ngay",
-  "Sign In": "Đăng nhập",
-  "Sign Out": "Đăng xuất",
   "Search": "Tìm kiếm",
   "Language": "Ngôn ngữ",
-  "Upload Song": "Tải lên bài hát",
-  "Upload Album": "Tải lên album",
   "Title": "Tiêu đề",
   "Release Date": "Ngày phát hành",
   "English": "Tiếng Anh",
@@ -31,19 +13,15 @@
   "Artist Name": "Tên nghệ sĩ",
   "Artist(s)": "Nghệ sĩ",
   "Genre(s)": "Thẻ",
-  "Country": "Quốc gia",
   "Theme": "Chủ đề",
   "Tags": "Thẻ",
   "Listening Frequency": "Lượt nghe",
-  "Date of Birth": "Ngày sinh",
-  "Biography": "Tiểu sử",
   "Select a playlist to add": "Chọn một danh sách phát để thêm",
   "Create playlist": "Tạo danh sách phát",
   "Enter playlist title": "Điền tên danh sách phát",
   "Create new playlist": "Tạo danh sách phát mới",
   "Create new artist": "Thêm nghệ sĩ mới",
   "Edit song": "Chỉnh sửa bài hát",
-  "Save": "Lưu",
   "Do you want to delete playlist": "Bạn có muốn xóa danh sách phát",
   "Remove": "Loại bỏ",
   "Edit playlist": "Chỉnh sửa danh sách phát",
@@ -54,12 +32,9 @@
   "Audio File": "File nhạc",
   "Image File": "File ảnh",
   "Cover": "Ảnh bìa",
-  "Multiple tags separated by commas": "Nhiều thẻ ngăn cách nhau bởi dấu phẩy",
   "Comment":"Bình luận",
-  "Leave comment here":"Để lại bình luận tại đây",
   "Search result for:": "Kết quả tìm kiếm cho:",
   "Dark Mode": "Nền tối",
-
   "Username": "Tên đăng nhập",
   "Password": "Mật khẩu",
   "Edit Profile": "Chỉnh sửa hồ sơ cá nhân",
@@ -120,8 +95,12 @@
       "song": "Bài hát",
       "album": "Album",
       "artist": "Nghệ sĩ",
+      "playlist": "Danh sách phát",
       "country": "Quốc gia",
-      "comment": "Bình luận"
+      "comment": "Bình luận",
+      "genre": "Thể loại",
+      "tag": "Thẻ",
+      "theme": "Chủ đề"
     },
     "label": {
       "username": "Tên người dùng",
@@ -131,7 +110,9 @@
       "birthDate": "Ngày sinh",
       "phoneNumber": "Số điện thoại",
       "newPassword": "Mật khẩu mới",
-      "repeatedNewPassword": "Nhập lại mật khẩu"
+      "repeatedNewPassword": "Nhập lại mật khẩu",
+      "create_time": "Ngày tạo",
+      "update_time": "Ngày cập nhật"
     },
     "placeholder": {
       "username": "Điền tên người dùng",
@@ -177,29 +158,78 @@
     }
   },
   "feature": {
-    "login": {
+    "account": {
+      "profile": "Hồ sơ cá nhân",
       "username": "Tên người dùng",
-      "password": "Mật khẩu"
+      "password": "Mật khẩu",
+      "login_success": "Đăng nhập thành công",
+      "login": "Đăng nhập",
+      "logout": "Đăng xuất",
+      "sign_up": "Đăng ký",
+      "sign_up_hint": "Bạn mới truy truy cập lần đầu? Đăng ký ngay"
     },
     "register": {
       "successMsg": "Đăng ký thành công. Làm ơn kiểm tra email và click vào đường dẫn đính kèm để kích hoạt tài khoản"
     },
     "resetPassword": {
       "successMsg": "Chúng tôi vừa gửi cho bạn 1 email, hãy kiểm tra và click vào đường dẫn để đặt lại mật khẩu"
+    },
+    "song": {
+      "song_info": "Thông tin bài hát",
+      "song_list": "Danh sách bài hát",
+      "additional_info": "Thông tin bổ sung",
+      "upload_song": "Tải lên bài hát",
+      "uploaded_song": "Bài hát đã tải lên",
+      "song_title_hint": "Nhập tiêu đề bài hát",
+      "lyric": "Lời bài hát"
+    },
+    "album": {
+      "album_info": "Thông tin album",
+      "album_list": "Danh sách album",
+      "upload_album": "Tải lên album",
+      "uploaded_album": "Album đã tải lên",
+      "album_title_hint": "Nhập tiêu đề album"
+    },
+    "artist": {
+      "artist_info": "Thông tin nghệ sĩ",
+      "artist_list": "Danh sách nghệ sĩ",
+      "biography": "Tiểu sử"
+    },
+    "genre": {
+      "choose": "Chọn một hoặc nhiều thể loại",
+      "genre_management": "Quản lý thể loại",
+      "genre_name": "Tên thể loại",
+      "genre_name_hint": "Nhập tên thể loại",
+      "create_genre": "Thêm thể loại",
+      "update_success": "Cập nhật thể loại thành công",
+      "create_success": "Thêm mới thể loại thành công",
+      "delete_success": "Xóa thể loại thành công"
+    },
+    "tag": {
+      "tag_separator_hint": "Nhiều thẻ ngăn cách nhau bởi dấu phẩy",
+      "tag_management": "Quản lý thẻ",
+      "tag_name": "Tên thẻ",
+      "tag_name_hint": "Nhập tên thẻ",
+      "create_tag": "Thêm thẻ",
+      "update_success": "Cập nhật thẻ thành công",
+      "create_success": "Thêm mới thẻ thành công",
+      "delete_success": "Xóa thẻ thành công"
+    },
+    "theme": {
+      "theme_management": "Quản lý chủ đề",
+      "theme_name": "Tên chủ đề",
+      "theme_name_hint": "Nhập tên chủ đề",
+      "create_theme": "Thêm chủ đề",
+      "update_success": "Cập nhật chủ đề thành công",
+      "create_success": "Thêm mới chủ đề thành công",
+      "delete_success": "Xóa chủ đề thành công"
+    },
+    "comment": {
+      "leave_comment": "Để lại bình luận tại đây"
     }
   },
-  "An error has occurred.": "Có lỗi xảy ra.",
-  "Signed in successfully": "Đăng nhập thành công",
   "Password reset successfully.": "Đặt lại mật khẩu thành công",
-  "Failed to reset password.": "Đặt lại mật khẩu thất bại.",
-  "Your login session has expired.": "Phiên đăng nhập của bạn đã hết thời gian.",
-  "Please try to log in again.": "Vui lòng đăng nhập lại.",
-
-  "must be filled": "không được bỏ trống",
-  "must be picked": "phải được chọn",
-  "must have at least": "phải có tối thiểu",
-  "does not match": "không khớp",
-  "can only contain up to": "chỉ có thể chứa tối đa",
-  "characters": "ký tự",
-  "Not a valid Email": "Địa chỉ email không hợp lệ"
+  "Failed to reset password.": "Đặt lại mật khẩu thất bại",
+  "Your login session has expired.": "Phiên đăng nhập của bạn đã hết hạn",
+  "Please try to log in again.": "Vui lòng đăng nhập lại"
 }

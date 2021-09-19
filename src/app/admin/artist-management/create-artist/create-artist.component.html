@@ -51,7 +51,7 @@
       ></vg-file-input>
     </div>
     <div class="form-group my-2">
-      <label for="biography">{{ 'Biography' | translate }}</label>
+      <label for="biography">{{ 'feature.artist.biography' | translate }}</label>
       <textarea class="form-control" id="biography" formControlName="biography"></textarea>
     </div>
     <vg-upload-progress [httpObs]="artistUploadData.observable" (successEvent)="onUpdateSuccess($event)"></vg-upload-progress>

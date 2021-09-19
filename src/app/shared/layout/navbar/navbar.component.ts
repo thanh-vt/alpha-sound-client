@@ -69,7 +69,7 @@ export class NavbarComponent implements OnInit {
           })
         )
         .subscribe(() => {
-          this.toastService.success({ text: 'Signed in successfully' });
+          this.toastService.success({ text: this.translate.instant('feature.account.login_success') });
           const redirectToHome = setTimeout(() => {
             this.router.navigate([this.returnUrl]);
             clearTimeout(redirectToHome);
