@@ -33,20 +33,32 @@ export class ThemeService {
   getThemeList(page: number): Observable<PagingInfo<Theme>> {
     const params = {
       page,
-      size: 10
+      size: 100
     };
     return this.http.get<PagingInfo<Theme>>(`${environment.apiUrl}/theme/list`, { params });
   }
 
   createTheme(theme: Theme): Observable<Theme> {
-    return this.http.post<Theme>(`${environment.apiUrl}/theme/create`, theme);
+    return this.http.post<Theme>(`${environment.apiUrl}/theme/create`, theme).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 
   updateTheme(theme: Theme, id: number): Observable<Theme> {
-    return this.http.put<Theme>(`${environment.apiUrl}/theme/update/${id}`, theme);
+    return this.http.put<Theme>(`${environment.apiUrl}/theme/update/${id}`, theme).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 
   deleteTheme(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/theme/delete/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/theme/delete/${id}`).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 }

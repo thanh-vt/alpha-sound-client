@@ -33,20 +33,32 @@ export class GenreService {
   getGenreList(page: number): Observable<PagingInfo<Genre>> {
     const params = {
       page,
-      size: 10
+      size: 100
     };
     return this.http.get<PagingInfo<Genre>>(`${environment.apiUrl}/genre/list`, { params });
   }
 
   createGenre(genre: Genre): Observable<Genre> {
-    return this.http.post<Genre>(`${environment.apiUrl}/genre/create`, genre);
+    return this.http.post<Genre>(`${environment.apiUrl}/genre/create`, genre).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 
   updateGenre(genre: Genre, id: number): Observable<Genre> {
-    return this.http.put<Genre>(`${environment.apiUrl}/genre/update/${id}`, genre);
+    return this.http.put<Genre>(`${environment.apiUrl}/genre/update/${id}`, genre).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 
   deleteGenre(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/genre/delete/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/genre/delete/${id}`).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 }

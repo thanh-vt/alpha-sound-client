@@ -29,18 +29,34 @@ export class CountryService {
   constructor(private http: HttpClient) {}
 
   getCountryList(page: number): Observable<PagingInfo<Country>> {
-    return this.http.get<PagingInfo<Country>>(`${environment.apiUrl}/country/list?page=${page}`);
+    const params = {
+      page,
+      size: 100
+    };
+    return this.http.get<PagingInfo<Country>>(`${environment.apiUrl}/country/list`, { params });
   }
 
   createCountry(country: Country): Observable<Country> {
-    return this.http.post<Country>(`${environment.apiUrl}/country/create`, country);
+    return this.http.post<Country>(`${environment.apiUrl}/country/create`, country).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 
   updateCountry(country: Country, id: number): Observable<Country> {
-    return this.http.put<Country>(`${environment.apiUrl}/country/update/${id}`, country);
+    return this.http.put<Country>(`${environment.apiUrl}/country/update/${id}`, country).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 
   deleteCountry(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/country/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/country/${id}`).pipe(
+      tap(() => {
+        this.alreadyFetched = false;
+      })
+    );
   }
 }
