@@ -10,7 +10,6 @@ import { ArtistManagementModule } from './artist-management/artist-management.mo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
 import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
 
 @NgModule({
@@ -24,7 +23,6 @@ import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
     SharedModule,
     NgbModule,
     FormsModule,
-    TranslateModule,
     VgDirectivesModule,
     VgControlModule
   ],

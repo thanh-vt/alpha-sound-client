@@ -1,40 +1,42 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UserProfile } from '../../model/token-response';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from '../login/login.component';
 import { SettingService } from '../../service/setting.service';
+import { UserProfileService } from '../../service/user-profile.service';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin-container.component.html',
   styleUrls: ['./admin-container.component.scss']
 })
-export class AdminContainerComponent implements OnInit {
-  currentUser: UserProfile;
-  hasNotLoggedInAsAdmin = false;
-  subscription: Subscription = new Subscription();
+export class AdminContainerComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription = new Subscription();
   active: string;
+  isAdmin: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private ngbModal: NgbModal,
     private authService: AuthService,
+    private userProfileService: UserProfileService,
     public translate: TranslateService,
     private settingService: SettingService
   ) {
-    const currentLanguage = this.translate.getBrowserLang();
-    translate.setDefaultLang(currentLanguage);
-    translate.use(currentLanguage);
-    this.subscription.add(
-      this.authService.currentUser$.subscribe(next => {
-        this.currentUser = next;
-      })
-    );
+    // const currentLanguage = this.translate.getBrowserLang();
+    // translate.setDefaultLang(currentLanguage);
+    // translate.use(currentLanguage);
+    this.authService.currentUser$.subscribe(async next => {
+      if (next) {
+        this.isAdmin = await this.authService.checkIsAdmin().toPromise();
+      } else {
+        this.isAdmin = false;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -42,12 +44,11 @@ export class AdminContainerComponent implements OnInit {
     this.settingService.setTheme('light');
   }
 
-  signOut() {
-    this.hasNotLoggedInAsAdmin = true;
+  signOut(): void {
     this.authService.logout();
   }
 
-  popLoginFormUp(event) {
+  popLoginFormUp(event): void {
     const ref = this.ngbModal.open(LoginComponent, {
       animation: true,
       backdrop: false,
@@ -55,5 +56,9 @@ export class AdminContainerComponent implements OnInit {
       scrollable: false,
       size: 'md'
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

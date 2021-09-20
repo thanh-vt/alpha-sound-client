@@ -44,6 +44,10 @@ p {
   color: var(--content-color);
 }
 
+.vg-toast-body p {
+  color: white !important;
+}
+
 i.bi.bi-heart,
 i.bi.bi-heart-fill {
   color: #dc3545;

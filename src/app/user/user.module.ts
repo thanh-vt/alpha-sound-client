@@ -15,7 +15,6 @@ import { FavoritesComponent } from './favorites/favorites.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserProfileComponent } from './user-management/user-profile/user-profile.component';
 import { PlaylistModule } from '../playlist/playlist.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { CompleteRegistrationComponent } from './complete-registration/complete-registration.component';
 import { ResetPasswordSubmissionComponent } from './reset-password-submission/reset-password-submission.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
@@ -49,7 +48,6 @@ import { UploadedAlbumListComponent } from './uploaded-album-list/uploaded-album
     FormsModule,
     NgbButtonsModule,
     PlaylistModule,
-    TranslateModule,
     NgbDropdownModule,
     VgDirectivesModule,
     VgControlModule

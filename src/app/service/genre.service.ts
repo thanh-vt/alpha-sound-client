@@ -38,11 +38,8 @@ export class GenreService {
     return this.http.get<PagingInfo<Genre>>(`${environment.apiUrl}/genre/list`, { params });
   }
 
-  createGenre(formData: FormData): Observable<HttpEvent<Genre>> {
-    return this.http.post<Genre>(`${environment.apiUrl}/genre/create`, formData, {
-      reportProgress: true,
-      observe: 'events'
-    });
+  createGenre(genre: Genre): Observable<Genre> {
+    return this.http.post<Genre>(`${environment.apiUrl}/genre/create`, genre);
   }
 
   updateGenre(genre: Genre, id: number): Observable<Genre> {

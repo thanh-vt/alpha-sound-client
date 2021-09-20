@@ -47,7 +47,7 @@
 </ng-container>
 <div *ngIf="showEditForm" class="update_profile">
   <app-card [type]="3" [title]="'Edit Profile' | translate">
-    <app-update-profile cardText3></app-update-profile>
+    <app-update-profile cardText3 (updateEvent)="showEditForm = false"></app-update-profile>
   </app-card>
 </div>
 <ng-template #female>

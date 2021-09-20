@@ -6,10 +6,9 @@ import { GenreListComponent } from './genre-list/genre-list.component';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [GenreListComponent],
-  imports: [CommonModule, GenreManagementRoutingModule, NgbPaginationModule, SharedModule, ReactiveFormsModule, TranslateModule]
+  imports: [CommonModule, GenreManagementRoutingModule, NgbPaginationModule, SharedModule, ReactiveFormsModule]
 })
 export class GenreManagementModule {}

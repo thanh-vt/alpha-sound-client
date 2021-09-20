@@ -5,7 +5,9 @@ import { SongService } from '../../../service/song.service';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { PagingInfo } from '../../../model/paging-info';
+import { DataUtil } from '../../../util/data-util';
 
 @Component({
   selector: 'app-song-list',
@@ -13,7 +15,7 @@ import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
   styleUrls: ['./song-list.component.scss']
 })
 export class SongListComponent implements OnInit {
-  songList: Song[];
+  songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   subscription: Subscription = new Subscription();
   message: string;
 
@@ -29,10 +31,10 @@ export class SongListComponent implements OnInit {
     this.getSongList().finally();
   }
 
-  async getSongList(): Promise<void> {
+  async getSongList(page = 0): Promise<void> {
     try {
       this.loadingService.loading(true);
-      this.songList = (await this.songService.songList().toPromise()).content;
+      this.songPage = await this.songService.songList({ page }).toPromise();
     } catch (e) {
       console.error(e);
     } finally {
@@ -56,11 +58,11 @@ export class SongListComponent implements OnInit {
       if (result) {
         this.loadingService.loading(true);
         await this.songService.deleteSong(song?.id).toPromise();
-        this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
+        this.toastService.success({ text: 'Song from playlist removed successfully' });
         await this.getSongList();
       }
     } catch (e) {
-      this.toastService.show({ text: 'Failed to delete song. An error has occurred' }, { type: TOAST_TYPE.ERROR });
+      this.toastService.error({ text: 'Failed to delete song. An error has occurred' });
       console.error(e);
     } finally {
       this.loadingService.loading(false);

@@ -5,6 +5,7 @@
         <div [formGroupName]="i" class="col-md-6">
           <div class="d-flex">
             <vg-auto-input
+              [isReadonly]="!uploadData.editing"
               [ngStyle]="{width: '70%'}"
               [formControl]="$any(artistControl)"
               [modelToTextMapper]="modelToTextMapper"
@@ -34,7 +35,7 @@
               </button>
             </div>
           </div>
-          <vg-error-section [label]="('common.label.artist' | translate) + '#' + (i + 1)" [control]="artistControl"></vg-error-section>
+          <vg-error-section [label]="'feature.artist.artist_name' | translate" [control]="artistControl"></vg-error-section>
         </div>
       </ng-container>
     </div>

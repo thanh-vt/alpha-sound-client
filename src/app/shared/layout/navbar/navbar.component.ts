@@ -30,8 +30,7 @@ export class NavbarComponent implements OnInit {
   });
   loading = false;
   returnUrl: string;
-
-  // eslint-disable-next-line max-len
+  isAdmin: boolean;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -42,11 +41,14 @@ export class NavbarComponent implements OnInit {
     private settingService: SettingService,
     private toastService: VgToastService
   ) {
-    const currentLanguage = this.translate.getBrowserLang();
-    translate.setDefaultLang(currentLanguage);
-    translate.use(currentLanguage);
-    this.authService.currentUser$.subscribe(next => {
+    // const currentLanguage = this.translate.getBrowserLang();
+    // translate.setDefaultLang(currentLanguage);
+    // translate.use(currentLanguage);
+    this.authService.currentUser$.subscribe(async next => {
       this.currentUser = next;
+      if (this.currentUser) {
+        this.isAdmin = await this.authService.checkIsAdmin().toPromise();
+      }
     });
     this.setting$ = this.settingService.setting$;
   }

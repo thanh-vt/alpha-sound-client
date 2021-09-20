@@ -10,6 +10,7 @@ import { ArtistService } from '../../service/artist.service';
 import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
+import { Artist } from '../../model/artist';
 
 @Component({
   selector: 'app-album-detail',
@@ -19,6 +20,7 @@ import { VgLoaderService } from 'ngx-vengeance-lib';
 export class AlbumDetailComponent implements OnInit, OnDestroy {
   album: Album;
   albumId: number;
+  artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo(5);
   songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   subscription: Subscription = new Subscription();
 
@@ -38,8 +40,16 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
         try {
           this.loaderService.loading(true);
           this.albumId = params.id;
-          this.album = await this.albumService.albumDetail(this.albumId).toPromise();
-          await this.getSongPage(0);
+          const result = await Promise.all([
+            this.albumService.albumDetail(this.albumId).toPromise(),
+            this.albumService.albumAdditionalInfo(this.albumId).toPromise(),
+            this.getArtistPage(0),
+            this.getSongPage(0)
+          ]);
+          this.album = {
+            ...result[0],
+            ...result[1]
+          };
         } catch (e) {
           console.error(e);
         } finally {
@@ -49,10 +59,21 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  async getSongPage(number: number): Promise<void> {
+  async getArtistPage(page: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.songPage = await this.songService.getAlbumSongList(this.album.id, number, 10).toPromise();
+      this.artistPage = await this.artistService.getAlbumArtistList(this.albumId, page, 10).toPromise();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loaderService.loading(false);
+    }
+  }
+
+  async getSongPage(page: number): Promise<void> {
+    try {
+      this.loaderService.loading(true);
+      this.songPage = await this.songService.getAlbumSongList(this.albumId, page, 10).toPromise();
     } catch (e) {
       console.error(e);
     } finally {

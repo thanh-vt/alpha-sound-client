@@ -20,6 +20,7 @@ import { Song } from '../../model/song';
 })
 export class EditAlbumComponent implements OnInit, OnDestroy {
   album: Album;
+  albumId: number;
   albumUploadData: AlbumUploadData;
   subscription: Subscription = new Subscription();
   minDate = DateUtil.getMinDate();
@@ -45,10 +46,24 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.route.queryParams.subscribe(async params => {
         try {
-          this.album = await this.albumService.albumDetail(params.id).toPromise();
+          this.albumId = params.id;
+          const result = await Promise.all([
+            this.albumService.albumDetail(this.albumId).toPromise(),
+            this.artistService.getAlbumArtistList(this.albumId, 0).toPromise(),
+            this.songService.getAlbumSongList(this.albumId, 0).toPromise()
+          ]);
+          this.album = result[0];
+          this.album.artists = result[1].content;
+          this.album.songs = result[2].content;
           this.albumUploadData.formGroup.patchValue(this.album);
+          const albumArtistFormArr = this.albumUploadData.formGroup.get('artists') as FormArray;
+          albumArtistFormArr.clear();
+          this.album.artists.forEach(artist => {
+            const artistForm = SongUploadData.createArtist(this.fb);
+            artistForm.setValue(artist);
+            albumArtistFormArr.push(artistForm);
+          });
           const tmpSongUploadDataList = [];
-          this.album.songs = (await this.songService.getAlbumSongList(this.album.id, 0).toPromise()).content;
           this.album.songs.forEach(song => {
             const songUploadData = SongUploadData.instance(this.fb);
             songUploadData.formGroup.patchValue(song);
@@ -60,6 +75,8 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
               artistFormArr.push(artistForm);
             });
             songUploadData.type = 'update';
+            songUploadData.editable = this.authService.currentUserValue?.user_name === song.uploader?.username;
+            songUploadData.editing = false;
             tmpSongUploadDataList.push(songUploadData);
           });
           this.albumUploadData.songUploadDataList = tmpSongUploadDataList;
@@ -76,6 +93,7 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
     let isSongFormsValid = true;
     for (const songUploadData of this.albumUploadData.songUploadDataList) {
       if (!songUploadData.isValid()) {
+        console.log(songUploadData.formGroup);
         isSongFormsValid = false;
         break;
       }

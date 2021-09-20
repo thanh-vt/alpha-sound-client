@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PagingInfo } from '../model/paging-info';
@@ -32,15 +32,12 @@ export class CountryService {
     return this.http.get<PagingInfo<Country>>(`${environment.apiUrl}/country/list?page=${page}`);
   }
 
-  createCountry(formData: FormData): Observable<HttpEvent<Country>> {
-    return this.http.post<Country>(`${environment.apiUrl}/country/create`, formData, {
-      reportProgress: true,
-      observe: 'events'
-    });
+  createCountry(country: Country): Observable<Country> {
+    return this.http.post<Country>(`${environment.apiUrl}/country/create`, country);
   }
 
-  updateCountry(formData: FormData, id: number): Observable<Country> {
-    return this.http.put<Country>(`${environment.apiUrl}/country/update?id=${id}`, formData);
+  updateCountry(country: Country, id: number): Observable<Country> {
+    return this.http.put<Country>(`${environment.apiUrl}/country/update/${id}`, country);
   }
 
   deleteCountry(id: number): Observable<void> {

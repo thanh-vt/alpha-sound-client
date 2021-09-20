@@ -8,6 +8,7 @@ import { SongUploadData } from '../../model/song-upload-data';
 import { Subscription } from 'rxjs';
 import { DateUtil } from '../../util/date-util';
 import { CountryService } from '../../service/country.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-edit-song',
@@ -22,11 +23,12 @@ export class EditSongComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    protected router: Router,
+    private router: Router,
+    private authService: AuthService,
     private songService: SongService,
     private countryService: CountryService,
-    protected fb: FormBuilder,
-    protected artistService: ArtistService,
+    private fb: FormBuilder,
+    private artistService: ArtistService,
     private toastService: VgToastService,
     private loaderServer: VgLoaderService
   ) {
@@ -41,6 +43,7 @@ export class EditSongComponent implements OnInit {
           this.loaderServer.loading(true);
           const result = await this.songService.songDetail(this.songId).toPromise();
           this.songUploadData.formGroup.patchValue(result);
+          this.songUploadData.editable = this.authService.currentUserValue?.user_name === result.uploader?.username;
           const artistFormArr = this.songUploadData.formGroup.get('artists') as FormArray;
           artistFormArr.clear();
           result.artists.forEach(artist => {

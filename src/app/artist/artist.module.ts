@@ -9,20 +9,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { TranslateModule } from '@ngx-translate/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ArtistComponent, ArtistListComponent, ArtistDetailComponent],
-  imports: [
-    CommonModule,
-    ArtistRoutingModule,
-    ReactiveFormsModule,
-    SharedModule,
-    PlaylistModule,
-    InfiniteScrollModule,
-    TranslateModule,
-    NgbDropdownModule
-  ]
+  imports: [CommonModule, ArtistRoutingModule, ReactiveFormsModule, SharedModule, PlaylistModule, InfiniteScrollModule, NgbDropdownModule]
 })
 export class ArtistModule {}

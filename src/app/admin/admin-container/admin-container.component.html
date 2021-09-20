@@ -1,14 +1,13 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" style="height: 50px">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Alpha Sound Admin</a>
-  <input class="form-control form-control-dark w-100" type="text" [placeholder]="'Search' | translate" aria-label="Search" />
-  <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-      <button class="btn btn-light" (click)="popLoginFormUp($event)" *ngIf="hasNotLoggedInAsAdmin">Sign in as Administrator</button>
-    </li>
-    <li class="nav-item text-nowrap">
-      <button class="btn btn-light" (click)="signOut()" *ngIf="!hasNotLoggedInAsAdmin">{{ 'feature.account.logout' | translate }}</button>
-    </li>
-  </ul>
+  <a class="navbar-brand mx-2" [routerLink]="['/admin/dashboard']">{{'common.label.alpha_sound_admin' | translate}}</a>
+  <input class="form-control form-control-dark w-100" type="text" [placeholder]="'common.button.search' | translate" aria-label="Search" />
+  <div class="d-inline-flex justify-content-center align-items-center" style="width: 20rem">
+    <button class="btn btn-light d-inline-block mx-2" [routerLink]="'/home'">{{'common.label.user_homepage' | translate}}</button>
+    <button class="btn btn-light d-inline-block mx-2" (click)="popLoginFormUp($event)" *ngIf="!isAdmin">Sign in as Administrator</button>
+    <button class="btn btn-light d-inline-block mx-2" (click)="signOut()" *ngIf="isAdmin">
+      {{ 'feature.account.logout' | translate }}
+    </button>
+  </div>
 </nav>
 
 <div class="container-fluid">
@@ -16,58 +15,58 @@
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
       <div class="sidebar-sticky">
         <ul ngbNav #nav="ngbNav" class="nav-pills" [(activeId)]="active" [orientation]="'vertical'">
-          <li ngbNavItem="home">
-            <a ngbNavLink href="#">
+          <li ngbNavItem="/admin/dashboard">
+            <a ngbNavLink [routerLink]="['/admin/dashboard']">
               <i class="bi bi-house"></i>
-              Dashboard <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li ngbNavItem="table_data">
-            <a ngbNavLink href="#">
-              <i class="bi bi-table"></i>
-              Table & Data
+              {{'common.label.dashboard' | translate}} <span class="sr-only"></span>
             </a>
           </li>
           <li ngbNavItem="/admin/user-management">
             <a ngbNavLink [routerLink]="['/admin/user-management']">
               <i class="bi bi-people-fill"></i>
-              User Management
+              {{'feature.user.user_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="/admin/song-management">
             <a ngbNavLink [routerLink]="['/admin/song-management']">
               <i class="bi bi-music-note-list"></i>
-              Song Management
+              {{'feature.song.song_management' | translate}}
+            </a>
+          </li>
+          <li ngbNavItem="/admin/album-management">
+            <a ngbNavLink [routerLink]="['/admin/album-management']">
+              <i class="bi bi-journal-album"></i>
+              {{'feature.album.album_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="/admin/artist-management">
             <a ngbNavLink [routerLink]="['/admin/artist-management']">
               <i class="bi bi-person-lines-fill"></i>
-              Artist Management
+              {{'feature.artist.artist_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="/admin/country-management">
             <a ngbNavLink [routerLink]="['/admin/country-management']">
               <i class="bi bi-flag"></i>
-              Country Management
+              {{'feature.country.country_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="/admin/genre-management">
             <a ngbNavLink [routerLink]="['/admin/genre-management']">
               <i class="bi bi-subtract"></i>
-              Genre Management
+              {{'feature.genre.genre_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="/admin/tag-management">
             <a ngbNavLink [routerLink]="['/admin/tag-management']">
               <i class="bi bi-tags"></i>
-              Tag Management
+              {{'feature.tag.tag_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="/admin/theme-management">
             <a ngbNavLink [routerLink]="['/admin/theme-management']">
               <i class="bi bi-palette"></i>
-              Theme Management
+              {{'feature.theme.theme_management' | translate}}
             </a>
           </li>
           <li ngbNavItem="upload_request">
@@ -79,6 +78,8 @@
         </ul>
       </div>
     </nav>
-    <div class="col-md-8"><router-outlet></router-outlet></div>
+    <div class="col-md-8">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

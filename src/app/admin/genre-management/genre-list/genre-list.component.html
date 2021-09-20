@@ -2,8 +2,8 @@
 <form [formGroup]="genreCreateForm" (ngSubmit)="createGenre()">
   <div>
     <label for="name" class="form-label">{{'feature.genre.create_genre' | translate}}</label>
-    <input type="text" class="form-control" id="name" [placeholder]="'feature.genre.genre_name' | translate" formControlName="name" />
-    <vg-error-section [label]="'common.entity.genre' | translate" [group]="genreCreateForm" controlName="name"></vg-error-section>
+    <input type="text" class="form-control" id="name" [placeholder]="'feature.genre.genre_name_hint' | translate" formControlName="name" />
+    <vg-error-section [label]="'feature.genre.genre_name' | translate" [group]="genreCreateForm" controlName="name"></vg-error-section>
   </div>
   <button type="submit" class="btn btn-primary rounded-pill my-2">{{'common.button.save'| translate}}</button>
 </form>
@@ -35,8 +35,8 @@
       </td>
       <td>
         <div class="d-flex justify-content-center align-items-center">
-          <button *ngIf="!genre.editing" class="btn btn-sm btn-primary rounded-circle mx-2" (click)="toggleEdit(genre, true)">
-            <i class="bi bi-pencil"></i>
+          <button *ngIf="!genre.editing" class="btn btn-sm btn-secondary rounded-circle mx-2" (click)="toggleEdit(genre, true)">
+            <i class="bi bi-pencil-square"></i>
           </button>
           <button *ngIf="genre.editing" class="btn btn-sm btn-primary rounded-circle mx-2" (click)="updateGenre(i)">
             <i class="bi bi-save"></i>

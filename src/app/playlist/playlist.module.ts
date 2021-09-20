@@ -10,12 +10,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { EditPlaylistComponent } from './edit-playlist/edit-playlist.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { VgControlModule } from 'ngx-vengeance-lib';
 
 @NgModule({
   declarations: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, PlaylistComponent, EditPlaylistComponent],
-  imports: [CommonModule, PlaylistRoutingModule, NgbModule, ReactiveFormsModule, SharedModule, TranslateModule, VgControlModule],
+  imports: [CommonModule, PlaylistRoutingModule, NgbModule, ReactiveFormsModule, SharedModule, VgControlModule],
   exports: [PlaylistListComponent, PlaylistDetailComponent, CreatePlaylistComponent, PlaylistComponent]
 })
 export class PlaylistModule {}

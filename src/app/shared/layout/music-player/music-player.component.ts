@@ -194,6 +194,7 @@ export class MusicPlayerComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.playingQueueService.notifyUpdate(false);
     this.queueSub.unsubscribe();
   }
 

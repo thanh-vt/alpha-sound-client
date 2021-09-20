@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
     NgbModule,
     SharedModule,
     PlaylistModule,
-    TranslateModule,
     VgDirectivesModule,
     VgUtilModule,
     FormsModule

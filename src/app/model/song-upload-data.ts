@@ -58,11 +58,6 @@ export class SongUploadData {
 
   setEditing(val: boolean): void {
     this.editing = val;
-    if (this.editing) {
-      this.formGroup.enable();
-    } else {
-      this.formGroup.disable();
-    }
   }
 
   toggleEdit(): void {
@@ -71,10 +66,8 @@ export class SongUploadData {
     }
     this.editing = !this.editing;
     if (this.editing) {
-      this.formGroup.enable();
       this.temp = this.formGroup.getRawValue();
     } else {
-      this.formGroup.disable();
       this.temp = null;
     }
   }

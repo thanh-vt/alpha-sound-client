@@ -24,15 +24,11 @@ export class AlbumService {
 
   albumDetail(id: number): Observable<Album> {
     const params = { id };
-    return this.http
-      .get<Album>(`${environment.apiUrl}/album/detail`, { params })
-      .pipe
-      // tap(album => {
-      //   album.songs.forEach(song => {
-      //     song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
-      //   });
-      // })
-      ();
+    return this.http.get<Album>(`${environment.apiUrl}/album/detail`, { params });
+  }
+
+  albumAdditionalInfo(id: number): Observable<Album> {
+    return this.http.get<Album>(`${environment.apiUrl}/album/additional-info/${id}`);
   }
 
   uploadAlbum(formData: FormData): Observable<Album> {

@@ -11,8 +11,8 @@ import { UserProfileService } from './user-profile.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<UserProfile>;
-  public currentUser$: Observable<UserProfile>;
+  private currentUserSubject: BehaviorSubject<UserProfile> = new BehaviorSubject<UserProfile>(null);
+  public currentUser$: Observable<UserProfile> = this.currentUserSubject.asObservable();
   // sessionTimeout = new EventEmitter();
   subscription: Subscription = new Subscription();
 
@@ -20,11 +20,14 @@ export class AuthService {
     const tokenInfo = this.tokenStorageService.accessToken;
     const refreshTokenInfo = this.tokenStorageService.accessToken;
     const currentUser = tokenInfo || refreshTokenInfo ? this.tokenStorageService.currentUser : null;
-    this.currentUserSubject = new BehaviorSubject<UserProfile>(currentUser);
-    this.currentUser$ = this.currentUserSubject.asObservable();
-    this.userProfileService.getCurrentUserProfile().subscribe(next => {
-      this.currentUserValue = next;
-    });
+    this.currentUserSubject.next(currentUser);
+    if (currentUser) {
+      setTimeout(() => {
+        this.userProfileService.getCurrentUserProfile().subscribe(next => {
+          this.currentUserValue = next;
+        });
+      });
+    }
   }
 
   public get currentUserValue(): UserProfile {
@@ -60,6 +63,10 @@ export class AuthService {
     }
     this.tokenStorageService.clearToken();
     this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe();
+  }
+
+  checkIsAdmin(): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiUrl}/is-admin`);
   }
 
   checkIsAnonymous(): Observable<boolean> {

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { SongUploadData } from '../../../model/song-upload-data';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SongSuggestionComponent } from '../song-suggestion/song-suggestion.component';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder } from '@angular/forms';
 import { Song } from '../../../model/song';
 import { AuthService } from '../../../service/auth.service';
 
@@ -29,6 +29,8 @@ export class SongAddCardComponent {
       if (song) {
         const songUploadData = SongUploadData.instance(this.fb);
         songUploadData.type = 'view';
+        songUploadData.editable = this.authService.currentUserValue?.user_name === song.uploader?.username;
+        songUploadData.editing = false;
         songUploadData.formGroup.patchValue(song);
         const artistFormArr = songUploadData.formGroup.get('artists') as FormArray;
         artistFormArr.clear();

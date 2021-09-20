@@ -6,10 +6,9 @@ import { SongListComponent } from './song-list/song-list.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SongListComponent],
-  imports: [CommonModule, SongManagementRoutingModule, SharedModule, NgbDropdownModule, ReactiveFormsModule, TranslateModule]
+  imports: [CommonModule, SongManagementRoutingModule, SharedModule, NgbDropdownModule, ReactiveFormsModule]
 })
 export class SongManagementModule {}

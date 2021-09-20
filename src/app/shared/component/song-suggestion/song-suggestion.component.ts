@@ -34,6 +34,7 @@ export class SongSuggestionComponent {
 
   selectSong(event: NgbTypeaheadSelectItemEvent<Song>): void {
     this.selectedSong = event.item;
+    console.log(this.selectedSong);
   }
 
   close(song?: Song): void {

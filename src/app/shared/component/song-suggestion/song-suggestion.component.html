@@ -11,8 +11,10 @@
       [editable]="false"
       (selectItem)="selectSong($event)"
     />
-    <hr />
-    <pre>Model: {{ selectedSong | json }}</pre>
+    <div style="height: 10rem">
+      <pre>Song: {{ selectedSong | json }}</pre>
+    </div>
+    <!--    <hr />-->
   </div>
   <ng-container modalFooter>
     <button class="btn btn-primary" (click)="close(selectedSong)">{{'Ok' | translate}}</button>

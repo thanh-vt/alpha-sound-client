@@ -63,7 +63,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.songService.songAdditionalInfo(this.songId).toPromise(),
             this.getArtistList()
           ]);
-          console.log('load', songInfo);
           this.song = {
             ...songInfo[0],
             ...songInfo[1]

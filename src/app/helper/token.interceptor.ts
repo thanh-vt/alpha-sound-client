@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { TokenStorageService } from '../service/token-storage.service';
 import { VgToastService } from 'ngx-vengeance-lib';
 import { ApiError } from '../model/api-error';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -35,7 +36,6 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(this.attachTokenToRequest(request)).pipe(
       catchError(error => {
-        console.error(error);
         if (error instanceof HttpErrorResponse) {
           if (request.url.includes('/oauth/token')) {
             return this.handleOauth2RequestError(request, next, error);
@@ -81,6 +81,7 @@ export class TokenInterceptor implements HttpInterceptor {
           })
         );
     } else {
+      console.log(error, 'normal');
       throw error;
     }
   }

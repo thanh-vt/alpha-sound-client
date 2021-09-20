@@ -1,14 +1,15 @@
 <form [formGroup]="songUploadData.formGroup" (ngSubmit)="onSubmit()" vgFocusFirstInvalid [form]="songUploadData.formGroup">
   <div class="form-group">
-    <label for="songTitle">{{ 'Title' | translate }}</label>
+    <label for="songTitle">{{ 'common.label.title' | translate }}</label>
     <input
       type="text"
       class="form-control"
       id="songTitle"
+      [readOnly]="!songUploadData.editing"
       [placeholder]="'feature.song.song_title_hint' | translate"
       formControlName="title"
     />
-    <vg-error-section [label]="'Title' | translate" [group]="songUploadData.formGroup" controlName="title"></vg-error-section>
+    <vg-error-section [label]="'common.label.title' | translate" [group]="songUploadData.formGroup" controlName="title"></vg-error-section>
   </div>
   <label>{{ 'common.entity.artist' | translate }}</label>
   <app-artist-suggestion [uploadData]="songUploadData"></app-artist-suggestion>
@@ -24,10 +25,11 @@
         ngbDatepicker
         #d="ngbDatepicker"
         formControlName="releaseDate"
+        [readOnly]="!songUploadData.editing"
         [minDate]="minDate"
       />
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button" [disabled]="!songUploadData.editing">
           <i class="bi bi-calendar3"></i>
         </button>
       </div>
@@ -39,6 +41,7 @@
     <vg-file-input
       id="audio"
       formControlName="url"
+      [isReadonly]="!songUploadData.editing"
       [remoteFileType]="'audio'"
       [formData]="songUploadData.formData"
       [formDataFilePart]="'audio'"
@@ -49,7 +52,9 @@
     <button *ngIf="songUploadData.editing" type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
       <i class="bi bi-list-ul"></i>&nbsp;{{'feature.song.additional_info' | translate}}
     </button>
-    <button *ngIf="isSubmittable" type="submit" class="btn btn-primary rounded-pill my-2 mx-1">{{ 'Submit' | translate }}</button>
+    <button *ngIf="isSubmittable" type="submit" class="btn btn-primary rounded-pill my-2 mx-1">
+      {{ 'common.button.save' | translate }}
+    </button>
   </div>
   <vg-upload-progress
     [hidden]="!songUploadData.observable"

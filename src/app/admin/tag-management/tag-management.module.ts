@@ -6,10 +6,9 @@ import { TagListComponent } from './tag-list/tag-list.component';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [TagListComponent],
-  imports: [CommonModule, TagManagementRoutingModule, NgbPaginationModule, SharedModule, ReactiveFormsModule, TranslateModule]
+  imports: [CommonModule, TagManagementRoutingModule, NgbPaginationModule, SharedModule, ReactiveFormsModule]
 })
 export class TagManagementModule {}

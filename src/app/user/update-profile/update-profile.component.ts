@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserProfileService } from '../../service/user-profile.service';
@@ -29,6 +29,7 @@ export class UpdateProfileComponent implements OnInit {
   formData = new FormData();
   minDate = DateUtil.getMinDate();
   maxDate = DateUtil.getMaxDate();
+  @Output() updateEvent: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,7 @@ export class UpdateProfileComponent implements OnInit {
         .subscribe(next => {
           this.currentUser = next.type === HttpEventType.Response ? next.body : this.currentUser;
           this.authService.currentUserValue = this.currentUser;
+          this.updateEvent.emit();
           this.toastService.show({ text: 'Profile updated successfully' }, { type: TOAST_TYPE.SUCCESS });
         });
     }

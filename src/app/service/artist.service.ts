@@ -24,7 +24,7 @@ export class ArtistService {
     });
   }
 
-  searchArtist(params: { [key: string]: string }): Observable<PagingInfo<Artist>> {
+  searchArtist(params?: { page?: number; size?: number; sort?: string[] } | { [key: string]: string }): Observable<PagingInfo<Artist>> {
     return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/search`, {
       params
     });
@@ -36,6 +36,16 @@ export class ArtistService {
 
   artistDetail(id: number): Observable<Artist> {
     return this.http.get<Artist>(`${environment.apiUrl}/artist/detail/${id}`);
+  }
+
+  getAlbumArtistList(albumId: number, page: number, size = 100): Observable<PagingInfo<Artist>> {
+    return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/search`, {
+      params: {
+        albumId,
+        page,
+        size
+      }
+    });
   }
 
   getSongListOfArtist(id: number, page: number): Observable<PagingInfo<Song>> {

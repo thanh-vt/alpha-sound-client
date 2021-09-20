@@ -1,8 +1,5 @@
 {
   "Favorites": "Favorites",
-  "Search": "Search",
-  "Language": "Language",
-  "Title": "Title",
   "Release Date": "Release Date",
   "English": "English",
   "Vietnamese": "Vietnamese",
@@ -10,7 +7,6 @@
   "Next": "Next",
   "Record Chart": "Record Chart",
   "Song Name": "Song Name",
-  "Artist Name": "Artist Name",
   "Artist(s)": "Artist(s)",
   "Genre(s)": "Genre(s)",
   "Theme": "Theme",
@@ -100,6 +96,7 @@
       "theme": "Theme"
     },
     "label": {
+      "title": "Title",
       "username": "Username",
       "password": "Password",
       "firstName": "First name",
@@ -110,7 +107,12 @@
       "newPassword": "New password",
       "repeatedNewPassword": "Re-enter password",
       "create_time": "Create date",
-      "update_time": "Update date"
+      "update_time": "Update date",
+      "admin_page": "Admin page",
+      "confirm": "Confirm",
+      "user_homepage": "User homepage",
+      "dashboard": "Dashboard",
+      "alpha_sound_admin": "Alpha Sound Administration Page"
     },
     "placeholder": {
       "username": "Enter username",
@@ -138,10 +140,11 @@
       "add": "Add",
       "save": "Save",
       "cancel": "Cancel",
-      "accept": "Accept"
+      "accept": "Accept",
+      "search": "Search"
     },
     "error": {
-      "connection_connection_timeout": "Server didn't responded",
+      "timeout": "Server didn't responded",
       "unknown": "An unknown error has occurred"
     }
   },
@@ -174,6 +177,7 @@
       "successMsg": "We've sent you an email. Please check it and click the given URL to complete password reset"
     },
     "song": {
+      "song_management": "Song Management",
       "song_info": "Song Info",
       "song_list": "Song List",
       "additional_info": "Additional Info",
@@ -183,6 +187,7 @@
       "lyric": "Lyric"
     },
     "album": {
+      "album_management": "Album Management",
       "album_info": "Album Info",
       "album_list": "Album List",
       "upload_album": "Upload album",
@@ -190,9 +195,20 @@
       "album_title_hint": "Enter album title"
     },
     "artist": {
+      "artist_management": "Artist Management",
       "artist_info": "Artist Info",
       "artist_list": "Artist List",
+      "artist_name": "Artist name",
       "biography": "Biography"
+    },
+    "country": {
+      "country_management": "Country management",
+      "country_name": "Country name",
+      "country_name_hint": "Enter country name",
+      "create_country": "Create country",
+      "update_success": "Country updated successfully!",
+      "create_success": "Country created successfully!",
+      "delete_success": "Country deleted successfully!"
     },
     "genre": {
       "choose": "Choose one or multiple genres",
@@ -225,6 +241,9 @@
     },
     "comment": {
       "leave_comment": "Leave comment here"
+    },
+    "user": {
+      "user_management": "User management"
     }
   },
   "Password reset successfully.": "Password reset successfully",

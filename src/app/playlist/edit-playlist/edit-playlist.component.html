@@ -2,7 +2,7 @@
   <div modalBody>
     <form [formGroup]="playlistEditForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="title">{{ 'Title' | translate}}</label>
+        <label for="title">{{ 'common.label.title' | translate}}</label>
         <input class="form-control" type="text" id="title" [placeholder]="'Enter playlist title' | translate" formControlName="title" />
       </div>
     </form>

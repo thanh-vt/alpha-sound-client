@@ -1,0 +1,52 @@
+<app-modal-wrapper [title]="'feature.song.additional_info' | translate" (closeAction)="close()">
+  <form
+    id="formAdditionalInfo"
+    modalBody
+    class="row"
+    [formGroup]="formAdditionalInfo"
+    vgFocusFirstInvalid
+    [form]="formAdditionalInfo"
+    (ngSubmit)="save()"
+  >
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="country">{{ 'common.entity.country' | translate }}</label>
+            <select id="country" class="form-select" formControlName="country" [compareWith]="compareCountries">
+              <option [selected] [ngValue]="null">{{ 'Choose a country' | translate }}</option>
+              <option *ngFor="let country of (countryList$ | async)" [ngValue]="country">{{ country.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label for="genres">{{ 'common.entity.genre' | translate }}</label>
+          <select id="genres" class="form-select" formControlName="genres" [compareWith]="compareGenres" multiple size="3">
+            <option [selected] [ngValue]="null">{{ 'feature.genre.choose' | translate }}</option>
+            <option *ngFor="let genre of (genreList$ | async)" [ngValue]="genre">{{ genre.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="tags">{{ 'Tags' | translate }}</label>
+            <vg-tag-input id="tags" formControlName="tags" [placeholder]="'feature.tag.tag_separator_hint' | translate"></vg-tag-input>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label for="theme">{{ 'Theme' | translate }}</label>
+          <select id="theme" class="form-select" formControlName="theme" [compareWith]="compareThemes">
+            <option [selected] [ngValue]="null">{{ 'Choose a theme' | translate }}</option>
+            <option *ngFor="let theme of (themeList$ | async)" [ngValue]="theme">{{ theme.name }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label for="description">{{ 'Description' | translate }}</label>
+      <textarea class="form-control" id="description" formControlName="description" rows="10"></textarea>
+    </div>
+  </form>
+  <ng-container modalFooter>
+    <button type="submit" form="formAdditionalInfo" class="btn btn-primary rounded-pill">{{'common.button.save' | translate}}</button>
+  </ng-container>
+</app-modal-wrapper>

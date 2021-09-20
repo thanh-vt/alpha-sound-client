@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
+import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +11,9 @@ import { environment } from '../environments/environment';
 export class AppComponent {
   endpointMap = environment.pingEndpointConfig;
 
-  constructor() {}
+  constructor(private toastService: VgToastService, private translate: TranslateService) {
+    const currentLanguage = this.translate.getBrowserLang();
+    translate.setDefaultLang(currentLanguage);
+    translate.use(currentLanguage);
+  }
 }

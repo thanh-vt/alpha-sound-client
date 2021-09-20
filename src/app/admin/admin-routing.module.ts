@@ -13,12 +13,20 @@ const routes: Routes = [
         component: DashboardComponent
       },
       {
+        path: 'user-management',
+        loadChildren: () => import('./user-management/user-management.module').then(mod => mod.UserManagementModule)
+      },
+      {
         path: 'artist-management',
         loadChildren: () => import('./artist-management/artist-management.module').then(mod => mod.ArtistManagementModule)
       },
       {
         path: 'song-management',
         loadChildren: () => import('./song-management/song-management.module').then(mod => mod.SongManagementModule)
+      },
+      {
+        path: 'album-management',
+        loadChildren: () => import('./album-management/album-management.module').then(mod => mod.AlbumManagementModule)
       },
       {
         path: 'country-management',

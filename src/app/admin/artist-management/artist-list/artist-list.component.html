@@ -1,12 +1,12 @@
+<h4>{{'feature.artist.artist_management' | translate}}</h4>
 <button (click)="openCreateDialog($event)" class="btn btn-primary m-2 rounded-pill">{{ 'common.button.add'| translate }}</button>
 <table class="table table-striped">
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col" id="name">{{ 'Artist Name' | translate }}</th>
+      <th scope="col" id="name">{{ 'feature.artirst.artist_name' | translate }}</th>
       <th scope="col" id="birthDate">{{ 'BirthDate' | translate }}</th>
       <th scope="col">{{ 'Avatar' | translate }}</th>
-      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -21,13 +21,11 @@
       <td>{{ artist.birthDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</td>
       <td><img [src]="artist.avatarUrl" class="avatar" alt="" /></td>
       <td>
-        <button (click)="openDeleteDialog(artist, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
-          <i class="bi bi-trash"></i>
-        </button>
-      </td>
-      <td>
         <button (click)="openEditDialog(artist, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
           <i class="bi bi-pencil-square"></i>
+        </button>
+        <button (click)="openDeleteDialog(artist, $event)" class="btn btn-danger btn-sm m-2 rounded-circle">
+          <i class="bi bi-trash"></i>
         </button>
       </td>
     </tr>

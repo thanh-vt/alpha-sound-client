@@ -2,7 +2,7 @@
   <form modalBody [formGroup]="createPlaylistForm" (ngSubmit)="onSubmit()">
     <div>
       <div class="form-group">
-        <label for="playlist">{{ 'Title' | translate }}</label>
+        <label for="playlist">{{ 'common.label.title' | translate }}</label>
         <div class="input-group">
           <input id="playlist" class="form-control" [placeholder]="'Enter playlist title' | translate" formControlName="title" />
         </div>
@@ -12,7 +12,7 @@
   <ng-container modalFooter>
     <button
       (click)="onSubmit()"
-      [disabled]="loading || this.createPlaylistForm.get('title').hasError('required')"
+      [disabled]="loading || this.createPlaylistForm.get('common.label.title').hasError('required')"
       class="btn btn-primary rounded-pill mx-1"
     >
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'common.button.save' | translate }}

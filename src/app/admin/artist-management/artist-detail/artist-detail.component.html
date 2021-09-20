@@ -1,7 +1,7 @@
 <div *ngIf="artist">
   <app-card [type]="2" [imgSrc]="artist.avatarUrl" [title]="'feature.artist.artist_info' | translate" [showEditButton]="false">
     <div cardText2>
-      <h6 class="d-inline">{{ 'Artist Name' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.artirst.artist_name' | translate }}:&nbsp;</h6>
       <span>{{artist.name}}</span><br />
       <h6 class="d-inline">{{ 'common.label.birthDate' | translate }}:&nbsp;</h6>
       <span>{{artist.birthDate | date: 'dd/MM/yyyy'}}</span><br />
@@ -23,7 +23,7 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">{{ 'Title' | translate }}</th>
+        <th scope="col">{{ 'common.label.title' | translate }}</th>
         <th scope="col">{{ 'Release Date' | translate }}</th>
         <th scope="col"></th>
         <th scope="col"></th>

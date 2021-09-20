@@ -46,7 +46,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
-      }
+      },
+      isolate: false
     }),
     VgToastModule.forRoot(),
     VgLoaderModule,
@@ -55,9 +56,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
     // HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN'}),
   ],
-  exports: [TranslateModule],
+  // exports: [TranslateModule],
   providers: [
-    TranslateService,
+    // TranslateService,
     { provide: HTTP_INTERCEPTORS, useClass: NotificationInterceptor, multi: true }, // order 2
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }, // order 1
     { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },

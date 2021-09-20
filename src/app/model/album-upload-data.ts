@@ -37,7 +37,7 @@ export class AlbumUploadData {
 
   isValid(needUpload?: boolean): boolean {
     if (needUpload) {
-      return this.formData.get('cover') && this.formGroup.valid;
+      return this.formData.get('cover') && !this.formGroup.invalid;
     }
     return this.formGroup.valid;
   }
@@ -58,7 +58,8 @@ export class AlbumUploadData {
       tags: [null],
       country: [null],
       theme: [null],
-      coverUrl: [null]
+      coverUrl: [null],
+      additionalInfo: [null]
     });
     instance.formData = new FormData();
     instance.filteredArtists = [];
@@ -97,6 +98,7 @@ export class AlbumUploadData {
           [],
           'create'
         );
+        songUploadData.editable = true;
       }
       this.songUploadDataList.push(songUploadData);
     }

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Country } from '../../../model/country';
 import { CountryService } from '../../../service/country.service';
-import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CreateCountryComponent } from '../create-country/create-country.component';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
-import { ArtistEditComponent } from '../../artist-management/artist-edit/artist-edit.component';
-import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { PagingInfo } from '../../../model/paging-info';
+import { DataUtil } from '../../../util/data-util';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-country-list',
@@ -15,12 +15,18 @@ import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
   styleUrls: ['./country-list.component.scss']
 })
 export class CountryListComponent implements OnInit {
-  countryList: Country[];
-  message: string;
-  pageNumber: number;
-  subscription: Subscription = new Subscription();
+  countryCreateForm: FormGroup = this.fb.group({
+    name: ['', [Validators.required]]
+  });
+  countryUpdateForm: FormGroup = this.fb.group({
+    id: [null],
+    name: ['', [Validators.required]]
+  });
+  countryPage: PagingInfo<Country> = DataUtil.initPagingInfo();
+  currentEditing: Country;
 
   constructor(
+    private fb: FormBuilder,
     private countryService: CountryService,
     private translate: TranslateService,
     private loadingService: VgLoaderService,
@@ -28,51 +34,49 @@ export class CountryListComponent implements OnInit {
     private toastService: VgToastService
   ) {}
 
-  ngOnInit(): void {
-    this.countryList = [];
-    this.pageNumber = 0;
-    this.onScroll(this.pageNumber).finally();
+  async ngOnInit(): Promise<void> {
+    await this.getCountryList();
   }
 
-  async onScroll(page: number): Promise<void> {
-    try {
-      this.loadingService.loading(true);
-      this.countryList = (await this.countryService.getCountryList(page).toPromise()).content;
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.loadingService.loading(false);
+  async getCountryList(page = 0): Promise<void> {
+    this.countryPage = await this.countryService.getCountryList(page).toPromise();
+  }
+
+  toggleEdit(country: Country, val?: boolean): void {
+    if (this.currentEditing) {
+      this.currentEditing.editing = false;
     }
+    this.currentEditing = country;
+    this.currentEditing.editing = val;
+    this.countryUpdateForm.patchValue(this.currentEditing);
   }
 
-  async openCreateDialog(event: Event): Promise<void> {
-    event.stopPropagation();
-    const ref = this.ngbModal.open(CreateCountryComponent, {
-      animation: true,
-      backdrop: false,
-      centered: false,
-      scrollable: false,
-      size: 'md'
+  createCountry(): void {
+    this.countryCreateForm.markAllAsTouched();
+    if (this.countryCreateForm.invalid) {
+      return;
+    }
+    this.countryService.createCountry(this.countryCreateForm.getRawValue()).subscribe(async next => {
+      console.log(next);
+      this.toastService.success({ text: this.translate.instant('feature.country.create_success') });
+      this.countryCreateForm.reset();
+      await this.getCountryList(this.countryPage.pageable?.pageNumber);
     });
-    await ref.result;
-    await this.onScroll(this.pageNumber);
   }
 
-  async openEditDialog(country: Country, event: Event): Promise<void> {
-    event.stopPropagation();
-    const ref = this.ngbModal.open(ArtistEditComponent, {
-      animation: true,
-      backdrop: false,
-      centered: false,
-      scrollable: false,
-      size: 'md'
+  updateCountry(i: number): void {
+    this.countryUpdateForm.markAllAsTouched();
+    if (this.countryUpdateForm.invalid) {
+      return;
+    }
+    const updatedCountry = this.countryUpdateForm.getRawValue();
+    this.countryService.updateCountry(updatedCountry, this.currentEditing?.id).subscribe(next => {
+      this.countryPage.content[i] = next;
+      this.toastService.success({ text: this.translate.instant('feature.country.update_success') });
     });
-    ref.componentInstance.country = country;
-    await ref.result;
-    await this.onScroll(this.pageNumber);
   }
 
-  async openDeleteDialog(country: Country, event: Event): Promise<void> {
+  async openDeleteDialog(event: Event, country: Country): Promise<void> {
     event.stopPropagation();
     const ref = this.ngbModal.open(ConfirmationModalComponent, {
       animation: true,
@@ -83,16 +87,15 @@ export class CountryListComponent implements OnInit {
     });
     ref.componentInstance.subject = this.translate.instant('common.entity.country');
     ref.componentInstance.name = country.name;
+    ref.componentInstance.data = true;
     try {
       const result = await ref.result;
       if (result) {
         this.loadingService.loading(true);
         await this.countryService.deleteCountry(country.id).toPromise();
-        this.toastService.show({ text: 'Country deleted successfully' }, { type: TOAST_TYPE.SUCCESS });
-        await this.onScroll(this.pageNumber).finally();
+        this.toastService.success({ text: 'feature.country.delete_success' });
       }
     } catch (e) {
-      this.toastService.show({ text: 'Failed to delete country. An error has occurred' }, { type: TOAST_TYPE.ERROR });
       console.error(e);
     } finally {
       this.loadingService.loading(false);

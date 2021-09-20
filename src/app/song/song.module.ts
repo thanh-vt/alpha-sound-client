@@ -14,7 +14,6 @@ import { NewSongComponent } from './new-song/new-song.component';
 import { SharedModule } from '../shared/shared.module';
 import { PlaylistModule } from '../playlist/playlist.module';
 import { ListenSongComponent } from './listen-song/listen-song.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { VgControlModule, VgDirectivesModule, VgUtilModule } from 'ngx-vengeance-lib';
 
 @NgModule({
@@ -35,7 +34,6 @@ import { VgControlModule, VgDirectivesModule, VgUtilModule } from 'ngx-vengeance
     NgbModule,
     SharedModule,
     PlaylistModule,
-    TranslateModule,
     VgControlModule,
     VgDirectivesModule,
     VgUtilModule

@@ -10,45 +10,4 @@
     </a>
   </ng-template>
 </ngb-carousel>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">{{ 'Title' | translate }}</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" *ngFor="let song of songPage.content; index as i">
-      <th scope="row">{{ song.rn }}</th>
-      <td>
-        <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
-        <a *ngFor="let artist of song.artists; index as j"
-          ><small>{{ artist.name }}{{ j === song.artists.length - 1 ? '' : ', '}}</small></a
-        >
-      </td>
-      <td>
-        <small>{{ song.duration | duration}}</small>
-      </td>
-      <td>
-        <span class="float-right"
-          ><small><i class="bi bi-headphones"></i> {{song.listeningFrequency}}</small></span
-        >
-      </td>
-      <td>
-        <app-song-like-btn [song]="song"></app-song-like-btn>
-        <app-song-menu-btn [song]="song"></app-song-menu-btn>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<nav aria-label="...">
-  <ngb-pagination
-    [collectionSize]="songPage.totalElements"
-    [page]="songPage.pageable?.pageNumber + 1"
-    [pageSize]="songPage.pageable?.pageSize"
-    (pageChange)="goToPage($event - 1)"
-  ></ngb-pagination>
-</nav>
+<app-song-table [paramsFetch]="paramsFetch"></app-song-table>

@@ -5,6 +5,7 @@ import { Song } from '../../../model/song';
 import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SongEditAdditionalInfoComponent } from '../song-edit-additional-info/song-edit-additional-info.component';
+import { AuthService } from '../../../service/auth.service';
 
 @Component({
   selector: 'app-song-edit-card',
@@ -20,7 +21,7 @@ export class SongEditCardComponent implements OnInit {
   minDate = DateUtil.getMinDate();
   additionalRef: NgbModalRef;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private authService: AuthService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     if (this.songUploadData?.type === 'view') {
@@ -53,9 +54,8 @@ export class SongEditCardComponent implements OnInit {
       scrollable: false,
       size: 'lg'
     });
-    const songId = this.songUploadData.formGroup.get('id').value;
-    console.log(songId);
-    this.additionalRef.componentInstance.songId = songId;
+    this.additionalRef.componentInstance.songId = this.songUploadData.formGroup.get('id').value;
+    this.additionalRef.componentInstance.additionalInfo = this.songUploadData.formGroup.get('additionalInfo').value;
     const sub = this.additionalRef.closed.subscribe(next => {
       if (next) {
         this.songUploadData.formGroup.get('additionalInfo').setValue(next);

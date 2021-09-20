@@ -9,7 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { CardComponent } from './component/card/card.component';
 import { SpinnerComponent } from './component/spinner/spinner.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EnvPipe } from './pipe/env.pipe';
 import { ConfirmationModalComponent } from './component/modal/confirmation-modal/confirmation-modal.component';
 import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wrapper.component';
@@ -27,6 +27,11 @@ import { SongSuggestionComponent } from './component/song-suggestion/song-sugges
 import { SongAddCardComponent } from './component/song-add-suggestion/song-add-card.component';
 import { SongEditAdditionalInfoComponent } from './component/song-edit-additional-info/song-edit-additional-info.component';
 import { StringArrayPipe } from './pipe/string-array.pipe';
+import { SongLikesPipe } from './pipe/song-likes.pipe';
+import { SongTableComponent } from './component/song-table/song-table.component';
+import { AlbumEditAdditionalInfoComponent } from './component/album-edit-additional-info/album-edit-additional-info.component';
+import { HttpClient } from '@angular/common/http';
+import { HttpLoaderFactory } from '../app.module';
 
 @NgModule({
   declarations: [
@@ -51,14 +56,24 @@ import { StringArrayPipe } from './pipe/string-array.pipe';
     SongSuggestionComponent,
     SongAddCardComponent,
     SongEditAdditionalInfoComponent,
-    StringArrayPipe
+    StringArrayPipe,
+    SongLikesPipe,
+    SongTableComponent,
+    AlbumEditAdditionalInfoComponent
   ],
   imports: [
     CommonModule,
     NgbModule,
     RouterModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      isolate: false
+    }),
     VgDirectivesModule,
     VgControlModule.forRoot({
       provide: VgErrorDictService,
@@ -73,6 +88,7 @@ import { StringArrayPipe } from './pipe/string-array.pipe';
   ],
   providers: [],
   exports: [
+    TranslateModule,
     NavbarComponent,
     SidebarComponent,
     FooterComponent,
@@ -93,7 +109,8 @@ import { StringArrayPipe } from './pipe/string-array.pipe';
     SongPlayBtnComponent,
     AlbumPlayBtnComponent,
     SongAddCardComponent,
-    StringArrayPipe
+    StringArrayPipe,
+    SongTableComponent
   ]
 })
 export class SharedModule {}

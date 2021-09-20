@@ -69,8 +69,8 @@ export class GenreListComponent implements OnInit {
     if (this.genreUpdateForm.invalid) {
       return;
     }
-    const updatedgenre = this.genreUpdateForm.getRawValue();
-    this.genreService.updateGenre(updatedgenre, this.currentEditing?.id).subscribe(next => {
+    const updatedGenre = this.genreUpdateForm.getRawValue();
+    this.genreService.updateGenre(updatedGenre, this.currentEditing?.id).subscribe(next => {
       this.genrePage.content[i] = next;
       this.toastService.success({ text: this.translate.instant('feature.genre.update_success') });
     });

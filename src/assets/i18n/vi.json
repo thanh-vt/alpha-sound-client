@@ -1,8 +1,5 @@
 {
   "Favorites": "Bài hát yêu thích",
-  "Search": "Tìm kiếm",
-  "Language": "Ngôn ngữ",
-  "Title": "Tiêu đề",
   "Release Date": "Ngày phát hành",
   "English": "Tiếng Anh",
   "Vietnamese": "Tiếng Việt",
@@ -10,7 +7,6 @@
   "Next": "Trang sau",
   "Record Chart": "Bảng xếp hạng",
   "Song Name": "Tên bài hát",
-  "Artist Name": "Tên nghệ sĩ",
   "Artist(s)": "Nghệ sĩ",
   "Genre(s)": "Thẻ",
   "Theme": "Chủ đề",
@@ -103,6 +99,7 @@
       "theme": "Chủ đề"
     },
     "label": {
+      "title": "Tiêu đề",
       "username": "Tên người dùng",
       "password": "Mật khẩu",
       "firstName": "Tên",
@@ -112,7 +109,12 @@
       "newPassword": "Mật khẩu mới",
       "repeatedNewPassword": "Nhập lại mật khẩu",
       "create_time": "Ngày tạo",
-      "update_time": "Ngày cập nhật"
+      "update_time": "Ngày cập nhật",
+      "admin_page": "Trang quản trị",
+      "confirm": "Xác nhận",
+      "user_homepage": "Trang chủ người dùng",
+      "dashboard": "Bảng điều khiển",
+      "alpha_sound_admin": "Trang quản trị Alpha Sound"
     },
     "placeholder": {
       "username": "Điền tên người dùng",
@@ -133,16 +135,17 @@
       }
     },
     "message": {
-      "confirm_delete": "Are you sure that you want to remove {{subject}} {{name}}"
+      "confirm_delete": "Bạn có chắc chắn muốn xóa {{subject}} {{name}}"
     },
     "button": {
       "add": "Thêm",
       "save": "Lưu",
       "cancel": "Hủy bỏ",
-      "accept": "Đồng ý"
+      "accept": "Đồng ý",
+      "search": "Tìm kiếm"
     },
     "error": {
-      "connection_timeout": "Không nhận được phản hồi từ máy chủ",
+      "timeout": "Không nhận được phản hồi từ máy chủ",
       "unknown": "Một lỗi không xác định xảy ra"
     }
   },
@@ -175,6 +178,7 @@
       "successMsg": "Chúng tôi vừa gửi cho bạn 1 email, hãy kiểm tra và click vào đường dẫn để đặt lại mật khẩu"
     },
     "song": {
+      "song_management": "Quản lý bài hát",
       "song_info": "Thông tin bài hát",
       "song_list": "Danh sách bài hát",
       "additional_info": "Thông tin bổ sung",
@@ -184,6 +188,7 @@
       "lyric": "Lời bài hát"
     },
     "album": {
+      "album_management": "Quản lý album",
       "album_info": "Thông tin album",
       "album_list": "Danh sách album",
       "upload_album": "Tải lên album",
@@ -191,9 +196,20 @@
       "album_title_hint": "Nhập tiêu đề album"
     },
     "artist": {
+      "artist_management": "Quản lý nghệ sĩ",
       "artist_info": "Thông tin nghệ sĩ",
       "artist_list": "Danh sách nghệ sĩ",
+      "artist_name": "Tên nghệ sĩ",
       "biography": "Tiểu sử"
+    },
+    "country": {
+      "country_management": "Quản lý quốc gia",
+      "country_name": "Tên quốc gia",
+      "country_name_hint": "Nhập tên quốc gia",
+      "create_country": "Thêm quốc gia",
+      "update_success": "Cập nhật quốc gia thành công!",
+      "create_success": "Thêm mới quốc gia thành công!",
+      "delete_success": "Xóa quốc gia thành công!"
     },
     "genre": {
       "choose": "Chọn một hoặc nhiều thể loại",
@@ -226,6 +242,9 @@
     },
     "comment": {
       "leave_comment": "Để lại bình luận tại đây"
+    },
+    "user": {
+      "user_management": "Quản lý người dùng"
     }
   },
   "Password reset successfully.": "Đặt lại mật khẩu thành công",

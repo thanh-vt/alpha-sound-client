@@ -75,7 +75,7 @@
       <input
         class="form-control rounded-pill mr-1"
         type="search"
-        [placeholder]="'Search' | translate"
+        [placeholder]="'common.button.search' | translate"
         aria-label="Search"
         formControlName="searchText"
         style="width: 12rem"
@@ -147,6 +147,12 @@
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/playlist']"
         ><i class="bi bi-music-note-list"></i> {{ 'common.entity.playlist' | translate }}</a
       >
+      <ng-container *ngIf="isAdmin">
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem class="dropdown-item" [routerLink]="['/admin/dashboard']"
+          ><i class="bi bi-person-square"></i> {{ 'common.label.admin_page' | translate }}</a
+        >
+      </ng-container>
       <div class="dropdown-divider"></div>
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/uploaded/song']"
         ><i class="bi bi-upload"></i> {{ 'feature.song.uploaded_song' | translate }}</a

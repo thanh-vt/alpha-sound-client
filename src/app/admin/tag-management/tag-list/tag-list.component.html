@@ -2,8 +2,8 @@
 <form [formGroup]="tagCreateForm" (ngSubmit)="createTag()">
   <div>
     <label for="name" class="form-label">{{'feature.tag.create_tag' | translate}}</label>
-    <input type="text" class="form-control" id="name" [placeholder]="'feature.tag.tag_name' | translate" formControlName="name" />
-    <vg-error-section [label]="'common.entity.tag' | translate" [group]="tagCreateForm" controlName="name"></vg-error-section>
+    <input type="text" class="form-control" id="name" [placeholder]="'feature.tag.tag_name_hint' | translate" formControlName="name" />
+    <vg-error-section [label]="'feature.tag.tag_name' | translate" [group]="tagCreateForm" controlName="name"></vg-error-section>
   </div>
   <button type="submit" class="btn btn-primary rounded-pill my-2">{{'common.button.save'| translate}}</button>
 </form>
@@ -35,8 +35,8 @@
       </td>
       <td>
         <div class="d-flex justify-content-center align-items-center">
-          <button *ngIf="!tag.editing" class="btn btn-sm btn-primary rounded-circle mx-2" (click)="toggleEdit(tag, true)">
-            <i class="bi bi-pencil"></i>
+          <button *ngIf="!tag.editing" class="btn btn-sm btn-secondary rounded-circle mx-2" (click)="toggleEdit(tag, true)">
+            <i class="bi bi-pencil-square"></i>
           </button>
           <button *ngIf="tag.editing" class="btn btn-sm btn-primary rounded-circle mx-2" (click)="updateTag(i)">
             <i class="bi bi-save"></i>
