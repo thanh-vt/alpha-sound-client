@@ -62,7 +62,9 @@ export class AuthService {
       return;
     }
     this.tokenStorageService.clearToken();
-    this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe();
+    if (tokenInfo.token?.length <= 36) {
+      this.http.delete<Observable<string>>(`${environment.authUrl}/oauth/token/revoke/${tokenInfo.token}`).subscribe();
+    }
   }
 
   checkIsAdmin(): Observable<boolean> {

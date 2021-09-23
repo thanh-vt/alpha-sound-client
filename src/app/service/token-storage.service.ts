@@ -114,9 +114,15 @@ export class TokenStorageService {
 
   clearToken(): void {
     if (environment.credMode === 'cookie') {
-      this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
-      this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
-      localStorage.removeItem(USER_INFO);
+      if (this.isRememberMe()) {
+        this.cookieService.delete(ACCESS_TOKEN_KEY, '/');
+        this.cookieService.delete(REFRESH_TOKEN_KEY, '/');
+        localStorage.removeItem(USER_INFO);
+      } else {
+        sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+        sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+        sessionStorage.removeItem(USER_INFO);
+      }
     } else {
       if (this.isRememberMe()) {
         localStorage.removeItem(ACCESS_TOKEN_KEY);
