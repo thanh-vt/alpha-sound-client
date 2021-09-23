@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { TOAST_TYPE, VgHerokuWakeupService, VgToastService } from 'ngx-vengeance-lib';
 import { catchError } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class NotificationInterceptor implements HttpInterceptor {
   static translateService;
-  constructor(private translate: TranslateService, private toastService: VgToastService) {}
+
+  constructor(
+    private vgHerokuWakeupService: VgHerokuWakeupService,
+    private translate: TranslateService,
+    private toastService: VgToastService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.vgHerokuWakeupService.trackRequest.next(null);
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
         let msg: string;
