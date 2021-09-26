@@ -10,7 +10,6 @@ import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add
 import { CardComponent } from './component/card/card.component';
 import { SpinnerComponent } from './component/spinner/spinner.component';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { EnvPipe } from './pipe/env.pipe';
 import { ConfirmationModalComponent } from './component/modal/confirmation-modal/confirmation-modal.component';
 import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wrapper.component';
 import { VgControlModule, VgDirectivesModule, VgErrorDictService, VgUtilModule } from 'ngx-vengeance-lib';
@@ -32,6 +31,7 @@ import { SongTableComponent } from './component/song-table/song-table.component'
 import { AlbumEditAdditionalInfoComponent } from './component/album-edit-additional-info/album-edit-additional-info.component';
 import { HttpClient } from '@angular/common/http';
 import { HttpLoaderFactory } from '../app.module';
+import { CommentBoxComponent } from './component/comment-box/comment-box.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,6 @@ import { HttpLoaderFactory } from '../app.module';
     AddSongToPlaylistComponent,
     CardComponent,
     SpinnerComponent,
-    EnvPipe,
     ConfirmationModalComponent,
     ModalWrapperComponent,
     MusicPlayerComponent,
@@ -59,7 +58,8 @@ import { HttpLoaderFactory } from '../app.module';
     StringArrayPipe,
     SongLikesPipe,
     SongTableComponent,
-    AlbumEditAdditionalInfoComponent
+    AlbumEditAdditionalInfoComponent,
+    CommentBoxComponent
   ],
   imports: [
     CommonModule,
@@ -95,7 +95,6 @@ import { HttpLoaderFactory } from '../app.module';
     AddSongToPlaylistComponent,
     CardComponent,
     SpinnerComponent,
-    EnvPipe,
     ModalWrapperComponent,
     VgControlModule,
     MusicPlayerComponent,
@@ -110,7 +109,8 @@ import { HttpLoaderFactory } from '../app.module';
     AlbumPlayBtnComponent,
     SongAddCardComponent,
     StringArrayPipe,
-    SongTableComponent
+    SongTableComponent,
+    CommentBoxComponent
   ]
 })
 export class SharedModule {}

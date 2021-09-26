@@ -1,53 +1,53 @@
 <ng-container *ngIf="user">
   <app-card
     [type]="2"
-    [imgSrc]="user?.avatar_url || '../../../assets/avatars/default-user-avatar.png'"
+    [imgSrc]="user?.profile?.avatar_url || '../../../assets/avatars/default-user-avatar.png'"
     [title]="'feature.account.profile' | translate"
-    [showEditButton]="user?.user_name===currentUser?.user_name"
+    [showEditButton]="user?.username===(currentUser$ | async)?.user_name"
     (showEditForm)="showEditForm=!showEditForm"
   >
     <span cardButton2><i class="bi bi-person-check"></i></span>
     <div cardText2>
-      <ng-container *ngIf="user?.user_name===currentUser?.user_name; else notOwnProfileBlock">
+      <ng-container *ngIf="user?.username===(currentUser$ | async)?.user_name; else notOwnProfileBlock">
         <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
-        <span class="text-secondary">{{user?.user_name}}</span>
+        <span class="text-secondary">{{user?.profile?.user_name}}</span>
         <br />
         <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
-        <span class="text-secondary">{{user?.first_name}}</span><br />
+        <span class="text-secondary">{{user?.profile?.first_name}}</span><br />
         <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
-        <span class="text-secondary">{{user?.last_name}}</span><br />
+        <span class="text-secondary">{{user?.profile?.last_name}}</span><br />
         <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
-        <span *ngIf="user?.date_of_birth" class="text-secondary"> {{user?.date_of_birth | date: 'dd/MM/yyyy' : '' }}</span>
+        <span *ngIf="user?.profile?.date_of_birth" class="text-secondary"> {{user?.profile?.date_of_birth | date: 'dd/MM/yyyy' }}</span>
         <br />
         <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
-        <span> <i *ngIf="user?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
+        <span> <i *ngIf="user?.profile?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
         <br />
         <h6 class="d-inline">Email:&nbsp;</h6>
-        <span *ngIf="user?.email" class="text-secondary">{{user?.email}}</span>
+        <span *ngIf="user?.profile?.email" class="text-secondary">{{user?.profile?.email}}</span>
       </ng-container>
     </div>
     <ng-template #notOwnProfileBlock>
       <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
-      <span class="text-secondary">{{user.user_name}}</span>
+      <span class="text-secondary">{{user.username}}</span>
       <br />
       <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
       <span class="text-secondary">**********</span>
       <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
       <span class="text-secondary">**********</span>
       <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
-      <span *ngIf="!user?.date_of_birth" class="text-secondary">**********</span>
+      <span *ngIf="!user?.profile?.date_of_birth" class="text-secondary">**********</span>
       <br />
       <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
-      <span> <i *ngIf="user?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
+      <span> <i *ngIf="user?.profile?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
       <br />
       <h6 class="d-inline">Email:&nbsp;</h6>
-      <span *ngIf="!user?.email && user?.email !== null" class="text-secondary">**********</span><br />
+      <span *ngIf="!user?.profile?.email && user?.profile?.email !== null" class="text-secondary">**********</span><br />
     </ng-template>
   </app-card>
 </ng-container>
 <div *ngIf="showEditForm" class="update_profile">
   <app-card [type]="3" [title]="'Edit Profile' | translate">
-    <app-update-profile cardText3 (updateEvent)="showEditForm = false"></app-update-profile>
+    <app-update-profile cardText3 (updateEvent)="onUpdate($event)"></app-update-profile>
   </app-card>
 </div>
 <ng-template #female>

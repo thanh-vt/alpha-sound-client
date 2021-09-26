@@ -1,4 +1,5 @@
 import { UserInfo } from './user-info';
+import { CommentType } from '../constant/comment-type';
 
 export interface Comment {
   isDisabled?: boolean;
@@ -6,4 +7,7 @@ export interface Comment {
   content?: string;
   localDateTime?: Date;
   userInfo?: UserInfo;
+  entityId: number;
+  commentType: CommentType;
+  isEditing?: boolean;
 }

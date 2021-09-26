@@ -164,14 +164,6 @@ export class SongService {
     return this.http.delete<void>(`${environment.apiUrl}/song/delete/${id}`);
   }
 
-  commentSong(songId: number, comment: Comment): Observable<void> {
-    return this.http.post<void>(`${environment.apiUrl}/song?comment&song-id=${songId}`, comment);
-  }
-
-  deleteComment(commentId: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/song?comment&comment-id=${commentId}`);
-  }
-
   play(song: Song): void {
     song.listeningFrequency++;
     this.playingQueueService.addToQueueAndPlay({

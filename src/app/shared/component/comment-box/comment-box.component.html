@@ -1,0 +1,66 @@
+<h6>{{commentPage.totalElements}}&nbsp;{{'common.entity.comment' | translate}}</h6>
+<ul class="list-group mb-3">
+  <li class="list-group-item d-flex mx-0" *ngFor="let comment of commentPage.content; trackBy: trackByFn; index as i; ">
+    <div class="d-inline-block">
+      <img
+        class="avatar mr-2"
+        style="width: 3rem; height: 3rem"
+        [src]="comment?.userInfo?.profile?.avatar_url || '../../../assets/images/avatar.jpg'"
+        alt=""
+      />
+    </div>
+    <div class="d-inline-block ms-1 w-75">
+      <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.profile?.user_name }}</a></b
+      ><br />
+      <ng-container *ngTemplateOutlet="(comment.isEditing ? editBlock : displayBlock); context: {comment: comment}"></ng-container>
+      <small class="text-secondary">{{ comment.localDateTime | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+    </div>
+    <div *ngIf="(currentUser$ | async)?.user_name === comment?.userInfo?.username" class="ms-auto mr-2">
+      <button class="btn btn-sm btn-secondary rounded-circle mx-2" (click)="toggleEdit(comment)">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <button class="btn btn-sm btn-danger rounded-circle" (click)="openDeleteCommentDialog(comment.id)">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </li>
+</ul>
+<ngb-pagination
+  *ngIf="commentPage.totalPages > 1"
+  [collectionSize]="commentPage.totalElements"
+  [page]="commentPage.pageable?.pageNumber + 1"
+  [pageSize]="commentPage.pageable?.pageSize"
+  (pageChange)="getCommentList($event - 1)"
+></ngb-pagination>
+<ng-template #displayBlock let-comment="comment">
+  <p style="white-space: pre-line">{{ comment.content }}</p>
+</ng-template>
+<ng-template #editBlock let-comment="comment">
+  <form [formGroup]="commentUpdateForm" (ngSubmit)="onUpdateComment(comment)">
+    <textarea
+      class="form-control"
+      id="commentUpdate"
+      [placeholder]="'feature.comment.leave_comment' | translate"
+      formControlName="content"
+      [maxLength]="500"
+      (keydown.enter)="onUpdateComment(comment, $event)"
+    ></textarea>
+    <vg-error-section [group]="commentUpdateForm" [label]="'common.entity.comment' | translate" controlName="content"></vg-error-section>
+  </form>
+</ng-template>
+<ng-container *ngIf="!!(currentUser$ | async)">
+  <form [formGroup]="commentCreateForm" (ngSubmit)="onCreateComment()">
+    <label for="comment"></label
+    ><textarea
+      class="form-control"
+      id="comment"
+      [placeholder]="'feature.comment.leave_comment' | translate"
+      formControlName="content"
+      [maxLength]="500"
+      (keydown.enter)="onCreateComment($event)"
+    ></textarea>
+    <div class="mt-sm-3">
+      <button type="submit" class="btn btn-primary">{{ 'common.entity.comment' | translate }}</button>
+    </div>
+  </form>
+</ng-container>

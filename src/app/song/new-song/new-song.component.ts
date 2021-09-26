@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-new-song',
@@ -9,7 +8,7 @@ import { environment } from '../../../environments/environment';
 })
 export class NewSongComponent {
   imageOrder = 0;
-  images = [1, 2, 3].map(() => `${environment.baseHref}/assets/slides/slide_number_${this.roll()}.jpg`);
+  images = [1, 2, 3].map(() => `assets/slides/slide_number_${this.roll()}.jpg`);
   description: string[] = ['Bring you the greatest music', 'Hundreds of songs and albums', 'Customize your own playlist'];
   paused = false;
   unpauseOnArrow = false;

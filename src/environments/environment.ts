@@ -9,7 +9,7 @@ export const environment = {
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
   production: false,
-  baseHref: '',
+  baseHref: '/client/alpha-sound',
   credMode: 'header', // cookie only available in https, otherwise set to header
   pingEndpointConfig: {
     ['0']: {

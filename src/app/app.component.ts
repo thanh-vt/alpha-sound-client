@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
-import { TOAST_TYPE, VgToastService } from 'ngx-vengeance-lib';
+import { VgToastService } from 'ngx-vengeance-lib';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

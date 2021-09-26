@@ -91,10 +91,7 @@
               ],
               "deployUrl": "/client/alpha-sound/",
               "baseHref": "/client/alpha-sound/",
-              "index": {
-                "input": "src/index.prod.html",
-                "output": "index.html"
-              },
+
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,

@@ -23,14 +23,10 @@ import { AuthService } from '../../service/auth.service';
   styleUrls: ['./song-detail.component.scss']
 })
 export class SongDetailComponent implements OnInit, OnDestroy {
-  currentUser$: Observable<UserProfile>;
   song: Song;
   songId: number;
   artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo(5);
-  commentList: Comment[];
-  commentForm: FormGroup = this.fb.group({
-    content: ['']
-  });
+
   subscription: Subscription = new Subscription();
 
   constructor(
@@ -43,9 +39,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private modalService: NgbModal,
     private loaderService: VgLoaderService
-  ) {
-    this.currentUser$ = this.authService.currentUser$;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.retrieveSongList();
@@ -67,7 +61,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             ...songInfo[0],
             ...songInfo[1]
           };
-          this.commentList = this.song.comments;
         } catch (e) {
           console.error(e);
         } finally {
@@ -85,45 +78,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         size: `${this.artistPage.pageable?.pageSize}`
       })
       .toPromise();
-  }
-
-  async onSubmit(): Promise<void> {
-    try {
-      await this.songService.commentSong(this.songId, this.commentForm.value).toPromise();
-      this.song = await this.songService.songDetail(this.songId).toPromise();
-      this.commentForm.reset();
-      this.artistPage = await this.artistService.artistList().toPromise();
-      this.commentList = this.song.comments;
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  openDeleteCommentDialog(commentId: number): void {
-    const dialogRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
-      animation: true,
-      backdrop: false,
-      centered: false,
-      scrollable: false,
-      size: 'md'
-    });
-    const comp: ConfirmationModalComponent = dialogRef.componentInstance;
-    comp.subject = this.translate.instant('common.entity.comment');
-    comp.data = commentId;
-    const sub: Subscription = dialogRef.closed.subscribe(result => {
-      if (result) {
-        this.songService
-          .deleteComment(commentId)
-          .pipe(
-            finalize(() => {
-              sub.unsubscribe();
-            })
-          )
-          .subscribe(() => {
-            this.retrieveSongList();
-          });
-      }
-    });
   }
 
   ngOnDestroy(): void {

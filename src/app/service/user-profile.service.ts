@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { UserProfile } from '../model/token-response';
 import { RegistrationConfirm } from '../model/registration-confirm';
 import { ChangePassword } from '../model/change-password';
+import { UserInfo } from '../model/user-info';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,17 @@ import { ChangePassword } from '../model/change-password';
 export class UserProfileService {
   constructor(private http: HttpClient) {}
 
+  getCurrentUserInfo(): Observable<UserInfo> {
+    return this.http.get<UserInfo>(`${environment.apiUrl}/info`);
+  }
+
   getCurrentUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${environment.apiUrl}/profile`);
   }
 
-  getUserDetail(username: string): Observable<UserProfile> {
+  getUserDetail(username: string): Observable<UserInfo> {
     const params = { username };
-    return this.http.get<UserProfile>(`${environment.apiUrl}/user`, { params });
+    return this.http.get<UserInfo>(`${environment.apiUrl}/user`, { params });
   }
 
   register(formGroup: UserProfile): Observable<void> {

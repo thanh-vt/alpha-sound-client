@@ -13,7 +13,6 @@ import { UserProfileService } from './user-profile.service';
 export class AuthService {
   private currentUserSubject: BehaviorSubject<UserProfile> = new BehaviorSubject<UserProfile>(null);
   public currentUser$: Observable<UserProfile> = this.currentUserSubject.asObservable();
-  // sessionTimeout = new EventEmitter();
   subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient, private tokenStorageService: TokenStorageService, private userProfileService: UserProfileService) {

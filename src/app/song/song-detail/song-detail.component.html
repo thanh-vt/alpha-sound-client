@@ -43,34 +43,5 @@
     </div>
   </app-card>
   <h4 class="my-4">{{ 'Comment' | translate }}</h4>
-  <ul class="list-group">
-    <li class="list-group-item row d-flex mx-0" *ngFor="let comment of commentList; index as i">
-      <div class="d-inline-block">
-        <img class="avatar mr-2" [src]="comment?.userInfo?.profile?.avatar_url || '../../../assets/images/avatar.jpg'" alt="" />
-      </div>
-      <div class="d-inline-block">
-        <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.profile?.user_name }}</a></b
-        ><br />
-        <p>{{ comment.content }}</p>
-        <small class="text-secondary">{{ comment.localDateTime | date: 'full' : '' : translate.currentLang }}</small>
-      </div>
-      <div *ngIf="(currentUser$ | async)?.user_name === comment?.userInfo?.username" class="ml-auto mr-2 float-right">
-        <button class="btn btn-dark rounded-pill" (click)="openDeleteCommentDialog(comment.id)">{{ 'Delete' | translate }}</button>
-      </div>
-    </li>
-  </ul>
-  <ng-container *ngIf="!!(currentUser$ | async)">
-    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-      <label for="comment"></label
-      ><textarea
-        class="form-control"
-        id="comment"
-        [placeholder]="'feature.comment.leave_comment' | translate"
-        formControlName="content"
-      ></textarea>
-      <div class="mt-sm-3">
-        <button type="submit" class="btn btn-primary">{{ 'Comment' | translate }}</button>
-      </div>
-    </form>
-  </ng-container>
+  <app-comment-box *ngIf="songId" [type]="'SONG'" [id]="songId"></app-comment-box>
 </ng-container>

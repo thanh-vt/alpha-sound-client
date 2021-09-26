@@ -29,7 +29,7 @@ export class UpdateProfileComponent implements OnInit {
   formData = new FormData();
   minDate = DateUtil.getMinDate();
   maxDate = DateUtil.getMaxDate();
-  @Output() updateEvent: EventEmitter<void> = new EventEmitter<void>();
+  @Output() updateEvent: EventEmitter<UserProfile> = new EventEmitter<UserProfile>();
 
   constructor(
     private fb: FormBuilder,
@@ -63,7 +63,7 @@ export class UpdateProfileComponent implements OnInit {
         .subscribe(next => {
           this.currentUser = next.type === HttpEventType.Response ? next.body : this.currentUser;
           this.authService.currentUserValue = this.currentUser;
-          this.updateEvent.emit();
+          this.updateEvent.emit(this.currentUser);
           this.toastService.show({ text: 'Profile updated successfully' }, { type: TOAST_TYPE.SUCCESS });
         });
     }

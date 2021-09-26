@@ -81,3 +81,4 @@
     (pageChange)="getSongPage($event - 1)"
   ></ngb-pagination>
 </div>
+<app-comment-box *ngIf="albumId" [type]="'ALBUM'" [id]="albumId"></app-comment-box>
