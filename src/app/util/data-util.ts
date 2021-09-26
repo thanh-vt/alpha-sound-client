@@ -11,4 +11,8 @@ export class DataUtil {
       totalPages: 0
     };
   }
+
+  public static scrollToTop(): void {
+    document.getElementById('main-page').scrollTop = 0;
+  }
 }

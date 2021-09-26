@@ -1,7 +1,7 @@
 <ng-container *ngIf="!!(currentUser$ | async)">
   <button
     (click)="likeSong(song, $event, true)"
-    class="btn btn-outline-danger btn-sm rounded-circle border-0"
+    class="btn btn-like btn-sm rounded-circle border-0"
     *ngIf="!song.liked"
     [disabled]="song.loadingLikeButton"
   >
@@ -10,7 +10,7 @@
   </button>
   <button
     (click)="likeSong(song, $event, false)"
-    class="btn btn-outline-danger btn-sm rounded-circle border-0"
+    class="btn btn-unlike btn-sm rounded-circle border-0"
     *ngIf="song.liked"
     [disabled]="song.loadingLikeButton"
   >

@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Comment } from '../model/comment';
 import { HttpClient } from '@angular/common/http';
 import { PagingInfo } from '../model/paging-info';
-import { CommentType } from '../constant/comment-type';
+import { EntityType } from '../constant/entity-type';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import { CommentType } from '../constant/comment-type';
 export class CommentService {
   constructor(private http: HttpClient) {}
 
-  commentList(id: number, type: CommentType, page = 0, size = 5): Observable<PagingInfo<Comment>> {
+  commentList(id: number, type: EntityType, page = 0, size = 5): Observable<PagingInfo<Comment>> {
     const params = {
       id,
       page,
@@ -29,7 +29,7 @@ export class CommentService {
     return this.http.patch<Comment>(`${environment.apiUrl}/comment`, comment);
   }
 
-  deleteComment(commentId: number, type: CommentType): Observable<void> {
+  deleteComment(commentId: number, type: EntityType): Observable<void> {
     const params = {
       ['comment-id']: commentId,
       type

@@ -48,9 +48,24 @@ p {
   color: white !important;
 }
 
-i.bi.bi-heart,
-i.bi.bi-heart-fill {
-  color: #dc3545;
+.btn-unlike:hover,
+.btn-like:hover {
+  background-color: #868686;
+  border: #dc3545 !important;
+  span {
+    color: #dc3545 !important;
+  }
+}
+
+.btn-unlike,
+.btn-like {
+  .spinner-border {
+    color: #dc3545;
+  }
+  i.bi.bi-heart,
+  i.bi.bi-heart-fill {
+    color: #dc3545;
+  }
 }
 
 input {

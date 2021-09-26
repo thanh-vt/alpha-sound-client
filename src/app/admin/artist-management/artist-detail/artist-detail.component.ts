@@ -7,7 +7,6 @@ import { ArtistService } from '../../../service/artist.service';
 import { SongService } from '../../../service/song.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddSongToPlaylistComponent } from '../../../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { PagingInfo } from '../../../model/paging-info';
 import { DataUtil } from '../../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
@@ -72,31 +71,6 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
       this.lastPageFetched++;
     }
     await this.artistService.getSongListOfArtist(this.artistId, this.lastPageFetched);
-  }
-
-  addToPlaying(song: Song, event: Event): void {
-    event.stopPropagation();
-    this.songService.songDetail(song.id).subscribe(next => {
-      song.url = next.url;
-      this.songService.play(song);
-    });
-  }
-
-  likeSong(song: Song, index: number, event: Event, isLiked: boolean): void {
-    event.stopPropagation();
-    this.songService.likeSong(song, isLiked);
-  }
-
-  openPlaylistDialog(songId: number, event: Event): void {
-    event.stopPropagation();
-    const ref = this.modalService.open(AddSongToPlaylistComponent, {
-      animation: true,
-      backdrop: false,
-      centered: false,
-      scrollable: false,
-      size: 'md'
-    });
-    ref.componentInstance.songId = songId;
   }
 
   ngOnDestroy(): void {

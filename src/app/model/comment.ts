@@ -1,13 +1,14 @@
 import { UserInfo } from './user-info';
-import { CommentType } from '../constant/comment-type';
+import { EntityType } from '../constant/entity-type';
 
 export interface Comment {
   isDisabled?: boolean;
   id?: number;
   content?: string;
-  localDateTime?: Date;
+  createTime?: Date;
+  updateTime?: Date;
   userInfo?: UserInfo;
   entityId: number;
-  commentType: CommentType;
+  entityType: EntityType;
   isEditing?: boolean;
 }

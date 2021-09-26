@@ -21,4 +21,6 @@ export interface Album {
   country: Country;
   theme: Theme;
   isDisabled?: boolean;
+  loadingLikeButton?: boolean;
+  liked?: boolean;
 }

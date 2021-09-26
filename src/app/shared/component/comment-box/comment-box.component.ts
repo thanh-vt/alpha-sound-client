@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserProfile } from '../../../model/token-response';
 import { AuthService } from '../../../service/auth.service';
 import { CommentService } from '../../../service/comment.service';
-import { CommentType } from '../../../constant/comment-type';
+import { EntityType } from '../../../constant/entity-type';
 import { Comment } from '../../../model/comment';
 import { PagingInfo } from '../../../model/paging-info';
 import { DataUtil } from '../../../util/data-util';
@@ -30,7 +30,7 @@ export class CommentBoxComponent implements OnChanges {
   });
   editingComment: Comment;
   @Input() id: number;
-  @Input() type: CommentType;
+  @Input() type: EntityType;
 
   constructor(
     private authService: AuthService,
@@ -60,7 +60,7 @@ export class CommentBoxComponent implements OnChanges {
     try {
       const comment: Comment = {
         ...this.commentCreateForm.value,
-        commentType: this.type,
+        entityType: this.type,
         entityId: this.id
       };
       const newComment = await this.commentService.createComment(comment).toPromise();
@@ -84,7 +84,7 @@ export class CommentBoxComponent implements OnChanges {
     try {
       const updatedComment: Comment = {
         ...this.commentUpdateForm.value,
-        commentType: this.type,
+        entityType: this.type,
         entityId: this.id
       };
       comment.content = (await this.commentService.updateComment(updatedComment).toPromise()).content;
@@ -134,6 +134,11 @@ export class CommentBoxComponent implements OnChanges {
     this.commentUpdateForm.patchValue(comment);
     this.editingComment = comment;
     this.editingComment.isEditing = true;
+  }
+
+  cancelEdit(comment: Comment): void {
+    comment.isEditing = false;
+    this.commentUpdateForm.reset();
   }
 
   checkValid(formGroup: FormGroup): boolean {

@@ -1,0 +1,8 @@
+<button *ngIf="!album.liked" class="btn btn-like btn-sm rounded-circle bg-gradient" (click)="like($event, album, true)">
+  <span *ngIf="album.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span *ngIf="!album.loadingLikeButton"> <i class="bi bi-heart"></i></span>
+</button>
+<button *ngIf="album.liked" class="btn btn-unlike btn-sm rounded-circle bg-gradient" (click)="like($event, album,false)">
+  <span *ngIf="album.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span *ngIf="!album.loadingLikeButton"> <i class="bi bi-heart-fill"></i></span>
+</button>

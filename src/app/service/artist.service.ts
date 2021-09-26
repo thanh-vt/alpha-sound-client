@@ -8,12 +8,20 @@ import { map, tap } from 'rxjs/operators';
 import { Song } from '../model/song';
 import { PlayingQueueService } from '../shared/layout/music-player/playing-queue.service';
 import { SongService } from './song.service';
+import { AuthService } from './auth.service';
+import { FavoritesService } from './favorites.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArtistService {
-  constructor(private http: HttpClient, private playingQueueService: PlayingQueueService, private songService: SongService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private playingQueueService: PlayingQueueService,
+    private songService: SongService,
+    private favoritesService: FavoritesService
+  ) {}
 
   artistList(page = 0, size = 10): Observable<PagingInfo<Artist>> {
     return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/list`, {
@@ -56,7 +64,7 @@ export class ArtistService {
     };
     return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, { params }).pipe(
       tap(songPage => {
-        this.songService.patchLikes(songPage.content);
+        this.favoritesService.patchLikes(songPage.content, 'SONG');
         console.log(songPage.content);
         songPage.content.forEach(song => {
           song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);

@@ -1,6 +1,7 @@
 <ng-container *ngIf="album">
   <app-card [type]="2" [showEditButton]="false" [title]="'feature.album.album_info' | translate" [imgSrc]="album.coverUrl">
     <app-album-play-btn card2LeftBtn1 [album]="album"></app-album-play-btn>
+    <app-album-like-btn card2LeftBtn2 [album]="album"></app-album-like-btn>
     <div cardText2>
       <h6 class="d-inline">{{ 'common.label.title' | translate }}:&nbsp;</h6>
       <span>{{album.title}}</span>

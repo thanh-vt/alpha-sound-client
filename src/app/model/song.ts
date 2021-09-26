@@ -7,8 +7,9 @@ import { Country } from './country';
 import { UserProfile } from './token-response';
 import { ResourceInfo } from './resource-info';
 import { Setting } from './setting';
+import { Entity } from '../service/favorites.service';
 
-export interface Song {
+export interface Song extends Entity {
   rn: number;
   id: number;
   title: string;

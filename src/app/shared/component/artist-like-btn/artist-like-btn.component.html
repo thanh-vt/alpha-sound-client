@@ -1,0 +1,8 @@
+<button *ngIf="!artist.liked" class="btn btn-like btn-sm rounded-circle bg-gradient" (click)="like($event, artist, true)">
+  <span *ngIf="artist.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span *ngIf="!artist.loadingLikeButton"> <i class="bi bi-heart" style="font-size: 20px"></i></span>
+</button>
+<button *ngIf="artist.liked" class="btn btn-unlike btn-sm rounded-circle bg-gradient" (click)="like($event, artist,false)">
+  <span *ngIf="artist.loadingLikeButton" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  <span *ngIf="!artist.loadingLikeButton"> <i class="bi bi-heart-fill" style="font-size: 20px"></i></span>
+</button>

@@ -13,11 +13,14 @@
       <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.profile?.user_name }}</a></b
       ><br />
       <ng-container *ngTemplateOutlet="(comment.isEditing ? editBlock : displayBlock); context: {comment: comment}"></ng-container>
-      <small class="text-secondary">{{ comment.localDateTime | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+      <small class="text-secondary">{{ comment.createTime | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
     </div>
     <div *ngIf="(currentUser$ | async)?.user_name === comment?.userInfo?.username" class="ms-auto mr-2">
-      <button class="btn btn-sm btn-secondary rounded-circle mx-2" (click)="toggleEdit(comment)">
+      <button *ngIf="!comment.isEditing" class="btn btn-sm btn-secondary rounded-circle mx-2" (click)="toggleEdit(comment)">
         <i class="bi bi-pencil-square"></i>
+      </button>
+      <button *ngIf="comment.isEditing" class="btn btn-sm btn-secondary rounded-circle mx-2" (click)="cancelEdit(comment)">
+        <i class="bi bi-x-lg"></i>
       </button>
       <button class="btn btn-sm btn-danger rounded-circle" (click)="openDeleteCommentDialog(comment.id)">
         <i class="bi bi-trash"></i>
@@ -43,6 +46,7 @@
       [placeholder]="'feature.comment.leave_comment' | translate"
       formControlName="content"
       [maxLength]="500"
+      (keydown.escape)="cancelEdit(comment)"
       (keydown.enter)="onUpdateComment(comment, $event)"
     ></textarea>
     <vg-error-section [group]="commentUpdateForm" [label]="'common.entity.comment' | translate" controlName="content"></vg-error-section>

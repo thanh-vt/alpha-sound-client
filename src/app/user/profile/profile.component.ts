@@ -7,6 +7,7 @@ import { UserProfileService } from '../../service/user-profile.service';
 import { UserProfile } from '../../model/token-response';
 import { VgLoaderService } from 'ngx-vengeance-lib';
 import { UserInfo } from '../../model/user-info';
+import { DataUtil } from '../../util/data-util';
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.route.paramMap.subscribe(async next => {
         try {
+          DataUtil.scrollToTop();
           this.loaderService.loading(true);
           this.username = next.get('id');
           if (!this.username) {

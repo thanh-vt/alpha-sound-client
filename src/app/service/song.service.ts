@@ -4,20 +4,26 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Song } from '../model/song';
 import { PagingInfo } from '../model/paging-info';
-import { finalize, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Album } from '../model/album';
 import { PlayingQueueService } from '../shared/layout/music-player/playing-queue.service';
 import { AuthService } from './auth.service';
 import { AudioTrack } from '../shared/layout/music-player/audio-track';
+import { FavoritesService } from './favorites.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SongService {
-  constructor(private http: HttpClient, private authService: AuthService, private playingQueueService: PlayingQueueService) {
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private favoritesService: FavoritesService,
+    private playingQueueService: PlayingQueueService
+  ) {
     this.playingQueueService.trackEvent.subscribe(next => {
       if (next && next.event === 'play') {
-        this.listenToSong(next.track.id).subscribe();
+        this.favoritesService.listen(next.track.id, 'SONG').subscribe();
       }
     });
   }
@@ -25,7 +31,6 @@ export class SongService {
   songList(params?: { page?: number; size?: number; sort?: string[] }): Observable<PagingInfo<Song>> {
     return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, { params, withCredentials: true }).pipe(
       tap(songPage => {
-        this.patchLikes(songPage.content);
         songPage.content.forEach(song => {
           song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
         });
@@ -36,7 +41,7 @@ export class SongService {
   searchForSong(params?: { page?: number; size?: number; sort?: string[] } | { [key: string]: string }): Observable<PagingInfo<Song>> {
     return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, { params, withCredentials: true }).pipe(
       tap(songPage => {
-        this.patchLikes(songPage.content);
+        // this.favoritesService.patchLikes(songPage.content, 'SONG');
         songPage.content.forEach(song => {
           song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
         });
@@ -67,43 +72,6 @@ export class SongService {
     return this.http.put<Song>(`${environment.apiUrl}/song/edit/${id}`, formData, {
       reportProgress: true,
       observe: 'events'
-    });
-  }
-
-  listenToSong(songId: number): Observable<Song> {
-    return this.http.patch<Song>(`${environment.apiUrl}/song/listen`, songId);
-  }
-
-  likeSong(song: Song, isLiked: boolean): void {
-    const params = {
-      songId: song.id,
-      isLiked
-    };
-    song.loadingLikeButton = true;
-    this.http
-      .patch<void>(`${environment.apiUrl}/song/like`, params)
-      .pipe(
-        finalize(() => {
-          song.loadingLikeButton = false;
-        })
-      )
-      .subscribe(() => {
-        song.liked = isLiked;
-      });
-  }
-
-  patchLikes(songs: Song[]): void {
-    if (!this.authService.currentUserValue) {
-      return;
-    }
-    const userSongLikeMap = {};
-    songs.forEach(e => {
-      userSongLikeMap[e.id] = e.liked;
-    });
-    this.http.patch<{ id: number; isLiked: boolean }>(`${environment.apiUrl}/song/like-map`, userSongLikeMap).subscribe(next => {
-      songs.forEach(song => {
-        song.liked = next[song.id];
-      });
     });
   }
 

@@ -26,12 +26,14 @@ import { SongSuggestionComponent } from './component/song-suggestion/song-sugges
 import { SongAddCardComponent } from './component/song-add-suggestion/song-add-card.component';
 import { SongEditAdditionalInfoComponent } from './component/song-edit-additional-info/song-edit-additional-info.component';
 import { StringArrayPipe } from './pipe/string-array.pipe';
-import { SongLikesPipe } from './pipe/song-likes.pipe';
+import { LikesPipe } from './pipe/likes.pipe';
 import { SongTableComponent } from './component/song-table/song-table.component';
 import { AlbumEditAdditionalInfoComponent } from './component/album-edit-additional-info/album-edit-additional-info.component';
 import { HttpClient } from '@angular/common/http';
 import { HttpLoaderFactory } from '../app.module';
 import { CommentBoxComponent } from './component/comment-box/comment-box.component';
+import { AlbumLikeBtnComponent } from './component/album-like-btn/album-like-btn.component';
+import { ArtistLikeBtnComponent } from './component/artist-like-btn/artist-like-btn.component';
 
 @NgModule({
   declarations: [
@@ -56,10 +58,12 @@ import { CommentBoxComponent } from './component/comment-box/comment-box.compone
     SongAddCardComponent,
     SongEditAdditionalInfoComponent,
     StringArrayPipe,
-    SongLikesPipe,
+    LikesPipe,
     SongTableComponent,
     AlbumEditAdditionalInfoComponent,
-    CommentBoxComponent
+    CommentBoxComponent,
+    AlbumLikeBtnComponent,
+    ArtistLikeBtnComponent
   ],
   imports: [
     CommonModule,
@@ -110,7 +114,10 @@ import { CommentBoxComponent } from './component/comment-box/comment-box.compone
     SongAddCardComponent,
     StringArrayPipe,
     SongTableComponent,
-    CommentBoxComponent
+    CommentBoxComponent,
+    ArtistLikeBtnComponent,
+    AlbumLikeBtnComponent,
+    LikesPipe
   ]
 })
 export class SharedModule {}

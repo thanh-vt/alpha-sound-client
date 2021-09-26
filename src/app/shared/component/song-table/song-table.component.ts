@@ -29,16 +29,14 @@ export class SongTableComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getSongPage(0, true);
+    await this.getSongPage(0);
   }
 
-  async getSongPage(i: number, scrollUp?: boolean): Promise<void> {
+  async getSongPage(i: number): Promise<void> {
     try {
+      DataUtil.scrollToTop();
       this.loaderService.loading(true);
       this.songPage = await this.songService.songList({ ...this.paramsFetch, page: i }).toPromise();
-      if (scrollUp) {
-        window.scroll(0, 0);
-      }
     } catch (e) {
       console.error(e);
     } finally {
