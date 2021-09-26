@@ -10,7 +10,7 @@
       />
     </div>
     <div class="d-inline-block ms-1 w-75">
-      <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.profile?.user_name }}</a></b
+      <b><a [routerLink]="['/', 'profile', comment.userInfo.username]">{{ comment.userInfo?.username }}</a></b
       ><br />
       <ng-container *ngTemplateOutlet="(comment.isEditing ? editBlock : displayBlock); context: {comment: comment}"></ng-container>
       <small class="text-secondary">{{ comment.createTime | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
