@@ -8,6 +8,11 @@ import { DateUtil } from '../../util/date-util';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AlbumEntryUpdate } from '../../model/album-entry-update';
+import { Song } from '../../model/song';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SongUploadData } from '../../model/song-upload-data';
+import { SongEditModalComponent } from '../../shared/component/song-edit-modal/song-edit-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-upload-album',
@@ -24,11 +29,42 @@ export class UploadAlbumComponent {
     private albumService: AlbumService,
     private songService: SongService,
     private artistService: ArtistService,
-    private toastService: VgToastService
+    private toastService: VgToastService,
+    private modalService: NgbModal
   ) {
     this.albumUploadData = AlbumUploadData.instance({
       router,
       albumService
+    });
+  }
+
+  onUploadSongSuccess(event: Song): void {
+    console.log(event);
+    this.toastService.success({ text: 'Song created/updated successfully' });
+    this.songUploadSubject.next(null);
+  }
+
+  uploadSongFailed(event: HttpErrorResponse): void {
+    console.error(event);
+    this.songUploadSubject.next(null);
+  }
+
+  toggleEdit(songUploadData: SongUploadData): void {
+    const ref = this.modalService.open(SongEditModalComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: false,
+      size: 'md'
+    });
+    const instance: SongEditModalComponent = ref.componentInstance;
+    instance.song = songUploadData.song;
+    instance.songUploadData = songUploadData;
+    ref.closed.subscribe(song => {
+      if (song) {
+        songUploadData.song = song;
+        songUploadData.markForUpdate = false;
+      }
     });
   }
 

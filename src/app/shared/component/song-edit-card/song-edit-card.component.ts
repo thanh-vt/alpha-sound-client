@@ -14,7 +14,6 @@ import { AuthService } from '../../../service/auth.service';
 })
 export class SongEditCardComponent implements OnInit, OnChanges {
   @Input() song: Song;
-  @Input() isSubmittable!: boolean;
   @Input() songUploadData!: SongUploadData;
   @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>();
   @Output() uploadSuccessEvent: EventEmitter<Song> = new EventEmitter<Song>();
@@ -60,15 +59,11 @@ export class SongEditCardComponent implements OnInit, OnChanges {
       return;
     }
     this.songUploadData.formData.set('song', new Blob([JSON.stringify(this.songForm.getRawValue())], { type: 'application/json' }));
-    if (this.isSubmittable) {
-      this.submitEvent.emit();
-    }
+    this.submitEvent.emit();
   }
 
   onUploadSuccess(event: Song): void {
-    if (this.isSubmittable) {
-      this.uploadSuccessEvent.emit(event);
-    }
+    this.uploadSuccessEvent.emit(event);
   }
 
   setMetadata(event: Event, formGroup: FormGroup): void {

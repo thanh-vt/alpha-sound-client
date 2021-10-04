@@ -6,6 +6,7 @@ import { AlbumEntryUpdate } from './album-entry-update';
 import { Router } from '@angular/router';
 import { AlbumService } from '../service/album.service';
 import { UserInfo } from './user-info';
+import { finalize } from 'rxjs/operators';
 
 export type AlbumUploadOptions = {
   router: Router;
@@ -21,7 +22,7 @@ export class AlbumUploadData {
   private router: Router;
   private albumService: AlbumService;
   editable?: boolean;
-  checked?: boolean;
+  loading?: boolean;
 
   constructor(router: Router, albumService: AlbumService) {
     this.router = router;
@@ -72,13 +73,21 @@ export class AlbumUploadData {
   }
 
   waitAndProcessUploadSongList(createAlbumResult: Album, songUploadSubject: Subject<AlbumEntryUpdate>): void {
-    const totalFormCreate = this.songUploadDataList.filter(obj => obj.type === 'CREATE').length;
+    this.loading = true;
+    const totalFormCreate = this.songUploadDataList.filter(
+      obj => obj.type === 'CREATE' || (obj.type === 'UPDATE' && obj.markForUpdate)
+    ).length;
     let count = 0;
     if (totalFormCreate === 0) {
       this.albumService
         .updateSongList(
           [...this.songUploadDataList.map((e, index) => ({ songId: e.song?.id, ordinalNumber: index, mode: e.type })), ...this.recycleBin],
           createAlbumResult.id
+        )
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
         )
         .subscribe(() => {
           setTimeout(() => {
@@ -92,20 +101,25 @@ export class AlbumUploadData {
         }
         count++;
         if (count === totalFormCreate) {
-          await this.albumService
-            .updateSongList(
-              [
-                ...this.songUploadDataList.map((e, index) => ({ songId: e.song?.id, ordinalNumber: index, mode: e.type })),
-                ...this.recycleBin
-              ],
-              createAlbumResult.id
-            )
-            .toPromise();
-          sub.unsubscribe();
-          setTimeout(() => {
-            this.router.navigate(['album', 'detail'], { queryParams: { id: createAlbumResult.id } });
-          }, 1500);
-          return;
+          try {
+            await this.albumService
+              .updateSongList(
+                [
+                  ...this.songUploadDataList.map((e, index) => ({ songId: e.song?.id, ordinalNumber: index, mode: e.type })),
+                  ...this.recycleBin
+                ],
+                createAlbumResult.id
+              )
+              .toPromise();
+            sub.unsubscribe();
+            setTimeout(() => {
+              this.router.navigate(['album', 'detail'], { queryParams: { id: createAlbumResult.id } });
+            }, 1500);
+          } catch (e) {
+            console.error(e);
+          } finally {
+            this.loading = false;
+          }
         }
       });
     }

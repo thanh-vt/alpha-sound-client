@@ -15,6 +15,7 @@ export class SongUploadData {
   editable?: boolean;
   markForUpdate?: boolean;
   ordinalNumber?: number;
+  loading?: boolean;
 
   constructor(type: SongUploadType = 'CREATE', song?: Song) {
     this.formData = new FormData();

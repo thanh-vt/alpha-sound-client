@@ -14,17 +14,31 @@
   <ng-container *ngFor="let songUploadData of albumUploadData.songUploadDataList, index as j">
     <div class="col-sm-6 mb-3" vgSwappableList [collectionName]="'uploadAlbum'" [dataList]="albumUploadData.songUploadDataList" [id]="j">
       <app-card [type]="3" [title]="('common.entity.song' | translate) + ' #' + (j + 1)" class="col-sm-12">
+        <button
+          *ngIf="songUploadData.editable;"
+          card3BtnRight1
+          class="btn btn-info btn-sm rounded-circle ms-1"
+          (click)="toggleEdit(songUploadData)"
+        >
+          <i class="bi bi-pencil" *ngIf="songUploadData.editable; else editableBlock"></i>
+        </button>
         <button cardEsc3 class="btn btn-danger btn-sm rounded-circle" (click)="albumUploadData.removeForm(j)">
           <i class="bi bi-x-lg"></i>
         </button>
-        <app-song-edit-card
-          cardBody3
-          [songUploadData]="songUploadData"
-          [song]="songUploadData.song"
-          [isSubmittable]="false"
-        ></app-song-edit-card>
+        <div cardBody3>
+          <h4>{{songUploadData.song?.title}}</h4>
+          <span>{{songUploadData.song?.artists | stringArray}}</span>
+          <vg-upload-progress
+            [httpObs]="songUploadData.observable"
+            (successEvent)="onUploadSongSuccess($event)"
+            (failureEvent)="uploadSongFailed($event)"
+          ></vg-upload-progress>
+        </div>
       </app-card>
     </div>
   </ng-container>
 </div>
 <app-song-suggestion-card (selectSongEvent)="albumUploadData.addForm($event)"></app-song-suggestion-card>
+<ng-template #editableBlock>
+  <i class="bi bi-pencil-square"></i>
+</ng-template>

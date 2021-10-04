@@ -46,10 +46,10 @@
     ></vg-file-input>
   </div>
   <div class="d-flex justify-content-end align-items-center">
-    <button type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
+    <button [disabled]="songUploadData.loading" type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
       <i class="bi bi-list-ul"></i>&nbsp;{{'feature.song.additional_info' | translate}}
     </button>
-    <button *ngIf="isSubmittable" type="submit" class="btn btn-primary rounded-pill my-2 mx-1">
+    <button [disabled]="songUploadData.loading" type="submit" class="btn btn-primary rounded-pill my-2 mx-1">
       {{ 'common.button.save' | translate }}
     </button>
   </div>

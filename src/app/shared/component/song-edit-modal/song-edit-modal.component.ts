@@ -46,6 +46,10 @@ export class SongEditModalComponent implements OnInit {
         artistForm.setValue(artist);
         artistFormArr.push(artistForm);
       });
+    } else {
+      const artistFormArr = this.songForm.get('artists') as FormArray;
+      artistFormArr.clear();
+      artistFormArr.push(SongUploadData.createArtist(this.fb));
     }
     if (this.songUploadData?.type === 'VIEW') {
       this.songForm.disable();
@@ -53,7 +57,15 @@ export class SongEditModalComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.activeModal.close(this.songForm.getRawValue());
+    if (this.songForm.invalid) {
+      return;
+    }
+    if (!this.song && !this.songUploadData.formData.get('audio')) {
+      return;
+    }
+    const songFromVal = this.songForm.getRawValue();
+    this.songUploadData.formData.set('song', new Blob([JSON.stringify(songFromVal)], { type: 'application/json' }));
+    this.activeModal.close(songFromVal);
   }
 
   onUploadSuccess(event: Song): void {

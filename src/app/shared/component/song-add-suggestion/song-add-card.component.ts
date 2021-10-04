@@ -4,6 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SongSuggestionComponent } from '../song-suggestion/song-suggestion.component';
 import { Song } from '../../../model/song';
 import { AuthService } from '../../../service/auth.service';
+import { SongEditModalComponent } from '../song-edit-modal/song-edit-modal.component';
 
 @Component({
   selector: 'app-song-suggestion-card',
@@ -36,6 +37,23 @@ export class SongAddCardComponent {
   }
 
   newSong(): void {
-    this.selectSongEvent.emit();
+    const ref = this.modalService.open(SongEditModalComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: false,
+      size: 'md'
+    });
+    const instance: SongEditModalComponent = ref.componentInstance;
+    const songUploadData = SongUploadData.instance();
+    songUploadData.editable = true;
+    instance.song = songUploadData.song;
+    instance.songUploadData = songUploadData;
+    ref.closed.subscribe(song => {
+      if (song) {
+        songUploadData.song = song;
+        this.selectSongEvent.emit(songUploadData);
+      }
+    });
   }
 }
