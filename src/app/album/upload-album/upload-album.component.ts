@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { ArtistService } from '../../service/artist.service';
 import { AlbumUploadData } from '../../model/album-upload-data';
 import { VgToastService } from 'ngx-vengeance-lib';
@@ -7,8 +6,8 @@ import { AlbumService } from '../../service/album.service';
 import { SongService } from '../../service/song.service';
 import { DateUtil } from '../../util/date-util';
 import { Router } from '@angular/router';
-import { SongUploadData } from '../../model/song-upload-data';
-import { Artist } from '../../model/artist';
+import { Subject } from 'rxjs';
+import { AlbumEntryUpdate } from '../../model/album-entry-update';
 
 @Component({
   selector: 'app-upload-album',
@@ -18,9 +17,9 @@ import { Artist } from '../../model/artist';
 export class UploadAlbumComponent {
   albumUploadData: AlbumUploadData;
   minDate = DateUtil.getMinDate();
+  songUploadSubject: Subject<AlbumEntryUpdate>;
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
     private albumService: AlbumService,
     private songService: SongService,
@@ -28,29 +27,22 @@ export class UploadAlbumComponent {
     private toastService: VgToastService
   ) {
     this.albumUploadData = AlbumUploadData.instance({
-      fb,
       router,
       albumService
     });
   }
 
   async onSubmit(): Promise<void> {
-    let isSongFormsValid = true;
-    for (const songUploadData of this.albumUploadData.songUploadDataList) {
-      if (!songUploadData.isValid()) {
-        isSongFormsValid = false;
-        break;
-      }
+    const albumFormData: FormData = this.albumUploadData.formData;
+    const createAlbumResult = await this.albumService.uploadAlbum(albumFormData).toPromise();
+    this.toastService.success({ text: 'Album created successfully' });
+    if (this.songUploadSubject && !this.songUploadSubject.closed) {
+      this.songUploadSubject.unsubscribe();
     }
-    if (this.albumUploadData.isValid() && isSongFormsValid) {
-      const albumFormData: FormData = this.albumUploadData.setup();
-      const createAlbumResult = await this.albumService.uploadAlbum(albumFormData).toPromise();
-      this.toastService.success({ text: 'Album created successfully' });
-      this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult);
-      for (const songUploadData of this.albumUploadData.songUploadDataList) {
-        const songFormData: FormData = songUploadData.setup();
-        songUploadData.observable = this.songService.uploadSong(songFormData);
-      }
+    this.songUploadSubject = new Subject<AlbumEntryUpdate>();
+    this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult, this.songUploadSubject);
+    for (const songUploadData of this.albumUploadData.songUploadDataList) {
+      songUploadData.observable = this.songService.uploadSong(songUploadData.formData);
     }
   }
 }

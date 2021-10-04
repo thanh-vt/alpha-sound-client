@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { artistModelToImgSrcMapper, artistModelToTextMapper } from '../../../util/mapper.util';
 import { ArtistService } from '../../../service/artist.service';
 import { SongUploadData } from '../../../model/song-upload-data';
@@ -12,29 +12,24 @@ import { AlbumUploadData } from '../../../model/album-upload-data';
 })
 export class ArtistSuggestionComponent implements OnInit {
   @Input() uploadData!: SongUploadData | AlbumUploadData;
-  artistFormArr!: FormArray;
+  @Input() parentForm!: FormGroup;
+  artistFormArr: FormArray;
   modelToTextMapper = artistModelToTextMapper;
   modelToImgSrcMapper = artistModelToImgSrcMapper;
 
   constructor(private fb: FormBuilder, private artistService: ArtistService) {}
 
   ngOnInit(): void {
-    this.artistFormArr = this.uploadData.formGroup.get('artists') as FormArray;
+    this.artistFormArr = this.parentForm.get('artists') as FormArray;
   }
 
   addArtist(): void {
-    if (!this.uploadData.editing) {
-      return;
-    }
     if (this.artistFormArr.length < 5) {
       this.artistFormArr.push(SongUploadData.createArtist(this.fb));
     }
   }
 
   removeArtist(index: number): void {
-    if (!this.uploadData.editing) {
-      return;
-    }
     this.artistFormArr.removeAt(index);
   }
 

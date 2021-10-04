@@ -1,7 +1,12 @@
 <div class="row" *ngIf="albumUploadData">
   <div class="col-sm-12 mb-3">
     <app-card [type]="3" [title]="'feature.album.upload_album' | translate" class="col-sm-12">
-      <app-album-edit-card cardBody3 [albumUploadData]="albumUploadData" (submitEvent)="onSubmit()"></app-album-edit-card>
+      <app-album-edit-card
+        cardBody3
+        [albumUploadData]="albumUploadData"
+        [album]="albumUploadData.album"
+        (submitEvent)="onSubmit()"
+      ></app-album-edit-card>
     </app-card>
   </div>
 </div>
@@ -12,7 +17,12 @@
         <button cardEsc3 class="btn btn-danger btn-sm rounded-circle" (click)="albumUploadData.removeForm(j)">
           <i class="bi bi-x-lg"></i>
         </button>
-        <app-song-edit-card cardBody3 [songUploadData]="songUploadData" [isSubmittable]="false"></app-song-edit-card>
+        <app-song-edit-card
+          cardBody3
+          [songUploadData]="songUploadData"
+          [song]="songUploadData.song"
+          [isSubmittable]="false"
+        ></app-song-edit-card>
       </app-card>
     </div>
   </ng-container>

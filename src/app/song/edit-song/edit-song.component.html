@@ -1,8 +1,8 @@
 <app-card [type]="3" [title]="'Edit song' | translate">
   <app-song-edit-card
     cardBody3
-    [songId]="songId"
     [songUploadData]="songUploadData"
+    [song]="songUploadData.song"
     [isSubmittable]="true"
     (submitEvent)="onSubmit()"
     (uploadSuccessEvent)="onUploadSuccess()"

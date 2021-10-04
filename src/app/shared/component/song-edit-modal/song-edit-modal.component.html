@@ -1,0 +1,56 @@
+<app-modal-wrapper [title]="'Edit artist info' | translate" (closeAction)="close()">
+  <form modalBody id="songEditForm" [formGroup]="songForm" (ngSubmit)="onSubmit()" vgFocusFirstInvalid [form]="songForm">
+    <div class="form-group">
+      <label for="songTitle">{{ 'common.label.title' | translate }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="songTitle"
+        [placeholder]="'feature.song.song_title_hint' | translate"
+        formControlName="title"
+      />
+      <vg-error-section [label]="'common.label.title' | translate" [group]="songForm" controlName="title"></vg-error-section>
+    </div>
+    <label>{{ 'common.entity.artist' | translate }}</label>
+    <app-artist-suggestion [uploadData]="songUploadData" [parentForm]="songForm"></app-artist-suggestion>
+
+    <div class="form-group">
+      <label for="releaseDate">{{ 'Release Date' | translate }}</label>
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="dd/MM/yyyy"
+          id="releaseDate"
+          name="dp"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          formControlName="releaseDate"
+          [minDate]="minDate"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+            <i class="bi bi-calendar3"></i>
+          </button>
+        </div>
+      </div>
+      <vg-error-section [label]="'Release Date' | translate" [group]="songForm" controlName="releaseDate"></vg-error-section>
+    </div>
+    <div class="form-group">
+      <label for="audio">{{ 'Audio File' | translate }}</label>
+      <vg-file-input
+        id="audio"
+        formControlName="url"
+        [remoteFileType]="'audio'"
+        [formData]="songUploadData.formData"
+        [formDataFilePart]="'audio'"
+        (metadataLoadedEvent)="setMetadata($event, songForm)"
+      ></vg-file-input>
+    </div>
+  </form>
+  <div modalFooter class="d-flex justify-content-end align-items-center">
+    <button type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
+      <i class="bi bi-list-ul"></i>&nbsp;{{'feature.song.additional_info' | translate}}
+    </button>
+    <button type="submit" form="songEditForm" class="btn btn-primary rounded-pill my-2 mx-1">{{ 'common.button.save' | translate }}</button>
+  </div>
+</app-modal-wrapper>

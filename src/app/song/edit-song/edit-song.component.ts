@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
 import { SongService } from '../../service/song.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from '../../service/artist.service';
@@ -27,12 +26,11 @@ export class EditSongComponent implements OnInit {
     private authService: AuthService,
     private songService: SongService,
     private countryService: CountryService,
-    private fb: FormBuilder,
     private artistService: ArtistService,
     private toastService: VgToastService,
     private loaderServer: VgLoaderService
   ) {
-    this.songUploadData = SongUploadData.instance(fb);
+    this.songUploadData = SongUploadData.instance();
   }
 
   ngOnInit(): void {
@@ -41,18 +39,7 @@ export class EditSongComponent implements OnInit {
         try {
           this.songId = params.id;
           this.loaderServer.loading(true);
-          const result = await this.songService.songDetail(this.songId).toPromise();
-          this.songUploadData.formGroup.patchValue(result);
-          this.songUploadData.editable = this.authService.currentUserValue?.user_name === result.uploader?.username;
-          const artistFormArr = this.songUploadData.formGroup.get('artists') as FormArray;
-          artistFormArr.clear();
-          result.artists.forEach(artist => {
-            const artistForm = this.fb.control({
-              id: artist.id,
-              name: artist.name
-            });
-            artistFormArr.push(artistForm);
-          });
+          this.songUploadData.song = await this.songService.songDetail(this.songId).toPromise();
         } catch (e) {
           console.error(e);
         } finally {
@@ -63,10 +50,7 @@ export class EditSongComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.songUploadData.isValid()) {
-      const songFormData = this.songUploadData.setup();
-      this.songUploadData.observable = this.songService.updateSong(songFormData, this.songId);
-    }
+    this.songUploadData.observable = this.songService.updateSong(this.songUploadData.formData, this.songId);
   }
 
   onUploadSuccess(): void {

@@ -1,18 +1,17 @@
-<form [formGroup]="songUploadData.formGroup" (ngSubmit)="onSubmit()" vgFocusFirstInvalid [form]="songUploadData.formGroup">
+<form [formGroup]="songForm" (ngSubmit)="onSubmit()" vgFocusFirstInvalid [form]="songForm">
   <div class="form-group">
     <label for="songTitle">{{ 'common.label.title' | translate }}</label>
     <input
       type="text"
       class="form-control"
       id="songTitle"
-      [readOnly]="!songUploadData.editing"
       [placeholder]="'feature.song.song_title_hint' | translate"
       formControlName="title"
     />
-    <vg-error-section [label]="'common.label.title' | translate" [group]="songUploadData.formGroup" controlName="title"></vg-error-section>
+    <vg-error-section [label]="'common.label.title' | translate" [group]="songForm" controlName="title"></vg-error-section>
   </div>
   <label>{{ 'common.entity.artist' | translate }}</label>
-  <app-artist-suggestion [uploadData]="songUploadData"></app-artist-suggestion>
+  <app-artist-suggestion [uploadData]="songUploadData" [parentForm]="songForm"></app-artist-suggestion>
 
   <div class="form-group">
     <label for="releaseDate">{{ 'Release Date' | translate }}</label>
@@ -25,31 +24,29 @@
         ngbDatepicker
         #d="ngbDatepicker"
         formControlName="releaseDate"
-        [readOnly]="!songUploadData.editing"
         [minDate]="minDate"
       />
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button" [disabled]="!songUploadData.editing">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
           <i class="bi bi-calendar3"></i>
         </button>
       </div>
     </div>
-    <vg-error-section [label]="'Release Date' | translate" [group]="songUploadData.formGroup" controlName="releaseDate"></vg-error-section>
+    <vg-error-section [label]="'Release Date' | translate" [group]="songForm" controlName="releaseDate"></vg-error-section>
   </div>
   <div class="form-group">
     <label for="audio">{{ 'Audio File' | translate }}</label>
     <vg-file-input
       id="audio"
       formControlName="url"
-      [isReadonly]="!songUploadData.editing"
       [remoteFileType]="'audio'"
       [formData]="songUploadData.formData"
       [formDataFilePart]="'audio'"
-      (metadataLoadedEvent)="setMetadata($event, songUploadData.formGroup)"
+      (metadataLoadedEvent)="setMetadata($event, songForm)"
     ></vg-file-input>
   </div>
   <div class="d-flex justify-content-end align-items-center">
-    <button *ngIf="songUploadData.editing" type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
+    <button type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
       <i class="bi bi-list-ul"></i>&nbsp;{{'feature.song.additional_info' | translate}}
     </button>
     <button *ngIf="isSubmittable" type="submit" class="btn btn-primary rounded-pill my-2 mx-1">

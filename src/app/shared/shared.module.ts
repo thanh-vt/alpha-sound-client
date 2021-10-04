@@ -12,7 +12,7 @@ import { SpinnerComponent } from './component/spinner/spinner.component';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConfirmationModalComponent } from './component/modal/confirmation-modal/confirmation-modal.component';
 import { ModalWrapperComponent } from './component/modal/modal-wrapper/modal-wrapper.component';
-import { VgControlModule, VgDirectivesModule, VgErrorDictService, VgUtilModule } from 'ngx-vengeance-lib';
+import { VgControlModule, VgDialogModule, VgDirectivesModule, VgErrorDictService, VgUtilModule } from 'ngx-vengeance-lib';
 import { MusicPlayerComponent } from './layout/music-player/music-player.component';
 import { DurationPipe } from './layout/music-player/duration.pipe';
 import { SongEditCardComponent } from './component/song-edit-card/song-edit-card.component';
@@ -34,6 +34,7 @@ import { HttpLoaderFactory } from '../app.module';
 import { CommentBoxComponent } from './component/comment-box/comment-box.component';
 import { AlbumLikeBtnComponent } from './component/album-like-btn/album-like-btn.component';
 import { ArtistLikeBtnComponent } from './component/artist-like-btn/artist-like-btn.component';
+import { SongEditModalComponent } from './component/song-edit-modal/song-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ArtistLikeBtnComponent } from './component/artist-like-btn/artist-like-
     AlbumEditAdditionalInfoComponent,
     CommentBoxComponent,
     AlbumLikeBtnComponent,
-    ArtistLikeBtnComponent
+    ArtistLikeBtnComponent,
+    SongEditModalComponent
   ],
   imports: [
     CommonModule,
@@ -78,6 +80,7 @@ import { ArtistLikeBtnComponent } from './component/artist-like-btn/artist-like-
       },
       isolate: false
     }),
+    VgDialogModule,
     VgDirectivesModule,
     VgControlModule.forRoot({
       provide: VgErrorDictService,

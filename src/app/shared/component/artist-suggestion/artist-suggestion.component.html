@@ -1,11 +1,10 @@
-<ng-container *ngIf="artistFormArr" [formGroup]="uploadData.formGroup">
+<ng-container *ngIf="artistFormArr" [formGroup]="parentForm">
   <div formArrayName="artists" class="form-group">
     <div class="row gy-2">
       <ng-container *ngFor="let artistControl of artistFormArr.controls; let i = index;">
         <div [formGroupName]="i" class="col-md-6">
           <div class="d-flex">
             <vg-auto-input
-              [isReadonly]="!uploadData.editing"
               [ngStyle]="{width: '70%'}"
               [formControl]="$any(artistControl)"
               [modelToTextMapper]="modelToTextMapper"
@@ -14,20 +13,11 @@
               (changeTextEvent)="suggestArtist($event)"
             ></vg-auto-input>
             <div class="d-flex justify-content-center" style="width: auto">
-              <button
-                type="button"
-                class="btn btn-info rounded-lg mx-1"
-                style="min-width: 2rem"
-                [disabled]="!uploadData.editing"
-                (click)="addArtist()"
-              >
-                +
-              </button>
+              <button type="button" class="btn btn-info rounded-lg mx-1" style="min-width: 2rem" (click)="addArtist()">+</button>
               <button
                 type="button"
                 class="btn btn-danger rounded-lg mx-1"
                 style="min-width: 2rem"
-                [disabled]="!uploadData.editing"
                 (click)="removeArtist(i)"
                 *ngIf="artistFormArr.controls.length > 1"
               >

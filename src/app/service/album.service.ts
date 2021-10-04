@@ -5,7 +5,7 @@ import { Album } from '../model/album';
 import { Observable } from 'rxjs';
 import { PagingInfo } from '../model/paging-info';
 import { AuthService } from './auth.service';
-import { AlbumUpdate } from '../model/album-update';
+import { AlbumEntryUpdate } from '../model/album-entry-update';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,7 @@ export class AlbumService {
     return this.http.put<Album>(`${environment.apiUrl}/album/edit/${id}`, formData);
   }
 
-  updateSongList(songList: AlbumUpdate[], albumId: number): Observable<void> {
+  updateSongList(songList: AlbumEntryUpdate[], albumId: number): Observable<void> {
     return this.http.patch<void>(`${environment.apiUrl}/album/update-song-list/${albumId}`, songList);
   }
 

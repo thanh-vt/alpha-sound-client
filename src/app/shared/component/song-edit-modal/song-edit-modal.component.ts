@@ -1,27 +1,25 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SongUploadData } from '../../../model/song-upload-data';
-import { DateUtil } from '../../../util/date-util';
 import { Song } from '../../../model/song';
+import { DateUtil } from '../../../util/date-util';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { SongEditAdditionalInfoComponent } from '../song-edit-additional-info/song-edit-additional-info.component';
 import { AuthService } from '../../../service/auth.service';
+import { SongEditAdditionalInfoComponent } from '../song-edit-additional-info/song-edit-additional-info.component';
 
 @Component({
-  selector: 'app-song-edit-card',
-  templateUrl: './song-edit-card.component.html',
-  styleUrls: ['./song-edit-card.component.scss']
+  selector: 'app-song-edit-modal',
+  templateUrl: './song-edit-modal.component.html',
+  styleUrls: ['./song-edit-modal.component.scss']
 })
-export class SongEditCardComponent implements OnInit, OnChanges {
+export class SongEditModalComponent implements OnInit {
   @Input() song: Song;
-  @Input() isSubmittable!: boolean;
   @Input() songUploadData!: SongUploadData;
-  @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>();
   @Output() uploadSuccessEvent: EventEmitter<Song> = new EventEmitter<Song>();
-  songForm = this.fb.group({
+  songForm: FormGroup = this.fb.group({
     id: [null],
     title: ['', Validators.compose([Validators.required])],
-    artists: this.fb.array([this.fb.control(null, Validators.compose([Validators.required]))]),
+    artists: this.fb.array([]),
     releaseDate: ['', Validators.compose([Validators.required])],
     duration: [null],
     url: [null],
@@ -32,17 +30,16 @@ export class SongEditCardComponent implements OnInit, OnChanges {
   minDate = DateUtil.getMinDate();
   additionalRef: NgbModalRef;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private modalService: NgbModal) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private activeModal: NgbActiveModal,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
-    if (this.songUploadData?.type === 'VIEW') {
-      this.songForm.disable();
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.song && this.song) {
-      this.songForm.patchValue(this.songUploadData.song);
+    if (this.song) {
+      this.songForm.patchValue(this.song);
       const artistFormArr = this.songForm.get('artists') as FormArray;
       this.song.artists.forEach(artist => {
         const artistForm = SongUploadData.createArtist(this.fb);
@@ -50,25 +47,17 @@ export class SongEditCardComponent implements OnInit, OnChanges {
         artistFormArr.push(artistForm);
       });
     }
+    if (this.songUploadData?.type === 'VIEW') {
+      this.songForm.disable();
+    }
   }
 
   onSubmit(): void {
-    if (this.songForm.invalid) {
-      return;
-    }
-    if (!this.songUploadData?.song && !this.songUploadData.formData.get('audio')) {
-      return;
-    }
-    this.songUploadData.formData.set('song', new Blob([JSON.stringify(this.songForm.getRawValue())], { type: 'application/json' }));
-    if (this.isSubmittable) {
-      this.submitEvent.emit();
-    }
+    this.activeModal.close(this.songForm.getRawValue());
   }
 
   onUploadSuccess(event: Song): void {
-    if (this.isSubmittable) {
-      this.uploadSuccessEvent.emit(event);
-    }
+    this.uploadSuccessEvent.emit(event);
   }
 
   setMetadata(event: Event, formGroup: FormGroup): void {
@@ -84,7 +73,8 @@ export class SongEditCardComponent implements OnInit, OnChanges {
       scrollable: false,
       size: 'lg'
     });
-    this.additionalRef.componentInstance.songId = this.songUploadData.song?.id;
+    console.log(this.songForm.get('additionalInfo').value);
+    this.additionalRef.componentInstance.songId = this.song?.id;
     this.additionalRef.componentInstance.additionalInfo = this.songForm.get('additionalInfo').value;
     const sub = this.additionalRef.closed.subscribe(next => {
       if (next) {
@@ -92,5 +82,9 @@ export class SongEditCardComponent implements OnInit, OnChanges {
       }
       sub.unsubscribe();
     });
+  }
+
+  close(): void {
+    this.activeModal.close();
   }
 }

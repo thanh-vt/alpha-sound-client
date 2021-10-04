@@ -1,18 +1,17 @@
-<form [formGroup]="albumUploadData.formGroup" vgFocusFirstInvalid [form]="albumUploadData.formGroup" (ngSubmit)="onSubmit()">
+<form [formGroup]="albumForm" vgFocusFirstInvalid [form]="albumForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="albumTitle">{{ 'common.label.title' | translate }}</label>
     <input
       type="text"
       class="form-control"
       id="albumTitle"
-      [readOnly]="!albumUploadData.editing"
       [placeholder]="'feature.album.album_title_hint' | translate"
       formControlName="title"
     />
-    <vg-error-section [label]="'common.label.title' | translate" [group]="albumUploadData.formGroup" controlName="title"></vg-error-section>
+    <vg-error-section [label]="'common.label.title' | translate" [group]="albumForm" controlName="title"></vg-error-section>
   </div>
   <label>{{ 'common.entity.artist' | translate }}</label>
-  <app-artist-suggestion [uploadData]="albumUploadData"></app-artist-suggestion>
+  <app-artist-suggestion [uploadData]="albumUploadData" [parentForm]="albumForm"></app-artist-suggestion>
   <div class="form-group">
     <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
     <div class="input-group">
@@ -24,7 +23,6 @@
         ngbDatepicker
         #d="ngbDatepicker"
         formControlName="releaseDate"
-        [readOnly]="!albumUploadData.editing"
         [minDate]="minDate"
       />
       <div class="input-group-append">
@@ -33,13 +31,12 @@
         </button>
       </div>
     </div>
-    <vg-error-section [label]="'Release Date' | translate" [group]="albumUploadData.formGroup" controlName="releaseDate"></vg-error-section>
+    <vg-error-section [label]="'Release Date' | translate" [group]="albumForm" controlName="releaseDate"></vg-error-section>
   </div>
   <div class="form-group">
     <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>
     <vg-file-input
       id="albumCover"
-      [isReadonly]="!albumUploadData.editing"
       formControlName="coverUrl"
       [remoteFileType]="'image'"
       [formData]="albumUploadData.formData"
@@ -47,7 +44,7 @@
     ></vg-file-input>
   </div>
   <div class="d-flex justify-content-end align-items-center">
-    <button *ngIf="albumUploadData.editing" type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
+    <button type="button" class="btn btn-primary rounded-pill my-2 mx-1" (click)="openAdditionalForm()">
       <i class="bi bi-list-ul"></i>&nbsp;{{'feature.song.additional_info' | translate}}
     </button>
     <button type="submit" class="btn btn-primary rounded-pill my-2 mx-1">{{ 'common.button.save' | translate }}</button>

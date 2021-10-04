@@ -26,6 +26,7 @@ export class SongEditAdditionalInfoComponent implements OnInit {
   countryList$: Observable<Country[]>;
   genreList$: Observable<Genre[]>;
   themeList$: Observable<Theme[]>;
+  @Input() additionalInfo: unknown;
   @Input() songId!: number;
 
   compareCountries = (country1: Country, country2: Country): boolean => {
@@ -52,7 +53,9 @@ export class SongEditAdditionalInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.songId) {
+    if (this.additionalInfo) {
+      this.formAdditionalInfo.patchValue(this.additionalInfo);
+    } else if (this.songId) {
       this.songService.songAdditionalInfo(this.songId).subscribe(next => {
         this.formAdditionalInfo.patchValue(next);
       });

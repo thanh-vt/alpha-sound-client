@@ -1,17 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlbumUploadData } from '../../model/album-upload-data';
-import { FormArray, FormBuilder } from '@angular/forms';
 import { AlbumService } from '../../service/album.service';
 import { SongService } from '../../service/song.service';
 import { ArtistService } from '../../service/artist.service';
 import { VgToastService } from 'ngx-vengeance-lib';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Album } from '../../model/album';
+import { Subject, Subscription } from 'rxjs';
 import { DateUtil } from '../../util/date-util';
 import { SongUploadData } from '../../model/song-upload-data';
 import { AuthService } from '../../service/auth.service';
 import { Song } from '../../model/song';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SongEditModalComponent } from '../../shared/component/song-edit-modal/song-edit-modal.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlbumEntryUpdate } from '../../model/album-entry-update';
 
 @Component({
   selector: 'app-edit-album',
@@ -19,24 +21,23 @@ import { Song } from '../../model/song';
   styleUrls: ['./edit-album.component.scss']
 })
 export class EditAlbumComponent implements OnInit, OnDestroy {
-  album: Album;
   albumId: number;
   albumUploadData: AlbumUploadData;
   subscription: Subscription = new Subscription();
   minDate = DateUtil.getMinDate();
+  songUploadSubject: Subject<AlbumEntryUpdate>;
 
   constructor(
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private albumService: AlbumService,
     private songService: SongService,
     private artistService: ArtistService,
     private authService: AuthService,
+    private modalService: NgbModal,
     private toastService: VgToastService
   ) {
     this.albumUploadData = AlbumUploadData.instance({
-      fb,
       router,
       albumService
     });
@@ -52,35 +53,18 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
             this.artistService.getAlbumArtistList(this.albumId, 0).toPromise(),
             this.songService.getAlbumSongList(this.albumId, 0).toPromise()
           ]);
-          this.album = result[0];
-          this.album.artists = result[1].content;
-          this.album.songs = result[2].content;
-          this.albumUploadData.formGroup.patchValue(this.album);
-          const albumArtistFormArr = this.albumUploadData.formGroup.get('artists') as FormArray;
-          albumArtistFormArr.clear();
-          this.album.artists.forEach(artist => {
-            const artistForm = SongUploadData.createArtist(this.fb);
-            artistForm.setValue(artist);
-            albumArtistFormArr.push(artistForm);
-          });
+          this.albumUploadData.album = result[0];
+          this.albumUploadData.album.artists = result[1].content;
+          this.albumUploadData.album.songs = result[2].content;
           const tmpSongUploadDataList = [];
-          this.album.songs.forEach(song => {
-            const songUploadData = SongUploadData.instance(this.fb);
-            songUploadData.formGroup.patchValue(song);
-            const artistFormArr = songUploadData.formGroup.get('artists') as FormArray;
-            artistFormArr.clear();
-            song.artists.forEach(artist => {
-              const artistForm = SongUploadData.createArtist(this.fb);
-              artistForm.setValue(artist);
-              artistFormArr.push(artistForm);
-            });
-            songUploadData.type = 'update';
+          this.albumUploadData.album.songs.forEach(song => {
+            const songUploadData = SongUploadData.instance(song);
+            songUploadData.type = 'UPDATE';
             songUploadData.editable = this.authService.currentUserValue?.user_name === song.uploader?.username;
-            songUploadData.editing = false;
             tmpSongUploadDataList.push(songUploadData);
           });
           this.albumUploadData.songUploadDataList = tmpSongUploadDataList;
-          this.albumUploadData.holder = [];
+          this.albumUploadData.recycleBin = [];
           this.albumUploadData.checkEditableSongList(this.authService.currentUserValue.user_name);
         } catch (e) {
           console.error(e);
@@ -90,29 +74,20 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
-    let isSongFormsValid = true;
-    for (const songUploadData of this.albumUploadData.songUploadDataList) {
-      if (!songUploadData.isValid()) {
-        console.log(songUploadData.formGroup);
-        isSongFormsValid = false;
-        break;
-      }
+    const albumFormData: FormData = this.albumUploadData.formData;
+    const createAlbumResult = await this.albumService.updateAlbum(albumFormData, this.albumId).toPromise();
+    this.toastService.success({ text: 'Album updated successfully' });
+    if (this.songUploadSubject && !this.songUploadSubject.closed) {
+      this.songUploadSubject.unsubscribe();
     }
-    if (this.albumUploadData.isValid() && isSongFormsValid) {
-      const albumFormData: FormData = this.albumUploadData.setup();
-      const createAlbumResult = await this.albumService.updateAlbum(albumFormData, this.album.id).toPromise();
-      this.toastService.success({ text: 'Album updated successfully' });
-      this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult, true);
-      for (const songUploadData of this.albumUploadData.songUploadDataList) {
-        if (songUploadData.checked) {
-          const songFormData: FormData = songUploadData.setup();
-          if (songFormData.get('audio')) {
-            songUploadData.observable =
-              songUploadData.type === 'create'
-                ? this.songService.uploadSong(songFormData)
-                : this.songService.updateSong(songFormData, songUploadData.formGroup.get('id').value);
-          }
-        }
+    this.songUploadSubject = new Subject<AlbumEntryUpdate>();
+    this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult, this.songUploadSubject);
+    for (const songUploadData of this.albumUploadData.songUploadDataList) {
+      const songFormData: FormData = songUploadData.formData;
+      if (songUploadData.type === 'UPDATE' && songUploadData.markForUpdate) {
+        songUploadData.observable = this.songService.updateSong(songFormData, songUploadData.song?.id);
+      } else if (songUploadData.type === 'CREATE') {
+        songUploadData.observable = this.songService.uploadSong(songFormData);
       }
     }
   }
@@ -120,18 +95,31 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
   onUploadSongSuccess(event: Song): void {
     console.log(event);
     this.toastService.success({ text: 'Song created/updated successfully' });
+    this.songUploadSubject.next(null);
   }
 
-  onSubmitSong(songUploadData: SongUploadData): void {
-    if (songUploadData.isValid()) {
-      const songFormData = songUploadData.setup();
-      const id = songUploadData.formGroup.get('id').value;
-      if (id) {
-        songUploadData.observable = this.songService.updateSong(songFormData, id);
-      } else {
-        songUploadData.observable = this.songService.uploadSong(songFormData);
+  uploadSongFailed(event: HttpErrorResponse): void {
+    console.error(event);
+    this.songUploadSubject.next(null);
+  }
+
+  toggleEdit(songUploadData: SongUploadData): void {
+    const ref = this.modalService.open(SongEditModalComponent, {
+      animation: true,
+      backdrop: false,
+      centered: false,
+      scrollable: false,
+      size: 'md'
+    });
+    const instance: SongEditModalComponent = ref.componentInstance;
+    instance.song = songUploadData.song;
+    instance.songUploadData = songUploadData;
+    ref.closed.subscribe(song => {
+      if (song) {
+        songUploadData.song = song;
+        songUploadData.markForUpdate = true;
       }
-    }
+    });
   }
 
   ngOnDestroy(): void {

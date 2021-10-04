@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ArtistService } from '../../service/artist.service';
 import { VgToastService } from 'ngx-vengeance-lib';
 import { SongUploadData } from '../../model/song-upload-data';
@@ -20,19 +19,14 @@ export class UploadSongComponent {
   constructor(
     private songService: SongService,
     private artistService: ArtistService,
-    private fb: FormBuilder,
     private router: Router,
     private toastService: VgToastService
   ) {
-    this.songUploadData = SongUploadData.instance(fb);
+    this.songUploadData = SongUploadData.instance();
   }
 
   onUpload(): void {
-    if (!this.songUploadData.isValid()) {
-      return;
-    }
-    const songFormDate = this.songUploadData.setup();
-    this.songUploadData.observable = this.songService.uploadSong(songFormDate);
+    this.songUploadData.observable = this.songService.uploadSong(this.songUploadData.formData);
   }
 
   onUploadSuccess(song: Song): void {
