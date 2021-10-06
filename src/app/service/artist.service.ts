@@ -38,8 +38,8 @@ export class ArtistService {
     });
   }
 
-  searchArtistByName(name: string): Observable<Artist[]> {
-    return this.http.get<Artist[]>(`${environment.apiUrl}/artist/es-search`, {
+  searchArtistByName(name: string): Observable<PagingInfo<Artist>> {
+    return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/es-search`, {
       params: {
         name
       }

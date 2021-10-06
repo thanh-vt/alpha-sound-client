@@ -38,15 +38,8 @@ export class SongService {
     );
   }
 
-  searchForSong(params?: { page?: number; size?: number; sort?: string[] } | { [key: string]: string }): Observable<PagingInfo<Song>> {
-    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, { params, withCredentials: true }).pipe(
-      tap(songPage => {
-        // this.favoritesService.patchLikes(songPage.content, 'SONG');
-        songPage.content.forEach(song => {
-          song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
-        });
-      })
-    );
+  searchForSong(name: string): Observable<PagingInfo<Song>> {
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/es-search`, { params: { name }, withCredentials: true });
   }
 
   songDetail(id: number): Observable<Song> {

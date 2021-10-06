@@ -28,7 +28,7 @@ export class SongSuggestionComponent {
       debounceTime(500),
       distinctUntilChanged(),
       filter(term => term.length >= 2),
-      switchMap(phrase => this.songService.searchForSong({ phrase, page: 0, size: 10 })),
+      switchMap(phrase => this.songService.searchForSong(phrase)),
       map(songPage => songPage.content)
     );
 

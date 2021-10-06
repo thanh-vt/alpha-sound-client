@@ -34,6 +34,6 @@ export class ArtistSuggestionComponent implements OnInit {
   }
 
   suggestArtist(value: string): void {
-    this.artistService.searchArtistByName(value).subscribe(artists => (this.uploadData.filteredArtists = artists));
+    this.artistService.searchArtistByName(value).subscribe(artists => (this.uploadData.filteredArtists = artists.content));
   }
 }
