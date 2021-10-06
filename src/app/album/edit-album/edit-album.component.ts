@@ -93,7 +93,7 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
   }
 
   onUploadSongSuccess(event: Song): void {
-    console.log(event);
+    console.debug(event);
     this.toastService.success({ text: 'Song created/updated successfully' });
     this.songUploadSubject.next(null);
   }

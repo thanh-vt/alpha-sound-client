@@ -39,7 +39,11 @@ export class ArtistService {
   }
 
   searchArtistByName(name: string): Observable<Artist[]> {
-    return this.searchArtist({ phrase: name }).pipe(map(response => response.content));
+    return this.http.get<Artist[]>(`${environment.apiUrl}/artist/es-search`, {
+      params: {
+        name
+      }
+    });
   }
 
   artistDetail(id: number): Observable<Artist> {
