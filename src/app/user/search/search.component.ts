@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SearchService } from '../../service/search.service';
-import { Song } from '../../model/song';
-import { Artist } from '../../model/artist';
-import { TranslateService } from '@ngx-translate/core';
+import { SearchSummary } from '../../model/search-summary';
+import { UserProfileService } from '../../service/user-profile.service';
 
 @Component({
   selector: 'app-search',
@@ -11,31 +9,19 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  selectedTabId = 'simple';
-  searchText: string;
-  songList: Song[] = [];
-  artistList: Artist[] = [];
-  numberOfSongs: number;
-  numberOfArtists: number;
+  selectedTabId = 'summary';
+  searchSummary: SearchSummary;
+  searchText = '';
+  constructor(private activatedRoute: ActivatedRoute, private userProfileService: UserProfileService) {}
 
-  // @ViewChild('searchTab') searchTab: NgbNav;
-
-  constructor(private route: ActivatedRoute, private searchService: SearchService, public translate: TranslateService) {
-    this.searchText = this.route.snapshot.paramMap.get('name');
-  }
-
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.searchText = params.name;
-      this.searchService.getSearchResults(this.searchText).subscribe(result => {
-        this.songList = result.songs;
-        this.artistList = result.artists;
-        this.numberOfSongs = this.songList.length;
-        this.numberOfArtists = this.artistList.length;
-        if (this.numberOfSongs === 0 && this.numberOfArtists > 0) {
-          // this.searchTab.select('artists');
-        }
-      });
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(next => {
+      if (next.q) {
+        this.searchText = next.q;
+        this.userProfileService.search(this.searchText).subscribe(next => {
+          this.searchSummary = next;
+        });
+      }
     });
   }
 }

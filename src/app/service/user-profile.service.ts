@@ -6,6 +6,7 @@ import { UserProfile } from '../model/token-response';
 import { RegistrationConfirm } from '../model/registration-confirm';
 import { ChangePassword } from '../model/change-password';
 import { UserInfo } from '../model/user-info';
+import { SearchSummary } from '../model/search-summary';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,9 @@ export class UserProfileService {
 
   resetPasswordSubmission(changePassword: ChangePassword): Observable<void> {
     return this.http.patch<void>(`${environment.apiUrl}/reset-password`, changePassword);
+  }
+
+  search(name: string): Observable<SearchSummary> {
+    return this.http.get<SearchSummary>(`${environment.apiUrl}/api/user/search`, { params: { name } });
   }
 }

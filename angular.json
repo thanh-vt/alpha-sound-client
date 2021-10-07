@@ -184,6 +184,7 @@
   },
   "defaultProject": "alpha-sound-client",
   "cli": {
+    "analytics": "eec5e2ef-102b-40b8-a0a9-d7ab1cecd5c6",
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

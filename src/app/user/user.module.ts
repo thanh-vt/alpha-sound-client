@@ -20,6 +20,10 @@ import { ResetPasswordSubmissionComponent } from './reset-password-submission/re
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
 import { UploadedAlbumListComponent } from './uploaded-album-list/uploaded-album-list.component';
+import { SearchSummaryComponent } from './search/search-summary/search-summary.component';
+import { SearchSongTabComponent } from './search/search-song-tab/search-song-tab.component';
+import { SearchArtistTabComponent } from './search/search-artist-tab/search-artist-tab.component';
+import { SearchAlbumTabComponent } from './search/search-album-tab/search-album-tab.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,11 @@ import { UploadedAlbumListComponent } from './uploaded-album-list/uploaded-album
     CompleteRegistrationComponent,
     ResetPasswordSubmissionComponent,
     ResetPasswordComponent,
-    UploadedAlbumListComponent
+    UploadedAlbumListComponent,
+    SearchSummaryComponent,
+    SearchSongTabComponent,
+    SearchArtistTabComponent,
+    SearchAlbumTabComponent
   ],
   imports: [
     CommonModule,
