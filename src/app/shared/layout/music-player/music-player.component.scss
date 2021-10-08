@@ -142,7 +142,7 @@ audio {
 #plList {
   width: 80%;
   height: 30rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: var(--nav-bg-color);
 }
 

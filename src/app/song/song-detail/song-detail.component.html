@@ -7,7 +7,7 @@
         <h6 class="d-inline">{{ 'common.label.title' | translate }}:&nbsp;</h6>
         <span>{{song.title}}</span>
         <br />
-        <h6 class="d-inline">{{ 'feature.song.release_date' | translate }}::&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.song.release_date' | translate }}:&nbsp;</h6>
         <span>{{ song.releaseDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</span><br />
         <h6 class="d-inline">{{ 'common.entity.artist' | translate }}:</h6>
         <ul class="list-group">
@@ -38,7 +38,7 @@
       </div>
       <div class="col-md-6">
         <h6 class="d-inline">{{ 'feature.song.lyric' | translate }}:&nbsp;</h6>
-        <p style="height: 12rem; overflow-y: scroll; word-break: break-word; white-space: pre-line">{{song.lyric}}</p>
+        <p style="height: 12rem; overflow-y: auto; word-break: break-word; white-space: pre-line">{{song.lyric}}</p>
       </div>
     </div>
   </app-card>

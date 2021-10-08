@@ -5,12 +5,12 @@
   <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
     <div ngbDropdownItem>
       <button (click)="addToPlaying(song, $event)" [disabled]="song.isDisabled" class="dropdown-item">
-        <i class="bi bi-play-circle mr-1"></i>{{ 'Add to Queue' | translate }}
+        <i class="bi bi-play-circle mr-1"></i>{{ 'feature.song.add_to_queue' | translate }}
       </button>
     </div>
     <div ngbDropdownItem>
       <button (click)="addSong.openPlaylistDialog(song.id, $event)" [disabled]="song.isDisabled" class="dropdown-item">
-        <i class="bi bi-plus-circle mr-1"></i>{{ 'Add to Playlist' | translate }}
+        <i class="bi bi-plus-circle mr-1"></i>{{ 'feature.song.add_to_playlist' | translate }}
       </button>
     </div>
     <app-song-play-btn #addSong [hidden]="true" ngbDropdownItem [ngClass]="'dropdown-item'" [song]="song"></app-song-play-btn>
