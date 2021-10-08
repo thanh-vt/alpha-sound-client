@@ -35,6 +35,7 @@ import { CommentBoxComponent } from './component/comment-box/comment-box.compone
 import { AlbumLikeBtnComponent } from './component/album-like-btn/album-like-btn.component';
 import { ArtistLikeBtnComponent } from './component/artist-like-btn/artist-like-btn.component';
 import { SongEditModalComponent } from './component/song-edit-modal/song-edit-modal.component';
+import { SongScrollingTitlePipe } from './pipe/song-scrolling-title.pipe';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { SongEditModalComponent } from './component/song-edit-modal/song-edit-mo
     CommentBoxComponent,
     AlbumLikeBtnComponent,
     ArtistLikeBtnComponent,
-    SongEditModalComponent
+    SongEditModalComponent,
+    SongScrollingTitlePipe
   ],
   imports: [
     CommonModule,

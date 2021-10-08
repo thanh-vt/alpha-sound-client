@@ -1,8 +1,8 @@
 <div class="audio-player-container">
   <div class="column add-bottom" [hidden]="noSupportHtml5Audio">
     <div id="mainwrap" class="row d-flex align-items-center">
-      <div id="nowPlay" class="col-md-2 px-2">
-        <span class="text-dark">{{action}}</span>
+      <div id="nowPlay" class="col-md-2">
+        <span class="text-dark ms-3">{{action}}</span>
       </div>
       <div id="audiowrap" class="col-md-6">
         <div tabindex="0" class="row d-flex align-items-center">
@@ -102,7 +102,7 @@
             </button>
           </div>
           <div class="scrolling-text-container" style="width: 80%">
-            <div class="scrolling-text">{{title}} {{ isPlaying ? ' - ' + tracks[currentTrackIndex]?.artist : ''}}</div>
+            <div class="scrolling-text">{{ tracks[currentTrackIndex] | songScrollingTitle }}</div>
           </div>
           <ul ngbDropdownMenu id="plList" aria-labelledby="dropdownConfig" tabindex="0">
             <li

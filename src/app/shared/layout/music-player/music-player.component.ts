@@ -15,9 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class MusicPlayerComponent implements OnDestroy {
   tracks: AudioTrack[] = [];
   currentTrackIndex = -1;
-  title = '';
   action = '';
-  isPlaying: boolean;
   isRepeat = false;
   isShuffle = false;
   noSupportHtml5Audio = false;
@@ -72,12 +70,10 @@ export class MusicPlayerComponent implements OnDestroy {
 
   onPlay(): void {
     this.action = this.translate.instant('feature.song.playing');
-    this.isPlaying = true;
   }
 
   onPause(): void {
     this.action = this.translate.instant('feature.song.paused');
-    this.isPlaying = false;
   }
 
   onEnded(): void {
@@ -103,7 +99,6 @@ export class MusicPlayerComponent implements OnDestroy {
   }
 
   loadTrack(id: number): void {
-    this.title = this.tracks[id].title;
     this.currentTrackIndex = id;
     this.audioRef.nativeElement.src = this.tracks[id].url;
   }
@@ -211,10 +206,11 @@ export class MusicPlayerComponent implements OnDestroy {
     if (this.currentTrackIndex === i) {
       this.currentTrackIndex = -1;
       this.audioRef.nativeElement.pause();
-      this.audioRef.nativeElement.src = '';
+      this.audioRef.nativeElement.removeAttribute('src');
     }
     const [deletedTrack] = this.tracks.splice(i, 1);
     this.currentTrackIndex = this.tracks.indexOf(currentTrack);
+    this.playingQueueService.playlist.splice(i, 1);
     this.playingQueueService.trackEvent.next({
       track: deletedTrack,
       event: 'remove'
