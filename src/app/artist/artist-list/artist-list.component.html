@@ -1,7 +1,7 @@
 <div class="row g-5">
   <div
     class="col-md-3"
-    *ngFor="let artist of (artistPage.content | likes:(currentUser$ | async):'ARTIST'); index as i"
+    *ngFor="let artist of artistPage.content | likes:'ARTIST':(currentUser$ | async); index as i"
     [routerLink]="['/artist', 'detail']"
     [queryParams]="{id: artist.id}"
   >

@@ -18,12 +18,13 @@ import { PlaylistModule } from '../playlist/playlist.module';
 import { CompleteRegistrationComponent } from './complete-registration/complete-registration.component';
 import { ResetPasswordSubmissionComponent } from './reset-password-submission/reset-password-submission.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { VgControlModule, VgDirectivesModule } from 'ngx-vengeance-lib';
+import { VgControlModule, VgDirectivesModule, VgLayoutModule } from 'ngx-vengeance-lib';
 import { UploadedAlbumListComponent } from './uploaded-album-list/uploaded-album-list.component';
 import { SearchSummaryComponent } from './search/search-summary/search-summary.component';
 import { SearchSongTabComponent } from './search/search-song-tab/search-song-tab.component';
 import { SearchArtistTabComponent } from './search/search-artist-tab/search-artist-tab.component';
 import { SearchAlbumTabComponent } from './search/search-album-tab/search-album-tab.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,9 @@ import { SearchAlbumTabComponent } from './search/search-album-tab/search-album-
     PlaylistModule,
     NgbDropdownModule,
     VgDirectivesModule,
-    VgControlModule
+    VgControlModule,
+    VgLayoutModule,
+    InfiniteScrollModule
   ],
   exports: [HomeComponent, RegisterComponent, UserComponent, UpdateProfileComponent, SearchComponent]
 })

@@ -4,7 +4,7 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">{{ 'common.label.title' | translate }}</th>
-      <th scope="col">{{ 'Release Date' | translate }}</th>
+      <th scope="col">{{ 'feature.song.release_date' | translate }}</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -14,11 +14,11 @@
       <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
       <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
       <td>
-        <button (click)="addToPlaying(song, $event)" class="btn btn-primary rounded-circle" [disabled]="song.isDisabled">
+        <button class="btn btn-sm btn-primary rounded-circle" [disabled]="song.isDisabled" (click)="addToPlaying(song, $event)">
           <i class="bi bi-play"></i>
         </button>
-        <button class="btn btn-primary rounded-pill" (click)="openDeleteDialog(playList, song)">
-          <span class="spinner-border spinner-border-sm mr-1"></span>{{'Remove' | translate }}
+        <button class="btn btn-sm btn-danger rounded-pill" (click)="openDeleteDialog(playList, song)">
+          <i class="bi bi-trash"></i>
         </button>
       </td>
     </tr>

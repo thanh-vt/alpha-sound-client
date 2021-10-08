@@ -1,28 +1,28 @@
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" *ngIf="!!currentUser" vgFocusFirstInvalid [form]="updateForm">
   <div class="form-group mb-3">
-    <label class="form-label" for="first_name"><i class="bi bi-tag"></i> {{ 'First Name' | translate }}</label>
+    <label class="form-label" for="first_name"><i class="bi bi-tag"></i> {{ 'feature.account.first_name' | translate }}</label>
     <input
       id="first_name"
       type="text"
-      [placeholder]="('Enter' | translate) + ' ' + ('First Name' | translate)"
+      [placeholder]="'feature.account.first_name_hint' | translate"
       formControlName="first_name"
       class="form-control"
     />
     <vg-error-section [group]="updateForm" [label]="'First Name' | translate" controlName="first_name"></vg-error-section>
   </div>
   <div class="form-group mb-3">
-    <label class="form-label" for="last_name"><i class="bi bi-tag"></i> {{ 'Last Name' | translate}}</label>
+    <label class="form-label" for="last_name"><i class="bi bi-tag"></i> {{ 'feature.account.last_name' | translate}}</label>
     <input
       id="last_name"
       type="text"
-      [placeholder]="('Enter' | translate) + ' ' + ('Password' | translate)"
+      [placeholder]="'feature.account.last_name_hint' | translate"
       formControlName="last_name"
       class="form-control"
     />
     <vg-error-section [group]="updateForm" [label]="'Last Name' | translate" controlName="last_name"></vg-error-section>
   </div>
   <div class="form-group mb-3">
-    <label class="form-label"><i class="bi bi-gender-female"></i> {{ 'Gender' | translate }}</label>
+    <label class="form-label"><i class="bi bi-gender-female"></i> {{ 'feature.account.gender' | translate }}</label>
     <div class="form-check form-check-inline">
       <input type="radio" id="male" [value]="true" formControlName="gender" />
       <label class="form-check-label ml-2" for="male"><i class="bi bi-gender-male"></i> Male</label>
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="form-group mb-3">
-    <label class="form-label" for="birth_date">{{ 'common.label.birthDate' | translate }}</label>
+    <label class="form-label" for="birth_date">{{ 'feature.account.birth_date' | translate }}</label>
     <div class="input-group">
       <input
         class="form-control"
@@ -52,20 +52,24 @@
         </button>
       </div>
     </div>
-    <vg-error-section [group]="updateForm" [label]="'common.label.birthDate' | translate" controlName="date_of_birth"></vg-error-section>
+    <vg-error-section
+      [group]="updateForm"
+      [label]="'feature.account.birth_date' | translate"
+      controlName="date_of_birth"
+    ></vg-error-section>
   </div>
   <div class="form-group mb-3">
-    <label class="form-label" for="phone_number"><i class="bi bi-telephone"></i> {{ 'PhoneNumber' | translate }}</label>
+    <label class="form-label" for="phone_number"><i class="bi bi-telephone"></i> {{ 'feature.account.phone_number' | translate }}</label>
     <input
       id="phone_number"
       type="text"
-      [placeholder]="('Enter' | translate) + ' ' + ('PhoneNumber' | translate)"
+      [placeholder]="'feature.account.phone_number_hint' | translate"
       formControlName="phone_number"
       class="form-control"
     />
   </div>
   <div class="form-group mb-3">
-    <label class="form-label"><i class="bi bi-person-bounding-box"></i> {{ 'Avatar' | translate }}</label>
+    <label class="form-label"><i class="bi bi-person-bounding-box"></i> {{ 'feature.account.avatar' | translate }}</label>
     <vg-file-input
       formControlName="avatar_url"
       [formData]="formData"
@@ -75,6 +79,6 @@
   </div>
   <button [disabled]="loading" class="btn btn-primary rounded-pill my-2 float-right">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-    <span>{{ 'Update' | translate }}</span>
+    <span>{{ 'common.button.save' | translate }}</span>
   </button>
 </form>

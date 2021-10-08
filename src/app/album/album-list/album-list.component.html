@@ -1,5 +1,5 @@
 <div class="row row-cols-sm-auto gy-5">
-  <div *ngFor="let album of (albumPage.content | likes:(currentUser$ | async):'ALBUM'); index as i" class="col-sm-3">
+  <div *ngFor="let album of albumPage.content | likes:'ALBUM':(currentUser$ | async); index as i" class="col-sm-3">
     <app-card [type]="1" [tileHoverEffect]="true">
       <a cardHeader1 [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a>
       <div cardText1 class="align-items-center h-100">

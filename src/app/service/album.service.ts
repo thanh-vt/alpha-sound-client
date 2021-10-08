@@ -19,10 +19,11 @@ export class AlbumService {
     return this.http.get<PagingInfo<Album>>(requestUrl, { params });
   }
 
-  searchAlbumByName(name: string): Observable<PagingInfo<Album>> {
+  searchAlbumByName(name: string, page = 0, size = 10): Observable<PagingInfo<Album>> {
     return this.http.get<PagingInfo<Album>>(`${environment.apiUrl}/album/es-search`, {
       params: {
-        name
+        name,
+        page
       }
     });
   }

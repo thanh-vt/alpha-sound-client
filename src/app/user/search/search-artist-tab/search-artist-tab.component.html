@@ -1,1 +1,27 @@
-<p>search-artist-tab works!</p>
+<div
+  class="container-fluid artist-container"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  [scrollWindow]="false"
+  (scrolled)="onScroll()"
+>
+  <div class="row g-5">
+    <div
+      class="col-md-3"
+      *ngFor="let artist of artistList | likes:'ARTIST':(currentUser$ | async); index as i"
+      [routerLink]="['/artist', 'detail']"
+      [queryParams]="{id: artist.id}"
+    >
+      <div class="avatar-container">
+        <img class="avatar" [src]="artist.avatarUrl" alt="" />
+        <div class="like-btn-container d-flex justify-content-center">
+          <app-artist-like-btn [ngClass]="'mt-auto mb-2'" [artist]="artist"></app-artist-like-btn>
+        </div>
+        <div class="w-100 position-absolute bottom-0 d-flex justify-content-center align-items-center" style="height: 2rem">
+          <span>{{ artist.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

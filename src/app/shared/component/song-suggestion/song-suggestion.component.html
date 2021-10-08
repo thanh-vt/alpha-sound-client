@@ -1,6 +1,6 @@
-<app-modal-wrapper [title]="'Add existed song' | translate" (closeAction)="close()">
+<app-modal-wrapper [title]="'feature.album.choose_existed_song' | translate" (closeAction)="close()">
   <div modalBody>
-    <label for="typeahead-prevent-manual-entry">{{'Search for a song:' | translate}}</label>
+    <label for="typeahead-prevent-manual-entry">{{'feature.album.search_song' | translate}}:</label>
     <input
       id="typeahead-prevent-manual-entry"
       type="text"
@@ -11,12 +11,13 @@
       [editable]="false"
       (selectItem)="selectSong($event)"
     />
-    <div style="height: 10rem">
-      <pre>Song: {{ selectedSong | json }}</pre>
+    <div class="p-2" style="height: 10rem">
+      <h6>{{'feature.song.song_info' | translate}}:</h6>
+      <hr />
+      <pre>{{ selectedSong | json }}</pre>
     </div>
-    <!--    <hr />-->
   </div>
   <ng-container modalFooter>
-    <button class="btn btn-primary" (click)="close(selectedSong)">{{'Ok' | translate}}</button>
+    <button class="btn btn-primary" (click)="close(selectedSong)">{{'common.button.save' | translate}}</button>
   </ng-container>
 </app-modal-wrapper>

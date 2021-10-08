@@ -1,8 +1,7 @@
 import { Song } from './song';
 import { ResourceInfo } from './resource-info';
-import { Entity } from '../service/favorites.service';
 
-export interface Artist extends Entity {
+export interface Artist {
   isDisabled?: boolean;
   id: number;
   name?: string;

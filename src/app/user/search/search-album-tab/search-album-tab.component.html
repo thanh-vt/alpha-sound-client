@@ -1,1 +1,27 @@
-<p>search-album-tab works!</p>
+<div class="container-fluid album-container">
+  <div
+    class="row row-cols-sm-auto gy-5"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    (scrolled)="onScroll()"
+  >
+    <div *ngFor="let album of albumList | likes:'ALBUM': (currentUser$ | async); index as i" class="col-sm-4">
+      <app-card [type]="1" [tileHoverEffect]="true">
+        <a cardHeader1 [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a>
+        <div cardText1 class="align-items-center h-100">
+          <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"
+            ><img class="card-img img-thumbnail h-100" [src]="album.coverUrl" alt=""
+          /></a>
+        </div>
+        <div cardFooter1 class="d-flex align-items-center justify-content-center">
+          <button (click)="addAlbumToPlaying(album, $event)" class="btn btn-sm btn-info rounded-circle" [disabled]="album.isDisabled">
+            <i class="bi bi-play"></i>
+          </button>
+          <app-album-like-btn [album]="album"></app-album-like-btn>
+        </div>
+      </app-card>
+    </div>
+  </div>
+</div>

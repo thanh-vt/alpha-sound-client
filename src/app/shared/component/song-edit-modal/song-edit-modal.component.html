@@ -1,4 +1,4 @@
-<app-modal-wrapper [title]="'Edit artist info' | translate" (closeAction)="close()">
+<app-modal-wrapper [title]="'feature.album.add_song' | translate" (closeAction)="close()">
   <form modalBody id="songEditForm" [formGroup]="songForm" (ngSubmit)="onSubmit()" vgFocusFirstInvalid [form]="songForm">
     <div class="form-group">
       <label for="songTitle">{{ 'common.label.title' | translate }}</label>
@@ -15,7 +15,7 @@
     <app-artist-suggestion [uploadData]="songUploadData" [parentForm]="songForm"></app-artist-suggestion>
 
     <div class="form-group">
-      <label for="releaseDate">{{ 'Release Date' | translate }}</label>
+      <label for="releaseDate">{{ 'feature.song.release_date' | translate }}</label>
       <div class="input-group">
         <input
           class="form-control"
@@ -33,10 +33,10 @@
           </button>
         </div>
       </div>
-      <vg-error-section [label]="'Release Date' | translate" [group]="songForm" controlName="releaseDate"></vg-error-section>
+      <vg-error-section [label]="'feature.song.release_date' | translate" [group]="songForm" controlName="releaseDate"></vg-error-section>
     </div>
     <div class="form-group">
-      <label for="audio">{{ 'Audio File' | translate }}</label>
+      <label for="audio">{{ 'feature.song.audio_file' | translate }}</label>
       <vg-file-input
         id="audio"
         formControlName="url"

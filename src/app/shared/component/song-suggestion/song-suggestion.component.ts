@@ -27,14 +27,13 @@ export class SongSuggestionComponent {
     text$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      filter(term => term.length >= 2),
-      switchMap(phrase => this.songService.searchForSong(phrase)),
+      filter(term => term.length >= 1),
+      switchMap(phrase => this.songService.searchSongByName(phrase)),
       map(songPage => songPage.content)
     );
 
   selectSong(event: NgbTypeaheadSelectItemEvent<Song>): void {
     this.selectedSong = event.item;
-    console.log(this.selectedSong);
   }
 
   close(song?: Song): void {

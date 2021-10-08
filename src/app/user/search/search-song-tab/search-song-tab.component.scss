@@ -1,0 +1,19 @@
+.table-responsive {
+  max-height: 500px;
+}
+
+table {
+  width: 100% !important;
+}
+thead,
+tbody tr {
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+tbody {
+  display: block !important;
+  overflow-y: auto !important;
+  table-layout: fixed !important;
+  max-height: 35rem !important;
+}

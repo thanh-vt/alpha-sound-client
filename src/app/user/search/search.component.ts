@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SearchSummary } from '../../model/search-summary';
-import { UserProfileService } from '../../service/user-profile.service';
+import { DataUtil } from '../../util/data-util';
+import { SearchService } from '../../service/search.service';
 
 @Component({
   selector: 'app-search',
@@ -10,18 +11,31 @@ import { UserProfileService } from '../../service/user-profile.service';
 })
 export class SearchComponent implements OnInit {
   selectedTabId = 'summary';
-  searchSummary: SearchSummary;
+  searchSummary: SearchSummary = {
+    song: DataUtil.initPagingInfo(),
+    album: DataUtil.initPagingInfo(),
+    artist: DataUtil.initPagingInfo()
+  };
   searchText = '';
-  constructor(private activatedRoute: ActivatedRoute, private userProfileService: UserProfileService) {}
+
+  constructor(private activatedRoute: ActivatedRoute, private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(next => {
       if (next.q) {
         this.searchText = next.q;
-        this.userProfileService.search(this.searchText).subscribe(next => {
+        this.searchService.search(this.searchText).subscribe(next => {
           this.searchSummary = next;
         });
       }
     });
+  }
+
+  changeTab(): void {
+    console.log('scroll init');
+    setTimeout(() => {
+      console.log('scroll');
+      DataUtil.scrollToTop();
+    }, 500);
   }
 }

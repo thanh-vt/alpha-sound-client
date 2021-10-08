@@ -13,7 +13,7 @@
       [tabIndex]="song.id"
       [routerLink]="['/song','detail']"
       [queryParams]="{id: song.id}"
-      *ngFor="let song of songPage.content | likes:(currentUser$ | async):'SONG'; index as i"
+      *ngFor="let song of songPage.content | likes:'SONG' : (currentUser$ | async); index as i"
     >
       <th scope="row">{{ song.rn }}</th>
       <td>

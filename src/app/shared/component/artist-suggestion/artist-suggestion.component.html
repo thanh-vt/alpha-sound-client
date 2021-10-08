@@ -10,6 +10,7 @@
               [modelToTextMapper]="modelToTextMapper"
               [modelToImgSrcMapper]="modelToImgSrcMapper"
               [searchResults]="uploadData.filteredArtists"
+              [placeholder]="'feature.artist.type_to_search' | translate"
               (changeTextEvent)="suggestArtist($event)"
             ></vg-auto-input>
             <div class="d-flex justify-content-center" style="width: auto">

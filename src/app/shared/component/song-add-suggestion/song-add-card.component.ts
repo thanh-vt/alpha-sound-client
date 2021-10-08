@@ -42,7 +42,7 @@ export class SongAddCardComponent {
       backdrop: false,
       centered: false,
       scrollable: false,
-      size: 'md'
+      size: 'lg'
     });
     const instance: SongEditModalComponent = ref.componentInstance;
     const songUploadData = SongUploadData.instance();

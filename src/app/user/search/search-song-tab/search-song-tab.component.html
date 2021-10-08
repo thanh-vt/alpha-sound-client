@@ -1,1 +1,41 @@
-<p>search-song-tab works!</p>
+<div class="container-fluid">
+  <table class="table table-striped table-responsive">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 10%">#</th>
+        <th scope="col" style="width: 50%">{{ 'common.label.title' | translate }}</th>
+        <th scope="col" style="width: 10%"></th>
+        <th scope="col" style="width: 10%"></th>
+        <th scope="col" style="width: 20%"></th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScroll()">
+      <tr
+        [tabIndex]="song.id"
+        [routerLink]="['/song','detail']"
+        [queryParams]="{id: song.id}"
+        *ngFor="let song of songList | likes:'SONG': (currentUser$ | async); index as i"
+      >
+        <td style="width: 10%">{{ i + 1 }}</td>
+        <td style="width: 50%">
+          <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
+          <a *ngFor="let artist of song.artists; index as j"
+            ><small>{{ artist.name }}{{ j === song.artists.length - 1 ? '' : ', '}}</small></a
+          >
+        </td>
+        <td style="width: 10%">
+          <small>{{ song.duration | duration }}</small>
+        </td>
+        <td style="width: 10%">
+          <span class="float-right"
+            ><small><i class="bi bi-headphones"></i> {{song.listeningFrequency}}</small></span
+          >
+        </td>
+        <td style="width: 20%">
+          <app-song-like-btn [song]="song"></app-song-like-btn>
+          <app-song-menu-btn [song]="song"></app-song-menu-btn>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

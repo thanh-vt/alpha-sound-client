@@ -1,0 +1,39 @@
+.avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+}
+
+.like-btn-container {
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.like-btn-container:hover {
+  background: whitesmoke;
+  opacity: 50%;
+}
+
+.avatar-container {
+  display: block;
+  position: relative;
+  width: 10rem;
+  height: 12rem;
+  cursor: pointer;
+}
+
+tr,
+a {
+  cursor: pointer;
+}
+
+tr:nth-child(n):hover {
+  background-color: #c7c7c7;
+}

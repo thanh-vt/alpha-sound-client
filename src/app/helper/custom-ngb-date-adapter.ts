@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CustomNgbDateAdapter extends NgbDateAdapter<Date> {
   fromModel(date: Date): NgbDateStruct {
+    if (!date) return null;
     const dateObj = new Date(date);
     return dateObj
       ? {

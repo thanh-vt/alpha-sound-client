@@ -38,10 +38,12 @@ export class ArtistService {
     });
   }
 
-  searchArtistByName(name: string): Observable<PagingInfo<Artist>> {
+  searchArtistByName(name: string, page = 0, size = 10): Observable<PagingInfo<Artist>> {
     return this.http.get<PagingInfo<Artist>>(`${environment.apiUrl}/artist/es-search`, {
       params: {
-        name
+        name,
+        page,
+        size
       }
     });
   }

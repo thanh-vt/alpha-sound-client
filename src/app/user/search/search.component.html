@@ -1,42 +1,58 @@
-<div ngbNav class="nav-pills" [orientation]="'vertical'" [(activeId)]="selectedTabId">
-  <div [ngbNavItem]="'summary'" [ngStyle]="{minWidth: '10rem'}">
-    <ng-template ngbNav>
-      <h5>{{ 'common.entity.summary' | translate }} <span class="badge badge-secondary rounded-pill">{{}}</span></h5>
-    </ng-template>
-    <ng-template ngbNavContent>
-      <app-search-summary></app-search-summary>
-    </ng-template>
-  </div>
-  <div [ngbNavItem]="'song'" [ngStyle]="{minWidth: '10rem'}">
-    <ng-template ngbNav>
-      <h5>
-        {{ 'common.entity.song' | translate }} <span class="badge badge-secondary rounded-pill">{{searchSummary.song.totalElements}}</span>
-      </h5>
-    </ng-template>
-    <ng-template ngbNavContent>
-      <app-search-song-tab></app-search-song-tab>
-    </ng-template>
-  </div>
-  <div [ngbNavItem]="'artist'" [ngStyle]="{minWidth: '10rem'}">
-    <ng-template ngbNav>
-      <h5>
-        {{ 'common.entity.artist' | translate }}
-        <span class="badge badge-secondary rounded-pill">{{searchSummary.artist.totalElements}}</span>
-      </h5>
-    </ng-template>
-    <ng-template ngbNavContent>
-      <app-search-artist-tab></app-search-artist-tab>
-    </ng-template>
-  </div>
-  <div [ngbNavItem]="'album'" [ngStyle]="{minWidth: '10rem'}">
-    <ng-template ngbNav>
-      <h5>
-        {{ 'common.entity.album' | translate }}
-        <span class="badge badge-secondary rounded-pill">{{searchSummary.album.totalElements}}</span>
-      </h5>
-    </ng-template>
-    <ng-template ngbNavContent>
-      <app-search-album-tab></app-search-album-tab>
-    </ng-template>
-  </div>
+<div class="search-container d-flex border-1 border-dark">
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    class="nav-pills"
+    style="width: 20%"
+    [orientation]="'vertical'"
+    [activeId]="selectedTabId"
+    (activeIdChange)="changeTab()"
+  >
+    <li [ngbNavItem]="'summary'" [ngStyle]="{minWidth: '3rem'}">
+      <a ngbNavLink>
+        <h5>{{ 'common.label.all' | translate }}</h5>
+      </a>
+      <ng-template ngbNavContent>
+        <app-search-summary
+          [searchText]="searchText"
+          [searchSummary]="searchSummary"
+          (changeTabEvent)="selectedTabId = $event"
+        ></app-search-summary>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'song'" [ngStyle]="{minWidth: '3rem'}">
+      <a ngbNavLink>
+        <h5>
+          {{ 'common.entity.song' | translate }}
+          <span class="badge bg-secondary rounded-pill">{{searchSummary.song.totalElements}}</span>
+        </h5>
+      </a>
+      <ng-template ngbNavContent>
+        <app-search-song-tab [searchText]="searchText" [songList]="searchSummary.song.content"></app-search-song-tab>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'artist'" [ngStyle]="{minWidth: '3rem'}">
+      <a ngbNavLink>
+        <h5>
+          {{ 'common.entity.artist' | translate }}
+          <span class="badge bg-secondary rounded-pill">{{searchSummary.artist.totalElements}}</span>
+        </h5>
+      </a>
+      <ng-template ngbNavContent>
+        <app-search-artist-tab [searchText]="searchText" [artistList]="searchSummary.artist.content"></app-search-artist-tab>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'album'" [ngStyle]="{minWidth: '3rem'}">
+      <a ngbNavLink>
+        <h5>
+          {{ 'common.entity.album' | translate }}
+          <span class="badge bg-secondary rounded-pill">{{searchSummary.album.totalElements}}</span>
+        </h5>
+      </a>
+      <ng-template ngbNavContent>
+        <app-search-album-tab [searchText]="searchText" [albumList]="searchSummary.album.content"></app-search-album-tab>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="ml-4" style="width: 80%"></div>
 </div>

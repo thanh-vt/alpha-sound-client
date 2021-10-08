@@ -32,14 +32,14 @@ export class CreatePlaylistComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.playlistService.createPlaylist(this.createPlaylistForm.value).subscribe(next => {
       this.toastService.success({ title: 'Success', text: 'Playlist saved successfully' });
       this.ngbActiveModal.close(next);
     });
   }
 
-  close() {
+  close(): void {
     this.ngbActiveModal.close();
   }
 }

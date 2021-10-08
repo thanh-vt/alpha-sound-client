@@ -9,17 +9,17 @@
     <span cardButton2><i class="bi bi-person-check"></i></span>
     <div cardText2>
       <ng-container *ngIf="user?.username===(currentUser$ | async)?.user_name; else notOwnProfileBlock">
-        <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.account.username' | translate }}:&nbsp;</h6>
         <span class="text-secondary">{{user?.profile?.user_name}}</span>
         <br />
-        <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.account.first_name' | translate }}:&nbsp;</h6>
         <span class="text-secondary">{{user?.profile?.first_name}}</span><br />
-        <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.account.last_name' | translate }}:&nbsp;</h6>
         <span class="text-secondary">{{user?.profile?.last_name}}</span><br />
-        <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.account.birth_date' | translate }}:&nbsp;</h6>
         <span *ngIf="user?.profile?.date_of_birth" class="text-secondary"> {{user?.profile?.date_of_birth | date: 'dd/MM/yyyy' }}</span>
         <br />
-        <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.account.gender' | translate }}:&nbsp;</h6>
         <span> <i *ngIf="user?.profile?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
         <br />
         <h6 class="d-inline">Email:&nbsp;</h6>
@@ -27,17 +27,17 @@
       </ng-container>
     </div>
     <ng-template #notOwnProfileBlock>
-      <h6 class="d-inline">{{ 'Username' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.account.username' | translate }}:&nbsp;</h6>
       <span class="text-secondary">{{user.username}}</span>
       <br />
-      <h6 class="d-inline">{{ 'First Name' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.account.first_name' | translate }}:&nbsp;</h6>
       <span class="text-secondary">**********</span>
-      <h6 class="d-inline">{{ 'Last Name' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.account.last_name' | translate }}:&nbsp;</h6>
       <span class="text-secondary">**********</span>
-      <h6 class="d-inline">{{ 'BirthDate' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.account.birth_date' | translate }}:&nbsp;</h6>
       <span *ngIf="!user?.profile?.date_of_birth" class="text-secondary">**********</span>
       <br />
-      <h6 class="d-inline">{{ 'Gender' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.account.gender' | translate }}:&nbsp;</h6>
       <span> <i *ngIf="user?.profile?.gender; else female" class="bi bi-gender-male text-primary"></i></span>
       <br />
       <h6 class="d-inline">Email:&nbsp;</h6>
@@ -46,7 +46,7 @@
   </app-card>
 </ng-container>
 <div *ngIf="showEditForm" class="update_profile">
-  <app-card [type]="3" [title]="'Edit Profile' | translate">
+  <app-card [type]="3" [title]="'feature.account.update_profile' | translate">
     <app-update-profile cardText3 (updateEvent)="onUpdate($event)"></app-update-profile>
   </app-card>
 </div>

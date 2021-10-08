@@ -7,9 +7,9 @@
         <h6 class="d-inline">{{ 'common.label.title' | translate }}:&nbsp;</h6>
         <span>{{song.title}}</span>
         <br />
-        <h6 class="d-inline">{{ 'Release Date' | translate }}::&nbsp;</h6>
+        <h6 class="d-inline">{{ 'feature.song.release_date' | translate }}::&nbsp;</h6>
         <span>{{ song.releaseDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</span><br />
-        <h6 class="d-inline">{{ 'Artist(s)' | translate }}:</h6>
+        <h6 class="d-inline">{{ 'common.entity.artist' | translate }}:</h6>
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let artist of artistPage.content; index as i">
             <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />

@@ -1,12 +1,16 @@
-img {
-  height: 2rem;
-  width: 2rem;
+.search-container {
+  height: 60rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-tr, a {
-  cursor: pointer;
+::ng-deep .nav-fill .nav-link.active {
+  margin-top: -1px;
+  border-top: 2px solid #20a8d8;
 }
 
-tr:nth-child(n):hover {
-  background-color: #c7c7c7;
+::ng-deep .nav-pills .nav-link.active,
+::ng-deep .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #20a8d8;
 }

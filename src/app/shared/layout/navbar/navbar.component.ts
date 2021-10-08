@@ -85,8 +85,8 @@ export class NavbarComponent implements OnInit {
       return;
     }
     const searchText = this.searchForm.get('searchText').value;
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.navigate(['/', 'search'], { queryParams: { name: searchText } });
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => true;
+    this.router.navigate(['/', 'search'], { queryParams: { q: searchText } });
   }
 
   logout(): void {

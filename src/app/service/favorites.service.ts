@@ -5,12 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { EntityType } from '../constant/entity-type';
 import { Observable } from 'rxjs';
+import { Song } from '../model/song';
+import { Album } from '../model/album';
+import { Artist } from '../model/artist';
 
-export interface Entity {
-  id: number;
-  liked?: boolean;
-  loadingLikeButton?: boolean;
-}
+export type Entity = Song | Album | Artist;
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +44,7 @@ export class FavoritesService {
       });
   }
 
-  patchLikes(entityTypes: Entity[], type: EntityType): void {
+  patchLikes(entities: Entity[], type: EntityType): void {
     if (!this.authService.currentUserValue) {
       return;
     }
@@ -53,13 +52,13 @@ export class FavoritesService {
       type
     };
     const userSongLikeMap = {};
-    entityTypes.forEach(e => {
-      userSongLikeMap[e.id] = e.liked;
+    entities.forEach(e => {
+      userSongLikeMap[e.id] = e.liked ?? false;
     });
     this.http
       .patch<{ id: number; isLiked: boolean }>(`${environment.apiUrl}/favorites/like-map`, userSongLikeMap, { params })
       .subscribe(next => {
-        entityTypes.forEach(song => {
+        entities.forEach(song => {
           song.liked = next[song.id];
         });
       });

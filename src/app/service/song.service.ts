@@ -38,8 +38,11 @@ export class SongService {
     );
   }
 
-  searchForSong(name: string): Observable<PagingInfo<Song>> {
-    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/es-search`, { params: { name }, withCredentials: true });
+  searchSongByName(name: string, page = 0, size = 10): Observable<PagingInfo<Song>> {
+    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/es-search`, {
+      params: { name, page, size },
+      withCredentials: true
+    });
   }
 
   songDetail(id: number): Observable<Song> {
@@ -138,6 +141,9 @@ export class SongService {
 
   playAlbum(album: Album): void {
     album.listeningFrequency++;
+    this.favoritesService.listen(album.id, 'ALBUM').subscribe(() => {
+      console.debug(`Listen to album ${album.id}`);
+    });
     this.getAlbumSongList(album.id, 0).subscribe(next => {
       const tracks: AudioTrack[] = next.content.map(song => ({
         id: song.id,

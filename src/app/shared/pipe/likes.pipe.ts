@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Entity, FavoritesService } from '../../service/favorites.service';
+import { EntityType } from '../../constant/entity-type';
+import { UserProfile } from '../../model/token-response';
 
 @Pipe({
   name: 'likes'
@@ -7,9 +9,9 @@ import { Entity, FavoritesService } from '../../service/favorites.service';
 export class LikesPipe implements PipeTransform {
   constructor(private favoritesService: FavoritesService) {}
 
-  transform(value: Entity[], ...args: any[]): any[] {
-    if (args[0] && args[1]) {
-      this.favoritesService.patchLikes(value, args[1]);
+  transform(value: Entity[], entityType: EntityType, userProfile: UserProfile): Entity[] {
+    if (value.length && entityType && userProfile) {
+      this.favoritesService.patchLikes(value, entityType);
     }
     return value;
   }

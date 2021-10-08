@@ -3,9 +3,9 @@
     <button class="align-self-center btn btn-info rounded-circle" ngbDropdownToggle>
       <i style="font-size: 2rem" class="bi bi-plus"></i>
     </button>
-    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-      <button ngbDropdownItem (click)="newSong()">{{'Add new song' | translate}}</button>
-      <button ngbDropdownItem (click)="openSuggestionDialog()">{{'Choose an existed song' | translate}}</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown_menu">
+      <button ngbDropdownItem (click)="newSong()">{{'feature.album.add_song' | translate}}</button>
+      <button ngbDropdownItem (click)="openSuggestionDialog()">{{'feature.album.choose_existed_song' | translate}}</button>
     </div>
   </div>
 </div>

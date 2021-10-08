@@ -46,8 +46,4 @@ export class UserProfileService {
   resetPasswordSubmission(changePassword: ChangePassword): Observable<void> {
     return this.http.patch<void>(`${environment.apiUrl}/reset-password`, changePassword);
   }
-
-  search(name: string): Observable<SearchSummary> {
-    return this.http.get<SearchSummary>(`${environment.apiUrl}/api/user/search`, { params: { name } });
-  }
 }

@@ -13,7 +13,7 @@
   <label>{{ 'common.entity.artist' | translate }}</label>
   <app-artist-suggestion [uploadData]="albumUploadData" [parentForm]="albumForm"></app-artist-suggestion>
   <div class="form-group">
-    <label for="albumReleaseDate">{{ 'Release Date' | translate }}</label>
+    <label for="albumReleaseDate">{{ 'feature.song.release_date' | translate }}</label>
     <div class="input-group">
       <input
         class="form-control"
@@ -31,7 +31,7 @@
         </button>
       </div>
     </div>
-    <vg-error-section [label]="'Release Date' | translate" [group]="albumForm" controlName="releaseDate"></vg-error-section>
+    <vg-error-section [label]="'feature.song.release_date' | translate" [group]="albumForm" controlName="releaseDate"></vg-error-section>
   </div>
   <div class="form-group">
     <label class="col-sm-4 px-0" for="albumCover">{{ 'Cover' | translate }}</label>

@@ -6,7 +6,7 @@
       <h6 class="d-inline">{{ 'common.label.title' | translate }}:&nbsp;</h6>
       <span>{{album.title}}</span>
       <br />
-      <h6 class="d-inline">{{ 'Artist(s)' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'common.entity.artist' | translate }}:&nbsp;</h6>
       <ul class="list-group">
         <li class="list-group-item" *ngFor="let artist of artistPage.content; index as i">
           <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
@@ -20,19 +20,19 @@
         [pageSize]="artistPage.pageable?.pageSize"
         (pageChange)="getArtistPage($event - 1)"
       ></ngb-pagination>
-      <h6 class="d-inline">{{ 'Release Date' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'feature.song.release_date' | translate }}:&nbsp;</h6>
       <span>{{album.releaseDate | date: 'dd/MM/yyyy'}}</span>
       <br />
-      <h6 class="d-inline">{{ 'Genre(s)' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'common.entity.genre' | translate }}:&nbsp;</h6>
       <span>{{album.genres | stringArray}}</span>
       <br />
-      <h6 class="d-inline">{{ 'Tag(s)' | translate }}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'common.entity.tag' | translate }}:&nbsp;</h6>
       <span>{{album.tags | stringArray}}</span>
       <br />
       <h6 class="d-inline">{{ 'common.entity.country' | translate }}:&nbsp;</h6>
       <span class="text-secondary">{{ album.country?.name }}</span>
       <br />
-      <h6 class="d-inline">{{ 'Theme' | translate}}:&nbsp;</h6>
+      <h6 class="d-inline">{{ 'common.entity.theme' | translate}}:&nbsp;</h6>
       <span class="text-secondary">{{ album.theme?.name }}</span>
       <br />
     </div>
