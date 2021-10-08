@@ -19,11 +19,10 @@ import { Router } from '@angular/router';
 import { TokenStorageService } from '../service/token-storage.service';
 import { VgToastService } from 'ngx-vengeance-lib';
 import { ApiError } from '../model/api-error';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  delay: any;
+  delay: NodeJS.Timeout;
 
   constructor(
     private authService: AuthService,
@@ -33,12 +32,14 @@ export class TokenInterceptor implements HttpInterceptor {
     private toastService: VgToastService
   ) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(this.attachTokenToRequest(request)).pipe(
       catchError(error => {
         if (error instanceof HttpErrorResponse) {
           if (request.url.includes('/oauth/token')) {
             return this.handleOauth2RequestError(request, next, error);
+          } else if (request.url.includes('ping')) {
+            return next.handle(request);
           } else {
             return this.handleNormalRequestError(request, next, error);
           }
@@ -49,7 +50,7 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
-  handleNormalRequestError(request: HttpRequest<any>, next: HttpHandler, error: HttpErrorResponse): Observable<HttpEvent<any>> {
+  handleNormalRequestError(request: HttpRequest<unknown>, next: HttpHandler, error: HttpErrorResponse): Observable<HttpEvent<unknown>> {
     if (error.status === 401) {
       const refreshTokenInfo = this.tokenStorageService.refreshToken;
       if (!refreshTokenInfo) {
@@ -86,7 +87,7 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  handleOauth2RequestError(request: HttpRequest<any>, next: HttpHandler, error: HttpErrorResponse): Observable<HttpEvent<any>> {
+  handleOauth2RequestError(request: HttpRequest<unknown>, next: HttpHandler, error: HttpErrorResponse): Observable<HttpEvent<unknown>> {
     const err: ApiError = error?.error;
     if (err.code === 'INVALID_TOKEN') {
       // this.authService.sessionTimeout.emit();
@@ -96,7 +97,7 @@ export class TokenInterceptor implements HttpInterceptor {
     throw error;
   }
 
-  attachTokenToRequest(req: HttpRequest<any>): HttpRequest<any> {
+  attachTokenToRequest(req: HttpRequest<unknown>): HttpRequest<unknown> {
     if (req.serializeBody() == null || !req.serializeBody().toString().includes('refresh_token')) {
       const tokenInfo = this.tokenStorageService.accessToken;
       if (tokenInfo) {
