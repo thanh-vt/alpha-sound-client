@@ -8,7 +8,7 @@ import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/n
 })
 export class NewSongComponent {
   imageOrder = 0;
-  images = [1, 2, 3, 4, 5, 6].map(() => `assets/slides/banner_${this.roll()}.jpg`);
+  images = [1, 2, 3, 4, 5, 6, 7].map(() => `assets/slides/banner_${this.roll()}.jpg`);
   description: string[] = ['Bring you the greatest music', 'Hundreds of songs and albums', 'Customize your own playlist'];
   paused = false;
   unpauseOnArrow = false;
@@ -18,7 +18,7 @@ export class NewSongComponent {
   @ViewChild('carousel', { static: true }) carousel: NgbCarousel;
 
   roll(): number {
-    if (this.imageOrder === 6) {
+    if (this.imageOrder === 7) {
       this.imageOrder = 0;
     }
     return ++this.imageOrder;
