@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from '../../service/song.service';
@@ -11,6 +11,8 @@ import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
 import { Artist } from '../../model/artist';
+import { UserProfile } from '../../model/token-response';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-album-detail',
@@ -18,6 +20,7 @@ import { Artist } from '../../model/artist';
   styleUrls: ['./album-detail.component.scss']
 })
 export class AlbumDetailComponent implements OnInit, OnDestroy {
+  currentUser$: Observable<UserProfile>;
   album: Album;
   albumId: number;
   artistPage: PagingInfo<Artist> = DataUtil.initPagingInfo(5);
@@ -31,8 +34,11 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
     private albumService: AlbumService,
     private songService: SongService,
     private artistService: ArtistService,
+    private authService: AuthService,
     private loaderService: VgLoaderService
-  ) {}
+  ) {
+    this.currentUser$ = this.authService.currentUser$;
+  }
 
   ngOnInit(): void {
     this.subscription.add(

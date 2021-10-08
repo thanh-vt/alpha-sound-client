@@ -51,7 +51,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr [routerLink]="['/song/detail']" [queryParams]="{id: song.id}" *ngFor="let song of songPage.content; index as i">
+      <tr
+        [routerLink]="['/song/detail']"
+        [queryParams]="{id: song.id}"
+        *ngFor="let song of songPage.content | likes:'SONG':(currentUser$ | async); index as i"
+      >
         <th scope="row">{{ song.rn }}</th>
         <td>
           <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
