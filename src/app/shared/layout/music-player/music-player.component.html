@@ -1,7 +1,7 @@
 <div class="audio-player-container">
   <div class="column add-bottom" [hidden]="noSupportHtml5Audio">
     <div id="mainwrap" class="row d-flex align-items-center">
-      <div id="nowPlay" class="col-md-2">
+      <div id="nowPlay" class="col-md-2 px-2">
         <span class="text-dark">{{action}}</span>
       </div>
       <div id="audiowrap" class="col-md-6">
@@ -83,6 +83,7 @@
               (play)="onPlay()"
               (pause)="onPause()"
               (ended)="onEnded()"
+              (error)="removeAudio(currentTrackIndex)"
             >
               Your browser does not support HTML5 Audio! 😢
             </audio>

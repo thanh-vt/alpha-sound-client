@@ -115,7 +115,10 @@
       "add_to_playlist": "Thêm vào danh sách phát",
       "release_date": "Ngày phát hành",
       "ranking": "Bảng xếp hạng",
-      "audio_file": "Tệp âm thanh"
+      "audio_file": "Tệp âm thanh",
+      "load_error": "Có lỗi khi tải dữ liệu nguồn của bài hát",
+      "playing": "Đang phát...",
+      "paused": "Đã tạm dừng..."
     },
     "album": {
       "album_management": "Quản lý album",

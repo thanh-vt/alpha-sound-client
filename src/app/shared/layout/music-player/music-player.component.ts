@@ -3,6 +3,8 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PlayingQueueService } from './playing-queue.service';
 import { AudioTrack } from './audio-track';
 import { Subscription } from 'rxjs';
+import { VgToastService } from 'ngx-vengeance-lib';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-music-player',
@@ -22,7 +24,12 @@ export class MusicPlayerComponent implements OnDestroy {
   queueSub = new Subscription();
   @ViewChild('audio') audioRef: ElementRef<HTMLAudioElement>;
 
-  constructor(config: NgbDropdownConfig, private playingQueueService: PlayingQueueService) {
+  constructor(
+    config: NgbDropdownConfig,
+    private playingQueueService: PlayingQueueService,
+    private translate: TranslateService,
+    private toastService: VgToastService
+  ) {
     // customize default values of dropdowns used by this component tree
     config.placement = 'top-left';
     config.autoClose = false;
@@ -64,17 +71,17 @@ export class MusicPlayerComponent implements OnDestroy {
   }
 
   onPlay(): void {
-    this.action = 'Now Playing...';
+    this.action = this.translate.instant('feature.song.playing');
     this.isPlaying = true;
   }
 
   onPause(): void {
-    this.action = 'Paused...';
+    this.action = this.translate.instant('feature.song.paused');
     this.isPlaying = false;
   }
 
   onEnded(): void {
-    this.action = 'Paused...';
+    this.action = this.translate.instant('feature.song.paused');
     if (this.isShuffle) {
       this.currentTrackIndex = this.getRandomArbitrary(0, this.tracks.length - 1);
       this.loadTrack(this.currentTrackIndex);
@@ -199,6 +206,7 @@ export class MusicPlayerComponent implements OnDestroy {
   }
 
   removeAudio(i: number): void {
+    this.toastService.error({ text: this.translate.instant('feature.song.load_error') });
     const currentTrack = this.tracks[this.currentTrackIndex];
     if (this.currentTrackIndex === i) {
       this.currentTrackIndex = -1;

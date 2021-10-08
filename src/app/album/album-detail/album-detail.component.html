@@ -47,7 +47,6 @@
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
-        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -56,7 +55,7 @@
         [queryParams]="{id: song.id}"
         *ngFor="let song of songPage.content | likes:'SONG':(currentUser$ | async); index as i"
       >
-        <th scope="row">{{ song.rn }}</th>
+        <td>{{ song.rn }}</td>
         <td>
           <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"><h5>{{song.title}}</h5></a>
           <a *ngFor="let artist of song.artists; index as j"

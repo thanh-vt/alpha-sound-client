@@ -116,7 +116,10 @@
       "add_to_playlist": "Add to Playlist",
       "release_date": "Release date",
       "ranking": "Ranking",
-      "audio_file": "Audio file"
+      "audio_file": "Audio file",
+      "load_error": "Error while loading audio source",
+      "playing": "Playing...",
+      "paused": "Paused..."
     },
     "album": {
       "album_management": "Album Management",
