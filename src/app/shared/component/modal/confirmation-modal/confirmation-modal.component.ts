@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,9 +7,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./confirmation-modal.component.scss']
 })
 export class ConfirmationModalComponent {
-  subject: string;
-  name: string;
-  data: any;
+  @Input() subject: string;
+  @Input() name: string;
+  @Input() data: any;
+  @Input() confirmDelete = true;
 
   constructor(private ngbActiveModal: NgbActiveModal) {}
 

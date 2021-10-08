@@ -93,7 +93,8 @@
       "sign_up_hint": "Bạn mới truy truy cập lần đầu? Đăng ký ngay",
       "remember_me": "Ghi nhớ đăng nhập",
       "forgot_password": "Quên mật khẩu",
-      "update_profile": "Cập nhật hồ sơ"
+      "update_profile": "Cập nhật hồ sơ",
+      "confirm_logout": "Bạn có muốn đăng xuất?"
     },
     "register": {
       "successMsg": "Đăng ký thành công. Làm ơn kiểm tra email và click vào đường dẫn đính kèm để kích hoạt tài khoản"
@@ -118,7 +119,8 @@
       "audio_file": "Tệp âm thanh",
       "load_error": "Có lỗi khi tải dữ liệu nguồn của bài hát",
       "playing": "Đang phát...",
-      "paused": "Đã tạm dừng..."
+      "paused": "Đã tạm dừng...",
+      "edit": "Chỉnh sửa bài hát"
     },
     "album": {
       "album_management": "Quản lý album",
@@ -130,7 +132,8 @@
       "add_song": "Tạo bài hát mới",
       "choose_existed_song": "Chọn bài hát có sẵn",
       "search_song": "Tìm kiếm một bài hát",
-      "type_to_search": "Gõ để tìm kiếm"
+      "type_to_search": "Gõ để tìm kiếm",
+      "edit": "Chỉnh sửa album"
     },
     "artist": {
       "artist_management": "Quản lý nghệ sĩ",
@@ -139,6 +142,9 @@
       "artist_name": "Tên nghệ sĩ",
       "biography": "Tiểu sử",
       "type_to_search": "Gõ để tìm kiếm"
+    },
+    "favorites": {
+      "item": "Mục yêu thích"
     },
     "playlist": {
       "create": "Tạo danh sách phát",

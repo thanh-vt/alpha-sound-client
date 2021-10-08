@@ -94,7 +94,8 @@
       "sign_up_hint": "New around here? Sign up",
       "remember_me": "Remember me",
       "forgot_password": "Forgot password",
-      "update_profile": "Update profile"
+      "update_profile": "Update profile",
+      "confirm_logout": "Do you want to logout?"
     },
     "register": {
       "successMsg": "User registered successfully. We have sent you an email, please check your it and click on the confirmation link to activate your account"
@@ -119,7 +120,8 @@
       "audio_file": "Audio file",
       "load_error": "Error while loading audio source",
       "playing": "Playing...",
-      "paused": "Paused..."
+      "paused": "Paused...",
+      "edit": "Edit song"
     },
     "album": {
       "album_management": "Album Management",
@@ -131,7 +133,8 @@
       "add_song": "Create new song",
       "choose_existed_song": "Browse for an existed song",
       "search_song": "Search for a song",
-      "type_to_search": "Type to search"
+      "type_to_search": "Type to search",
+      "edit": "Edit album"
     },
     "artist": {
       "artist_management": "Artist Management",
@@ -140,6 +143,9 @@
       "artist_name": "Artist name",
       "biography": "Biography",
       "type_to_search": "Type to search"
+    },
+    "favorites": {
+      "item": "Favorites"
     },
     "playlist": {
       "create": "Create playlist",

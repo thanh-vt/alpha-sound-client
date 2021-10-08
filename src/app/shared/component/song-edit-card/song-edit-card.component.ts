@@ -43,6 +43,7 @@ export class SongEditCardComponent implements OnInit, OnChanges {
     if (changes.song && this.song) {
       this.songForm.patchValue(this.songUploadData.song);
       const artistFormArr = this.songForm.get('artists') as FormArray;
+      artistFormArr.clear();
       this.song.artists.forEach(artist => {
         const artistForm = SongUploadData.createArtist(this.fb);
         artistForm.setValue(artist);
