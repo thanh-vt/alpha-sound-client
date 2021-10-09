@@ -16,13 +16,21 @@ export class PlayingQueueService {
   trackEvent: BehaviorSubject<{ track: AudioTrack; event: string }> = new BehaviorSubject(null);
 
   addToQueue(audioTrack: AudioTrack): void {
+    if (this.checkAlreadyInQueue(audioTrack.url)) {
+      return;
+    }
     this.playlist = this.playlist.concat(audioTrack);
     this.notifyUpdate(null, false);
   }
 
   addAllToQueue(audioTracks: AudioTrack[]): void {
-    this.playlist = this.playlist.concat(audioTracks);
-    this.notifyUpdate(null, false);
+    audioTracks = audioTracks.filter(audioTrack => {
+      return !this.checkAlreadyInQueue(audioTrack.url);
+    });
+    if (audioTracks.length) {
+      this.playlist = this.playlist.concat(audioTracks);
+      this.notifyUpdate(null, false);
+    }
   }
 
   addToQueueAndPlay(audioTrack: AudioTrack): void {
@@ -35,10 +43,15 @@ export class PlayingQueueService {
   }
 
   addAllToQueueAndPlay(audioTracks: AudioTrack[]): void {
-    const firstTrack = audioTracks[0];
-    this.playlist = this.playlist.concat(audioTracks);
-    const indexToPlay = this.playlist.indexOf(firstTrack);
-    this.notifyUpdate(indexToPlay, true);
+    audioTracks = audioTracks.filter(audioTrack => {
+      return !this.checkAlreadyInQueue(audioTrack.url);
+    });
+    if (audioTracks.length) {
+      const firstTrack = audioTracks[0];
+      this.playlist = this.playlist.concat(audioTracks);
+      const indexToPlay = this.playlist.indexOf(firstTrack);
+      this.notifyUpdate(indexToPlay, true);
+    }
   }
 
   notifyUpdate(index: number, needPlay?: boolean): void {
