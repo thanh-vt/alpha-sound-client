@@ -192,8 +192,10 @@ export class MusicPlayerComponent implements OnDestroy {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  removeAudio(i: number): void {
-    this.toastService.error({ text: this.translate.instant('feature.song.load_error') });
+  removeAudio(i: number, isError = false): void {
+    if (isError) {
+      this.toastService.error({ text: this.translate.instant('feature.song.load_error') });
+    }
     const currentTrack = this.tracks[this.currentTrackIndex];
     if (this.currentTrackIndex === i) {
       this.currentTrackIndex = -1;

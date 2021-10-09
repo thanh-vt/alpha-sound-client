@@ -22,8 +22,8 @@ export class SearchService {
     return this.http.patch<void>(`${environment.apiUrl}/es/mark-for-sync`, option, { params: { ['index-name']: indexName } });
   }
 
-  clearIndex(indexName: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/es/clear`, { params: { ['index-name']: indexName } });
+  clearIndex(indexName: string, option: { id: number; createTime: Date; updateTime: Date }): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/es/clear`, { params: { ['index-name']: indexName, id: option.id } });
   }
 
   resetIndex(indexName: string): Observable<void> {

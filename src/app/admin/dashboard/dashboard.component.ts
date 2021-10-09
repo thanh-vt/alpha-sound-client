@@ -78,7 +78,7 @@ export class DashboardComponent {
     this.userProfileService.confirm('Are you sure?', () => {
       this.loadingService.loading(true);
       this.searchService
-        .clearIndex(this.indexName)
+        .clearIndex(this.indexName, this.esForm.getRawValue())
         .pipe(
           finalize(() => {
             this.loadingService.loading(false);
