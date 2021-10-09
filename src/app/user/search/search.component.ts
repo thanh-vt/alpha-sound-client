@@ -32,9 +32,7 @@ export class SearchComponent implements OnInit {
   }
 
   changeTab(): void {
-    console.log('scroll init');
     setTimeout(() => {
-      console.log('scroll');
       DataUtil.scrollToTop();
     }, 500);
   }

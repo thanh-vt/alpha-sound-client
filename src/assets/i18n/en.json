@@ -70,7 +70,8 @@
       "minlength": "{{label}} must have at least {{requiredLength}} characters, currently {{actualLength}}",
       "maxlength": "{{label}} can only have a maximum of {{requiredLength}} characters, currently {{actualLength}}",
       "email": "Invalid email",
-      "mustMatch": "Re-entered password does not match"
+      "mustMatch": "Re-entered password does not match",
+      "ngbDate": "Invalid date format"
     }
   },
   "feature": {
@@ -134,7 +135,8 @@
       "choose_existed_song": "Browse for an existed song",
       "search_song": "Search for a song",
       "type_to_search": "Type to search",
-      "edit": "Edit album"
+      "edit": "Edit album",
+      "description": "Description"
     },
     "artist": {
       "artist_management": "Artist Management",
@@ -196,7 +198,15 @@
       "user_management": "User management"
     },
     "search": {
-      "result": "Search result for"
+      "result": "Search result for",
+      "panel": "Elasticsearch Control Panel",
+      "record_id": "Record's ID",
+      "record_id_hint": "Enter record's ID",
+      "reload_mapping": "Reload mapping",
+      "mark_for_sync": "Mark for sync",
+      "clear_index": "Clear index",
+      "reset_index": "Reset index",
+      "select_index": "Select an index to operate"
     }
   },
   "Password reset successfully.": "Password reset successfully",

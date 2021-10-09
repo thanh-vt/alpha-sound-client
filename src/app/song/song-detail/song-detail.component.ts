@@ -1,20 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from '../../service/song.service';
 import { Artist } from '../../model/artist';
 import { Song } from '../../model/song';
-import { Comment } from '../../model/comment';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize } from 'rxjs/operators';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ArtistService } from '../../service/artist.service';
 import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
-import { UserProfile } from '../../model/token-response';
 import { AuthService } from '../../service/auth.service';
 
 @Component({

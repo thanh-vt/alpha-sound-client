@@ -4,12 +4,15 @@ import { SongService } from '../../service/song.service';
 import { ActivatedRoute } from '@angular/router';
 import { Song } from '../../model/song';
 import { Playlist } from '../../model/playlist';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
+import { PagingInfo } from '../../model/paging-info';
+import { DataUtil } from '../../util/data-util';
+import { UserProfile } from '../../model/token-response';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -17,7 +20,8 @@ import { TOAST_TYPE, VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
   styleUrls: ['./playlist-detail.component.scss']
 })
 export class PlaylistDetailComponent implements OnInit, OnDestroy {
-  songList: Song[];
+  currentUser$: Observable<UserProfile>;
+  songPage: PagingInfo<Song> = DataUtil.initPagingInfo();
   playList: Playlist;
   subscription: Subscription = new Subscription();
   playlistId: number;
@@ -26,11 +30,14 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     private playlistService: PlaylistService,
     private songService: SongService,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private modalService: NgbModal,
     private toastService: VgToastService,
     public translate: TranslateService,
     private loaderService: VgLoaderService
-  ) {}
+  ) {
+    this.currentUser$ = this.authService.currentUser$;
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(async params => {
@@ -39,20 +46,12 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  addToPlaying(song: Song, event: Event): void {
-    event.stopPropagation();
-    this.songService.songDetail(song.id).subscribe(next => {
-      song.url = next.url;
-      this.songService.play(song);
-    });
-  }
-
   async refreshPlaylistDetail(): Promise<void> {
     try {
       this.loaderService.loading(true);
       this.playList = await this.playlistService.getPlayListDetail(this.playlistId).toPromise();
+      await this.getSongPage();
       this.playList.isDisabled = false;
-      this.songList = this.playList.songs;
     } catch (e) {
       console.error(e);
     } finally {
@@ -60,7 +59,8 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDeleteDialog(playlist: Playlist, song: Song): void {
+  openDeleteDialog(playlist: Playlist, song: Song, event: MouseEvent): void {
+    event.stopPropagation();
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
       animation: true,
       backdrop: false,
@@ -86,6 +86,10 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       }
       sub.unsubscribe();
     });
+  }
+
+  async getSongPage(page = 0): Promise<void> {
+    this.songPage = await this.songService.getPlaylistSongList(this.playlistId, page).toPromise();
   }
 
   ngOnDestroy(): void {

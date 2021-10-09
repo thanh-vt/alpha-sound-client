@@ -3,9 +3,9 @@ import { AlbumUploadData } from '../../model/album-upload-data';
 import { AlbumService } from '../../service/album.service';
 import { SongService } from '../../service/song.service';
 import { ArtistService } from '../../service/artist.service';
-import { VgToastService } from 'ngx-vengeance-lib';
+import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { DateUtil } from '../../util/date-util';
 import { SongUploadData } from '../../model/song-upload-data';
 import { AuthService } from '../../service/auth.service';
@@ -26,6 +26,7 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   minDate = DateUtil.getMinDate();
   songUploadSubject: Subject<AlbumEntryUpdate>;
+  loading$: Observable<boolean>;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,8 +36,10 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
     private artistService: ArtistService,
     private authService: AuthService,
     private modalService: NgbModal,
-    private toastService: VgToastService
+    private toastService: VgToastService,
+    private loadingService: VgLoaderService
   ) {
+    this.loading$ = this.loadingService.getLoader();
     this.albumUploadData = AlbumUploadData.instance({
       router,
       albumService
@@ -48,6 +51,7 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
       this.route.queryParams.subscribe(async params => {
         try {
           this.albumId = params.id;
+          this.loadingService.loading(true);
           const result = await Promise.all([
             this.albumService.albumDetail(this.albumId).toPromise(),
             this.artistService.getAlbumArtistList(this.albumId, 0).toPromise(),
@@ -68,6 +72,8 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
           this.albumUploadData.checkEditableSongList(this.authService.currentUserValue.user_name);
         } catch (e) {
           console.error(e);
+        } finally {
+          this.loadingService.loading(false);
         }
       })
     );
@@ -92,9 +98,13 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
     }
   }
 
-  onUploadSongSuccess(event: Song): void {
+  onUploadSongSuccess(event: Song, songUploadData: SongUploadData): void {
     console.debug(event);
     this.toastService.success({ text: 'Song created/updated successfully' });
+    songUploadData.song = {
+      ...songUploadData.song,
+      ...event
+    };
     this.songUploadSubject.next(null);
   }
 

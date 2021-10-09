@@ -89,6 +89,24 @@ export class SongService {
       );
   }
 
+  getPlaylistSongList(playlistId: number, page = 0, size = 10): Observable<PagingInfo<Song>> {
+    return this.http
+      .get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, {
+        params: {
+          playlistId,
+          page,
+          size
+        }
+      })
+      .pipe(
+        tap(songPage => {
+          songPage.content.forEach(song => {
+            song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
+          });
+        })
+      );
+  }
+
   getUploadedSongList(page: number): Observable<PagingInfo<Song>> {
     return this.http
       .get<PagingInfo<Song>>(`${environment.apiUrl}/song/search`, {

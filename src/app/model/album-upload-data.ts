@@ -95,10 +95,7 @@ export class AlbumUploadData {
           }, 1500);
         });
     } else {
-      const sub = songUploadSubject.subscribe(async next => {
-        if (next) {
-          console.log(next);
-        }
+      const sub = songUploadSubject.subscribe(async () => {
         count++;
         if (count === totalFormCreate) {
           try {

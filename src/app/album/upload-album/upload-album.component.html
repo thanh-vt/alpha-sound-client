@@ -30,7 +30,7 @@
           <span>{{songUploadData.song?.artists | stringArray}}</span>
           <vg-upload-progress
             [httpObs]="songUploadData.observable"
-            (successEvent)="onUploadSongSuccess($event)"
+            (successEvent)="onUploadSongSuccess($event, songUploadData)"
             (failureEvent)="uploadSongFailed($event)"
           ></vg-upload-progress>
         </div>

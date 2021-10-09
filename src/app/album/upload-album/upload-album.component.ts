@@ -38,9 +38,12 @@ export class UploadAlbumComponent {
     });
   }
 
-  onUploadSongSuccess(event: Song): void {
-    console.log(event);
+  onUploadSongSuccess(event: Song, songUploadData: SongUploadData): void {
     this.toastService.success({ text: 'Song created/updated successfully' });
+    songUploadData.song = {
+      ...songUploadData.song,
+      ...event
+    };
     this.songUploadSubject.next(null);
   }
 
@@ -78,7 +81,9 @@ export class UploadAlbumComponent {
     this.songUploadSubject = new Subject<AlbumEntryUpdate>();
     this.albumUploadData.waitAndProcessUploadSongList(createAlbumResult, this.songUploadSubject);
     for (const songUploadData of this.albumUploadData.songUploadDataList) {
-      songUploadData.observable = this.songService.uploadSong(songUploadData.formData);
+      if (songUploadData.type === 'CREATE' || songUploadData.type === 'UPDATE') {
+        songUploadData.observable = this.songService.uploadSong(songUploadData.formData);
+      }
     }
   }
 }

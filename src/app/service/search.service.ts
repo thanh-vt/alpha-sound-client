@@ -25,4 +25,8 @@ export class SearchService {
   clearIndex(indexName: string): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/es/clear`, { params: { ['index-name']: indexName } });
   }
+
+  resetIndex(indexName: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/es/reset`, { params: { ['index-name']: indexName } });
+  }
 }

@@ -23,4 +23,5 @@ export interface Album {
   isDisabled?: boolean;
   loadingLikeButton?: boolean;
   liked?: boolean;
+  description?: string;
 }

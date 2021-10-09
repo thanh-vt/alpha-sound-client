@@ -1,17 +1,26 @@
 <div class="container-fluid">
-  <h5>Elasticsearch Control Panel</h5>
+  <h5>{{'feature.search.panel' | translate}}</h5>
   <select [(ngModel)]="indexName" class="form-select mb-3">
-    <option [ngValue]="null" selected>Select an index</option>
-    <option value="song">Song</option>
-    <option value="album">Album</option>
-    <option value="artist">Artist</option>
+    <option [ngValue]="null" selected>{{'feature.search.select_index' | translate}}</option>
+    <option value="song">{{'common.entity.song' | translate}}</option>
+    <option value="album">{{'common.entity.album' | translate}}</option>
+    <option value="artist">{{'common.entity.artist' | translate}}</option>
   </select>
   <form [formGroup]="esForm">
     <div class="input-group mb-3">
-      <input formControlName="id" type="number" class="form-control" placeholder="Enter record's ID" />
+      <label for="id">{{ 'feature.search.record_id' | translate }}</label>
+      <div class="input-group">
+        <input
+          formControlName="id"
+          id="id"
+          type="number"
+          class="form-control"
+          [placeholder]="'feature.search.record_id_hint' | translate"
+        />
+      </div>
     </div>
     <div class="form-group mb-3">
-      <label for="createTime">{{ 'Create Time' | translate }}</label>
+      <label for="createTime">{{ 'common.label.create_time' | translate }}</label>
       <div class="input-group">
         <input
           class="form-control"
@@ -31,7 +40,7 @@
       </div>
     </div>
     <div class="form-group mb-3">
-      <label for="updateTime">{{ 'Update Time' | translate }}</label>
+      <label for="updateTime">{{ 'common.label.update_time' | translate }}</label>
       <div class="input-group">
         <input
           class="form-control"
@@ -51,7 +60,16 @@
       </div>
     </div>
   </form>
-  <button class="btn btn-primary m-1" (click)="reloadMapping()">Reload Mapping</button>
-  <button class="btn btn-primary m-1" (click)="markForSync()">Mark for Sync</button>
-  <button class="btn btn-primary m-1" (click)="clearIndex()">Clear index</button>
+  <button [disabled]="!indexName || (loading$ | async)" class="btn btn-primary m-1" (click)="reloadMapping()">
+    {{'feature.search.reload_mapping' | translate}}
+  </button>
+  <button [disabled]="!indexName || (loading$ | async)" class="btn btn-primary m-1" (click)="markForSync()">
+    {{'feature.search.mark_for_sync' | translate}}
+  </button>
+  <button [disabled]="!indexName || (loading$ | async)" class="btn btn-primary m-1" (click)="clearIndex()">
+    {{'feature.search.clear_index' | translate}}
+  </button>
+  <button [disabled]="!indexName || (loading$ | async)" class="btn btn-primary m-1" (click)="resetIndex()">
+    {{'feature.search.reset_index' | translate}}
+  </button>
 </div>

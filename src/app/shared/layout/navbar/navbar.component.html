@@ -71,17 +71,18 @@
       </div>
     </div>
 
-    <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="row row-cols-lg-auto mx-auto">
+    <div class="row row-cols-lg-auto mx-auto">
       <input
         class="form-control rounded-pill mr-1"
         type="search"
-        [placeholder]="'common.button.search' | translate"
         aria-label="Search"
-        formControlName="searchText"
         style="width: 12rem"
+        [(ngModel)]="searchText"
+        [placeholder]="'common.button.search' | translate"
+        (keyup.enter)="onSearch()"
       />
-      <button type="submit" class="btn btn-info mx-1 rounded-circle"><i class="bi bi-search"></i></button>
-    </form>
+      <button (click)="onSearch()" type="button" class="btn btn-info mx-1 rounded-circle"><i class="bi bi-search"></i></button>
+    </div>
   </div>
   <div ngbDropdown class="d-inline-block ml-auto mr-1" *ngIf="!currentUser" placement="bottom-end" display="dynamic">
     <button class="btn btn-info rounded-pill" id="dropdownForm1" ngbDropdownToggle>
@@ -166,7 +167,7 @@
       <a ngbDropdownItem class="dropdown-item" [routerLink]="['/favorites']"
         ><i class="bi bi-bookmark-heart"></i> {{ 'feature.favorites.item' | translate }}</a
       >
-      <a ngbDropdownItem (click)="openLogoutConfirmDialog()" class="dropdown-item" tabindex="-1" aria-disabled="true"
+      <a ngbDropdownItem (click)="confirmLogout()" class="dropdown-item" tabindex="-1" aria-disabled="true"
         ><i class="bi bi-box-arrow-right"></i> {{ 'feature.account.logout' | translate }}</a
       >
     </div>

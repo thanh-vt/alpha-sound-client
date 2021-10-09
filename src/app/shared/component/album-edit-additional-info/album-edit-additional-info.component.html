@@ -28,12 +28,12 @@
         </div>
         <div class="col-md-12">
           <div class="form-group">
-            <label for="tags">{{ 'Tags' | translate }}</label>
+            <label for="tags">{{ 'common.entity.tag' | translate }}</label>
             <vg-tag-input id="tags" formControlName="tags" [placeholder]="'feature.tag.tag_separator_hint' | translate"></vg-tag-input>
           </div>
         </div>
         <div class="col-md-12">
-          <label for="theme">{{ 'Theme' | translate }}</label>
+          <label for="theme">{{ 'common.entity.theme' | translate }}</label>
           <select id="theme" class="form-select" formControlName="theme" [compareWith]="compareThemes">
             <option [selected] [ngValue]="null">{{ 'Choose a theme' | translate }}</option>
             <option *ngFor="let theme of (themeList$ | async)" [ngValue]="theme">{{ theme.name }}</option>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <label for="description">{{ 'Description' | translate }}</label>
+      <label for="description">{{ 'feature.album.description' | translate }}</label>
       <textarea class="form-control" id="description" formControlName="description" rows="10"></textarea>
     </div>
   </form>

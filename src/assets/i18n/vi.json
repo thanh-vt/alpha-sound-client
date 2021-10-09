@@ -69,7 +69,8 @@
       "minlength": "{{label}} phải có tối thiểu {{requiredLength}} ký tự, hiện tại {{actualLength}}",
       "maxlength": "{{label}} chỉ có thể có tối đa {{requiredLength}} ký tự, hiện tại {{actualLength}}",
       "email": "Email không đúng định dạng",
-      "mustMatch": "Mật khẩu nhập lại không khớp"
+      "mustMatch": "Mật khẩu nhập lại không khớp",
+      "ngbDate": "Ngày tháng không đúng định dạng"
     }
   },
   "feature": {
@@ -133,7 +134,8 @@
       "choose_existed_song": "Chọn bài hát có sẵn",
       "search_song": "Tìm kiếm một bài hát",
       "type_to_search": "Gõ để tìm kiếm",
-      "edit": "Chỉnh sửa album"
+      "edit": "Chỉnh sửa album",
+      "description": "Mô tả"
     },
     "artist": {
       "artist_management": "Quản lý nghệ sĩ",
@@ -195,7 +197,15 @@
       "user_management": "Quản lý người dùng"
     },
     "search": {
-      "result": "Kết quả tìm kiếm cho"
+      "result": "Kết quả tìm kiếm cho",
+      "panel": "Bảng điều khiển Elasticsearch",
+      "record_id": "ID Bản ghi",
+      "record_id_hint": "Nhập ID bản ghi",
+      "reload_mapping": "Đặt lại ánh xạ",
+      "mark_for_sync": "Thiết lập đồng bộ",
+      "clear_index": "Xóa dữ liệu chỉ mục",
+      "reset_index": "Đặt lại chỉ mục",
+      "select_index": "Chọn một chỉ mục để thao tác"
     }
   },
   "Password reset successfully.": "Đặt lại mật khẩu thành công",

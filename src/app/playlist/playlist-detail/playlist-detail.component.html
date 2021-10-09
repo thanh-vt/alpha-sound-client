@@ -9,18 +9,28 @@
     </tr>
   </thead>
   <tbody>
-    <tr [routerLink]="['/song','detail']" [queryParams]="{id: song.id}" *ngFor="let song of songList; index as i">
+    <tr
+      [routerLink]="['/song','detail']"
+      [queryParams]="{id: song.id}"
+      *ngFor="let song of songPage.content | likes:'SONG':(currentUser$ | async); index as i"
+    >
       <th scope="row">{{ song.rn }}</th>
       <td><a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}">{{ song.title }}</a></td>
-      <td>{{ song.releaseDate | date: 'fullDate' : '' : translate.currentLang }}</td>
+      <td>{{ song.releaseDate | date: 'dd/MM/yyyy' }}</td>
       <td>
-        <button class="btn btn-sm btn-primary rounded-circle" [disabled]="song.isDisabled" (click)="addToPlaying(song, $event)">
-          <i class="bi bi-play"></i>
-        </button>
-        <button class="btn btn-sm btn-danger rounded-pill" (click)="openDeleteDialog(playList, song)">
+        <app-song-like-btn [song]="song"></app-song-like-btn>
+        <app-song-menu-btn [song]="song"></app-song-menu-btn>
+        <button class="btn btn-sm btn-danger rounded-pill mx-2" (click)="openDeleteDialog(playList, song, $event)">
           <i class="bi bi-trash"></i>
         </button>
       </td>
     </tr>
   </tbody>
 </table>
+<ngb-pagination
+  *ngIf="songPage.totalPages > 1"
+  [collectionSize]="songPage.totalElements"
+  [page]="songPage.pageable?.pageNumber + 1"
+  [pageSize]="songPage.pageable?.pageSize"
+  (pageChange)="getSongPage($event - 1)"
+></ngb-pagination>

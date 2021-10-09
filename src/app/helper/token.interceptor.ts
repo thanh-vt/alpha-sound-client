@@ -38,7 +38,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse) {
           if (request.url.includes('/oauth/token')) {
             return this.handleOauth2RequestError(request, next, error);
-          } else if (request.url.includes('ping')) {
+          } else if (request.url.includes('/ping')) {
             return next.handle(request);
           } else {
             return this.handleNormalRequestError(request, next, error);

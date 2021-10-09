@@ -18,11 +18,17 @@
           *ngIf="songUploadData.editable;"
           card3BtnRight1
           class="btn btn-info btn-sm rounded-circle ms-1"
+          [disabled]="loading$ | async"
           (click)="toggleEdit(songUploadData)"
         >
           <i class="bi bi-pencil" *ngIf="songUploadData.editable; else editableBlock"></i>
         </button>
-        <button cardEsc3 class="btn btn-danger btn-sm rounded-circle ms-1" (click)="albumUploadData.removeForm(j)">
+        <button
+          cardEsc3
+          class="btn btn-danger btn-sm rounded-circle ms-1"
+          [disabled]="loading$ | async"
+          (click)="albumUploadData.removeForm(j)"
+        >
           <i class="bi bi-x-lg"></i>
         </button>
         <div cardBody3>
@@ -30,7 +36,7 @@
           <span>{{songUploadData.song?.artists | stringArray}}</span>
           <vg-upload-progress
             [httpObs]="songUploadData.observable"
-            (successEvent)="onUploadSongSuccess($event)"
+            (successEvent)="onUploadSongSuccess($event, songUploadData)"
             (failureEvent)="uploadSongFailed($event)"
           ></vg-upload-progress>
         </div>

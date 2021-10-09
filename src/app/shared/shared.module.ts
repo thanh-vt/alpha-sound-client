@@ -5,7 +5,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './component/footer/footer.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddSongToPlaylistComponent } from '../playlist/add-song-to-playlist/add-song-to-playlist.component';
 import { CardComponent } from './component/card/card.component';
 import { SpinnerComponent } from './component/spinner/spinner.component';
@@ -93,7 +93,8 @@ import { SongScrollingTitlePipe } from './pipe/song-scrolling-title.pipe';
       },
       deps: [TranslateService]
     }),
-    VgUtilModule
+    VgUtilModule,
+    FormsModule
   ],
   providers: [],
   exports: [
