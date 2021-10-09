@@ -102,7 +102,13 @@ export class AlbumUploadData {
             await this.albumService
               .updateSongList(
                 [
-                  ...this.songUploadDataList.map((e, index) => ({ songId: e.song?.id, ordinalNumber: index, mode: e.type })),
+                  ...this.songUploadDataList
+                    .filter(e => !!e.song?.id)
+                    .map((e, index) => ({
+                      songId: e.song?.id,
+                      ordinalNumber: index,
+                      mode: e.type
+                    })),
                   ...this.recycleBin
                 ],
                 createAlbumResult.id
