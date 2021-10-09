@@ -23,7 +23,8 @@ export class AlbumService {
     return this.http.get<PagingInfo<Album>>(`${environment.apiUrl}/album/es-search`, {
       params: {
         name,
-        page
+        page,
+        size
       }
     });
   }

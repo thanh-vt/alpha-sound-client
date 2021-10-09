@@ -61,6 +61,8 @@ export class AlbumEditAdditionalInfoComponent implements OnInit {
           ...this.additionalInfo
         });
       });
+    } else if (this.additionalInfo) {
+      this.formAdditionalInfo.patchValue(this.additionalInfo);
     }
   }
 

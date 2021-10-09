@@ -1,7 +1,7 @@
 <ng-container *ngIf="user">
   <app-card
     [type]="2"
-    [imgSrc]="user?.profile?.avatar_url || '../../../assets/avatars/default-user-avatar.png'"
+    [imgSrc]="user?.profile?.avatar_url ?? 'assets/avatars/default-user-avatar.png'"
     [title]="'feature.account.profile' | translate"
     [showEditButton]="user?.username===(currentUser$ | async)?.user_name"
     (showEditForm)="showEditForm=!showEditForm"

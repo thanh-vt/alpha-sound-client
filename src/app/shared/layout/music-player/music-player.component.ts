@@ -36,10 +36,7 @@ export class MusicPlayerComponent implements OnDestroy {
         this.tracks = next.tracks;
         if (this.tracks.length && next.needPlay) {
           setTimeout(() => {
-            const lastIndex = this.tracks.length - 1;
-            if (lastIndex >= 0) {
-              this.playTrack(lastIndex, this.tracks[lastIndex]);
-            }
+            this.playTrack(next.index, this.tracks[next.index]);
           }, 500);
         }
       },
@@ -195,11 +192,6 @@ export class MusicPlayerComponent implements OnDestroy {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  ngOnDestroy(): void {
-    this.playingQueueService.notifyUpdate(false);
-    this.queueSub.unsubscribe();
-  }
-
   removeAudio(i: number): void {
     this.toastService.error({ text: this.translate.instant('feature.song.load_error') });
     const currentTrack = this.tracks[this.currentTrackIndex];
@@ -210,10 +202,15 @@ export class MusicPlayerComponent implements OnDestroy {
     }
     const [deletedTrack] = this.tracks.splice(i, 1);
     this.currentTrackIndex = this.tracks.indexOf(currentTrack);
-    this.playingQueueService.playlist.splice(i, 1);
+    // this.playingQueueService.playlist.splice(i, 1);
     this.playingQueueService.trackEvent.next({
       track: deletedTrack,
       event: 'remove'
     });
+  }
+
+  ngOnDestroy(): void {
+    this.playingQueueService.notifyUpdate(null, false);
+    this.queueSub.unsubscribe();
   }
 }
