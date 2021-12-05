@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
@@ -40,9 +40,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.loaderService.loading(true);
           this.username = next.get('id');
           if (!this.username) {
-            this.user = await this.userService.getCurrentUserInfo().toPromise();
+            this.user = await firstValueFrom(this.userService.getCurrentUserInfo());
           } else {
-            this.user = await this.userService.getUserDetail(this.username).toPromise();
+            this.user = await firstValueFrom(this.userService.getUserDetail(this.username));
           }
         } catch (e) {
           console.error(e);

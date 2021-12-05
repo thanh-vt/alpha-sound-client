@@ -4,7 +4,7 @@ import { ArtistService } from '../../service/artist.service';
 import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { UserProfile } from '../../model/token-response';
 import { AuthService } from '../../service/auth.service';
 
@@ -29,7 +29,7 @@ export class ArtistListComponent implements OnInit {
     try {
       DataUtil.scrollToTop();
       this.loaderService.loading(true);
-      this.artistPage = await this.artistService.artistList(number).toPromise();
+      this.artistPage = await firstValueFrom(this.artistService.artistList(number));
     } catch (e) {
       console.error(e);
     } finally {

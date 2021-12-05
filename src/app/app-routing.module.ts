@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AdminAuthGuard } from './guard/admin-auth.guard';
 import { UserAuthGuard } from './guard/user-auth.guard';
 

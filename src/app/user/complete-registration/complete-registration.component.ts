@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfileService } from '../../service/user-profile.service';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { VgLoaderService } from 'ngx-vengeance-lib';
 
 @Component({
@@ -29,7 +29,7 @@ export class CompleteRegistrationComponent implements OnInit {
           const email = queryParamMap.get('email');
           try {
             this.loaderService.loading(true);
-            await this.userProfileService.confirmRegistration({ token, email }).toPromise();
+            await firstValueFrom(this.userProfileService.confirmRegistration({ token, email }));
             this.status = 1;
             this.countdownSec$ = 5;
             const countdown = setInterval(() => {

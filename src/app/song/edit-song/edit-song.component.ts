@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from '../../service/artist.service';
 import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 import { SongUploadData } from '../../model/song-upload-data';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { DateUtil } from '../../util/date-util';
 import { CountryService } from '../../service/country.service';
 import { AuthService } from '../../service/auth.service';
@@ -39,7 +39,7 @@ export class EditSongComponent implements OnInit {
         try {
           this.songId = params.id;
           this.loaderServer.loading(true);
-          this.songUploadData.song = await this.songService.songDetail(this.songId).toPromise();
+          this.songUploadData.song = await firstValueFrom(this.songService.songDetail(this.songId));
         } catch (e) {
           console.error(e);
         } finally {

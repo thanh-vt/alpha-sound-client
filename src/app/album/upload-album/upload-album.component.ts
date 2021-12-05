@@ -6,7 +6,7 @@ import { AlbumService } from '../../service/album.service';
 import { SongService } from '../../service/song.service';
 import { DateUtil } from '../../util/date-util';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { AlbumEntryUpdate } from '../../model/album-entry-update';
 import { Song } from '../../model/song';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -73,7 +73,7 @@ export class UploadAlbumComponent {
 
   async onSubmit(): Promise<void> {
     const albumFormData: FormData = this.albumUploadData.formData;
-    const createAlbumResult = await this.albumService.uploadAlbum(albumFormData).toPromise();
+    const createAlbumResult = await firstValueFrom(this.albumService.uploadAlbum(albumFormData));
     this.toastService.success({ text: 'Album created successfully' });
     if (this.songUploadSubject && !this.songUploadSubject.closed) {
       this.songUploadSubject.unsubscribe();

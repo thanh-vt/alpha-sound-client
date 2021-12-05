@@ -1,7 +1,7 @@
 import { Artist } from './artist';
 import { SongUploadData } from './song-upload-data';
 import { Album } from './album';
-import { Subject } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { AlbumEntryUpdate } from './album-entry-update';
 import { Router } from '@angular/router';
 import { AlbumService } from '../service/album.service';
@@ -99,8 +99,8 @@ export class AlbumUploadData {
         count++;
         if (count === totalFormCreate) {
           try {
-            await this.albumService
-              .updateSongList(
+            await firstValueFrom(
+              this.albumService.updateSongList(
                 [
                   ...this.songUploadDataList
                     .filter(e => !!e.song?.id)
@@ -113,7 +113,7 @@ export class AlbumUploadData {
                 ],
                 createAlbumResult.id
               )
-              .toPromise();
+            );
             sub.unsubscribe();
             setTimeout(() => {
               this.router.navigate(['album', 'detail'], { queryParams: { id: createAlbumResult.id } });

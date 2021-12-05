@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from '../../service/song.service';
 import { Artist } from '../../model/artist';
 import { Song } from '../../model/song';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ArtistService } from '../../service/artist.service';
@@ -49,8 +49,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
           this.loaderService.loading(true);
           // eslint-disable-next-line
           const songInfo: any[] = await Promise.all([
-            this.songService.songDetail(this.songId).toPromise(),
-            this.songService.songAdditionalInfo(this.songId).toPromise(),
+            firstValueFrom(this.songService.songDetail(this.songId)),
+            firstValueFrom(this.songService.songAdditionalInfo(this.songId)),
             this.getArtistList()
           ]);
           this.song = {
@@ -67,13 +67,13 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   async getArtistList(page = 0): Promise<void> {
-    this.artistPage = await this.artistService
-      .searchArtist({
+    this.artistPage = await firstValueFrom(
+      this.artistService.searchArtist({
         songId: `${this.songId}`,
         page: `${page}`,
         size: `${this.artistPage.pageable?.pageSize}`
       })
-      .toPromise();
+    );
   }
 
   ngOnDestroy(): void {

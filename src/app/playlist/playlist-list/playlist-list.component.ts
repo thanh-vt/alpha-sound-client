@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Playlist } from '../../model/playlist';
 import { PlaylistService } from '../../service/playlist.service';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EditPlaylistComponent } from '../edit-playlist/edit-playlist.component';
 import { CreatePlaylistComponent } from '../create-playlist/create-playlist.component';
@@ -33,7 +33,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   async refreshPlaylistList(): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.playlistList = (await this.playlistService.getPlaylistList().toPromise()).content;
+      this.playlistList = (await firstValueFrom(this.playlistService.getPlaylistList())).content;
     } catch (e) {
       console.error(e);
     } finally {
@@ -95,7 +95,7 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
       if (result) {
         try {
           this.loaderService.loading(true);
-          await this.playlistService.deletePlaylist(result?.id).toPromise();
+          await firstValueFrom(this.playlistService.deletePlaylist(result?.id));
           this.toastService.show({ text: 'Playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
           const index = this.playlistList.indexOf(playlist);
           this.playlistList.splice(index, 1);

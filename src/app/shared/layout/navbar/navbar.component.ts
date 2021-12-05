@@ -3,7 +3,7 @@ import { AuthService } from '../../../service/auth.service';
 import { UserProfileService } from '../../../service/user-profile.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { UserProfile } from '../../../model/token-response';
@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
     this.authService.currentUser$.subscribe(async next => {
       this.currentUser = next;
       if (this.currentUser) {
-        this.isAdmin = await this.authService.checkIsAdmin().toPromise();
+        this.isAdmin = await firstValueFrom(this.authService.checkIsAdmin());
       }
     });
     this.setting$ = this.settingService.setting$;

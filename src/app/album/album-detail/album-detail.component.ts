@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from '../../service/song.service';
@@ -47,8 +47,8 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
           this.loaderService.loading(true);
           this.albumId = params.id;
           const result = await Promise.all([
-            this.albumService.albumDetail(this.albumId).toPromise(),
-            this.albumService.albumAdditionalInfo(this.albumId).toPromise(),
+            firstValueFrom(this.albumService.albumDetail(this.albumId)),
+            firstValueFrom(this.albumService.albumAdditionalInfo(this.albumId)),
             this.getArtistPage(0),
             this.getSongPage(0)
           ]);
@@ -68,7 +68,7 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   async getArtistPage(page: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.artistPage = await this.artistService.getAlbumArtistList(this.albumId, page, 10).toPromise();
+      this.artistPage = await firstValueFrom(this.artistService.getAlbumArtistList(this.albumId, page, 10));
     } catch (e) {
       console.error(e);
     } finally {
@@ -79,7 +79,7 @@ export class AlbumDetailComponent implements OnInit, OnDestroy {
   async getSongPage(page: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.songPage = await this.songService.getAlbumSongList(this.albumId, page, 10).toPromise();
+      this.songPage = await firstValueFrom(this.songService.getAlbumSongList(this.albumId, page, 10));
     } catch (e) {
       console.error(e);
     } finally {

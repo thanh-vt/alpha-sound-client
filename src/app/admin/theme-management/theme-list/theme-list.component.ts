@@ -8,6 +8,7 @@ import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-theme-list',
@@ -39,7 +40,7 @@ export class ThemeListComponent implements OnInit {
   }
 
   async getThemeList(page: number): Promise<void> {
-    this.themePage = await this.themeService.getThemeList(page).toPromise();
+    this.themePage = await firstValueFrom(this.themeService.getThemeList(page));
   }
 
   toggleEdit(theme: Theme, val?: boolean): void {
@@ -92,7 +93,7 @@ export class ThemeListComponent implements OnInit {
       const result = await ref.result;
       if (result) {
         this.loaderService.loading(true);
-        await this.themeService.deleteTheme(theme.id).toPromise();
+        await firstValueFrom(this.themeService.deleteTheme(theme.id));
         this.toastService.success({ text: this.translate.instant('feature.theme.delete_success') });
         await this.getThemeList(this.themePage?.pageable?.pageNumber);
       }

@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
-import { Observable, Subscription } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -63,7 +63,7 @@ export class CommentBoxComponent implements OnChanges {
         entityType: this.type,
         entityId: this.id
       };
-      const newComment = await this.commentService.createComment(comment).toPromise();
+      const newComment = await firstValueFrom(this.commentService.createComment(comment));
       this.commentCreateForm.reset();
       if (this.commentPage.content.length === this.commentPage.pageable.pageSize) {
         await this.getCommentList(this.commentPage.pageable.pageNumber);
@@ -87,7 +87,7 @@ export class CommentBoxComponent implements OnChanges {
         entityType: this.type,
         entityId: this.id
       };
-      comment.content = (await this.commentService.updateComment(updatedComment).toPromise()).content;
+      comment.content = (await firstValueFrom(this.commentService.updateComment(updatedComment))).content;
       this.commentUpdateForm.reset();
       if (this.editingComment) {
         this.editingComment.isEditing = false;
@@ -147,6 +147,6 @@ export class CommentBoxComponent implements OnChanges {
   }
 
   async getCommentList(page: number): Promise<void> {
-    this.commentPage = await this.commentService.commentList(this.id, this.type, page).toPromise();
+    this.commentPage = await firstValueFrom(this.commentService.commentList(this.id, this.type, page));
   }
 }

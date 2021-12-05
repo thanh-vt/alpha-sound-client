@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { Tag } from '../../../model/tag';
 import { TagService } from '../../../service/tag.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-tag-list',
@@ -39,7 +40,7 @@ export class TagListComponent implements OnInit {
   }
 
   async getTagList(page: number): Promise<void> {
-    this.tagPage = await this.tagService.getTagList(page).toPromise();
+    this.tagPage = await firstValueFrom(this.tagService.getTagList(page));
   }
 
   toggleEdit(tag: Tag, val?: boolean): void {
@@ -92,7 +93,7 @@ export class TagListComponent implements OnInit {
       const result = await ref.result;
       if (result) {
         this.loaderService.loading(true);
-        await this.tagService.deleteTag(tag.id).toPromise();
+        await firstValueFrom(this.tagService.deleteTag(tag.id));
         this.toastService.success({ text: this.translate.instant('feature.tag.delete_success') });
         await this.getTagList(this.tagPage?.pageable?.pageNumber);
       }

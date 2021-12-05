@@ -6,7 +6,7 @@ import { SongService } from '../../../service/song.service';
 import { TranslateService } from '@ngx-translate/core';
 import { VgLoaderService } from 'ngx-vengeance-lib';
 import { AuthService } from '../../../service/auth.service';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { UserProfile } from '../../../model/token-response';
 
 @Component({
@@ -36,7 +36,7 @@ export class SongTableComponent implements OnInit {
     try {
       DataUtil.scrollToTop();
       this.loaderService.loading(true);
-      this.songPage = await this.songService.songList({ ...this.paramsFetch, page: i }).toPromise();
+      this.songPage = await firstValueFrom(this.songService.songList({ ...this.paramsFetch, page: i }));
     } catch (e) {
       console.error(e);
     } finally {

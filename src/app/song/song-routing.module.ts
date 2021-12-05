@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { SongComponent } from './song/song.component';
 import { SongListComponent } from './song-list/song-list.component';
 import { UploadSongComponent } from './upload-song/upload-song.component';

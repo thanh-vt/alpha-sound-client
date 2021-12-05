@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PlaylistService } from '../../service/playlist.service';
 import { Playlist } from '../../model/playlist';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { CreatePlaylistComponent } from '../create-playlist/create-playlist.component';
 import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 import { PagingInfo } from '../../model/paging-info';
@@ -28,7 +28,7 @@ export class AddSongToPlaylistComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.playlistList = await this.playlistService.getPlaylistListToAdd(this.songId).toPromise();
+      this.playlistList = await firstValueFrom(this.playlistService.getPlaylistListToAdd(this.songId));
     } catch (e) {
       console.error(e);
     } finally {

@@ -4,7 +4,7 @@ import { SongService } from '../../service/song.service';
 import { ActivatedRoute } from '@angular/router';
 import { Song } from '../../model/song';
 import { Playlist } from '../../model/playlist';
-import { Observable, Subscription } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/component/modal/confirmation-modal/confirmation-modal.component';
@@ -49,7 +49,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   async refreshPlaylistDetail(): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.playList = await this.playlistService.getPlayListDetail(this.playlistId).toPromise();
+      this.playList = await firstValueFrom(this.playlistService.getPlayListDetail(this.playlistId));
       await this.getSongPage();
       this.playList.isDisabled = false;
     } catch (e) {
@@ -76,7 +76,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       if (result) {
         try {
           this.loaderService.loading(true);
-          await this.playlistService.deleteSongFromPlaylist(result.playlist?.id, [result.song?.id]).toPromise();
+          await firstValueFrom(this.playlistService.deleteSongFromPlaylist(result.playlist?.id, [result.song?.id]));
           this.toastService.show({ text: 'Song from playlist removed successfully' }, { type: TOAST_TYPE.SUCCESS });
         } catch (e) {
           console.error(e);
@@ -89,7 +89,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   }
 
   async getSongPage(page = 0): Promise<void> {
-    this.songPage = await this.songService.getPlaylistSongList(this.playlistId, page).toPromise();
+    this.songPage = await firstValueFrom(this.songService.getPlaylistSongList(this.playlistId, page));
   }
 
   ngOnDestroy(): void {

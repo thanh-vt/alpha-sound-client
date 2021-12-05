@@ -8,6 +8,7 @@ import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 import { PagingInfo } from '../../../model/paging-info';
 import { DataUtil } from '../../../util/data-util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-country-list',
@@ -39,7 +40,7 @@ export class CountryListComponent implements OnInit {
   }
 
   async getCountryList(page = 0): Promise<void> {
-    this.countryPage = await this.countryService.getCountryList(page).toPromise();
+    this.countryPage = await firstValueFrom(this.countryService.getCountryList(page));
   }
 
   toggleEdit(country: Country, val?: boolean): void {
@@ -92,7 +93,7 @@ export class CountryListComponent implements OnInit {
       const result = await ref.result;
       if (result) {
         this.loadingService.loading(true);
-        await this.countryService.deleteCountry(country.id).toPromise();
+        await firstValueFrom(this.countryService.deleteCountry(country.id));
         this.toastService.success({ text: 'feature.country.delete_success' });
       }
     } catch (e) {

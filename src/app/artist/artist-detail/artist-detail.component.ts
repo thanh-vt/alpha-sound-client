@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArtistService } from '../../service/artist.service';
 import { SongService } from '../../service/song.service';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Song } from '../../model/song';
 import { TranslateService } from '@ngx-translate/core';
 import { PagingInfo } from '../../model/paging-info';
@@ -45,7 +45,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   async getArtistDetail(): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.artist = await this.artistService.artistDetail(this.artistId).toPromise();
+      this.artist = await firstValueFrom(this.artistService.artistDetail(this.artistId));
       await this.getSongListOfArtist(this.lastPageFetch);
       window.scroll(0, 0);
     } catch (e) {
@@ -58,7 +58,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   async getSongListOfArtist(page: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      const tmpArr = (await this.artistService.getSongListOfArtist(this.artistId, page).toPromise()).content;
+      const tmpArr = (await firstValueFrom(this.artistService.getSongListOfArtist(this.artistId, page))).content;
       this.songPage.content = this.songPage.content.concat(tmpArr);
     } catch (e) {
       console.error(e);

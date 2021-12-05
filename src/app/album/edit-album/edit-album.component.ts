@@ -5,7 +5,7 @@ import { SongService } from '../../service/song.service';
 import { ArtistService } from '../../service/artist.service';
 import { VgLoaderService, VgToastService } from 'ngx-vengeance-lib';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { firstValueFrom, Observable, Subject, Subscription } from 'rxjs';
 import { DateUtil } from '../../util/date-util';
 import { SongUploadData } from '../../model/song-upload-data';
 import { AuthService } from '../../service/auth.service';
@@ -53,9 +53,9 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
           this.albumId = params.id;
           this.loadingService.loading(true);
           const result = await Promise.all([
-            this.albumService.albumDetail(this.albumId).toPromise(),
-            this.artistService.getAlbumArtistList(this.albumId, 0).toPromise(),
-            this.songService.getAlbumSongList(this.albumId, 0).toPromise()
+            firstValueFrom(this.albumService.albumDetail(this.albumId)),
+            firstValueFrom(this.artistService.getAlbumArtistList(this.albumId, 0)),
+            firstValueFrom(this.songService.getAlbumSongList(this.albumId, 0))
           ]);
           this.albumUploadData.album = result[0];
           this.albumUploadData.album.artists = result[1].content;
@@ -81,7 +81,7 @@ export class EditAlbumComponent implements OnInit, OnDestroy {
 
   async onSubmit(): Promise<void> {
     const albumFormData: FormData = this.albumUploadData.formData;
-    const createAlbumResult = await this.albumService.updateAlbum(albumFormData, this.albumId).toPromise();
+    const createAlbumResult = await firstValueFrom(this.albumService.updateAlbum(albumFormData, this.albumId));
     this.toastService.success({ text: 'Album updated successfully' });
     if (this.songUploadSubject && !this.songUploadSubject.closed) {
       this.songUploadSubject.unsubscribe();

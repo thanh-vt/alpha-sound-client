@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Song } from '../../../model/song';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { SongService } from '../../../service/song.service';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -34,7 +34,7 @@ export class SongListComponent implements OnInit {
   async getSongList(page = 0): Promise<void> {
     try {
       this.loadingService.loading(true);
-      this.songPage = await this.songService.songList({ page }).toPromise();
+      this.songPage = await firstValueFrom(this.songService.songList({ page }));
     } catch (e) {
       console.error(e);
     } finally {
@@ -57,7 +57,7 @@ export class SongListComponent implements OnInit {
       const result = await ref.result;
       if (result) {
         this.loadingService.loading(true);
-        await this.songService.deleteSong(song?.id).toPromise();
+        await firstValueFrom(this.songService.deleteSong(song?.id));
         this.toastService.success({ text: 'Song from playlist removed successfully' });
         await this.getSongList();
       }

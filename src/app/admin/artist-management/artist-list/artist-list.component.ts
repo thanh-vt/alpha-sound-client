@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ArtistService } from '../../../service/artist.service';
 import { Artist } from '../../../model/artist';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
@@ -37,7 +37,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   async getArtistList(page?: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.artistPage = await this.artistService.artistList(page ?? this.artistPage.pageable.pageNumber).toPromise();
+      this.artistPage = await firstValueFrom(this.artistService.artistList(page ?? this.artistPage.pageable.pageNumber));
     } catch (e) {
       console.error(e);
     } finally {
@@ -92,7 +92,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       const result = await ref.result;
       if (result) {
         this.loaderService.loading(true);
-        await this.artistService.deleteArtist(artist.id).toPromise();
+        await firstValueFrom(this.artistService.deleteArtist(artist.id));
         await this.getArtistList();
       }
     } catch (e) {

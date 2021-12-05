@@ -8,7 +8,7 @@ import { UserComponent } from './user/user.component';
 import { SharedModule } from '../shared/shared.module';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { SongModule } from '../song/song.module';
-import { NgbButtonsModule, NgbDropdownModule, NgbPaginationModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbDropdownModule, NgbNavModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchComponent } from './search/search.component';
 import { UploadedSongListComponent } from './uploaded-song-list/uploaded-song-list.component';
 import { FavoritesComponent } from './favorites/favorites.component';

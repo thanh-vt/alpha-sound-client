@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/component/modal/confirmation-modal/confirmation-modal.component';
 import { GenreService } from '../../../service/genre.service';
 import { Genre } from '../../../model/genre';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-genre-list',
@@ -39,7 +40,7 @@ export class GenreListComponent implements OnInit {
   }
 
   async getGenreList(page: number): Promise<void> {
-    this.genrePage = await this.genreService.getGenreList(page).toPromise();
+    this.genrePage = await firstValueFrom(this.genreService.getGenreList(page));
   }
 
   toggleEdit(genre: Genre, val?: boolean): void {
@@ -92,7 +93,7 @@ export class GenreListComponent implements OnInit {
       const result = await ref.result;
       if (result) {
         this.loaderService.loading(true);
-        await this.genreService.deleteGenre(genre.id).toPromise();
+        await firstValueFrom(this.genreService.deleteGenre(genre.id));
         this.toastService.success({ text: this.translate.instant('feature.genre.delete_success') });
         await this.getGenreList(this.genrePage?.pageable?.pageNumber);
       }

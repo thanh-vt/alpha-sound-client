@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { PagingInfo } from '../model/paging-info';
 import { environment } from '../../environments/environment';

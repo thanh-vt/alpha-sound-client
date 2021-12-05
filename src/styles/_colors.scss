@@ -27,24 +27,24 @@ $colors: (
     black
   ),
   --nav-bg-color: (
-    rgba(186, 186, 255),
-    rgba(218, 165, 32)
+          rgba(186, 186, 255, 1),
+          rgba(218, 165, 32, 1)
   ),
   --nav-bg-hover: (
     rgba(0, 0, 0, 0.2),
     rgba(0, 0, 0, 0.2)
   ),
   --nav-bg-color-active: (
-    rgba(228, 228, 255),
-    rgba(255, 200, 91)
+          rgba(228, 228, 255, 1),
+          rgba(255, 200, 91, 1)
   ),
   --table-color: (
-    rgba(0, 0, 0),
-    rgba(255, 255, 255)
+          rgba(0, 0, 0, 1),
+          rgba(255, 255, 255, 1)
   ),
   --table-row-title: (
-    rgba(165, 42, 42),
-    rgba(240, 128, 128)
+          rgba(165, 42, 42, 1),
+          rgba(240, 128, 128, 1)
   ),
   --table-bg-color-row-odd: (
     rgba(227, 227, 227, 1),
@@ -56,39 +56,39 @@ $colors: (
   ),
   --table-small-text-color: (
     rgba(186, 0, 181, 1),
-    rgba(255, 255, 76)
+    rgba(255, 255, 76, 1)
   ),
   --menu-color: (
-    rgba(0, 0, 0),
-    rgba(255, 255, 255)
+          rgba(0, 0, 0, 1),
+          rgba(255, 255, 255, 1)
   ),
   --menu-bg: (
-    rgba(255, 255, 255),
-    rgba(0, 0, 0)
+          rgba(255, 255, 255, 1),
+          rgba(0, 0, 0, 1)
   ),
   --menu-color-disabled: (
-    rgba(50, 50, 50),
-    rgba(200, 200, 200)
+          rgba(50, 50, 50, 1),
+          rgba(200, 200, 200, 1)
   ),
   --menu-bg-disabled: (
-    rgba(200, 200, 200),
-    rgba(50, 50, 50)
+          rgba(200, 200, 200, 1),
+          rgba(50, 50, 50, 1)
   ),
   --list-color: (
-    rgba(50, 50, 50),
-    rgba(200, 200, 200)
+          rgba(50, 50, 50, 1),
+          rgba(200, 200, 200, 1)
   ),
   --list-bg: (
-    rgba(200, 200, 200),
-    rgba(50, 50, 50)
+          rgba(200, 200, 200, 1),
+          rgba(50, 50, 50, 1)
   ),
   --card-bg: (
-    rgba(200, 200, 200),
-    rgba(50, 50, 50)
+          rgba(200, 200, 200, 1),
+          rgba(50, 50, 50, 1)
   ),
   --card-color: (
-    rgba(50, 50, 50),
-    rgba(200, 200, 200)
+          rgba(50, 50, 50, 1),
+          rgba(200, 200, 200, 1)
   ),
   --accent-color: (
     $accent-color,

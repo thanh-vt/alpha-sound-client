@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,7 +32,7 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
     // translate.use(currentLanguage);
     this.authService.currentUser$.subscribe(async next => {
       if (next) {
-        this.isAdmin = await this.authService.checkIsAdmin().toPromise();
+        this.isAdmin = await firstValueFrom(this.authService.checkIsAdmin());
       } else {
         this.isAdmin = false;
       }

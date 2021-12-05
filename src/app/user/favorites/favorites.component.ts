@@ -6,6 +6,7 @@ import { PagingInfo } from '../../model/paging-info';
 import { DataUtil } from '../../util/data-util';
 import { VgLoaderService } from 'ngx-vengeance-lib';
 import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-favorites',
@@ -25,7 +26,7 @@ export class FavoritesComponent implements OnInit {
   async getSongPage(number: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.songPage = await this.songService.getUserFavoriteSongList({ page: number }).toPromise();
+      this.songPage = await firstValueFrom(this.songService.getUserFavoriteSongList({ page: number }));
     } catch (e) {
       console.error(e);
     } finally {

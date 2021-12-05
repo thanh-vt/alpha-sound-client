@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Artist } from '../../../model/artist';
 import { Song } from '../../../model/song';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ArtistService } from '../../../service/artist.service';
 import { SongService } from '../../../service/song.service';
@@ -44,7 +44,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   async getArtistDetail(): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.artist = await this.artistService.artistDetail(this.artistId).toPromise();
+      this.artist = await firstValueFrom(this.artistService.artistDetail(this.artistId));
       await this.getSongListOfArtist(this.lastPageFetched);
       window.scroll(0, 0);
     } catch (e) {
@@ -57,7 +57,7 @@ export class ArtistDetailComponent implements OnInit, OnDestroy {
   async getSongListOfArtist(page: number): Promise<void> {
     try {
       this.loaderService.loading(true);
-      const tmpArr = await this.artistService.getSongListOfArtist(this.artistId, page).toPromise();
+      const tmpArr = await firstValueFrom(this.artistService.getSongListOfArtist(this.artistId, page));
       this.songPage.content = this.songPage.content.concat(tmpArr.content);
     } catch (e) {
       console.error(e);

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ArtistListComponent } from './artist-list/artist-list.component';
 import { ArtistDetailComponent } from './artist-detail/artist-detail.component';
 

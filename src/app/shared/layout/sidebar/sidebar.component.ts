@@ -3,6 +3,7 @@ import { Song } from '../../../model/song';
 import { ActivatedRoute } from '@angular/router';
 import { SongService } from '../../../service/song.service';
 import { VgLoaderService } from 'ngx-vengeance-lib';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -29,7 +30,7 @@ export class SidebarComponent implements OnInit {
   async goToPage(): Promise<void> {
     try {
       this.loaderService.loading(true);
-      this.songList = (await this.songService.songList({ page: 0, size: 10, sort: ['listening_frequency'] }).toPromise()).content;
+      this.songList = (await firstValueFrom(this.songService.songList({ page: 0, size: 10, sort: ['listening_frequency'] }))).content;
     } catch (e) {
       console.error(e);
     } finally {

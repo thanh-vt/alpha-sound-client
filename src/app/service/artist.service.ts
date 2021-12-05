@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Artist } from '../model/artist';
 import { PagingInfo } from '../model/paging-info';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Song } from '../model/song';
 import { PlayingQueueService } from '../shared/layout/music-player/playing-queue.service';
 import { SongService } from './song.service';
