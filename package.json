@@ -7,6 +7,7 @@
     "build": "ng build",
     "build-heroku": "ng build --configuration=prod",
     "build-poweredge": "ng build --configuration=poweredge",
+    "build-k8s": "ng build --configuration=k8s",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
