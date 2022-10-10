@@ -118,8 +118,8 @@
                   "with": "src/environments/environment.k8s.ts"
                 }
               ],
-              "deployUrl": "/api/v1/namespaces/vengeance/services/vengeance:80/proxy/",
-              "baseHref": "/api/v1/namespaces/vengeance/services/vengeance:80/proxy/",
+              "deployUrl": "/",
+              "baseHref": "/",
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,
