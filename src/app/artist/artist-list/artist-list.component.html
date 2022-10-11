@@ -6,7 +6,7 @@
     [queryParams]="{id: artist.id}"
   >
     <div class="avatar-container">
-      <img class="avatar" [src]="artist.avatarUrl" alt="" />
+      <img class="avatar" [src]="artist.avatarUrl | mediaUrl" alt="" />
       <div class="like-btn-container d-flex justify-content-center">
         <app-artist-like-btn [ngClass]="'mt-auto mb-2'" [artist]="artist"></app-artist-like-btn>
       </div>

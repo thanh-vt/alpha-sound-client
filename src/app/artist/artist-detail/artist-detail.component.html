@@ -1,5 +1,5 @@
 <div *ngIf="artist">
-  <app-card [type]="2" [imgSrc]="artist.avatarUrl" [title]="'feature.artist.artist_info' | translate" [showEditButton]="false">
+  <app-card [type]="2" [imgSrc]="artist.avatarUrl | mediaUrl" [title]="'feature.artist.artist_info' | translate" [showEditButton]="false">
     <app-artist-like-btn card2LeftBtn1 [artist]="artist"></app-artist-like-btn>
     <div cardText2>
       <h6 class="d-inline">{{ 'feature.artist.artist_name' | translate }}:&nbsp;</h6>

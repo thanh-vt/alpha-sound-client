@@ -19,7 +19,7 @@
       <td>{{ i + 1 }}</td>
       <td><a [routerLink]="['/','admin','artist-management','detail']" [queryParams]="{id: artist.id}">{{ artist.name }}</a></td>
       <td>{{ artist.birthDate | date: 'dd/MM/yyyy' : '' : translate.currentLang }}</td>
-      <td><img [src]="artist.avatarUrl" class="avatar" alt="" /></td>
+      <td><img [src]="artist.avatarUrl | mediaUrl" class="avatar" alt="" /></td>
       <td>
         <button (click)="openEditDialog(artist, $event)" class="btn btn-secondary m-2 btn-sm rounded-circle">
           <i class="bi bi-pencil-square"></i>

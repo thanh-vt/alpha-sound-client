@@ -5,7 +5,7 @@
       <img
         class="avatar mr-2"
         style="width: 3rem; height: 3rem"
-        [src]="comment?.userInfo?.profile?.avatar_url || '../../../assets/images/avatar.jpg'"
+        [src]="(comment?.userInfo?.profile?.avatar_url | mediaUrl:true) || '../../../assets/images/avatar.jpg'"
         alt=""
       />
     </div>

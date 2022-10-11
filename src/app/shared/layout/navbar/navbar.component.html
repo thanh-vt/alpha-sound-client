@@ -141,7 +141,7 @@
       aria-expanded="false"
     >
       <span class="d-inline-block user-avatar" *ngIf="!currentUser?.avatar_url"> <i class="bi bi-person-circle"></i></span>
-      <img class="d-inline-block user-avatar" *ngIf="!!currentUser?.avatar_url" [src]="currentUser?.avatar_url" alt="" />
+      <img class="d-inline-block user-avatar" *ngIf="!!currentUser?.avatar_url" [src]="currentUser?.avatar_url | mediaUrl:true" alt="" />
       <span class="text-dark"> {{ currentUser.user_name }}</span>
     </button>
     <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="userProfile">

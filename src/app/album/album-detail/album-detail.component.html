@@ -1,5 +1,5 @@
 <ng-container *ngIf="album">
-  <app-card [type]="2" [showEditButton]="false" [title]="'feature.album.album_info' | translate" [imgSrc]="album.coverUrl">
+  <app-card [type]="2" [showEditButton]="false" [title]="'feature.album.album_info' | translate" [imgSrc]="album.coverUrl | mediaUrl">
     <app-album-play-btn card2LeftBtn1 [album]="album"></app-album-play-btn>
     <app-album-like-btn card2LeftBtn2 [album]="album"></app-album-like-btn>
     <div cardText2>
@@ -9,7 +9,7 @@
       <h6 class="d-inline">{{ 'common.entity.artist' | translate }}:&nbsp;</h6>
       <ul class="list-group">
         <li class="list-group-item" *ngFor="let artist of artistPage.content; index as i">
-          <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
+          <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl | mediaUrl" alt="" />
           <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
         </li>
       </ul>

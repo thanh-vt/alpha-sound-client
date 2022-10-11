@@ -5,6 +5,7 @@ import { AudioTrack } from './audio-track';
 import { Subscription } from 'rxjs';
 import { VgToastService } from 'ngx-vengeance-lib';
 import { TranslateService } from '@ngx-translate/core';
+import { MediaUrlPipe } from '../../pipe/media-url.pipe';
 
 @Component({
   selector: 'app-music-player',
@@ -26,7 +27,8 @@ export class MusicPlayerComponent implements OnDestroy {
     config: NgbDropdownConfig,
     private playingQueueService: PlayingQueueService,
     private translate: TranslateService,
-    private toastService: VgToastService
+    private toastService: VgToastService,
+    private mediaUrlPipe: MediaUrlPipe
   ) {
     // customize default values of dropdowns used by this component tree
     config.placement = 'top-left';
@@ -97,7 +99,7 @@ export class MusicPlayerComponent implements OnDestroy {
 
   loadTrack(id: number): void {
     this.currentTrackIndex = id;
-    this.audioRef.nativeElement.src = this.tracks[id].url;
+    this.audioRef.nativeElement.src = this.mediaUrlPipe.transform(this.tracks[id].url);
   }
 
   playTrack(id: number, track: AudioTrack): void {

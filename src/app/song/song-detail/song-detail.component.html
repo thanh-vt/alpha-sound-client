@@ -12,7 +12,13 @@
         <h6 class="d-inline">{{ 'common.entity.artist' | translate }}:</h6>
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let artist of artistPage.content; index as i">
-            <img class="mx-1" [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}" [src]="artist.avatarUrl" alt="" />
+            <img
+              class="mx-1"
+              [routerLink]="['/artist/detail']"
+              [queryParams]="{id: artist.id}"
+              [src]="artist.avatarUrl | mediaUrl"
+              alt=""
+            />
             <a [routerLink]="['/artist/detail']" [queryParams]="{id: artist.id}">{{artist.name}}</a>
           </li>
         </ul>

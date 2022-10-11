@@ -8,7 +8,11 @@
       class="list-group-item d-flex align-items-center justify-content-between"
     >
       <div class="d-inline-block" style="width: 85%">
-        <img class="user-avatar" [src]="(song.artists.length > 0)?song.artists[0].avatarUrl:'../../../assets/images/avatar.jpg'" alt="" />
+        <img
+          class="user-avatar"
+          [src]="(song.artists.length > 0)?(song.artists[0].avatarUrl | mediaUrl):'../../../assets/images/avatar.jpg'"
+          alt=""
+        />
         <a [routerLink]="['/song','detail']" [queryParams]="{id: song.id}"> {{song.title}}</a>
       </div>
       <span class="d-inline-block" style="width: 15%"><i class="bi bi-headphones"></i> {{song.listeningFrequency}}</span>

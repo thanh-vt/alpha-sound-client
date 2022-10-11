@@ -57,7 +57,7 @@
           <a cardHeader1 [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}">{{ album.title }}</a>
           <div cardText1 class="align-items-center h-100">
             <a [routerLink]="['/album', 'detail']" [queryParams]="{id: album.id}"
-              ><img class="card-img img-thumbnail album-cover" [src]="album.coverUrl" alt=""
+              ><img class="card-img img-thumbnail album-cover" [src]="album.coverUrl | mediaUrl" alt=""
             /></a>
           </div>
           <div cardFooter1 class="d-flex align-items-center justify-content-center">
@@ -82,7 +82,7 @@
         [queryParams]="{id: artist.id}"
       >
         <div class="avatar-container">
-          <img class="avatar" [src]="artist.avatarUrl" alt="" />
+          <img class="avatar" [src]="artist.avatarUrl | mediaUrl" alt="" />
           <div class="like-btn-container d-flex justify-content-center">
             <app-artist-like-btn [ngClass]="'mt-auto mb-2'" [artist]="artist"></app-artist-like-btn>
           </div>

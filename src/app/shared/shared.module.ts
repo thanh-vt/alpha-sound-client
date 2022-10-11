@@ -36,6 +36,7 @@ import { AlbumLikeBtnComponent } from './component/album-like-btn/album-like-btn
 import { ArtistLikeBtnComponent } from './component/artist-like-btn/artist-like-btn.component';
 import { SongEditModalComponent } from './component/song-edit-modal/song-edit-modal.component';
 import { SongScrollingTitlePipe } from './pipe/song-scrolling-title.pipe';
+import { MediaUrlPipe } from './pipe/media-url.pipe';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { SongScrollingTitlePipe } from './pipe/song-scrolling-title.pipe';
     SongEditAdditionalInfoComponent,
     StringArrayPipe,
     LikesPipe,
+    MediaUrlPipe,
     SongTableComponent,
     AlbumEditAdditionalInfoComponent,
     CommentBoxComponent,
@@ -96,7 +98,7 @@ import { SongScrollingTitlePipe } from './pipe/song-scrolling-title.pipe';
     VgUtilModule,
     FormsModule
   ],
-  providers: [],
+  providers: [MediaUrlPipe],
   exports: [
     TranslateModule,
     NavbarComponent,
@@ -123,7 +125,8 @@ import { SongScrollingTitlePipe } from './pipe/song-scrolling-title.pipe';
     CommentBoxComponent,
     ArtistLikeBtnComponent,
     AlbumLikeBtnComponent,
-    LikesPipe
+    LikesPipe,
+    MediaUrlPipe
   ]
 })
 export class SharedModule {}

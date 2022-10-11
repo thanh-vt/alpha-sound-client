@@ -89,7 +89,6 @@
                   "with": "src/environments/environment.poweredge.ts"
                 }
               ],
-              "deployUrl": "/client/alpha-sound/",
               "baseHref": "/client/alpha-sound/",
 
               "outputHashing": "all",
@@ -118,7 +117,6 @@
                   "with": "src/environments/environment.k8s.ts"
                 }
               ],
-              "deployUrl": "/",
               "baseHref": "/",
               "outputHashing": "all",
               "sourceMap": true,
