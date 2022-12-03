@@ -29,19 +29,24 @@ export class SongService {
   }
 
   songList(params?: { page?: number; size?: number; sort?: string[] }): Observable<PagingInfo<Song>> {
-    return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, { params, withCredentials: true }).pipe(
-      tap(songPage => {
-        songPage.content.forEach(song => {
-          song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
-        });
+    return this.http
+      .get<PagingInfo<Song>>(`${environment.apiUrl}/song/list`, {
+        params
+        // , withCredentials: true
       })
-    );
+      .pipe(
+        tap(songPage => {
+          songPage.content.forEach(song => {
+            song.isDisabled = this.playingQueueService.checkAlreadyInQueue(song?.url);
+          });
+        })
+      );
   }
 
   searchSongByName(name: string, page = 0, size = 10): Observable<PagingInfo<Song>> {
     return this.http.get<PagingInfo<Song>>(`${environment.apiUrl}/song/es-search`, {
-      params: { name, page, size },
-      withCredentials: true
+      params: { name, page, size }
+      // , withCredentials: true
     });
   }
 
