@@ -3,9 +3,9 @@
 // The list of audioFiles replacements can be found in `angular.json`.
 
 export const environment = {
-  authUrl: `https://${window.location.hostname}:8082/lambda-auth`,
-  apiRootUrl: `https://${window.location.hostname}:8086/alpha-sound`,
-  apiUrl: `https://${window.location.hostname}:8086/alpha-sound/api`,
+  authUrl: `https://${window.location.hostname}:8082/lambda-auth-service`,
+  apiRootUrl: `https://${window.location.hostname}:8086/alpha-sound-service`,
+  apiUrl: `https://${window.location.hostname}:8086/alpha-sound-service/api`,
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
   production: false,
@@ -14,22 +14,22 @@ export const environment = {
   pingEndpointConfig: {
     ['0']: {
       'chi-discovery-service': {
-        url: `http://${window.location.hostname}:8010/`
+        url: `http://${window.location.hostname}:8010/chi-discovery-service/`
       }
     },
     ['1']: {
       'phi-config-service': {
-        url: `http://${window.location.hostname}:8030/`
+        url: `http://${window.location.hostname}:8030/phi-config-service/`
       }
     },
     ['2']: {
       'lambda-auth-service': {
-        url: `https://${window.location.hostname}:8082/lambda-auth/`
+        url: `https://${window.location.hostname}:8082/lambda-auth-service/`
       }
     },
     ['3']: {
       'alpha-sound-service': {
-        url: `https://${window.location.hostname}:8086/alpha-sound/`
+        url: `https://${window.location.hostname}:8086/alpha-sound-service/`
       }
     }
   }

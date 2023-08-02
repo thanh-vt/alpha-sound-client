@@ -1,31 +1,31 @@
 export const environment = {
-  authUrl: `http://${window.location.host}/service/lambda-auth`,
-  apiRootUrl: `http://${window.location.host}/service/alpha-sound`,
-  apiUrl: `http://${window.location.host}/service/alpha-sound/api`,
+  authUrl: `https://${window.location.host}/lambda-auth-service`,
+  apiRootUrl: `https://${window.location.host}/alpha-sound-service`,
+  apiUrl: `https://${window.location.host}/alpha-sound-service/api`,
   clientId: 'alpha_sound',
   clientSecret: '@lph@123',
   production: true,
-  baseHref: '/',
+  baseHref: '/alpha-sound-client',
   credMode: 'header', // cookie only available in https, otherwise set to header
   pingEndpointConfig: {
     ['0']: {
       'chi-discovery-service': {
-        url: `http://${window.location.host}/service/chi-discovery/`
+        url: `https://${window.location.host}/chi-discovery-service/`
       }
     },
     ['1']: {
       'phi-config-service': {
-        url: `http://${window.location.host}/service/phi-config/`
+        url: `https://${window.location.host}/phi-config-service/`
       }
     },
     ['2']: {
       'lambda-auth-service': {
-        url: `http://${window.location.host}/service/lambda-auth/`
+        url: `https://${window.location.host}/lambda-auth-service/`
       }
     },
     ['3']: {
       'alpha-sound-service': {
-        url: `http://${window.location.host}/service/alpha-sound/`
+        url: `https://${window.location.host}/alpha-sound-service/`
       }
     }
   }
