@@ -89,7 +89,8 @@
                   "with": "src/environments/environment.k8s.ts"
                 }
               ],
-              "baseHref": "/alpha-sound-client",
+              "baseHref": "/alpha-sound-client/",
+              "deployUrl": "/alpha-sound-client/",
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": false,
